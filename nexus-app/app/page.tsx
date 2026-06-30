@@ -62,6 +62,29 @@ const healthItems = [
   { name: "GitHub Backup", value: "Safe" },
 ];
 
+const activityItems = [
+  {
+    title: "Day 2: Dashboard created",
+    detail: "Launch button now opens the NEXUS control center.",
+  },
+  {
+    title: "Day 2: Clickable modules added",
+    detail: "AI Brain, WhatsApp Hub, CRM, and Automation Logs are navigable.",
+  },
+  {
+    title: "Day 2: Sidebar navigation added",
+    detail: "NEXUS now has a fixed command center sidebar.",
+  },
+  {
+    title: "Day 2: System Health online",
+    detail: "Frontend, dashboard, AI foundation, and GitHub backup are tracked.",
+  },
+  {
+    title: "GitHub Backup: Safe",
+    detail: "Latest stable build is committed and pushed to main branch.",
+  },
+];
+
 export default function Home() {
   const [isLaunched, setIsLaunched] = useState(false);
   const [activeModule, setActiveModule] = useState<ModuleKey>(null);
@@ -372,6 +395,93 @@ export default function Home() {
                   <h3 style={{ fontSize: "24px" }}>{item.value}</h3>
                 </div>
               ))}
+            </div>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1.1fr 0.9fr",
+                gap: "24px",
+                marginBottom: "35px",
+              }}
+            >
+              <div
+                style={{
+                  background: "rgba(15, 23, 42, 0.85)",
+                  border: "1px solid rgba(59, 130, 246, 0.35)",
+                  borderRadius: "18px",
+                  padding: "28px",
+                  boxShadow: "0 0 25px rgba(37, 99, 235, 0.18)",
+                }}
+              >
+                <h2 style={{ fontSize: "26px", marginBottom: "18px" }}>
+                  Recent Activity
+                </h2>
+
+                <div style={{ display: "grid", gap: "14px" }}>
+                  {activityItems.map((item) => (
+                    <div
+                      key={item.title}
+                      style={{
+                        borderLeft: "3px solid #3b82f6",
+                        paddingLeft: "14px",
+                      }}
+                    >
+                      <h3 style={{ fontSize: "17px", marginBottom: "5px" }}>
+                        {item.title}
+                      </h3>
+                      <p
+                        style={{
+                          color: "#94a3b8",
+                          fontSize: "14px",
+                          lineHeight: "1.5",
+                        }}
+                      >
+                        {item.detail}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div
+                style={{
+                  background: "rgba(15, 23, 42, 0.85)",
+                  border: "1px solid rgba(34, 197, 94, 0.35)",
+                  borderRadius: "18px",
+                  padding: "28px",
+                  boxShadow: "0 0 25px rgba(34, 197, 94, 0.12)",
+                }}
+              >
+                <h2 style={{ fontSize: "26px", marginBottom: "16px" }}>
+                  Build Log
+                </h2>
+
+                <p
+                  style={{
+                    color: "#cbd5e1",
+                    lineHeight: "1.7",
+                    marginBottom: "18px",
+                  }}
+                >
+                  Day 2 stable build is active. NEXUS now has a dashboard,
+                  sidebar navigation, module screens, system health, and backup
+                  safety.
+                </p>
+
+                <div
+                  style={{
+                    background: "rgba(34, 197, 94, 0.14)",
+                    border: "1px solid rgba(34, 197, 94, 0.42)",
+                    color: "#bbf7d0",
+                    borderRadius: "14px",
+                    padding: "14px",
+                    fontSize: "15px",
+                  }}
+                >
+                  Current Build Status: Stable
+                </div>
+              </div>
             </div>
 
             <div
