@@ -55,6 +55,13 @@ const modules = [
   },
 ];
 
+const healthItems = [
+  { name: "Frontend", value: "Online" },
+  { name: "Dashboard", value: "Ready" },
+  { name: "AI Brain", value: "Foundation" },
+  { name: "GitHub Backup", value: "Safe" },
+];
+
 export default function Home() {
   const [isLaunched, setIsLaunched] = useState(false);
   const [activeModule, setActiveModule] = useState<ModuleKey>(null);
@@ -153,13 +160,7 @@ export default function Home() {
           NEXUS
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-            fontSize: "13px",
-            marginBottom: "30px",
-          }}
-        >
+        <p style={{ color: "#94a3b8", fontSize: "13px", marginBottom: "30px" }}>
           Command Center
         </p>
 
@@ -221,12 +222,56 @@ export default function Home() {
         </button>
       </aside>
 
-      <section
-        style={{
-          flex: 1,
-          padding: "50px",
-        }}
-      >
+      <section style={{ flex: 1, padding: "32px 50px 50px" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            background: "rgba(15, 23, 42, 0.8)",
+            border: "1px solid rgba(59, 130, 246, 0.25)",
+            borderRadius: "18px",
+            padding: "16px 22px",
+            marginBottom: "35px",
+            boxShadow: "0 0 22px rgba(37, 99, 235, 0.14)",
+          }}
+        >
+          <div>
+            <strong style={{ fontSize: "18px" }}>System Health</strong>
+            <p style={{ color: "#94a3b8", margin: "4px 0 0", fontSize: "14px" }}>
+              NEXUS local development environment
+            </p>
+          </div>
+
+          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+            <span
+              style={{
+                background: "rgba(34, 197, 94, 0.15)",
+                border: "1px solid rgba(34, 197, 94, 0.45)",
+                color: "#bbf7d0",
+                padding: "8px 12px",
+                borderRadius: "999px",
+                fontSize: "13px",
+              }}
+            >
+              Online
+            </span>
+
+            <span
+              style={{
+                background: "rgba(37, 99, 235, 0.18)",
+                border: "1px solid rgba(96, 165, 250, 0.45)",
+                color: "#bfdbfe",
+                padding: "8px 12px",
+                borderRadius: "999px",
+                fontSize: "13px",
+              }}
+            >
+              Day 2 Build
+            </span>
+          </div>
+        </div>
+
         {selectedModule ? (
           <>
             <h1
@@ -279,13 +324,7 @@ export default function Home() {
                 Module Capabilities
               </h2>
 
-              <ul
-                style={{
-                  color: "#cbd5e1",
-                  lineHeight: "2",
-                  fontSize: "18px",
-                }}
-              >
+              <ul style={{ color: "#cbd5e1", lineHeight: "2", fontSize: "18px" }}>
                 {selectedModule.points.map((point) => (
                   <li key={point}>{point}</li>
                 ))}
@@ -305,15 +344,35 @@ export default function Home() {
               NEXUS Dashboard
             </h1>
 
-            <p
-              style={{
-                color: "#94a3b8",
-                fontSize: "18px",
-                marginBottom: "40px",
-              }}
-            >
+            <p style={{ color: "#94a3b8", fontSize: "18px", marginBottom: "30px" }}>
               AI Business Operating System control center
             </p>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))",
+                gap: "16px",
+                marginBottom: "35px",
+              }}
+            >
+              {healthItems.map((item) => (
+                <div
+                  key={item.name}
+                  style={{
+                    background: "rgba(15, 23, 42, 0.85)",
+                    border: "1px solid rgba(59, 130, 246, 0.30)",
+                    borderRadius: "16px",
+                    padding: "20px",
+                  }}
+                >
+                  <p style={{ color: "#94a3b8", marginBottom: "8px" }}>
+                    {item.name}
+                  </p>
+                  <h3 style={{ fontSize: "24px" }}>{item.value}</h3>
+                </div>
+              ))}
+            </div>
 
             <div
               style={{
