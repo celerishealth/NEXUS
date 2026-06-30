@@ -61,6 +61,11 @@ export default function Home() {
 
   const selectedModule = modules.find((module) => module.key === activeModule);
 
+  function goHome() {
+    setIsLaunched(false);
+    setActiveModule(null);
+  }
+
   if (!isLaunched) {
     return (
       <main
@@ -117,172 +122,234 @@ export default function Home() {
     );
   }
 
-  if (selectedModule) {
-    return (
-      <main
-        style={{
-          minHeight: "100vh",
-          background: "linear-gradient(135deg, #020617, #0f172a)",
-          color: "white",
-          padding: "50px",
-          fontFamily: "Arial, sans-serif",
-        }}
-      >
-        <button
-          onClick={() => setActiveModule(null)}
-          style={{
-            marginBottom: "35px",
-            padding: "12px 24px",
-            background: "#1e293b",
-            color: "white",
-            border: "1px solid #334155",
-            borderRadius: "10px",
-            fontSize: "16px",
-            cursor: "pointer",
-          }}
-        >
-          Back to Dashboard
-        </button>
-
-        <h1
-          style={{
-            fontSize: "52px",
-            marginBottom: "12px",
-            textShadow: "0 0 20px #60a5fa",
-          }}
-        >
-          {selectedModule.title}
-        </h1>
-
-        <p
-          style={{
-            color: "#cbd5e1",
-            fontSize: "20px",
-            marginBottom: "25px",
-            maxWidth: "700px",
-            lineHeight: "1.6",
-          }}
-        >
-          {selectedModule.description}
-        </p>
-
-        <div
-          style={{
-            display: "inline-block",
-            background: "rgba(37, 99, 235, 0.18)",
-            border: "1px solid rgba(96, 165, 250, 0.45)",
-            borderRadius: "999px",
-            padding: "10px 18px",
-            marginBottom: "35px",
-            color: "#bfdbfe",
-          }}
-        >
-          Status: {selectedModule.status}
-        </div>
-
-        <div
-          style={{
-            background: "rgba(15, 23, 42, 0.85)",
-            border: "1px solid rgba(59, 130, 246, 0.35)",
-            borderRadius: "18px",
-            padding: "30px",
-            maxWidth: "800px",
-            boxShadow: "0 0 25px rgba(37, 99, 235, 0.20)",
-          }}
-        >
-          <h2 style={{ fontSize: "26px", marginBottom: "20px" }}>
-            Module Capabilities
-          </h2>
-
-          <ul style={{ color: "#cbd5e1", lineHeight: "2", fontSize: "18px" }}>
-            {selectedModule.points.map((point) => (
-              <li key={point}>{point}</li>
-            ))}
-          </ul>
-        </div>
-      </main>
-    );
-  }
-
   return (
     <main
       style={{
         minHeight: "100vh",
         background: "linear-gradient(135deg, #020617, #0f172a)",
         color: "white",
-        padding: "50px",
+        display: "flex",
         fontFamily: "Arial, sans-serif",
       }}
     >
-      <h1
+      <aside
         style={{
-          fontSize: "48px",
-          marginBottom: "10px",
-          letterSpacing: "2px",
-          textShadow: "0 0 20px #60a5fa",
+          width: "260px",
+          minHeight: "100vh",
+          background: "rgba(2, 6, 23, 0.92)",
+          borderRight: "1px solid rgba(59, 130, 246, 0.25)",
+          padding: "28px 20px",
+          boxShadow: "0 0 30px rgba(37, 99, 235, 0.18)",
         }}
       >
-        NEXUS Dashboard
-      </h1>
+        <h2
+          style={{
+            fontSize: "30px",
+            letterSpacing: "3px",
+            textShadow: "0 0 18px #60a5fa",
+            marginBottom: "6px",
+          }}
+        >
+          NEXUS
+        </h2>
 
-      <p
-        style={{
-          color: "#94a3b8",
-          fontSize: "18px",
-          marginBottom: "40px",
-        }}
-      >
-        AI Business Operating System control center
-      </p>
+        <p
+          style={{
+            color: "#94a3b8",
+            fontSize: "13px",
+            marginBottom: "30px",
+          }}
+        >
+          Command Center
+        </p>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-          gap: "24px",
-        }}
-      >
+        <button
+          onClick={() => setActiveModule(null)}
+          style={{
+            width: "100%",
+            marginBottom: "12px",
+            padding: "14px 16px",
+            textAlign: "left",
+            background: activeModule === null ? "#2563eb" : "#0f172a",
+            color: "white",
+            border: "1px solid #334155",
+            borderRadius: "12px",
+            cursor: "pointer",
+            fontSize: "15px",
+          }}
+        >
+          Dashboard
+        </button>
+
         {modules.map((module) => (
           <button
             key={module.key}
             onClick={() => setActiveModule(module.key)}
             style={{
+              width: "100%",
+              marginBottom: "12px",
+              padding: "14px 16px",
               textAlign: "left",
-              background: "rgba(15, 23, 42, 0.85)",
+              background: activeModule === module.key ? "#2563eb" : "#0f172a",
               color: "white",
-              border: "1px solid rgba(59, 130, 246, 0.35)",
-              borderRadius: "18px",
-              padding: "28px",
-              boxShadow: "0 0 25px rgba(37, 99, 235, 0.20)",
+              border: "1px solid #334155",
+              borderRadius: "12px",
               cursor: "pointer",
+              fontSize: "15px",
             }}
           >
-            <h2 style={{ fontSize: "24px", marginBottom: "14px" }}>
-              {module.title}
-            </h2>
-
-            <p style={{ color: "#cbd5e1", lineHeight: "1.6" }}>
-              {module.description}
-            </p>
+            {module.title}
           </button>
         ))}
-      </div>
 
-      <button
-        onClick={() => setIsLaunched(false)}
+        <button
+          onClick={goHome}
+          style={{
+            width: "100%",
+            marginTop: "28px",
+            padding: "14px 16px",
+            textAlign: "left",
+            background: "#1e293b",
+            color: "white",
+            border: "1px solid #334155",
+            borderRadius: "12px",
+            cursor: "pointer",
+            fontSize: "15px",
+          }}
+        >
+          Back to Home
+        </button>
+      </aside>
+
+      <section
         style={{
-          marginTop: "40px",
-          padding: "14px 28px",
-          background: "#1e293b",
-          color: "white",
-          border: "1px solid #334155",
-          borderRadius: "10px",
-          fontSize: "16px",
-          cursor: "pointer",
+          flex: 1,
+          padding: "50px",
         }}
       >
-        Back to Home
-      </button>
+        {selectedModule ? (
+          <>
+            <h1
+              style={{
+                fontSize: "52px",
+                marginBottom: "12px",
+                textShadow: "0 0 20px #60a5fa",
+              }}
+            >
+              {selectedModule.title}
+            </h1>
+
+            <p
+              style={{
+                color: "#cbd5e1",
+                fontSize: "20px",
+                marginBottom: "25px",
+                maxWidth: "760px",
+                lineHeight: "1.6",
+              }}
+            >
+              {selectedModule.description}
+            </p>
+
+            <div
+              style={{
+                display: "inline-block",
+                background: "rgba(37, 99, 235, 0.18)",
+                border: "1px solid rgba(96, 165, 250, 0.45)",
+                borderRadius: "999px",
+                padding: "10px 18px",
+                marginBottom: "35px",
+                color: "#bfdbfe",
+              }}
+            >
+              Status: {selectedModule.status}
+            </div>
+
+            <div
+              style={{
+                background: "rgba(15, 23, 42, 0.85)",
+                border: "1px solid rgba(59, 130, 246, 0.35)",
+                borderRadius: "18px",
+                padding: "30px",
+                maxWidth: "850px",
+                boxShadow: "0 0 25px rgba(37, 99, 235, 0.20)",
+              }}
+            >
+              <h2 style={{ fontSize: "26px", marginBottom: "20px" }}>
+                Module Capabilities
+              </h2>
+
+              <ul
+                style={{
+                  color: "#cbd5e1",
+                  lineHeight: "2",
+                  fontSize: "18px",
+                }}
+              >
+                {selectedModule.points.map((point) => (
+                  <li key={point}>{point}</li>
+                ))}
+              </ul>
+            </div>
+          </>
+        ) : (
+          <>
+            <h1
+              style={{
+                fontSize: "48px",
+                marginBottom: "10px",
+                letterSpacing: "2px",
+                textShadow: "0 0 20px #60a5fa",
+              }}
+            >
+              NEXUS Dashboard
+            </h1>
+
+            <p
+              style={{
+                color: "#94a3b8",
+                fontSize: "18px",
+                marginBottom: "40px",
+              }}
+            >
+              AI Business Operating System control center
+            </p>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+                gap: "24px",
+              }}
+            >
+              {modules.map((module) => (
+                <button
+                  key={module.key}
+                  onClick={() => setActiveModule(module.key)}
+                  style={{
+                    textAlign: "left",
+                    background: "rgba(15, 23, 42, 0.85)",
+                    color: "white",
+                    border: "1px solid rgba(59, 130, 246, 0.35)",
+                    borderRadius: "18px",
+                    padding: "28px",
+                    boxShadow: "0 0 25px rgba(37, 99, 235, 0.20)",
+                    cursor: "pointer",
+                  }}
+                >
+                  <h2 style={{ fontSize: "24px", marginBottom: "14px" }}>
+                    {module.title}
+                  </h2>
+
+                  <p style={{ color: "#cbd5e1", lineHeight: "1.6" }}>
+                    {module.description}
+                  </p>
+                </button>
+              ))}
+            </div>
+          </>
+        )}
+      </section>
     </main>
   );
 }
