@@ -2,173 +2,117 @@
 
 import { useState } from "react";
 
-type ModuleKey = "ai-brain" | "whatsapp-hub" | "crm" | "automation-logs" | null;
-
-type AiHistoryItem = {
-  question: string;
-  response: string;
-  time: string;
-};
-
-const modules = [
-  {
-    key: "ai-brain" as const,
-    title: "AI Brain",
-    description: "Central intelligence for business decisions and customer replies.",
-    status: "Active Foundation",
-    points: [
-      "AI reply engine",
-      "Business decision support",
-      "Customer message understanding",
-      "Future: Gemini / OpenAI API connection",
-    ],
-  },
-  {
-    key: "whatsapp-hub" as const,
-    title: "WhatsApp Hub",
-    description: "One control center for customer WhatsApp communication.",
-    status: "Coming Next",
-    points: [
-      "Customer WhatsApp inbox",
-      "Auto reply system",
-      "Message history",
-      "Future: Twilio / Meta API connection",
-    ],
-  },
-  {
-    key: "crm" as const,
-    title: "CRM",
-    description: "Lead, customer, order, and follow-up management system.",
-    status: "Coming Next",
-    points: [
-      "Lead database",
-      "Customer profile",
-      "Order tracking",
-      "Follow-up reminder system",
-    ],
-  },
-  {
-    key: "automation-logs" as const,
-    title: "Automation Logs",
-    description: "Track every action, message, error, and system event.",
-    status: "Coming Next",
-    points: [
-      "System activity logs",
-      "Error tracking",
-      "Message delivery status",
-      "Owner daily report",
-    ],
-  },
-];
-
-const healthItems = [
-  { name: "Frontend", value: "Online" },
-  { name: "Dashboard", value: "Ready" },
-  { name: "AI Brain", value: "Copy Ready" },
-  { name: "GitHub Backup", value: "Safe" },
-];
-
-const activityItems = [
-  {
-    title: "Day 2: Dashboard created",
-    detail: "Launch button now opens the NEXUS control center.",
-  },
-  {
-    title: "Day 2: Clickable modules added",
-    detail: "AI Brain, WhatsApp Hub, CRM, and Automation Logs are navigable.",
-  },
-  {
-    title: "Day 2: Sidebar navigation added",
-    detail: "NEXUS now has a fixed command center sidebar.",
-  },
-  {
-    title: "Day 3: AI Brain input started",
-    detail: "AI Brain now has an input box and dummy response engine.",
-  },
-  {
-    title: "Day 3: Copy and clear controls added",
-    detail: "AI responses can now be copied or cleared without deleting history.",
-  },
-];
-
 export default function Home() {
   const [isLaunched, setIsLaunched] = useState(false);
-  const [activeModule, setActiveModule] = useState<ModuleKey>(null);
   const [aiInput, setAiInput] = useState("");
   const [aiResponse, setAiResponse] = useState("");
-  const [copyStatus, setCopyStatus] = useState("");
-  const [aiHistory, setAiHistory] = useState<AiHistoryItem[]>([]);
+  const [selectedTemplate, setSelectedTemplate] = useState("Custom Prompt");
+  const [responseHistory, setResponseHistory] = useState<
+    { id: number; type: string; input: string; response: string }[]
+  >([]);
 
-  const selectedModule = modules.find((module) => module.key === activeModule);
+  const promptTemplates = [
+    {
+      title: "Customer Reply",
+      description: "Create a polite reply for a customer question.",
+      prompt:
+        "Write a professional customer reply for this customer message. Keep it clear, polite, and helpful:",
+    },
+    {
+      title: "Sales Follow-up",
+      description: "Follow up with a potential customer.",
+      prompt:
+        "Write a short and professional sales follow-up message for this customer:",
+    },
+    {
+      title: "Order Confirmation",
+      description: "Confirm an order with clear details.",
+      prompt:
+        "Write a professional order confirmation message for this customer:",
+    },
+    {
+      title: "Complaint Reply",
+      description: "Handle a customer complaint politely.",
+      prompt:
+        "Write a calm and professional complaint reply for this customer issue:",
+    },
+    {
+      title: "Business Advice",
+      description: "Give simple business advice.",
+      prompt:
+        "Give practical business advice for this situation. Keep it simple and action-focused:",
+    },
+  ];
 
-  function goHome() {
-    setIsLaunched(false);
-    setActiveModule(null);
+  const recentActivities = [
+    "Day 2: Dashboard created",
+    "Day 2: Sidebar added",
+    "Day 2: System Health section added",
+    "Day 3: AI Brain input box added",
+    "Day 3: Dummy AI response added",
+    "Day 3: Response history added",
+    "Day 4: Prompt templates started",
+  ];
+
+  const buildLogs = [
+    "NEXUS v2 frontend started",
+    "Home screen completed",
+    "Launch button completed",
+    "Dashboard completed",
+    "Sidebar completed",
+    "AI Brain basic system completed",
+    "GitHub backup completed",
+    "Production build passed",
+    "Day 4 prompt templates added",
+  ];
+
+  function useTemplate(templateTitle: string, templatePrompt: string) {
+    setSelectedTemplate(templateTitle);
+    setAiInput(templatePrompt + "\n\n");
   }
 
-  function generateAiResponse() {
-    const question = aiInput.trim();
-
-    if (!question) {
-      setAiResponse("Please type a business question first.");
-      setCopyStatus("");
+  function generateResponse() {
+    if (!aiInput.trim()) {
+      setAiResponse("Please enter a message first.");
       return;
     }
 
-    const responseText = `NEXUS AI Brain analyzed your request:
+    const response = `NEXUS AI Brain analyzed your ${selectedTemplate} request.
 
-"${question}"
+Input:
+${aiInput}
+
+Recommended response:
+Thank you for your message. We understand your requirement and will assist you with a clear, professional, and action-focused solution.
 
 Recommended action:
 1. Capture the customer need clearly.
-2. Give a simple and professional reply.
-3. Save the lead in CRM.
-4. Trigger follow-up automation.
+2. Reply in a simple and professional tone.
+3. Save the lead or request in CRM.
+4. Trigger the next follow-up automation.`;
 
-Status: Dummy AI response working. Real Gemini/OpenAI API will connect later.`;
+    setAiResponse(response);
 
-    setAiResponse(responseText);
-    setCopyStatus("");
-
-    setAiHistory((currentHistory) => [
+    setResponseHistory((prev) => [
       {
-        question,
-        response: responseText,
-        time: new Date().toLocaleTimeString(),
+        id: Date.now(),
+        type: selectedTemplate,
+        input: aiInput,
+        response,
       },
-      ...currentHistory,
+      ...prev,
     ]);
+  }
 
+  function copyResponse() {
+    if (!aiResponse) return;
+    navigator.clipboard.writeText(aiResponse);
+  }
+
+  function clearResponse() {
     setAiInput("");
-  }
-
-  function clearCurrentResponse() {
     setAiResponse("");
-    setCopyStatus("");
-  }
-
-  async function copyCurrentResponse() {
-    if (!aiResponse) {
-      setCopyStatus("No response to copy");
-      return;
-    }
-
-    try {
-      await navigator.clipboard.writeText(aiResponse);
-      setCopyStatus("Copied ✅");
-    } catch {
-      const textArea = document.createElement("textarea");
-      textArea.value = aiResponse;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand("copy");
-      document.body.removeChild(textArea);
-      setCopyStatus("Copied ✅");
-    }
-
-    setTimeout(() => {
-      setCopyStatus("");
-    }, 2000);
+    setSelectedTemplate("Custom Prompt");
   }
 
   if (!isLaunched) {
@@ -176,53 +120,58 @@ Status: Dummy AI response working. Real Gemini/OpenAI API will connect later.`;
       <main
         style={{
           minHeight: "100vh",
-          background: "radial-gradient(circle at center, #0f172a, #020617)",
+          background:
+            "linear-gradient(135deg, #020617 0%, #0f172a 50%, #111827 100%)",
           color: "white",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          textAlign: "center",
+          padding: "40px",
           fontFamily: "Arial, sans-serif",
         }}
       >
-        <div>
-          <h1
-            style={{
-              fontSize: "64px",
-              letterSpacing: "4px",
-              textShadow: "0 0 25px #60a5fa",
-              marginBottom: "12px",
-            }}
-          >
-            NEXUS
-          </h1>
+        <section
+          style={{
+            maxWidth: "900px",
+            width: "100%",
+            border: "1px solid #1d4ed8",
+            borderRadius: "24px",
+            padding: "48px",
+            background: "rgba(15, 23, 42, 0.9)",
+            boxShadow: "0 0 40px rgba(37, 99, 235, 0.35)",
+            textAlign: "center",
+          }}
+        >
+          <h1 style={{ fontSize: "56px", marginBottom: "16px" }}>NEXUS</h1>
 
           <p
             style={{
-              fontSize: "20px",
               color: "#cbd5e1",
-              marginBottom: "35px",
+              fontSize: "20px",
+              lineHeight: "1.6",
+              marginBottom: "32px",
             }}
           >
-            AI Business Operating System
+            AI Business Operating System for sales, support, customer replies,
+            follow-ups, orders, complaints, and business advice.
           </p>
 
           <button
             onClick={() => setIsLaunched(true)}
             style={{
-              padding: "15px 40px",
               background: "#2563eb",
               color: "white",
               border: "none",
-              borderRadius: "10px",
+              borderRadius: "14px",
+              padding: "16px 28px",
               fontSize: "18px",
               cursor: "pointer",
-              boxShadow: "0 0 25px rgba(37, 99, 235, 0.8)",
+              fontWeight: "bold",
             }}
           >
             Launch NEXUS
           </button>
-        </div>
+        </section>
       </main>
     );
   }
@@ -231,7 +180,7 @@ Status: Dummy AI response working. Real Gemini/OpenAI API will connect later.`;
     <main
       style={{
         minHeight: "100vh",
-        background: "linear-gradient(135deg, #020617, #0f172a)",
+        background: "#020617",
         color: "white",
         display: "flex",
         fontFamily: "Arial, sans-serif",
@@ -240,627 +189,252 @@ Status: Dummy AI response working. Real Gemini/OpenAI API will connect later.`;
       <aside
         style={{
           width: "260px",
-          minHeight: "100vh",
-          background: "rgba(2, 6, 23, 0.92)",
-          borderRight: "1px solid rgba(59, 130, 246, 0.25)",
-          padding: "28px 20px",
-          boxShadow: "0 0 30px rgba(37, 99, 235, 0.18)",
+          background: "#0f172a",
+          borderRight: "1px solid #1e293b",
+          padding: "24px",
         }}
       >
-        <h2
-          style={{
-            fontSize: "30px",
-            letterSpacing: "3px",
-            textShadow: "0 0 18px #60a5fa",
-            marginBottom: "6px",
-          }}
-        >
-          NEXUS
-        </h2>
-
-        <p style={{ color: "#94a3b8", fontSize: "13px", marginBottom: "30px" }}>
-          Command Center
+        <h1 style={{ fontSize: "30px", marginBottom: "8px" }}>NEXUS</h1>
+        <p style={{ color: "#94a3b8", marginBottom: "32px" }}>
+          AI Business OS
         </p>
 
-        <button
-          onClick={() => setActiveModule(null)}
-          style={{
-            width: "100%",
-            marginBottom: "12px",
-            padding: "14px 16px",
-            textAlign: "left",
-            background: activeModule === null ? "#2563eb" : "#0f172a",
-            color: "white",
-            border: "1px solid #334155",
-            borderRadius: "12px",
-            cursor: "pointer",
-            fontSize: "15px",
-          }}
-        >
-          Dashboard
-        </button>
-
-        {modules.map((module) => (
-          <button
-            key={module.key}
-            onClick={() => setActiveModule(module.key)}
-            style={{
-              width: "100%",
-              marginBottom: "12px",
-              padding: "14px 16px",
-              textAlign: "left",
-              background: activeModule === module.key ? "#2563eb" : "#0f172a",
-              color: "white",
-              border: "1px solid #334155",
-              borderRadius: "12px",
-              cursor: "pointer",
-              fontSize: "15px",
-            }}
-          >
-            {module.title}
-          </button>
-        ))}
-
-        <button
-          onClick={goHome}
-          style={{
-            width: "100%",
-            marginTop: "28px",
-            padding: "14px 16px",
-            textAlign: "left",
-            background: "#1e293b",
-            color: "white",
-            border: "1px solid #334155",
-            borderRadius: "12px",
-            cursor: "pointer",
-            fontSize: "15px",
-          }}
-        >
-          Back to Home
-        </button>
+        <nav style={{ display: "grid", gap: "14px" }}>
+          <button style={sidebarButton}>Dashboard</button>
+          <button style={sidebarButton}>AI Brain</button>
+          <button style={sidebarButton}>Templates</button>
+          <button style={sidebarButton}>Customers</button>
+          <button style={sidebarButton}>Orders</button>
+          <button style={sidebarButton}>Automation</button>
+          <button style={sidebarButton}>Settings</button>
+        </nav>
       </aside>
 
-      <section style={{ flex: 1, padding: "32px 50px 50px" }}>
-        <div
+      <section style={{ flex: 1, padding: "32px", overflow: "auto" }}>
+        <header style={{ marginBottom: "28px" }}>
+          <h2 style={{ fontSize: "36px", marginBottom: "8px" }}>
+            NEXUS Dashboard
+          </h2>
+          <p style={{ color: "#94a3b8" }}>
+            Day 4 goal: AI Brain Prompt Templates
+          </p>
+        </header>
+
+        <section
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            background: "rgba(15, 23, 42, 0.8)",
-            border: "1px solid rgba(59, 130, 246, 0.25)",
-            borderRadius: "18px",
-            padding: "16px 22px",
-            marginBottom: "35px",
-            boxShadow: "0 0 22px rgba(37, 99, 235, 0.14)",
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "20px",
+            marginBottom: "28px",
           }}
         >
-          <div>
-            <strong style={{ fontSize: "18px" }}>System Health</strong>
-            <p style={{ color: "#94a3b8", margin: "4px 0 0", fontSize: "14px" }}>
-              NEXUS local development environment
-            </p>
+          <div style={cardStyle}>
+            <h3>System Health</h3>
+            <p style={{ color: "#22c55e", fontSize: "28px" }}>Online</p>
           </div>
 
-          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-            <span
-              style={{
-                background: "rgba(34, 197, 94, 0.15)",
-                border: "1px solid rgba(34, 197, 94, 0.45)",
-                color: "#bbf7d0",
-                padding: "8px 12px",
-                borderRadius: "999px",
-                fontSize: "13px",
-              }}
-            >
-              Online
-            </span>
-
-            <span
-              style={{
-                background: "rgba(37, 99, 235, 0.18)",
-                border: "1px solid rgba(96, 165, 250, 0.45)",
-                color: "#bfdbfe",
-                padding: "8px 12px",
-                borderRadius: "999px",
-                fontSize: "13px",
-              }}
-            >
-              Day 3 Build
-            </span>
+          <div style={cardStyle}>
+            <h3>AI Brain</h3>
+            <p style={{ color: "#38bdf8", fontSize: "28px" }}>Ready</p>
           </div>
-        </div>
 
-        {selectedModule ? (
-          <>
-            <h1
-              style={{
-                fontSize: "52px",
-                marginBottom: "12px",
-                textShadow: "0 0 20px #60a5fa",
-              }}
-            >
-              {selectedModule.title}
-            </h1>
+          <div style={cardStyle}>
+            <h3>Build Status</h3>
+            <p style={{ color: "#a78bfa", fontSize: "28px" }}>Clean</p>
+          </div>
+        </section>
 
-            <p
-              style={{
-                color: "#cbd5e1",
-                fontSize: "20px",
-                marginBottom: "25px",
-                maxWidth: "760px",
-                lineHeight: "1.6",
-              }}
-            >
-              {selectedModule.description}
-            </p>
+        <section style={cardStyle}>
+          <h2 style={{ fontSize: "26px", marginBottom: "16px" }}>
+            AI Brain Prompt Templates
+          </h2>
 
-            <div
-              style={{
-                display: "inline-block",
-                background: "rgba(37, 99, 235, 0.18)",
-                border: "1px solid rgba(96, 165, 250, 0.45)",
-                borderRadius: "999px",
-                padding: "10px 18px",
-                marginBottom: "35px",
-                color: "#bfdbfe",
-              }}
-            >
-              Status: {selectedModule.status}
-            </div>
-
-            <div
-              style={{
-                background: "rgba(15, 23, 42, 0.85)",
-                border: "1px solid rgba(59, 130, 246, 0.35)",
-                borderRadius: "18px",
-                padding: "30px",
-                maxWidth: "850px",
-                boxShadow: "0 0 25px rgba(37, 99, 235, 0.20)",
-                marginBottom: "30px",
-              }}
-            >
-              <h2 style={{ fontSize: "26px", marginBottom: "20px" }}>
-                Module Capabilities
-              </h2>
-
-              <ul style={{ color: "#cbd5e1", lineHeight: "2", fontSize: "18px" }}>
-                {selectedModule.points.map((point) => (
-                  <li key={point}>{point}</li>
-                ))}
-              </ul>
-            </div>
-
-            {selectedModule.key === "ai-brain" && (
-              <div
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(5, 1fr)",
+              gap: "14px",
+              marginBottom: "24px",
+            }}
+          >
+            {promptTemplates.map((template) => (
+              <button
+                key={template.title}
+                onClick={() => useTemplate(template.title, template.prompt)}
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: "1.1fr 0.9fr",
-                  gap: "24px",
-                  maxWidth: "1100px",
+                  background:
+                    selectedTemplate === template.title ? "#1d4ed8" : "#111827",
+                  color: "white",
+                  border: "1px solid #334155",
+                  borderRadius: "14px",
+                  padding: "16px",
+                  textAlign: "left",
+                  cursor: "pointer",
                 }}
               >
-                <div
-                  style={{
-                    background: "rgba(15, 23, 42, 0.9)",
-                    border: "1px solid rgba(96, 165, 250, 0.42)",
-                    borderRadius: "18px",
-                    padding: "30px",
-                    boxShadow: "0 0 30px rgba(37, 99, 235, 0.20)",
-                  }}
-                >
-                  <h2 style={{ fontSize: "28px", marginBottom: "12px" }}>
-                    Ask NEXUS
-                  </h2>
-
-                  <p
-                    style={{
-                      color: "#94a3b8",
-                      fontSize: "16px",
-                      marginBottom: "20px",
-                      lineHeight: "1.6",
-                    }}
-                  >
-                    Type any business or customer message. NEXUS will generate a
-                    dummy AI response for now.
-                  </p>
-
-                  <textarea
-                    value={aiInput}
-                    onChange={(event) => setAiInput(event.target.value)}
-                    placeholder="Example: Customer asked about price, delivery, and discount..."
-                    style={{
-                      width: "100%",
-                      minHeight: "120px",
-                      background: "#020617",
-                      color: "white",
-                      border: "1px solid #334155",
-                      borderRadius: "14px",
-                      padding: "16px",
-                      fontSize: "16px",
-                      lineHeight: "1.6",
-                      outline: "none",
-                      resize: "vertical",
-                      marginBottom: "18px",
-                    }}
-                  />
-
-                  <button
-                    onClick={generateAiResponse}
-                    style={{
-                      padding: "14px 28px",
-                      background: "#2563eb",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "12px",
-                      fontSize: "16px",
-                      cursor: "pointer",
-                      boxShadow: "0 0 20px rgba(37, 99, 235, 0.55)",
-                    }}
-                  >
-                    Generate Response
-                  </button>
-
-                  {aiResponse && (
-                    <div
-                      style={{
-                        marginTop: "24px",
-                        background: "rgba(2, 6, 23, 0.9)",
-                        border: "1px solid rgba(34, 197, 94, 0.38)",
-                        borderRadius: "16px",
-                        padding: "22px",
-                      }}
-                    >
-                      <h3 style={{ fontSize: "22px", marginBottom: "12px" }}>
-                        NEXUS Response
-                      </h3>
-
-                      <p
-                        style={{
-                          color: "#cbd5e1",
-                          lineHeight: "1.7",
-                          whiteSpace: "pre-line",
-                        }}
-                      >
-                        {aiResponse}
-                      </p>
-
-                      <div
-                        style={{
-                          display: "flex",
-                          gap: "12px",
-                          flexWrap: "wrap",
-                          marginTop: "18px",
-                          alignItems: "center",
-                        }}
-                      >
-                        <button
-                          onClick={() => void copyCurrentResponse()}
-                          style={{
-                            padding: "12px 18px",
-                            background: "#16a34a",
-                            color: "white",
-                            border: "none",
-                            borderRadius: "10px",
-                            fontSize: "15px",
-                            cursor: "pointer",
-                          }}
-                        >
-                          Copy Response
-                        </button>
-
-                        <button
-                          onClick={clearCurrentResponse}
-                          style={{
-                            padding: "12px 18px",
-                            background: "#1e293b",
-                            color: "white",
-                            border: "1px solid #334155",
-                            borderRadius: "10px",
-                            fontSize: "15px",
-                            cursor: "pointer",
-                          }}
-                        >
-                          Clear Current Response
-                        </button>
-
-                        {copyStatus && (
-                          <span
-                            style={{
-                              color: "#bbf7d0",
-                              fontSize: "14px",
-                            }}
-                          >
-                            {copyStatus}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                <div
-                  style={{
-                    background: "rgba(15, 23, 42, 0.9)",
-                    border: "1px solid rgba(34, 197, 94, 0.35)",
-                    borderRadius: "18px",
-                    padding: "30px",
-                    boxShadow: "0 0 30px rgba(34, 197, 94, 0.12)",
-                    maxHeight: "720px",
-                    overflowY: "auto",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      gap: "12px",
-                      marginBottom: "18px",
-                    }}
-                  >
-                    <div>
-                      <h2 style={{ fontSize: "26px", marginBottom: "6px" }}>
-                        Response History
-                      </h2>
-                      <p style={{ color: "#94a3b8", fontSize: "14px" }}>
-                        Latest AI outputs will appear here.
-                      </p>
-                    </div>
-
-                    {aiHistory.length > 0 && (
-                      <button
-                        onClick={() => setAiHistory([])}
-                        style={{
-                          background: "#1e293b",
-                          color: "white",
-                          border: "1px solid #334155",
-                          borderRadius: "10px",
-                          padding: "10px 12px",
-                          cursor: "pointer",
-                          fontSize: "13px",
-                        }}
-                      >
-                        Clear
-                      </button>
-                    )}
-                  </div>
-
-                  {aiHistory.length === 0 ? (
-                    <div
-                      style={{
-                        background: "rgba(2, 6, 23, 0.75)",
-                        border: "1px dashed rgba(148, 163, 184, 0.35)",
-                        borderRadius: "14px",
-                        padding: "20px",
-                        color: "#94a3b8",
-                        lineHeight: "1.6",
-                      }}
-                    >
-                      No response history yet. Generate one response to start
-                      tracking.
-                    </div>
-                  ) : (
-                    <div style={{ display: "grid", gap: "16px" }}>
-                      {aiHistory.map((item, index) => (
-                        <div
-                          key={`${item.time}-${index}`}
-                          style={{
-                            background: "rgba(2, 6, 23, 0.85)",
-                            border: "1px solid rgba(59, 130, 246, 0.28)",
-                            borderRadius: "14px",
-                            padding: "18px",
-                          }}
-                        >
-                          <p
-                            style={{
-                              color: "#93c5fd",
-                              fontSize: "13px",
-                              marginBottom: "10px",
-                            }}
-                          >
-                            #{aiHistory.length - index} • {item.time}
-                          </p>
-
-                          <h3 style={{ fontSize: "17px", marginBottom: "8px" }}>
-                            Question
-                          </h3>
-
-                          <p
-                            style={{
-                              color: "#cbd5e1",
-                              lineHeight: "1.6",
-                              marginBottom: "14px",
-                            }}
-                          >
-                            {item.question}
-                          </p>
-
-                          <h3 style={{ fontSize: "17px", marginBottom: "8px" }}>
-                            Response
-                          </h3>
-
-                          <p
-                            style={{
-                              color: "#94a3b8",
-                              lineHeight: "1.7",
-                              whiteSpace: "pre-line",
-                            }}
-                          >
-                            {item.response}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-          </>
-        ) : (
-          <>
-            <h1
-              style={{
-                fontSize: "48px",
-                marginBottom: "10px",
-                letterSpacing: "2px",
-                textShadow: "0 0 20px #60a5fa",
-              }}
-            >
-              NEXUS Dashboard
-            </h1>
-
-            <p style={{ color: "#94a3b8", fontSize: "18px", marginBottom: "30px" }}>
-              AI Business Operating System control center
-            </p>
-
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))",
-                gap: "16px",
-                marginBottom: "35px",
-              }}
-            >
-              {healthItems.map((item) => (
-                <div
-                  key={item.name}
-                  style={{
-                    background: "rgba(15, 23, 42, 0.85)",
-                    border: "1px solid rgba(59, 130, 246, 0.30)",
-                    borderRadius: "16px",
-                    padding: "20px",
-                  }}
-                >
-                  <p style={{ color: "#94a3b8", marginBottom: "8px" }}>
-                    {item.name}
-                  </p>
-                  <h3 style={{ fontSize: "24px" }}>{item.value}</h3>
-                </div>
-              ))}
-            </div>
-
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1.1fr 0.9fr",
-                gap: "24px",
-                marginBottom: "35px",
-              }}
-            >
-              <div
-                style={{
-                  background: "rgba(15, 23, 42, 0.85)",
-                  border: "1px solid rgba(59, 130, 246, 0.35)",
-                  borderRadius: "18px",
-                  padding: "28px",
-                  boxShadow: "0 0 25px rgba(37, 99, 235, 0.18)",
-                }}
-              >
-                <h2 style={{ fontSize: "26px", marginBottom: "18px" }}>
-                  Recent Activity
-                </h2>
-
-                <div style={{ display: "grid", gap: "14px" }}>
-                  {activityItems.map((item) => (
-                    <div
-                      key={item.title}
-                      style={{
-                        borderLeft: "3px solid #3b82f6",
-                        paddingLeft: "14px",
-                      }}
-                    >
-                      <h3 style={{ fontSize: "17px", marginBottom: "5px" }}>
-                        {item.title}
-                      </h3>
-                      <p
-                        style={{
-                          color: "#94a3b8",
-                          fontSize: "14px",
-                          lineHeight: "1.5",
-                        }}
-                      >
-                        {item.detail}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div
-                style={{
-                  background: "rgba(15, 23, 42, 0.85)",
-                  border: "1px solid rgba(34, 197, 94, 0.35)",
-                  borderRadius: "18px",
-                  padding: "28px",
-                  boxShadow: "0 0 25px rgba(34, 197, 94, 0.12)",
-                }}
-              >
-                <h2 style={{ fontSize: "26px", marginBottom: "16px" }}>
-                  Build Log
-                </h2>
-
-                <p
-                  style={{
-                    color: "#cbd5e1",
-                    lineHeight: "1.7",
-                    marginBottom: "18px",
-                  }}
-                >
-                  Day 3 build is active. NEXUS AI Brain now has input, dummy
-                  response generation, response history tracking, copy control,
-                  and clear response control.
+                <h3 style={{ fontSize: "16px", marginBottom: "8px" }}>
+                  {template.title}
+                </h3>
+                <p style={{ color: "#cbd5e1", fontSize: "13px" }}>
+                  {template.description}
                 </p>
+              </button>
+            ))}
+          </div>
 
-                <div
-                  style={{
-                    background: "rgba(34, 197, 94, 0.14)",
-                    border: "1px solid rgba(34, 197, 94, 0.42)",
-                    color: "#bbf7d0",
-                    borderRadius: "14px",
-                    padding: "14px",
-                    fontSize: "15px",
-                  }}
-                >
-                  Current Build Status: Stable
-                </div>
+          <p style={{ color: "#94a3b8", marginBottom: "10px" }}>
+            Selected Template: <b>{selectedTemplate}</b>
+          </p>
+
+          <textarea
+            value={aiInput}
+            onChange={(e) => setAiInput(e.target.value)}
+            placeholder="Type any business or customer message here..."
+            style={{
+              width: "100%",
+              minHeight: "140px",
+              background: "#020617",
+              color: "white",
+              border: "1px solid #334155",
+              borderRadius: "14px",
+              padding: "16px",
+              fontSize: "15px",
+              marginBottom: "16px",
+            }}
+          />
+
+          <div style={{ display: "flex", gap: "12px", marginBottom: "20px" }}>
+            <button onClick={generateResponse} style={primaryButton}>
+              Generate Response
+            </button>
+
+            <button onClick={copyResponse} style={secondaryButton}>
+              Copy Response
+            </button>
+
+            <button onClick={clearResponse} style={dangerButton}>
+              Clear Response
+            </button>
+          </div>
+
+          <div
+            style={{
+              background: "#020617",
+              border: "1px solid #334155",
+              borderRadius: "14px",
+              padding: "18px",
+              whiteSpace: "pre-wrap",
+              color: "#e5e7eb",
+              minHeight: "120px",
+            }}
+          >
+            {aiResponse || "NEXUS AI response will appear here."}
+          </div>
+        </section>
+
+        <section
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "20px",
+            marginTop: "28px",
+          }}
+        >
+          <div style={cardStyle}>
+            <h2 style={{ marginBottom: "16px" }}>Recent Activity</h2>
+            {recentActivities.map((activity) => (
+              <p key={activity} style={{ color: "#cbd5e1" }}>
+                ✅ {activity}
+              </p>
+            ))}
+          </div>
+
+          <div style={cardStyle}>
+            <h2 style={{ marginBottom: "16px" }}>Build Log</h2>
+            {buildLogs.map((log) => (
+              <p key={log} style={{ color: "#cbd5e1" }}>
+                🧱 {log}
+              </p>
+            ))}
+          </div>
+        </section>
+
+        <section style={{ ...cardStyle, marginTop: "28px" }}>
+          <h2 style={{ marginBottom: "16px" }}>Response History</h2>
+
+          {responseHistory.length === 0 ? (
+            <p style={{ color: "#94a3b8" }}>No response history yet.</p>
+          ) : (
+            responseHistory.map((item) => (
+              <div
+                key={item.id}
+                style={{
+                  border: "1px solid #334155",
+                  borderRadius: "14px",
+                  padding: "16px",
+                  marginBottom: "14px",
+                  background: "#020617",
+                }}
+              >
+                <h3 style={{ marginBottom: "8px" }}>{item.type}</h3>
+                <p style={{ color: "#94a3b8", marginBottom: "8px" }}>
+                  Input: {item.input}
+                </p>
+                <p style={{ color: "#cbd5e1", whiteSpace: "pre-wrap" }}>
+                  {item.response}
+                </p>
               </div>
-            </div>
-
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-                gap: "24px",
-              }}
-            >
-              {modules.map((module) => (
-                <button
-                  key={module.key}
-                  onClick={() => setActiveModule(module.key)}
-                  style={{
-                    textAlign: "left",
-                    background: "rgba(15, 23, 42, 0.85)",
-                    color: "white",
-                    border: "1px solid rgba(59, 130, 246, 0.35)",
-                    borderRadius: "18px",
-                    padding: "28px",
-                    boxShadow: "0 0 25px rgba(37, 99, 235, 0.20)",
-                    cursor: "pointer",
-                  }}
-                >
-                  <h2 style={{ fontSize: "24px", marginBottom: "14px" }}>
-                    {module.title}
-                  </h2>
-
-                  <p style={{ color: "#cbd5e1", lineHeight: "1.6" }}>
-                    {module.description}
-                  </p>
-                </button>
-              ))}
-            </div>
-          </>
-        )}
+            ))
+          )}
+        </section>
       </section>
     </main>
   );
 }
+
+const cardStyle = {
+  background: "#0f172a",
+  border: "1px solid #1e293b",
+  borderRadius: "18px",
+  padding: "22px",
+};
+
+const sidebarButton = {
+  background: "#111827",
+  color: "white",
+  border: "1px solid #334155",
+  borderRadius: "12px",
+  padding: "14px",
+  textAlign: "left" as const,
+  cursor: "pointer",
+};
+
+const primaryButton = {
+  background: "#2563eb",
+  color: "white",
+  border: "none",
+  borderRadius: "12px",
+  padding: "14px 20px",
+  cursor: "pointer",
+  fontWeight: "bold",
+};
+
+const secondaryButton = {
+  background: "#334155",
+  color: "white",
+  border: "none",
+  borderRadius: "12px",
+  padding: "14px 20px",
+  cursor: "pointer",
+  fontWeight: "bold",
+};
+
+const dangerButton = {
+  background: "#991b1b",
+  color: "white",
+  border: "none",
+  borderRadius: "12px",
+  padding: "14px 20px",
+  cursor: "pointer",
+  fontWeight: "bold",
+};
