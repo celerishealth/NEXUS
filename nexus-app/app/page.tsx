@@ -58,7 +58,7 @@ const modules = [
 const healthItems = [
   { name: "Frontend", value: "Online" },
   { name: "Dashboard", value: "Ready" },
-  { name: "AI Brain", value: "Foundation" },
+  { name: "AI Brain", value: "Input Ready" },
   { name: "GitHub Backup", value: "Safe" },
 ];
 
@@ -80,20 +80,35 @@ const activityItems = [
     detail: "Frontend, dashboard, AI foundation, and GitHub backup are tracked.",
   },
   {
-    title: "GitHub Backup: Safe",
-    detail: "Latest stable build is committed and pushed to main branch.",
+    title: "Day 3: AI Brain input started",
+    detail: "AI Brain now has an input box and dummy response engine.",
   },
 ];
 
 export default function Home() {
   const [isLaunched, setIsLaunched] = useState(false);
   const [activeModule, setActiveModule] = useState<ModuleKey>(null);
+  const [aiInput, setAiInput] = useState("");
+  const [aiResponse, setAiResponse] = useState("");
 
   const selectedModule = modules.find((module) => module.key === activeModule);
 
   function goHome() {
     setIsLaunched(false);
     setActiveModule(null);
+  }
+
+  function generateAiResponse() {
+    const question = aiInput.trim();
+
+    if (!question) {
+      setAiResponse("Please type a business question first.");
+      return;
+    }
+
+    setAiResponse(
+      `NEXUS AI Brain analyzed your request:\n\n"${question}"\n\nRecommended action:\n1. Capture the customer need clearly.\n2. Give a simple and professional reply.\n3. Save the lead in CRM.\n4. Trigger follow-up automation.\n\nStatus: Dummy AI response working. Real Gemini/OpenAI API will connect later.`
+    );
   }
 
   if (!isLaunched) {
@@ -290,7 +305,7 @@ export default function Home() {
                 fontSize: "13px",
               }}
             >
-              Day 2 Build
+              Day 3 Build
             </span>
           </div>
         </div>
@@ -341,6 +356,7 @@ export default function Home() {
                 padding: "30px",
                 maxWidth: "850px",
                 boxShadow: "0 0 25px rgba(37, 99, 235, 0.20)",
+                marginBottom: "30px",
               }}
             >
               <h2 style={{ fontSize: "26px", marginBottom: "20px" }}>
@@ -353,6 +369,97 @@ export default function Home() {
                 ))}
               </ul>
             </div>
+
+            {selectedModule.key === "ai-brain" && (
+              <div
+                style={{
+                  background: "rgba(15, 23, 42, 0.9)",
+                  border: "1px solid rgba(96, 165, 250, 0.42)",
+                  borderRadius: "18px",
+                  padding: "30px",
+                  maxWidth: "850px",
+                  boxShadow: "0 0 30px rgba(37, 99, 235, 0.20)",
+                }}
+              >
+                <h2 style={{ fontSize: "28px", marginBottom: "12px" }}>
+                  Ask NEXUS
+                </h2>
+
+                <p
+                  style={{
+                    color: "#94a3b8",
+                    fontSize: "16px",
+                    marginBottom: "20px",
+                    lineHeight: "1.6",
+                  }}
+                >
+                  Type any business or customer message. NEXUS will generate a
+                  dummy AI response for now.
+                </p>
+
+                <textarea
+                  value={aiInput}
+                  onChange={(event) => setAiInput(event.target.value)}
+                  placeholder="Example: Customer asked about price, delivery, and discount..."
+                  style={{
+                    width: "100%",
+                    minHeight: "120px",
+                    background: "#020617",
+                    color: "white",
+                    border: "1px solid #334155",
+                    borderRadius: "14px",
+                    padding: "16px",
+                    fontSize: "16px",
+                    lineHeight: "1.6",
+                    outline: "none",
+                    resize: "vertical",
+                    marginBottom: "18px",
+                  }}
+                />
+
+                <button
+                  onClick={generateAiResponse}
+                  style={{
+                    padding: "14px 28px",
+                    background: "#2563eb",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "12px",
+                    fontSize: "16px",
+                    cursor: "pointer",
+                    boxShadow: "0 0 20px rgba(37, 99, 235, 0.55)",
+                  }}
+                >
+                  Generate Response
+                </button>
+
+                {aiResponse && (
+                  <div
+                    style={{
+                      marginTop: "24px",
+                      background: "rgba(2, 6, 23, 0.9)",
+                      border: "1px solid rgba(34, 197, 94, 0.38)",
+                      borderRadius: "16px",
+                      padding: "22px",
+                    }}
+                  >
+                    <h3 style={{ fontSize: "22px", marginBottom: "12px" }}>
+                      NEXUS Response
+                    </h3>
+
+                    <p
+                      style={{
+                        color: "#cbd5e1",
+                        lineHeight: "1.7",
+                        whiteSpace: "pre-line",
+                      }}
+                    >
+                      {aiResponse}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
           </>
         ) : (
           <>
@@ -464,9 +571,8 @@ export default function Home() {
                     marginBottom: "18px",
                   }}
                 >
-                  Day 2 stable build is active. NEXUS now has a dashboard,
-                  sidebar navigation, module screens, system health, and backup
-                  safety.
+                  Day 3 build is active. NEXUS AI Brain now has an input box and
+                  dummy response engine. Real API integration will come later.
                 </p>
 
                 <div
