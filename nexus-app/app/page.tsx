@@ -4,6 +4,12 @@ import { useState } from "react";
 
 type ModuleKey = "ai-brain" | "whatsapp-hub" | "crm" | "automation-logs" | null;
 
+type AiHistoryItem = {
+  question: string;
+  response: string;
+  time: string;
+};
+
 const modules = [
   {
     key: "ai-brain" as const,
@@ -58,7 +64,7 @@ const modules = [
 const healthItems = [
   { name: "Frontend", value: "Online" },
   { name: "Dashboard", value: "Ready" },
-  { name: "AI Brain", value: "Input Ready" },
+  { name: "AI Brain", value: "History Ready" },
   { name: "GitHub Backup", value: "Safe" },
 ];
 
@@ -76,12 +82,12 @@ const activityItems = [
     detail: "NEXUS now has a fixed command center sidebar.",
   },
   {
-    title: "Day 2: System Health online",
-    detail: "Frontend, dashboard, AI foundation, and GitHub backup are tracked.",
-  },
-  {
     title: "Day 3: AI Brain input started",
     detail: "AI Brain now has an input box and dummy response engine.",
+  },
+  {
+    title: "Day 3: Response history added",
+    detail: "Generated AI responses are now stored in local screen history.",
   },
 ];
 
@@ -90,6 +96,7 @@ export default function Home() {
   const [activeModule, setActiveModule] = useState<ModuleKey>(null);
   const [aiInput, setAiInput] = useState("");
   const [aiResponse, setAiResponse] = useState("");
+  const [aiHistory, setAiHistory] = useState<AiHistoryItem[]>([]);
 
   const selectedModule = modules.find((module) => module.key === activeModule);
 
@@ -106,9 +113,30 @@ export default function Home() {
       return;
     }
 
-    setAiResponse(
-      `NEXUS AI Brain analyzed your request:\n\n"${question}"\n\nRecommended action:\n1. Capture the customer need clearly.\n2. Give a simple and professional reply.\n3. Save the lead in CRM.\n4. Trigger follow-up automation.\n\nStatus: Dummy AI response working. Real Gemini/OpenAI API will connect later.`
-    );
+    const responseText = `NEXUS AI Brain analyzed your request:
+
+"${question}"
+
+Recommended action:
+1. Capture the customer need clearly.
+2. Give a simple and professional reply.
+3. Save the lead in CRM.
+4. Trigger follow-up automation.
+
+Status: Dummy AI response working. Real Gemini/OpenAI API will connect later.`;
+
+    setAiResponse(responseText);
+
+    setAiHistory((currentHistory) => [
+      {
+        question,
+        response: responseText,
+        time: new Date().toLocaleTimeString(),
+      },
+      ...currentHistory,
+    ]);
+
+    setAiInput("");
   }
 
   if (!isLaunched) {
@@ -373,91 +401,215 @@ export default function Home() {
             {selectedModule.key === "ai-brain" && (
               <div
                 style={{
-                  background: "rgba(15, 23, 42, 0.9)",
-                  border: "1px solid rgba(96, 165, 250, 0.42)",
-                  borderRadius: "18px",
-                  padding: "30px",
-                  maxWidth: "850px",
-                  boxShadow: "0 0 30px rgba(37, 99, 235, 0.20)",
+                  display: "grid",
+                  gridTemplateColumns: "1.1fr 0.9fr",
+                  gap: "24px",
+                  maxWidth: "1100px",
                 }}
               >
-                <h2 style={{ fontSize: "28px", marginBottom: "12px" }}>
-                  Ask NEXUS
-                </h2>
-
-                <p
+                <div
                   style={{
-                    color: "#94a3b8",
-                    fontSize: "16px",
-                    marginBottom: "20px",
-                    lineHeight: "1.6",
+                    background: "rgba(15, 23, 42, 0.9)",
+                    border: "1px solid rgba(96, 165, 250, 0.42)",
+                    borderRadius: "18px",
+                    padding: "30px",
+                    boxShadow: "0 0 30px rgba(37, 99, 235, 0.20)",
                   }}
                 >
-                  Type any business or customer message. NEXUS will generate a
-                  dummy AI response for now.
-                </p>
+                  <h2 style={{ fontSize: "28px", marginBottom: "12px" }}>
+                    Ask NEXUS
+                  </h2>
 
-                <textarea
-                  value={aiInput}
-                  onChange={(event) => setAiInput(event.target.value)}
-                  placeholder="Example: Customer asked about price, delivery, and discount..."
-                  style={{
-                    width: "100%",
-                    minHeight: "120px",
-                    background: "#020617",
-                    color: "white",
-                    border: "1px solid #334155",
-                    borderRadius: "14px",
-                    padding: "16px",
-                    fontSize: "16px",
-                    lineHeight: "1.6",
-                    outline: "none",
-                    resize: "vertical",
-                    marginBottom: "18px",
-                  }}
-                />
-
-                <button
-                  onClick={generateAiResponse}
-                  style={{
-                    padding: "14px 28px",
-                    background: "#2563eb",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "12px",
-                    fontSize: "16px",
-                    cursor: "pointer",
-                    boxShadow: "0 0 20px rgba(37, 99, 235, 0.55)",
-                  }}
-                >
-                  Generate Response
-                </button>
-
-                {aiResponse && (
-                  <div
+                  <p
                     style={{
-                      marginTop: "24px",
-                      background: "rgba(2, 6, 23, 0.9)",
-                      border: "1px solid rgba(34, 197, 94, 0.38)",
-                      borderRadius: "16px",
-                      padding: "22px",
+                      color: "#94a3b8",
+                      fontSize: "16px",
+                      marginBottom: "20px",
+                      lineHeight: "1.6",
                     }}
                   >
-                    <h3 style={{ fontSize: "22px", marginBottom: "12px" }}>
-                      NEXUS Response
-                    </h3>
+                    Type any business or customer message. NEXUS will generate a
+                    dummy AI response for now.
+                  </p>
 
-                    <p
+                  <textarea
+                    value={aiInput}
+                    onChange={(event) => setAiInput(event.target.value)}
+                    placeholder="Example: Customer asked about price, delivery, and discount..."
+                    style={{
+                      width: "100%",
+                      minHeight: "120px",
+                      background: "#020617",
+                      color: "white",
+                      border: "1px solid #334155",
+                      borderRadius: "14px",
+                      padding: "16px",
+                      fontSize: "16px",
+                      lineHeight: "1.6",
+                      outline: "none",
+                      resize: "vertical",
+                      marginBottom: "18px",
+                    }}
+                  />
+
+                  <button
+                    onClick={generateAiResponse}
+                    style={{
+                      padding: "14px 28px",
+                      background: "#2563eb",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "12px",
+                      fontSize: "16px",
+                      cursor: "pointer",
+                      boxShadow: "0 0 20px rgba(37, 99, 235, 0.55)",
+                    }}
+                  >
+                    Generate Response
+                  </button>
+
+                  {aiResponse && (
+                    <div
                       style={{
-                        color: "#cbd5e1",
-                        lineHeight: "1.7",
-                        whiteSpace: "pre-line",
+                        marginTop: "24px",
+                        background: "rgba(2, 6, 23, 0.9)",
+                        border: "1px solid rgba(34, 197, 94, 0.38)",
+                        borderRadius: "16px",
+                        padding: "22px",
                       }}
                     >
-                      {aiResponse}
-                    </p>
+                      <h3 style={{ fontSize: "22px", marginBottom: "12px" }}>
+                        NEXUS Response
+                      </h3>
+
+                      <p
+                        style={{
+                          color: "#cbd5e1",
+                          lineHeight: "1.7",
+                          whiteSpace: "pre-line",
+                        }}
+                      >
+                        {aiResponse}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                <div
+                  style={{
+                    background: "rgba(15, 23, 42, 0.9)",
+                    border: "1px solid rgba(34, 197, 94, 0.35)",
+                    borderRadius: "18px",
+                    padding: "30px",
+                    boxShadow: "0 0 30px rgba(34, 197, 94, 0.12)",
+                    maxHeight: "720px",
+                    overflowY: "auto",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      gap: "12px",
+                      marginBottom: "18px",
+                    }}
+                  >
+                    <div>
+                      <h2 style={{ fontSize: "26px", marginBottom: "6px" }}>
+                        Response History
+                      </h2>
+                      <p style={{ color: "#94a3b8", fontSize: "14px" }}>
+                        Latest AI outputs will appear here.
+                      </p>
+                    </div>
+
+                    {aiHistory.length > 0 && (
+                      <button
+                        onClick={() => setAiHistory([])}
+                        style={{
+                          background: "#1e293b",
+                          color: "white",
+                          border: "1px solid #334155",
+                          borderRadius: "10px",
+                          padding: "10px 12px",
+                          cursor: "pointer",
+                          fontSize: "13px",
+                        }}
+                      >
+                        Clear
+                      </button>
+                    )}
                   </div>
-                )}
+
+                  {aiHistory.length === 0 ? (
+                    <div
+                      style={{
+                        background: "rgba(2, 6, 23, 0.75)",
+                        border: "1px dashed rgba(148, 163, 184, 0.35)",
+                        borderRadius: "14px",
+                        padding: "20px",
+                        color: "#94a3b8",
+                        lineHeight: "1.6",
+                      }}
+                    >
+                      No response history yet. Generate one response to start
+                      tracking.
+                    </div>
+                  ) : (
+                    <div style={{ display: "grid", gap: "16px" }}>
+                      {aiHistory.map((item, index) => (
+                        <div
+                          key={`${item.time}-${index}`}
+                          style={{
+                            background: "rgba(2, 6, 23, 0.85)",
+                            border: "1px solid rgba(59, 130, 246, 0.28)",
+                            borderRadius: "14px",
+                            padding: "18px",
+                          }}
+                        >
+                          <p
+                            style={{
+                              color: "#93c5fd",
+                              fontSize: "13px",
+                              marginBottom: "10px",
+                            }}
+                          >
+                            #{aiHistory.length - index} • {item.time}
+                          </p>
+
+                          <h3 style={{ fontSize: "17px", marginBottom: "8px" }}>
+                            Question
+                          </h3>
+
+                          <p
+                            style={{
+                              color: "#cbd5e1",
+                              lineHeight: "1.6",
+                              marginBottom: "14px",
+                            }}
+                          >
+                            {item.question}
+                          </p>
+
+                          <h3 style={{ fontSize: "17px", marginBottom: "8px" }}>
+                            Response
+                          </h3>
+
+                          <p
+                            style={{
+                              color: "#94a3b8",
+                              lineHeight: "1.7",
+                              whiteSpace: "pre-line",
+                            }}
+                          >
+                            {item.response}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </>
@@ -571,8 +723,8 @@ export default function Home() {
                     marginBottom: "18px",
                   }}
                 >
-                  Day 3 build is active. NEXUS AI Brain now has an input box and
-                  dummy response engine. Real API integration will come later.
+                  Day 3 build is active. NEXUS AI Brain now has input, dummy
+                  response generation, and response history tracking.
                 </p>
 
                 <div
