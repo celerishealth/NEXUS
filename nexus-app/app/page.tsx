@@ -64,7 +64,7 @@ const modules = [
 const healthItems = [
   { name: "Frontend", value: "Online" },
   { name: "Dashboard", value: "Ready" },
-  { name: "AI Brain", value: "History Ready" },
+  { name: "AI Brain", value: "Copy Ready" },
   { name: "GitHub Backup", value: "Safe" },
 ];
 
@@ -86,8 +86,8 @@ const activityItems = [
     detail: "AI Brain now has an input box and dummy response engine.",
   },
   {
-    title: "Day 3: Response history added",
-    detail: "Generated AI responses are now stored in local screen history.",
+    title: "Day 3: Copy and clear controls added",
+    detail: "AI responses can now be copied or cleared without deleting history.",
   },
 ];
 
@@ -96,6 +96,7 @@ export default function Home() {
   const [activeModule, setActiveModule] = useState<ModuleKey>(null);
   const [aiInput, setAiInput] = useState("");
   const [aiResponse, setAiResponse] = useState("");
+  const [copyStatus, setCopyStatus] = useState("");
   const [aiHistory, setAiHistory] = useState<AiHistoryItem[]>([]);
 
   const selectedModule = modules.find((module) => module.key === activeModule);
@@ -110,6 +111,7 @@ export default function Home() {
 
     if (!question) {
       setAiResponse("Please type a business question first.");
+      setCopyStatus("");
       return;
     }
 
@@ -126,6 +128,7 @@ Recommended action:
 Status: Dummy AI response working. Real Gemini/OpenAI API will connect later.`;
 
     setAiResponse(responseText);
+    setCopyStatus("");
 
     setAiHistory((currentHistory) => [
       {
@@ -137,6 +140,35 @@ Status: Dummy AI response working. Real Gemini/OpenAI API will connect later.`;
     ]);
 
     setAiInput("");
+  }
+
+  function clearCurrentResponse() {
+    setAiResponse("");
+    setCopyStatus("");
+  }
+
+  async function copyCurrentResponse() {
+    if (!aiResponse) {
+      setCopyStatus("No response to copy");
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(aiResponse);
+      setCopyStatus("Copied ✅");
+    } catch {
+      const textArea = document.createElement("textarea");
+      textArea.value = aiResponse;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textArea);
+      setCopyStatus("Copied ✅");
+    }
+
+    setTimeout(() => {
+      setCopyStatus("");
+    }, 2000);
   }
 
   if (!isLaunched) {
@@ -491,6 +523,57 @@ Status: Dummy AI response working. Real Gemini/OpenAI API will connect later.`;
                       >
                         {aiResponse}
                       </p>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "12px",
+                          flexWrap: "wrap",
+                          marginTop: "18px",
+                          alignItems: "center",
+                        }}
+                      >
+                        <button
+                          onClick={() => void copyCurrentResponse()}
+                          style={{
+                            padding: "12px 18px",
+                            background: "#16a34a",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "10px",
+                            fontSize: "15px",
+                            cursor: "pointer",
+                          }}
+                        >
+                          Copy Response
+                        </button>
+
+                        <button
+                          onClick={clearCurrentResponse}
+                          style={{
+                            padding: "12px 18px",
+                            background: "#1e293b",
+                            color: "white",
+                            border: "1px solid #334155",
+                            borderRadius: "10px",
+                            fontSize: "15px",
+                            cursor: "pointer",
+                          }}
+                        >
+                          Clear Current Response
+                        </button>
+
+                        {copyStatus && (
+                          <span
+                            style={{
+                              color: "#bbf7d0",
+                              fontSize: "14px",
+                            }}
+                          >
+                            {copyStatus}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -724,7 +807,8 @@ Status: Dummy AI response working. Real Gemini/OpenAI API will connect later.`;
                   }}
                 >
                   Day 3 build is active. NEXUS AI Brain now has input, dummy
-                  response generation, and response history tracking.
+                  response generation, response history tracking, copy control,
+                  and clear response control.
                 </p>
 
                 <div
