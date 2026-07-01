@@ -13,34 +13,34 @@ export default function Home() {
 
   const promptTemplates = [
     {
-      title: "Customer Reply",
-      description: "Create a polite reply for a customer question.",
+      title: "Rate & Stock Reply",
+      description: "Reply to medicine rate and stock enquiries.",
       prompt:
-        "Write a professional customer reply for this customer message. Keep it clear, polite, and helpful:",
+        "Create a professional pharma distributor reply. Customer is asking about medicine rate, stock, and delivery. If price or stock is not provided, ask for quantity and delivery location:",
     },
     {
       title: "Sales Follow-up",
-      description: "Follow up with a potential customer.",
+      description: "Follow up with a medical store or retailer.",
       prompt:
-        "Write a short and professional sales follow-up message for this customer:",
+        "Write a short pharma sales follow-up message for a medical store. Keep it polite, practical, and order-focused:",
     },
     {
       title: "Order Confirmation",
-      description: "Confirm an order with clear details.",
+      description: "Confirm medicine order details clearly.",
       prompt:
-        "Write a professional order confirmation message for this customer:",
+        "Write a professional pharma order confirmation message. Include medicine name, quantity, delivery timing, and confirmation request if details are missing:",
     },
     {
       title: "Complaint Reply",
-      description: "Handle a customer complaint politely.",
+      description: "Handle delivery, stock, or invoice complaints.",
       prompt:
-        "Write a calm and professional complaint reply for this customer issue:",
+        "Write a calm and professional complaint reply for a pharma distributor. Ask for invoice number, product name, batch number, and issue details if missing:",
     },
     {
-      title: "Business Advice",
-      description: "Give simple business advice.",
+      title: "Owner Daily Summary",
+      description: "Create a daily business summary for owner.",
       prompt:
-        "Give practical business advice for this situation. Keep it simple and action-focused:",
+        "Create a simple daily owner summary for a pharma distributor. Include enquiries, confirmed orders, follow-ups pending, complaints, and top-demand medicines:",
     },
   ];
 
@@ -94,18 +94,20 @@ Create a ready-to-send business reply for the selected template.
 Rules:
 1. Do not say "I do not have access to real-time data".
 2. Do not mention website links, placeholders, or customer service numbers unless the user provided them.
-3. If price, stock, or delivery time is not provided, politely ask for quantity and location.
-4. Keep the reply short, practical, and professional.
-5. Write like a real business owner replying to a customer.
-6. Use simple English.
-7. Do not over-explain.
+3. Do not use placeholders like [Customer Name], [Your Name], [Today's Date], [Company Name], or [Owner].
+4. Do not use markdown symbols like **, ##, bullets with stars, or code blocks.
+5. Do not add subject lines unless the user specifically asks for email format.
+6. If price, stock, or delivery time is not provided, politely ask for quantity and location.
+7. Keep the reply short, practical, and professional.
+8. Write like a real business owner replying to a customer.
+9. Use simple English or simple Hinglish based on the customer message.
+10. Generate only the final ready-to-send message.
 
-Selected template: ${selectedTemplate}
+Selected template:
+${selectedTemplate}
 
 Customer/business message:
-${aiInput}
-
-Generate only the final reply message.`,
+${aiInput}`,
         }),
       });
 
@@ -374,7 +376,7 @@ Generate only the final reply message.`,
             <h2 style={{ marginBottom: "16px" }}>Recent Activity</h2>
             {recentActivities.map((activity) => (
               <p key={activity} style={{ color: "#cbd5e1" }}>
-                ✅ {activity}
+                 {activity}
               </p>
             ))}
           </div>
@@ -383,7 +385,7 @@ Generate only the final reply message.`,
             <h2 style={{ marginBottom: "16px" }}>Build Log</h2>
             {buildLogs.map((log) => (
               <p key={log} style={{ color: "#cbd5e1" }}>
-                🧱 {log}
+                 {log}
               </p>
             ))}
           </div>
