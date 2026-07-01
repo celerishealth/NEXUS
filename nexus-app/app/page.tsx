@@ -71,37 +71,67 @@ export default function Home() {
     setAiInput(templatePrompt + "\n\n");
   }
 
-  function generateResponse() {
+  async function generateResponse() {
     if (!aiInput.trim()) {
       setAiResponse("Please enter a message first.");
       return;
     }
 
-    const response = `NEXUS AI Brain analyzed your ${selectedTemplate} request.
+    setAiResponse("NEXUS AI Brain is thinking...");
 
-Input:
+    try {
+      const apiResponse = await fetch("/api/ai", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: `You are NEXUS AI Brain, a professional AI business assistant for distributors, shops, and service businesses.
+
+Your job:
+Create a ready-to-send business reply for the selected template.
+
+Rules:
+1. Do not say "I do not have access to real-time data".
+2. Do not mention website links, placeholders, or customer service numbers unless the user provided them.
+3. If price, stock, or delivery time is not provided, politely ask for quantity and location.
+4. Keep the reply short, practical, and professional.
+5. Write like a real business owner replying to a customer.
+6. Use simple English.
+7. Do not over-explain.
+
+Selected template: ${selectedTemplate}
+
+Customer/business message:
 ${aiInput}
 
-Recommended response:
-Thank you for your message. We understand your requirement and will assist you with a clear, professional, and action-focused solution.
+Generate only the final reply message.`,
+        }),
+      });
 
-Recommended action:
-1. Capture the customer need clearly.
-2. Reply in a simple and professional tone.
-3. Save the lead or request in CRM.
-4. Trigger the next follow-up automation.`;
+      const data = await apiResponse.json();
 
-    setAiResponse(response);
+      if (!apiResponse.ok) {
+        setAiResponse(data?.error || "AI request failed.");
+        return;
+      }
 
-    setResponseHistory((prev) => [
-      {
-        id: Date.now(),
-        type: selectedTemplate,
-        input: aiInput,
-        response,
-      },
-      ...prev,
-    ]);
+      const finalResponse = data?.response || "No response generated.";
+
+      setAiResponse(finalResponse);
+
+      setResponseHistory((prev) => [
+        {
+          id: Date.now(),
+          type: selectedTemplate,
+          input: aiInput,
+          response: finalResponse,
+        },
+        ...prev,
+      ]);
+    } catch {
+      setAiResponse("Failed to connect with NEXUS AI Brain.");
+    }
   }
 
   function copyResponse() {
