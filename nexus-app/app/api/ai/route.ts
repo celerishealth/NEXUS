@@ -134,6 +134,21 @@ Confirmation Reply:
 Order details received. Please share customer name, GST number, delivery date, and payment terms. We will confirm rate, stock, and dispatch timing shortly.`;
 }
 
+function applySafetyLayer(response: string) {
+  const safetyNote = `
+
+Safety Layer:
+Draft Only Mode
+Owner Approval Required
+Do not auto-send or finalize billing without business owner review.`;
+
+  if (response.includes("Safety Layer:")) {
+    return response;
+  }
+
+  return `${response}${safetyNote}`;
+}
+
 export async function POST(request: Request) {
   let prompt = "";
 
@@ -152,7 +167,7 @@ export async function POST(request: Request) {
 
     if (!apiKey) {
       return NextResponse.json({
-        response: buildLocalFallbackResponse(prompt),
+        response: applySafetyLayer(buildLocalFallbackResponse(prompt)),
       });
     }
 
@@ -180,7 +195,7 @@ export async function POST(request: Request) {
 
       if (!geminiResponse.ok) {
         return NextResponse.json({
-          response: buildLocalFallbackResponse(prompt),
+          response: applySafetyLayer(buildLocalFallbackResponse(prompt)),
         });
       }
 
@@ -190,10 +205,10 @@ export async function POST(request: Request) {
         data?.candidates?.[0]?.content?.parts?.[0]?.text ||
         buildLocalFallbackResponse(prompt);
 
-      return NextResponse.json({ response: text });
+      return NextResponse.json({ response: applySafetyLayer(text) });
     } catch {
       return NextResponse.json({
-        response: buildLocalFallbackResponse(prompt),
+        response: applySafetyLayer(buildLocalFallbackResponse(prompt)),
       });
     }
   } catch {
@@ -203,4 +218,5 @@ export async function POST(request: Request) {
     });
   }
 }
+
 
