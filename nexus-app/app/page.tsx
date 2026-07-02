@@ -14,6 +14,7 @@ export default function Home() {
 
   const [selectedIndustryPack, setSelectedIndustryPack] = useState("Universal Business Pack");
   const [customIndustrySector, setCustomIndustrySector] = useState("");
+  const [customOwnerRule, setCustomOwnerRule] = useState("");
 
   const totalRequests = responseHistory.length;
   const pendingRequests = responseHistory.filter(
@@ -130,6 +131,46 @@ export default function Home() {
     selectedIndustryPack === "Custom Sector Pack" && customIndustrySector.trim()
       ? customIndustrySector.trim()
       : selectedIndustryPackDetails.title;
+
+  const ownerRules = [
+    {
+      title: "Pricing Rule",
+      rule: "No discount, final price, GST change, or billing commitment without owner approval.",
+      risk: "Prevents wrong pricing and margin damage.",
+    },
+    {
+      title: "Stock Rule",
+      rule: "No stock promise unless owner confirms availability.",
+      risk: "Prevents false stock commitment.",
+    },
+    {
+      title: "Payment Rule",
+      rule: "No credit, advance, refund, or payment term promise without owner approval.",
+      risk: "Prevents cash-flow and payment disputes.",
+    },
+    {
+      title: "Delivery Rule",
+      rule: "No dispatch time, delivery date, or logistics promise without owner confirmation.",
+      risk: "Prevents customer expectation damage.",
+    },
+    {
+      title: "Damage / Return Rule",
+      rule: "No refund, replacement, return, or damage claim approval without owner review.",
+      risk: "Prevents financial loss and policy misuse.",
+    },
+  ];
+
+  const activeOwnerRules =
+    customOwnerRule.trim().length > 0
+      ? [
+          ...ownerRules,
+          {
+            title: "Custom Owner Rule",
+            rule: customOwnerRule.trim(),
+            risk: "Owner-defined business protection rule.",
+          },
+        ]
+      : ownerRules;
 
   const promptTemplates = [
 {
@@ -733,6 +774,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 
