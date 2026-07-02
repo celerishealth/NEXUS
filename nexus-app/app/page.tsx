@@ -118,6 +118,9 @@ export default function Home() {
     "GitHub backup completed",
     "Production build passed",
     "Day 4 prompt templates added",
+    "Day 8 disaster recovery plan added",
+    "Day 8 safety layer v1 added",
+    "Day 8 production build passed",
   ];
 
   function useTemplate(templateTitle: string, templatePrompt: string) {
@@ -539,6 +542,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 
