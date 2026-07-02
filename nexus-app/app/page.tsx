@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 
@@ -464,10 +464,10 @@ ${aiInput}`,
         </section>
 
         <section style={{ ...cardStyle, marginTop: "28px" }}>
-          <h2 style={{ marginBottom: "16px" }}>Response History</h2>
+          <h2 style={{ marginBottom: "16px" }}>Recent AI Request Log v1</h2>
 
           {responseHistory.length === 0 ? (
-            <p style={{ color: "#94a3b8" }}>No response history yet.</p>
+            <p style={{ color: "#94a3b8" }}>No AI requests logged yet. Generate one response to create the first audit log.</p>
           ) : (
             responseHistory.map((item) => (
               <div
@@ -480,9 +480,11 @@ ${aiInput}`,
                   background: "#020617",
                 }}
               >
-                <h3 style={{ marginBottom: "8px" }}>{item.type}</h3>
+                <h3 style={{ marginBottom: "8px" }}>Request Type: {item.type}</h3>
+                    <p style={{ color: "#94a3b8", marginBottom: "8px" }}>Request ID: {item.id}</p>
+                    <p style={{ color: "#22c55e", marginBottom: "8px" }}>Status: Draft Only | Owner Approval Required</p>
                 <p style={{ color: "#94a3b8", marginBottom: "8px" }}>
-                  Input: {item.input}
+                  Customer Input: {item.input}
                 </p>
                 <p style={{ color: "#cbd5e1", whiteSpace: "pre-wrap" }}>
                   {item.response}
@@ -542,6 +544,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 
