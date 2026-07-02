@@ -12,6 +12,18 @@ export default function Home() {
     { id: number; type: string; input: string; response: string; status: string }[]
   >([]);
 
+  const totalRequests = responseHistory.length;
+  const pendingRequests = responseHistory.filter(
+    (item) => item.status === "Pending Owner Approval"
+  );
+  const approvedRequests = responseHistory.filter(
+    (item) => item.status === "Approved"
+  );
+  const rejectedRequests = responseHistory.filter(
+    (item) => item.status === "Rejected"
+  );
+  const zeroStuckStatus =
+    pendingRequests.length === 0 ? "Smooth" : "Review Needed";
   const promptTemplates = [
 {
   title: "Universal Smart Order Parser",
@@ -614,6 +626,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 
