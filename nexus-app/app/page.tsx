@@ -12,6 +12,9 @@ export default function Home() {
     { id: number; type: string; input: string; response: string; status: string }[]
   >([]);
 
+  const [selectedIndustryPack, setSelectedIndustryPack] = useState("Universal Business Pack");
+  const [customIndustrySector, setCustomIndustrySector] = useState("");
+
   const totalRequests = responseHistory.length;
   const pendingRequests = responseHistory.filter(
     (item) => item.status === "Pending Owner Approval"
@@ -24,6 +27,110 @@ export default function Home() {
   );
   const zeroStuckStatus =
     pendingRequests.length === 0 ? "Smooth" : "Review Needed";
+  const industryPacks = [
+    {
+      title: "Universal Business Pack",
+      focus:
+        "Default pack for any business sector, from small shop to global enterprise.",
+      rules: [
+        "Understand customer request before replying.",
+        "Ask for missing details instead of guessing.",
+        "Keep every output draft-only until owner approval.",
+        "Never promise price, stock, delivery, refund, appointment, or final billing without owner review.",
+      ],
+    },
+    {
+      title: "Custom Sector Pack",
+      focus:
+        "Owner-defined sector pack for any industry not listed yet.",
+      rules: [
+        "Use owner-provided sector name as the business context.",
+        "Capture business-specific fields before final action.",
+        "Treat unknown sectors safely through Universal Business rules.",
+        "No sector is rejected just because it is not prelisted.",
+      ],
+    },
+    {
+      title: "Pharma Pack",
+      focus:
+        "Medicine orders, rate and stock replies, billing safety, dispatch timing, and owner review.",
+      rules: [
+        "Confirm medicine name, strength, quantity, stock, rate, GST, payment terms, and dispatch timing.",
+        "Never promise stock or final billing without owner confirmation.",
+        "Keep pharma output draft-only and owner-approved.",
+      ],
+    },
+    {
+      title: "Ecommerce Pack",
+      focus:
+        "Product enquiries, order support, delivery updates, returns, and customer follow-up.",
+      rules: [
+        "Confirm product, quantity, variant, address, payment status, and delivery expectation.",
+        "Do not promise refund, replacement, or delivery date without owner confirmation.",
+        "Keep customer support polite, short, and order-focused.",
+      ],
+    },
+    {
+      title: "Real Estate Pack",
+      focus:
+        "Property leads, location, budget, site visit, buyer qualification, and follow-up.",
+      rules: [
+        "Capture customer name, phone, location, budget, property type, and visit timing.",
+        "Do not promise availability, price, or legal status without owner confirmation.",
+        "Move every serious lead toward owner-reviewed follow-up.",
+      ],
+    },
+    {
+      title: "Service Business Pack",
+      focus:
+        "Appointments, service enquiries, follow-up, quotation draft, and customer scheduling.",
+      rules: [
+        "Confirm service type, customer name, location, preferred time, urgency, and contact details.",
+        "Do not confirm appointment, price, or technician availability without owner review.",
+        "Keep every response practical, safe, and next-action focused.",
+      ],
+    },
+  ];
+
+  const universalSectorCoverage = [
+    "Retail",
+    "Wholesale",
+    "Distribution",
+    "Pharma",
+    "Healthcare",
+    "Clinic",
+    "Diagnostic",
+    "Ecommerce",
+    "Restaurant",
+    "Hotel",
+    "Real Estate",
+    "Education",
+    "Manufacturing",
+    "Logistics",
+    "Finance",
+    "Legal",
+    "Jewellery",
+    "Salon",
+    "Travel",
+    "Construction",
+    "Automobile",
+    "Agriculture",
+    "Agency",
+    "SaaS",
+    "Local Shop",
+    "Enterprise",
+    "Any Custom Sector",
+  ];
+
+  const selectedIndustryPackDetails =
+    industryPacks.find((pack) => pack.title === selectedIndustryPack) ||
+    industryPacks[0];
+
+  const activeIndustryName =
+    selectedIndustryPack === "Custom Sector Pack" && customIndustrySector.trim()
+      ? customIndustrySector.trim()
+      : selectedIndustryPackDetails.title;
+
   const promptTemplates = [
 {
   title: "Universal Smart Order Parser",
@@ -626,6 +733,9 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
+
+
 
 
 
