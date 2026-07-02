@@ -1,4 +1,4 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 function getCustomerMessage(prompt: string) {
   const marker = "Customer/business message:";
@@ -54,86 +54,86 @@ function parseOrderLine(line: string) {
 }
 
 function buildLocalFallbackResponse(prompt: string) {
-  const customerMessage = getCustomerMessage(prompt);
-  const lines = customerMessage
-    .split("\n")
-    .map((line) => line.trim())
-    .filter(Boolean);
-
-  const orderItems = lines
-    .map(parseOrderLine)
-    .filter(Boolean) as { item: string; quantity: string; unit: string }[];
-
-  const deliveryLine = lines.find((line) =>
-    line.toLowerCase().startsWith("delivery")
-  );
-
-  const deliveryLocation = deliveryLine
-    ? deliveryLine.replace(/delivery/i, "").trim() || "Not provided"
-    : "Not provided";
+  const customerMessage = prompt || "";
+  const lowerMessage = customerMessage.toLowerCase();
 
   const looksPharma =
-    customerMessage.toLowerCase().includes("pan 40") ||
-    customerMessage.toLowerCase().includes("pcm") ||
-    customerMessage.toLowerCase().includes("cetrizine") ||
-    customerMessage.toLowerCase().includes("cetirizine") ||
-    customerMessage.toLowerCase().includes("mg");
+    lowerMessage.includes("medicine") ||
+    lowerMessage.includes("tablet") ||
+    lowerMessage.includes("capsule") ||
+    lowerMessage.includes("syrup") ||
+    lowerMessage.includes("pharma") ||
+    lowerMessage.includes("chemist") ||
+    lowerMessage.includes("paracetamol") ||
+    lowerMessage.includes("amoxicillin") ||
+    lowerMessage.includes("cetirizine") ||
+    lowerMessage.includes("mg");
 
   const detectedSector = looksPharma
     ? "Pharma Distribution"
     : "General Business";
 
+  const possibleOrderLines = customerMessage
+    .split(/\n|,|;/)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0)
+    .filter((line) => /\d/.test(line))
+    .slice(0, 10);
+
   const orderSummary =
-    orderItems.length > 0
-      ? orderItems
-          .map(
-            (item, index) =>
-              `${index + 1}. ${item.item} - ${item.quantity} ${item.unit}`
-          )
+    possibleOrderLines.length > 0
+      ? possibleOrderLines
+          .map((line, index) => `${index + 1}. ${line}`)
           .join("\n")
-      : "No clear order items detected. Please ask customer for item name, quantity, and unit.";
+      : "No clear order items detected. Ask the customer for item name, quantity, and unit.";
 
   const billDraft =
-    orderItems.length > 0
-      ? orderItems
-          .map(
-            (item) =>
-              `Item: ${item.item}\nQuantity: ${item.quantity}\nUnit: ${item.unit}\nRate Status: Rate confirmation pending\nStock Status: Stock confirmation pending\nAmount Status: Amount not calculated until rate is confirmed`
-          )
-          .join("\n\n")
-      : "Bill draft pending until clear item and quantity are received.";
+    possibleOrderLines.length > 0
+      ? possibleOrderLines
+          .map((line, index) => `${index + 1}. ${line} - rate and stock must be confirmed by owner`)
+          .join("\n")
+      : "No bill draft created because item, quantity, rate, and stock details are not fully confirmed.";
 
-  return `NEXUS Smart Parser Response
-Order processed successfully through NEXUS Continuity Engine.
+  return `
+Local Fallback Engine v1:
+AI connection is unavailable, but NEXUS did not stop.
+
+Fallback Status:
+- Zero Stop: Active
+- Zero Damage: Active
+- Draft Only Mode: Active
+- Owner Approval Required: Active
+- No auto-send
+- No final billing without owner review
 
 Detected Sector:
 ${detectedSector}
 
-Order Summary:
+Customer Message:
+${customerMessage || "No customer message found."}
+
+Safe Order Summary:
 ${orderSummary}
 
-Delivery Location:
-${deliveryLocation}
-
-Missing Details:
+Missing Details To Confirm:
 - Customer name
-- Billing GST number
-- Delivery date confirmation
-- Rate confirmation
-- Stock confirmation
+- GST number if billing requires GST
+- Final rates and discounts
+- Stock availability
+- Delivery date
 - Payment terms
 - Dispatch timing
 
 Bill Draft:
 ${billDraft}
 
-Next Action:
-Confirm customer name, GST number, rates, stock availability, payment terms, and dispatch timing before final billing.
+Safe Owner Note:
+This fallback response was generated locally because the AI connection failed or returned an unsafe/empty result. Treat this as a draft only. Do not send, bill, dispatch, or promise availability until the owner reviews and confirms all details.
 
-Confirmation Reply:
-Order details received. Please share customer name, GST number, delivery date, and payment terms. We will confirm rate, stock, and dispatch timing shortly.`;
+Suggested Customer Reply:
+Order details received. Please share customer name, GST number if required, delivery date, and payment terms. We will confirm final rate, stock, and dispatch timing after owner review.
+`.trim();
 }
-
 function applySafetyLayer(response: string) {
   const safetyNote = `
 
