@@ -299,7 +299,20 @@ export default function Home() {
     setAiResponse("NEXUS AI Brain is thinking...");
 
     try {
-      const apiResponse = await fetch("/api/ai", {
+      const ownerRulesContext = activeOwnerRules
+      .map(
+        (rule) =>
+          `${rule.title}: ${rule.rule} Protection: ${rule.risk}`
+      )
+      .join("\n");
+
+    const industryContext = `
+Active Industry Pack: ${selectedIndustryPack}
+Active Sector: ${activeIndustryName}
+Pack Purpose: ${selectedIndustryPackDetails.focus}
+Pack Protection Rules: ${selectedIndustryPackDetails.rules.join(", ")}
+`;
+    const apiResponse = await fetch("/api/ai", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -774,6 +787,8 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
+
 
 
 
