@@ -31,3 +31,38 @@ Security:
 
 Build verification:
 - npm run build passed successfully.
+
+---
+
+## Day 10 - Owner Approval Queue v1
+
+Status: Completed
+
+Completed work:
+- Upgraded Recent AI Request Log into Owner Approval Queue v1.
+- Added status field to every AI request log.
+- New AI responses now enter queue as Pending Owner Approval.
+- Added Approve action for business owner review.
+- Added Reject action for unsafe or incorrect drafts.
+- Added dynamic status colors:
+  - Pending Owner Approval
+  - Approved
+  - Rejected
+- Confirmed AI response remains draft-first and does not become final automatically.
+- Production build passed.
+
+NEXUS principles protected:
+- Owner Approval
+- Safety Layer
+- Draft Only Mode
+- Zero Damage
+- Audit Logs
+- No auto-send
+- No final billing without owner review
+
+Security:
+- .env.local remains local only.
+- GEMINI_API_KEY must never be uploaded to GitHub.
+
+Build verification:
+- npm run build passed successfully.

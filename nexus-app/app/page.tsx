@@ -9,7 +9,7 @@ export default function Home() {
   const [selectedTemplate, setSelectedTemplate] = useState("Custom Prompt");
   const [selectedTemplatePrompt, setSelectedTemplatePrompt] = useState("");
   const [responseHistory, setResponseHistory] = useState<
-    { id: number; type: string; input: string; response: string }[]
+    { id: number; type: string; input: string; response: string; status: string }[]
   >([]);
 
   const promptTemplates = [
@@ -190,12 +190,29 @@ ${aiInput}`,
           type: selectedTemplate,
           input: aiInput,
           response: finalResponse,
+            status: "Pending Owner Approval",
         },
         ...prev,
       ]);
     } catch {
       setAiResponse("Failed to connect with NEXUS AI Brain.");
     }
+  }
+
+  function approveRequest(requestId: number) {
+    setResponseHistory((prev) =>
+      prev.map((item) =>
+        item.id === requestId ? { ...item, status: "Approved" } : item
+      )
+    );
+  }
+
+  function rejectRequest(requestId: number) {
+    setResponseHistory((prev) =>
+      prev.map((item) =>
+        item.id === requestId ? { ...item, status: "Rejected" } : item
+      )
+    );
   }
 
   function copyResponse() {
@@ -482,7 +499,60 @@ ${aiInput}`,
               >
                 <h3 style={{ marginBottom: "8px" }}>Request Type: {item.type}</h3>
                     <p style={{ color: "#94a3b8", marginBottom: "8px" }}>Request ID: {item.id}</p>
-                    <p style={{ color: "#22c55e", marginBottom: "8px" }}>Status: Draft Only | Owner Approval Required</p>
+                    <p
+                    style={{
+                      color:
+                        item.status === "Approved"
+                          ? "#22c55e"
+                          : item.status === "Rejected"
+                            ? "#ef4444"
+                            : "#facc15",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    Status: {item.status}
+                  </p>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "10px",
+                      flexWrap: "wrap",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    <button
+                      onClick={() => approveRequest(item.id)}
+                      disabled={item.status === "Approved"}
+                      style={{
+                        background: "#14532d",
+                        color: "#dcfce7",
+                        border: "1px solid #22c55e",
+                        borderRadius: "10px",
+                        padding: "8px 12px",
+                        cursor: "pointer",
+                        opacity: item.status === "Approved" ? 0.6 : 1,
+                      }}
+                    >
+                      Approve
+                    </button>
+
+                    <button
+                      onClick={() => rejectRequest(item.id)}
+                      disabled={item.status === "Rejected"}
+                      style={{
+                        background: "#450a0a",
+                        color: "#fee2e2",
+                        border: "1px solid #ef4444",
+                        borderRadius: "10px",
+                        padding: "8px 12px",
+                        cursor: "pointer",
+                        opacity: item.status === "Rejected" ? 0.6 : 1,
+                      }}
+                    >
+                      Reject
+                    </button>
+                  </div>
                 <p style={{ color: "#94a3b8", marginBottom: "8px" }}>
                   Customer Input: {item.input}
                 </p>
@@ -544,6 +614,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 
