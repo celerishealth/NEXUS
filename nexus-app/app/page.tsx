@@ -448,6 +448,16 @@ ${aiInput}`,
               </p>
             ))}
           </div>
+        <div style={cardStyle}>
+          <h2 style={{ marginBottom: "16px" }}>Safety Layer v1</h2>
+          <p style={{ color: "#22c55e", fontWeight: 700 }}>Safe Mode: Active</p>
+          <p style={{ color: "#cbd5e1" }}>Response Mode: Draft Only</p>
+          <p style={{ color: "#cbd5e1" }}>Owner Approval: Required</p>
+          <p style={{ color: "#cbd5e1" }}>Raw AI Errors: Hidden</p>
+          <p style={{ color: "#cbd5e1" }}>Fallback Engine: Active</p>
+          <p style={{ color: "#cbd5e1" }}>Business Damage Protection: Enabled</p>
+        </div>
+
         </section>
 
         <section style={{ ...cardStyle, marginTop: "28px" }}>
@@ -529,6 +539,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 
