@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 
@@ -7,11 +7,65 @@ export default function Home() {
   const [aiInput, setAiInput] = useState("");
   const [aiResponse, setAiResponse] = useState("");
   const [selectedTemplate, setSelectedTemplate] = useState("Custom Prompt");
+  const [selectedTemplatePrompt, setSelectedTemplatePrompt] = useState("");
   const [responseHistory, setResponseHistory] = useState<
     { id: number; type: string; input: string; response: string }[]
   >([]);
 
   const promptTemplates = [
+{
+  title: "Universal Smart Order Parser",
+  description: "Parse customer orders from any business sector into order summary, missing details, bill draft, and confirmation reply.",
+  prompt:
+    "You are NEXUS Universal Smart Order Parser.\n\n" +
+    "NEXUS is an AI Business Closing, Order, Billing, Follow-up, and Customer Support Operating System.\n\n" +
+    "Your job is to read raw customer messages from WhatsApp, Instagram, website chat, email, or call notes and convert them into clean business-ready order intelligence.\n\n" +
+    "Core Rules:\n" +
+    "1. First identify the business sector from the message when possible.\n" +
+    "2. Supported sectors include pharma distribution, e-commerce, retail, wholesale, real estate, clinic, diagnostic center, restaurant, service business, education, logistics, and custom business.\n" +
+    "3. Parse customer demand clearly.\n" +
+    "4. Extract product or service name, quantity, unit, size, variant, delivery location, customer details, payment details, and timeline if provided.\n" +
+    "5. Find missing details required to complete and close the order.\n" +
+    "5A. For pharma, wholesale, retail, and B2B orders, always check customer name, billing GST number, delivery date confirmation, rate confirmation, stock confirmation, payment terms, and dispatch timing.\n" +
+    "6. Create a clean bill draft without inventing price, GST, discount, stock, availability, or delivery charge.\n" +
+    "7. Create the next action for the business owner or sales team.\n" +
+    "8. Create a short confirmation reply ready to send to the customer.\n" +
+    "9. Use professional simple Hinglish unless the customer message is fully English.\n" +
+    "10. Do not use markdown stars.\n" +
+    "11. Do not add subject line unless asked.\n" +
+    "12. Do not use placeholders like [Name] or [Company].\n\n" +
+    "Pharma Mode Rules:\n" +
+    "If the message is a pharma order, understand short medicine names and common pharma abbreviations.\n" +
+    "Example: Pan 40 means Pantoprazole 40mg, PCM 650 means Paracetamol 650mg, Cetrizine means Cetirizine.\n" +
+    "Identify units like box, strip, bottle, vial, ampoule, pieces.\n\n" +
+    "Output format:\n\n" +
+    "Detected Sector:\n" +
+    "Mention sector name\n\n" +
+    "Order Summary:\n" +
+    "1. Product or service name - quantity unit\n\n" +
+    "Delivery Location:\n" +
+    "Mention location or say Not provided\n\n" +
+    "Missing Details:\n" +
+    "- Customer name if not provided\n" +
+    "- Billing GST number if B2B billing is needed\n" +
+    "- Delivery date confirmation if not provided\n" +
+    "- Rate confirmation if rate is not provided\n" +
+    "- Stock confirmation if stock is not provided\n" +
+    "- Payment terms if not provided\n" +
+    "- Dispatch timing if not provided\n\n" +
+    "Bill Draft:\n" +
+    "For each item, use this clean format:\n" +
+    "Item: product or service name\n" +
+    "Quantity: quantity\n" +
+    "Unit: unit\n" +
+    "Rate Status: Rate confirmation pending\n" +
+    "Stock Status: Stock confirmation pending\n" +
+    "Amount Status: Amount not calculated until rate is confirmed\n\n" +
+    "Next Action:\n" +
+    "Mention the exact next action needed to close or process the order.\n\n" +
+    "Confirmation Reply:\n" +
+    "Write a short professional ready-to-send customer reply.",
+},
     {
       title: "Rate & Stock Reply",
       description: "Reply to medicine rate and stock enquiries.",
@@ -68,7 +122,9 @@ export default function Home() {
 
   function useTemplate(templateTitle: string, templatePrompt: string) {
     setSelectedTemplate(templateTitle);
-    setAiInput(templatePrompt + "\n\n");
+    setSelectedTemplatePrompt(templatePrompt);
+    setAiInput("");
+    setAiResponse("");
   }
 
   async function generateResponse() {
@@ -105,6 +161,9 @@ Rules:
 
 Selected template:
 ${selectedTemplate}
+
+Template instructions:
+${selectedTemplatePrompt || "Use general business assistant rules."}
 
 Customer/business message:
 ${aiInput}`,
@@ -470,3 +529,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
+
+
+
