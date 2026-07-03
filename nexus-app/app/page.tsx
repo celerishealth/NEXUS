@@ -310,6 +310,7 @@ export default function Home() {
   ];
 
   const buildLogs = [
+    "Day 63 backend owner approval policy v1 added",
     "Day 62 backend risk classifier v1 added",
     "Day 61 backend guardrail registry v1 added",
     "Day 60 backend safety contract v1 added",
@@ -2049,6 +2050,117 @@ ${aiInput}`,
 
 
 
+
+      <div style={cardStyle}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "14px",
+          alignItems: "flex-start",
+          marginBottom: "16px",
+          flexWrap: "wrap",
+        }}>
+          <div>
+            <p style={{
+              margin: "0 0 8px",
+              color: "#60a5fa",
+              fontSize: "12px",
+              fontWeight: 900,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}>
+              Backend Owner Approval Policy v1
+            </p>
+            <h2 style={{ margin: 0 }}>Backend Owner Approval Policy</h2>
+            <p style={{
+              margin: "10px 0 0",
+              color: "#cbd5e1",
+              maxWidth: "820px",
+              lineHeight: 1.65,
+            }}>
+              NEXUS backend owner approval policy decides when risk must be held for owner review:
+              high-risk and medium-risk contexts stay behind the owner gate, while low-risk context
+              remains read-only until production execution is built.
+            </p>
+          </div>
+
+          <div style={{
+            border: "1px solid rgba(96, 165, 250, 0.38)",
+            borderRadius: "999px",
+            padding: "10px 14px",
+            color: "#dbeafe",
+            background: "rgba(30, 64, 175, 0.26)",
+            fontWeight: 900,
+            fontSize: "13px",
+            whiteSpace: "nowrap",
+          }}>
+            Policy evaluation only
+          </div>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: "10px",
+        }}>
+          {[
+            ["High Risk", "Owner approval required before any risky movement.", "Queue for owner review"],
+            ["Medium Risk", "Owner review required before execution.", "Review before execution"],
+            ["Low Risk", "Allowed only as read-only review until execution layer exists.", "Read-only review"],
+            ["Unknown Risk", "Unknown risk level is blocked by default.", "Owner review required"],
+            ["Owner Gate", "No risky action moves without owner visibility.", "No hidden execution"],
+            ["Execution Lock", "Policy never approves, rejects, sends, pays, writes, or executes.", "Safe route only"],
+          ].map(([policy, meaning, action]) => (
+            <div key={policy} style={{
+              border: "1px solid rgba(148, 163, 184, 0.18)",
+              borderRadius: "16px",
+              padding: "14px",
+              background: "linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(30, 64, 175, 0.22))",
+              boxShadow: "0 14px 32px rgba(2, 6, 23, 0.2)",
+            }}>
+              <p style={{
+                margin: "0 0 8px",
+                color: "#bfdbfe",
+                fontSize: "12px",
+                fontWeight: 900,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}>
+                {policy}
+              </p>
+              <p style={{
+                margin: "0 0 10px",
+                color: "#cbd5e1",
+                lineHeight: 1.55,
+                fontSize: "13px",
+              }}>
+                {meaning}
+              </p>
+              <div style={{
+                border: "1px solid rgba(34, 197, 94, 0.28)",
+                borderRadius: "999px",
+                padding: "8px 10px",
+                color: "#bbf7d0",
+                background: "rgba(20, 83, 45, 0.22)",
+                fontSize: "12px",
+                fontWeight: 900,
+              }}>
+                Action: {action}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p style={{
+          margin: "14px 0 0",
+          color: "#cbd5e1",
+          fontSize: "12px",
+          lineHeight: 1.6,
+        }}>
+          Backend owner policy route added at /api/nexus/owner-policy. It is read-only and does not approve,
+          reject, send messages, write customer data, change payment state, or execute risky actions.
+        </p>
+      </div>
       <div style={cardStyle}>
         <div style={{
           display: "flex",
