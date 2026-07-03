@@ -578,23 +578,23 @@ ${aiInput}`,
         </p>
 
         <nav style={{ display: "grid", gap: "14px" }}>
-          <button style={sidebarButton}>Dashboard</button>
-          <button style={sidebarButton}>AI Brain</button>
-          <button style={sidebarButton}>Templates</button>
-          <button style={sidebarButton}>Customers</button>
-          <button style={sidebarButton}>Orders</button>
-          <button style={sidebarButton}>Automation</button>
-          <button style={sidebarButton}>Settings</button>
+          <button type="button" style={sidebarButton} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>Dashboard</button>
+          <button type="button" style={sidebarButton} onClick={() => window.scrollTo({ top: 260, behavior: "smooth" })}>AI Brain</button>
+          <button type="button" style={sidebarButton} onClick={() => window.scrollTo({ top: 520, behavior: "smooth" })}>Templates</button>
+          <button type="button" style={sidebarButton} onClick={() => window.scrollTo({ top: 1100, behavior: "smooth" })}>Customers</button>
+          <button type="button" style={sidebarButton} onClick={() => window.scrollTo({ top: 1450, behavior: "smooth" })}>Orders</button>
+          <button type="button" style={sidebarButton} onClick={() => window.scrollTo({ top: 1900, behavior: "smooth" })}>Automation</button>
+          <button type="button" style={sidebarButton} onClick={() => window.scrollTo({ top: 2400, behavior: "smooth" })}>Settings</button>
         </nav>
       </aside>
 
       <section style={{ flex: 1, padding: "32px", overflow: "auto" }}>
         <header style={{ marginBottom: "28px" }}>
           <h2 style={{ fontSize: "36px", marginBottom: "8px" }}>
-            NEXUS Dashboard
+            NEXUS Safe Demo Mode
           </h2>
           <p style={{ color: "#94a3b8" }}>
-            Day 4 goal: AI Brain Prompt Templates
+            AI Business Operating System Demo
           </p>
         </header>
 
