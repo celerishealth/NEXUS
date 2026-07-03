@@ -974,6 +974,35 @@ ${aiInput}`,
                   <div
                     style={{
                       background: "#020617",
+                      border: "1px solid #38bdf8",
+                      borderRadius: "12px",
+                      padding: "12px",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    <p style={{ color: "#f8fafc", fontWeight: 700, marginBottom: "8px" }}>
+                      Demo Launch Checklist v1
+                    </p>
+                    <ul style={{ color: "#cbd5e1", paddingLeft: "18px", margin: 0 }}>
+                      <li>Demo mode is safe and ready for client explanation.</li>
+                      <li>No real business execution is triggered during demo.</li>
+                      <li>AI request flow is visible.</li>
+                      <li>Owner Approval is visible.</li>
+                      <li>Safety Layer is visible.</li>
+                      <li>Audit Logs are visible.</li>
+                      <li>Customer Memory is visible.</li>
+                      <li>Recovery and Fallback readiness are visible.</li>
+                      <li>Subscription Access Lock readiness is visible.</li>
+                      <li>Founder pitch is ready for client conversation.</li>
+                      <li>Phone/public link deployment is the next launch step.</li>
+                    </ul>
+                    <p style={{ color: "#94a3b8", fontSize: "12px", marginTop: "10px" }}>
+                      UI-only demo launch checklist. It does not deploy the app, execute actions, approve routes, reject routes, process payments, block users, or change backend logic.
+                    </p>
+                  </div>
+                  <div
+                    style={{
+                      background: "#020617",
                       border: "1px solid #eab308",
                       borderRadius: "12px",
                       padding: "12px",
