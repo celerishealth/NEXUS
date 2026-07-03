@@ -844,6 +844,12 @@ ${aiInput}`,
                     </button>
                   </div>
                 <p style={{ color: "#94a3b8", marginBottom: "8px" }}>
+                  <p style={{ color: "#f8fafc", fontWeight: 700, marginBottom: "8px" }}>
+                    Customer Memory Mini v1
+                  </p>
+                  <p style={{ color: "#94a3b8", fontSize: "12px", marginBottom: "10px" }}>
+                    Recent customer request and AI response memory for owner context.
+                  </p>
                   Customer Input: {item.input}
                 </p>
                 <p style={{ color: "#cbd5e1", whiteSpace: "pre-wrap" }}>

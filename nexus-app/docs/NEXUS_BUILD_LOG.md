@@ -516,3 +516,20 @@ Build:
 - Strengthens Zero Damage.
 - Improves owner review discipline.
 - Keeps NEXUS as AI Business Operating System, not chatbot/CRM/ERP clone.
+
+## Day 28: Customer Memory Mini v1
+
+### Completed
+- Added Customer Memory Mini v1 inside Recent Activities memory flow.
+- Owner can now see recent customer request and AI response memory context.
+- Uses existing response history fields: customer input and AI response.
+- UI-only memory preview.
+- No risky execution behavior changed.
+- No approve/reject logic changed.
+- No backend execution logic changed.
+
+### Vision Alignment
+- Strengthens Customer Memory.
+- Strengthens Owner Approval context.
+- Strengthens Zero Damage review.
+- Keeps NEXUS as AI Business Operating System, not chatbot/CRM/ERP clone.
