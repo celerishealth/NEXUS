@@ -310,6 +310,7 @@ export default function Home() {
   ];
 
   const buildLogs = [
+    "Day 66 backend audit redaction policy v1 added",
     "Day 65 backend audit event validator v1 added",
     "Day 64 backend audit event contract v1 added",
     "Day 63 backend owner approval policy v1 added",
@@ -2055,6 +2056,116 @@ ${aiInput}`,
 
 
 
+
+      <div style={cardStyle}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "14px",
+          alignItems: "flex-start",
+          marginBottom: "16px",
+          flexWrap: "wrap",
+        }}>
+          <div>
+            <p style={{
+              margin: "0 0 8px",
+              color: "#f472b6",
+              fontSize: "12px",
+              fontWeight: 900,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}>
+              Backend Audit Redaction Policy v1
+            </p>
+            <h2 style={{ margin: 0 }}>Backend Audit Redaction Policy</h2>
+            <p style={{
+              margin: "10px 0 0",
+              color: "#cbd5e1",
+              maxWidth: "820px",
+              lineHeight: 1.65,
+            }}>
+              NEXUS backend audit redaction policy protects future audit views from exposing sensitive
+              customer details while keeping risk, owner decision, guardrail proof, and recovery context visible.
+            </p>
+          </div>
+
+          <div style={{
+            border: "1px solid rgba(244, 114, 182, 0.38)",
+            borderRadius: "999px",
+            padding: "10px 14px",
+            color: "#fce7f3",
+            background: "rgba(131, 24, 67, 0.26)",
+            fontWeight: 900,
+            fontSize: "13px",
+            whiteSpace: "nowrap",
+          }}>
+            Redaction preview only
+          </div>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: "10px",
+        }}>
+          {[
+            ["Phone Redaction", "Future audit views should not expose full phone numbers unnecessarily.", "Phone protected"],
+            ["Email Redaction", "Future audit views should not expose full email addresses unnecessarily.", "Email protected"],
+            ["Payment Redaction", "Future audit views protect payment references and money-sensitive values.", "Money protected"],
+            ["Address Redaction", "Future audit views avoid exposing full delivery address details.", "Location protected"],
+            ["Tenant Scope", "Redaction must never mix audit context across businesses.", "Tenant boundary"],
+            ["Decision Proof", "Redaction protects sensitive data without hiding owner decision proof.", "Proof preserved"],
+          ].map(([rule, purpose, lock]) => (
+            <div key={rule} style={{
+              border: "1px solid rgba(148, 163, 184, 0.18)",
+              borderRadius: "16px",
+              padding: "14px",
+              background: "linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(131, 24, 67, 0.22))",
+              boxShadow: "0 14px 32px rgba(2, 6, 23, 0.2)",
+            }}>
+              <p style={{
+                margin: "0 0 8px",
+                color: "#fbcfe8",
+                fontSize: "12px",
+                fontWeight: 900,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}>
+                {rule}
+              </p>
+              <p style={{
+                margin: "0 0 10px",
+                color: "#cbd5e1",
+                lineHeight: 1.55,
+                fontSize: "13px",
+              }}>
+                {purpose}
+              </p>
+              <div style={{
+                border: "1px solid rgba(34, 197, 94, 0.28)",
+                borderRadius: "999px",
+                padding: "8px 10px",
+                color: "#bbf7d0",
+                background: "rgba(20, 83, 45, 0.22)",
+                fontSize: "12px",
+                fontWeight: 900,
+              }}>
+                Lock: {lock}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p style={{
+          margin: "14px 0 0",
+          color: "#cbd5e1",
+          fontSize: "12px",
+          lineHeight: 1.6,
+        }}>
+          Backend audit redaction route added at /api/nexus/audit-redaction. It is read-only and does not create records,
+          approve, reject, send messages, write customer data, change payment state, or execute risky actions.
+        </p>
+      </div>
       <div style={cardStyle}>
         <div style={{
           display: "flex",
