@@ -310,6 +310,7 @@ export default function Home() {
   ];
 
   const buildLogs = [
+    "Day 55 competitor weakness matrix v1 added",
     "Day 54 competitor attack map v1 added",
     "Day 53 customer memory proof panel v1 added",
     "Day 52 audit chain integrity panel v1 added",
@@ -1584,6 +1585,117 @@ ${aiInput}`,
           lineHeight: 1.6,
         }}>
           UI-only competitor attack map. It does not call external services, approve, reject,
+          execute, change payment state, or modify risky route behavior.
+        </p>
+      </div>
+
+      <div style={cardStyle}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "14px",
+          alignItems: "flex-start",
+          marginBottom: "16px",
+          flexWrap: "wrap",
+        }}>
+          <div>
+            <p style={{
+              margin: "0 0 8px",
+              color: "#fb7185",
+              fontSize: "12px",
+              fontWeight: 900,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}>
+              Competitor Weakness Matrix v1
+            </p>
+            <h2 style={{ margin: 0 }}>Competitor Weakness Matrix</h2>
+            <p style={{
+              margin: "10px 0 0",
+              color: "#cbd5e1",
+              maxWidth: "800px",
+              lineHeight: 1.65,
+            }}>
+              NEXUS attacks the market from the damage-control angle: competitors may move fast,
+              automate tasks, or manage records, but NEXUS protects the owner before risky action.
+            </p>
+          </div>
+
+          <div style={{
+            border: "1px solid rgba(251, 113, 133, 0.38)",
+            borderRadius: "999px",
+            padding: "10px 14px",
+            color: "#ffe4e6",
+            background: "rgba(127, 29, 29, 0.24)",
+            fontWeight: 900,
+            fontSize: "13px",
+            whiteSpace: "nowrap",
+          }}>
+            Weaknesses exposed
+          </div>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: "10px",
+        }}>
+          {[
+            ["Speed Without Safety", "Fast AI can damage price, refund, delivery, stock, or trust.", "Risk First"],
+            ["Automation Without Owner Gate", "Workflows can execute before owner review.", "Owner Controlled"],
+            ["CRM Without Damage Control", "Customer records do not stop unsafe business actions.", "Zero Damage"],
+            ["ERP Complexity", "Large systems slow down small business owners.", "Simple Command Control"],
+            ["Agent Risk", "Autonomous agents can act without full business context.", "No Hidden Execution"],
+            ["Support AI Overpromise", "Support bots may promise refunds, discounts, or delivery incorrectly.", "Approval Locked"],
+            ["No Recovery Discipline", "Many tools fail without a clear fallback route.", "Fallback Ready"],
+          ].map(([weakness, danger, answer]) => (
+            <div key={weakness} style={{
+              border: "1px solid rgba(148, 163, 184, 0.18)",
+              borderRadius: "16px",
+              padding: "14px",
+              background: "linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(127, 29, 29, 0.24))",
+              boxShadow: "0 14px 32px rgba(2, 6, 23, 0.2)",
+            }}>
+              <p style={{
+                margin: "0 0 8px",
+                color: "#fecdd3",
+                fontSize: "12px",
+                fontWeight: 900,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}>
+                {weakness}
+              </p>
+              <p style={{
+                margin: "0 0 10px",
+                color: "#cbd5e1",
+                lineHeight: 1.55,
+                fontSize: "13px",
+              }}>
+                {danger}
+              </p>
+              <div style={{
+                border: "1px solid rgba(34, 197, 94, 0.28)",
+                borderRadius: "999px",
+                padding: "8px 10px",
+                color: "#bbf7d0",
+                background: "rgba(20, 83, 45, 0.22)",
+                fontSize: "12px",
+                fontWeight: 900,
+              }}>
+                NEXUS Answer: {answer}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p style={{
+          margin: "14px 0 0",
+          color: "#cbd5e1",
+          fontSize: "12px",
+          lineHeight: 1.6,
+        }}>
+          UI-only competitor weakness matrix. It does not call external services, approve, reject,
           execute, change payment state, or modify risky route behavior.
         </p>
       </div>
