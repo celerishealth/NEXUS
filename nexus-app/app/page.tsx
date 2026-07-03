@@ -310,6 +310,7 @@ export default function Home() {
   ];
 
   const buildLogs = [
+    "Day 48 owner command briefing panel v1 added",
     "Day 47 demo recording control strip v1 added",
     "Day 46 mobile cinematic demo polish v1 added",
     "Day 45 cinematic demo story flow v1 added",
@@ -778,6 +779,80 @@ ${aiInput}`,
 
 
 
+
+        <div style={{
+          border: "1px solid rgba(56, 189, 248, 0.28)",
+          borderRadius: "22px",
+          padding: "16px",
+          marginBottom: "14px",
+          background: "linear-gradient(135deg, rgba(14, 116, 144, 0.18), rgba(15, 23, 42, 0.78))",
+          boxShadow: "0 18px 44px rgba(2, 6, 23, 0.28)",
+        }}>
+          <p style={{
+            margin: "0 0 10px",
+            color: "#67e8f9",
+            fontSize: "12px",
+            fontWeight: 900,
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+          }}>
+            Owner Command Briefing Panel v1
+          </p>
+
+          <h3 style={{
+            margin: "0 0 12px",
+            color: "#f8fafc",
+            fontSize: "18px",
+          }}>
+            Owner sees the full safe business sequence before action happens.
+          </h3>
+
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))",
+            gap: "10px",
+          }}>
+            {[
+              ["01", "Customer request enters", "NEXUS captures the business request without executing risky action."],
+              ["02", "AI creates safe draft", "AI prepares a response draft under Safety Layer control."],
+              ["03", "Risk detector checks damage", "Pricing, stock, payment, delivery, return, and trust risk are reviewed."],
+              ["04", "Owner approval protects business", "Risky routes stay locked until owner decision."],
+              ["05", "Audit, memory, fallback stay ready", "Traceability, customer context, and recovery path remain preserved."],
+            ].map(([step, title, description]) => (
+              <div key={step} style={{
+                border: "1px solid rgba(148, 163, 184, 0.18)",
+                borderRadius: "16px",
+                padding: "14px",
+                background: "rgba(15, 23, 42, 0.72)",
+              }}>
+                <p style={{
+                  margin: "0 0 8px",
+                  color: "#22c55e",
+                  fontSize: "12px",
+                  fontWeight: 900,
+                  letterSpacing: "0.12em",
+                }}>
+                  {step}
+                </p>
+                <h4 style={{
+                  margin: "0 0 8px",
+                  color: "#f8fafc",
+                  fontSize: "14px",
+                }}>
+                  {title}
+                </h4>
+                <p style={{
+                  margin: 0,
+                  color: "#cbd5e1",
+                  lineHeight: 1.55,
+                  fontSize: "13px",
+                }}>
+                  {description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
         <div style={{
           border: "1px solid rgba(34, 197, 94, 0.28)",
           borderRadius: "22px",
