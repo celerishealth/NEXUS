@@ -310,6 +310,7 @@ export default function Home() {
   ];
 
   const buildLogs = [
+    "Day 60 backend safety contract v1 added",
     "Day 59 backend foundation map v1 added",
     "Day 58 demo script control panel v1 added",
     "Day 57 MVP launch readiness panel v1 added",
@@ -2043,6 +2044,117 @@ ${aiInput}`,
         </p>
       </div>
 
+
+      <div style={cardStyle}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "14px",
+          alignItems: "flex-start",
+          marginBottom: "16px",
+          flexWrap: "wrap",
+        }}>
+          <div>
+            <p style={{
+              margin: "0 0 8px",
+              color: "#facc15",
+              fontSize: "12px",
+              fontWeight: 900,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}>
+              Backend Safety Contract v1
+            </p>
+            <h2 style={{ margin: 0 }}>Backend Safety Contract</h2>
+            <p style={{
+              margin: "10px 0 0",
+              color: "#cbd5e1",
+              maxWidth: "820px",
+              lineHeight: 1.65,
+            }}>
+              NEXUS backend safety contract defines the non-negotiable rules before real execution:
+              owner approval, zero damage, audit proof, scoped memory, fallback recovery,
+              and subscription discipline.
+            </p>
+          </div>
+
+          <div style={{
+            border: "1px solid rgba(250, 204, 21, 0.38)",
+            borderRadius: "999px",
+            padding: "10px 14px",
+            color: "#fef9c3",
+            background: "rgba(113, 63, 18, 0.26)",
+            fontWeight: 900,
+            fontSize: "13px",
+            whiteSpace: "nowrap",
+          }}>
+            Safety contract live
+          </div>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: "10px",
+        }}>
+          {[
+            ["Owner Approval Required", "Risky business movement waits for owner approval.", "No hidden execution"],
+            ["Zero Damage", "Pricing, payment, stock, delivery, return, and trust stay protected.", "No unsafe automation"],
+            ["Audit Proof", "Important AI decisions remain traceable.", "No silent decision path"],
+            ["Scoped Customer Memory", "Useful context improves replies without exposing unrelated data.", "No memory leak"],
+            ["Fallback Recovery", "Business continuity stays protected if AI or provider fails.", "No business stop"],
+            ["Subscription Discipline", "SaaS access respects plan and payment state before production execution.", "No revenue leak"],
+          ].map(([rule, meaning, block]) => (
+            <div key={rule} style={{
+              border: "1px solid rgba(148, 163, 184, 0.18)",
+              borderRadius: "16px",
+              padding: "14px",
+              background: "linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(113, 63, 18, 0.24))",
+              boxShadow: "0 14px 32px rgba(2, 6, 23, 0.2)",
+            }}>
+              <p style={{
+                margin: "0 0 8px",
+                color: "#fde68a",
+                fontSize: "12px",
+                fontWeight: 900,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}>
+                {rule}
+              </p>
+              <p style={{
+                margin: "0 0 10px",
+                color: "#cbd5e1",
+                lineHeight: 1.55,
+                fontSize: "13px",
+              }}>
+                {meaning}
+              </p>
+              <div style={{
+                border: "1px solid rgba(34, 197, 94, 0.28)",
+                borderRadius: "999px",
+                padding: "8px 10px",
+                color: "#bbf7d0",
+                background: "rgba(20, 83, 45, 0.22)",
+                fontSize: "12px",
+                fontWeight: 900,
+              }}>
+                Block: {block}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p style={{
+          margin: "14px 0 0",
+          color: "#cbd5e1",
+          fontSize: "12px",
+          lineHeight: 1.6,
+        }}>
+          Backend safety contract route added at /api/nexus/safety. It is read-only and does not approve,
+          reject, send messages, write customer data, change payment state, or execute risky actions.
+        </p>
+      </div>
       <div style={cardStyle}>
         <div style={{
           display: "flex",
