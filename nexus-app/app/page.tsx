@@ -850,6 +850,28 @@ ${aiInput}`,
                   <p style={{ color: "#94a3b8", fontSize: "12px", marginBottom: "10px" }}>
                     Recent customer request and AI response memory for owner context.
                   </p>
+                  <div
+                    style={{
+                      background: "#020617",
+                      border: "1px solid #334155",
+                      borderRadius: "12px",
+                      padding: "12px",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    <p style={{ color: "#f8fafc", fontWeight: 700, marginBottom: "8px" }}>
+                      Audit Log Mini v1
+                    </p>
+                    <p style={{ color: "#94a3b8", fontSize: "12px", marginBottom: "6px" }}>
+                      Audit Event: Customer request captured and AI response generated.
+                    </p>
+                    <p style={{ color: "#94a3b8", fontSize: "12px", marginBottom: "6px" }}>
+                      Review Context: Owner can inspect the request and response before trusting any risky route.
+                    </p>
+                    <p style={{ color: "#94a3b8", fontSize: "12px", margin: 0 }}>
+                      UI-only audit preview. It does not execute actions, approve routes, reject routes, or modify data.
+                    </p>
+                  </div>
                   Customer Input: {item.input}
                 </p>
                 <p style={{ color: "#cbd5e1", whiteSpace: "pre-wrap" }}>
