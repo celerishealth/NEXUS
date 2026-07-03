@@ -9,7 +9,7 @@ export default function Home() {
   const [selectedTemplate, setSelectedTemplate] = useState("Custom Prompt");
   const [selectedTemplatePrompt, setSelectedTemplatePrompt] = useState("");
   const [responseHistory, setResponseHistory] = useState<
-    { id: number; type: string; input: string; response: string; status: string }[]
+    { id: number; type: string; input: string; response: string; status: string; riskLevel?: string; riskTags?: string[] }[]
   >([]);
 
   const [selectedIndustryPack, setSelectedIndustryPack] = useState("Universal Business Pack");
@@ -172,6 +172,45 @@ export default function Home() {
         ]
       : ownerRules;
 
+  function detectRequestRisks(message: string) {
+    const normalizedMessage = message.toLowerCase();
+
+    const riskRules = [
+      {
+        tag: "Pricing Risk",
+        keywords: ["price", "rate", "discount", "mrp", "billing", "final price"],
+      },
+      {
+        tag: "Stock Risk",
+        keywords: ["stock", "available", "availability", "out of stock"],
+      },
+      {
+        tag: "Payment Risk",
+        keywords: ["payment", "credit", "advance", "refund", "due", "cash"],
+      },
+      {
+        tag: "Delivery Risk",
+        keywords: ["delivery", "dispatch", "shipping", "courier", "arrive"],
+      },
+      {
+        tag: "Return / Damage Risk",
+        keywords: ["return", "replacement", "damage", "damaged", "claim"],
+      },
+    ];
+
+    const riskTags = riskRules
+      .filter((risk) =>
+        risk.keywords.some((keyword) => normalizedMessage.includes(keyword))
+      )
+      .map((risk) => risk.tag);
+
+    return {
+      riskLevel:
+        riskTags.length === 0 ? "Low" : riskTags.length <= 2 ? "Medium" : "High",
+      riskTags: riskTags.length === 0 ? ["No major risk detected"] : riskTags,
+    };
+  }
+
   const promptTemplates = [
 {
   title: "Universal Smart Order Parser",
@@ -299,7 +338,9 @@ export default function Home() {
     setAiResponse("NEXUS AI Brain is thinking...");
 
     try {
-      const ownerRulesContext = activeOwnerRules
+      const detectedRisk = detectRequestRisks(aiInput);
+
+    const ownerRulesContext = activeOwnerRules
       .map(
         (rule) =>
           `${rule.title}: ${rule.rule} Protection: ${rule.risk}`
@@ -787,6 +828,8 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
+
 
 
 
