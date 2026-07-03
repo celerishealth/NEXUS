@@ -310,6 +310,7 @@ export default function Home() {
   ];
 
   const buildLogs = [
+    "Day 50 owner approval evidence panel v1 added",
     "Day 49 owner decision matrix v1 added",
     "Day 48 owner command briefing panel v1 added",
     "Day 47 demo recording control strip v1 added",
@@ -1074,6 +1075,102 @@ ${aiInput}`,
             </div>
           ))}
         </div>
+      </div>
+
+      <div style={cardStyle}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "14px",
+          alignItems: "flex-start",
+          marginBottom: "16px",
+          flexWrap: "wrap",
+        }}>
+          <div>
+            <p style={{
+              margin: "0 0 8px",
+              color: "#a78bfa",
+              fontSize: "12px",
+              fontWeight: 900,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}>
+              Owner Approval Evidence Panel v1
+            </p>
+            <h2 style={{ margin: 0 }}>Owner Approval Evidence</h2>
+            <p style={{
+              margin: "10px 0 0",
+              color: "#cbd5e1",
+              maxWidth: "760px",
+              lineHeight: 1.65,
+            }}>
+              Before any risky route reaches owner decision, NEXUS presents the evidence needed
+              to protect business trust, money, stock, delivery, and audit discipline.
+            </p>
+          </div>
+
+          <div style={{
+            border: "1px solid rgba(167, 139, 250, 0.35)",
+            borderRadius: "999px",
+            padding: "10px 14px",
+            color: "#ede9fe",
+            background: "rgba(76, 29, 149, 0.22)",
+            fontWeight: 900,
+            fontSize: "13px",
+            whiteSpace: "nowrap",
+          }}>
+            Evidence before approval
+          </div>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))",
+          gap: "10px",
+        }}>
+          {[
+            ["Customer Request", "Original customer message remains visible before owner decision."],
+            ["AI Draft", "AI response stays in draft mode until safety review is complete."],
+            ["Detected Risk", "Risk category and impact are visible before approval."],
+            ["Business Impact", "Owner sees what could affect money, trust, stock, or delivery."],
+            ["Recommended Owner Action", "NEXUS guides owner toward approve, reject, or review."],
+            ["Audit Proof", "Decision evidence remains traceable for future review."],
+          ].map(([title, detail]) => (
+            <div key={title} style={{
+              border: "1px solid rgba(148, 163, 184, 0.18)",
+              borderRadius: "16px",
+              padding: "14px",
+              background: "linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(49, 46, 129, 0.32))",
+              boxShadow: "0 14px 32px rgba(2, 6, 23, 0.2)",
+            }}>
+              <h3 style={{
+                margin: "0 0 8px",
+                color: "#f8fafc",
+                fontSize: "15px",
+              }}>
+                {title}
+              </h3>
+              <p style={{
+                margin: 0,
+                color: "#cbd5e1",
+                lineHeight: 1.55,
+                fontSize: "13px",
+              }}>
+                {detail}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <p style={{
+          margin: "14px 0 0",
+          color: "#cbd5e1",
+          fontSize: "12px",
+          lineHeight: 1.6,
+        }}>
+          UI-only evidence panel. It does not approve, reject, execute, change payment state,
+          or modify risky route behavior.
+        </p>
       </div>
       <div style={cardStyle}>
           <h2 style={{ marginBottom: "16px" }}>Safety Layer v1</h2>
