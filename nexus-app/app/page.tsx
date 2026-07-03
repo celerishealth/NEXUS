@@ -902,6 +902,30 @@ ${aiInput}`,
                   <div
                     style={{
                       background: "#020617",
+                      border: "1px solid #ef4444",
+                      borderRadius: "12px",
+                      padding: "12px",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    <p style={{ color: "#f8fafc", fontWeight: 700, marginBottom: "8px" }}>
+                      Owner Alert Readiness v1
+                    </p>
+                    <ul style={{ color: "#cbd5e1", paddingLeft: "18px", margin: 0 }}>
+                      <li>Alert owner when AI or API failure is detected.</li>
+                      <li>Alert owner when a risky route is detected.</li>
+                      <li>Alert owner when approval is pending.</li>
+                      <li>Alert owner when recovery queue needs attention.</li>
+                      <li>Alert owner when fallback mode is active.</li>
+                      <li>Alert owner when customer trust risk is possible.</li>
+                    </ul>
+                    <p style={{ color: "#94a3b8", fontSize: "12px", marginTop: "10px" }}>
+                      UI-only owner alert readiness panel. It does not send alerts, execute actions, approve routes, reject routes, or change backend logic.
+                    </p>
+                  </div>
+                  <div
+                    style={{
+                      background: "#020617",
                       border: "1px solid #22c55e",
                       borderRadius: "12px",
                       padding: "12px",

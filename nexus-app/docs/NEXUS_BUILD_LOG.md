@@ -653,3 +653,22 @@ Build:
 - Strengthens Customer Memory.
 - Moves NEXUS closer to crash-resistant AI Business Operating System behavior.
 - Keeps NEXUS as AI Business Operating System, not chatbot/CRM/ERP clone.
+
+## Day 35: Owner Alert Readiness v1
+
+### Completed
+- Added Owner Alert Readiness v1 inside the owner dashboard system resilience area.
+- Owner can now see alert readiness rules for AI/API failure, risky route detected, approval pending, recovery queue item, fallback mode active, and customer trust risk.
+- UI-only owner alert readiness panel.
+- No risky execution behavior changed.
+- No approve/reject logic changed.
+- No backend execution logic changed.
+
+### Vision Alignment
+- Strengthens Owner Approval.
+- Strengthens Safety Layer.
+- Strengthens Zero Stop.
+- Strengthens Zero Damage.
+- Strengthens Recovery Queue readiness.
+- Strengthens owner control and alert visibility.
+- Keeps NEXUS as AI Business Operating System, not chatbot/CRM/ERP clone.
