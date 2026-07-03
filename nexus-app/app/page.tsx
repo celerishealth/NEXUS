@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 
@@ -310,6 +310,7 @@ export default function Home() {
   ];
 
   const buildLogs = [
+    "Day 45 cinematic demo story flow v1 added",
     "NEXUS v2 frontend started",
     "Home screen completed",
     "Launch button completed",
@@ -445,7 +446,7 @@ ${aiInput}`,
   function getExecutionGuardLabel(status: string) {
     if (status === "Approved") return "Ready for Safe Execution";
     if (status === "Rejected") return "Permanently Blocked";
-    return "Locked ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â Owner Approval Required";
+    return "Locked ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â Owner Approval Required";
   }
 
   function getExecutionGuardDetail(status: string) {
@@ -726,6 +727,116 @@ ${aiInput}`,
               </p>
             ))}
           </div>
+
+      <div style={cardStyle}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "16px",
+          alignItems: "flex-start",
+          marginBottom: "18px",
+          flexWrap: "wrap",
+        }}>
+          <div>
+            <p style={{
+              margin: "0 0 8px",
+              color: "#38bdf8",
+              fontSize: "12px",
+              fontWeight: 800,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+            }}>
+              Cinematic Demo Story Flow v1
+            </p>
+            <h2 style={{ margin: 0 }}>NEXUS Business Control Room</h2>
+            <p style={{
+              margin: "10px 0 0",
+              color: "#cbd5e1",
+              maxWidth: "760px",
+              lineHeight: 1.7,
+            }}>
+              A safe AI operating sequence: customer risk enters, AI prepares the draft,
+              NEXUS locks risky action behind owner approval, then preserves audit,
+              memory, fallback, and revenue protection.
+            </p>
+          </div>
+          <div style={{
+            border: "1px solid rgba(34, 197, 94, 0.35)",
+            borderRadius: "999px",
+            padding: "10px 14px",
+            color: "#bbf7d0",
+            background: "rgba(22, 163, 74, 0.12)",
+            fontWeight: 800,
+            fontSize: "13px",
+            whiteSpace: "nowrap",
+          }}>
+            UI-only demo layer
+          </div>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: "12px",
+        }}>
+          {[
+            ["01", "Customer Risk Enters", "A risky customer request appears inside the business command center."],
+            ["02", "AI Draft Created", "NEXUS prepares a controlled response draft without unsafe execution."],
+            ["03", "Risk Detector Activated", "Pricing, stock, payment, delivery, return, and damage risk are classified."],
+            ["04", "Owner Approval Gate Locked", "High-impact action waits for owner approval before release."],
+            ["05", "Audit + Memory Preserved", "Every step stays traceable while customer context remains remembered."],
+            ["06", "Fallback Ready", "Recovery path remains available so the business does not stop."],
+            ["07", "Subscription Lock Protects Revenue", "Access control protects SaaS monetization and owner discipline."],
+          ].map(([step, title, description]) => (
+            <div key={step} style={{
+              border: "1px solid rgba(148, 163, 184, 0.18)",
+              borderRadius: "18px",
+              padding: "16px",
+              background: "linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.72))",
+              boxShadow: "0 18px 40px rgba(2, 6, 23, 0.22)",
+            }}>
+              <div style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                gap: "10px",
+                marginBottom: "12px",
+              }}>
+                <span style={{
+                  color: "#67e8f9",
+                  fontWeight: 900,
+                  fontSize: "13px",
+                  letterSpacing: "0.12em",
+                }}>
+                  {step}
+                </span>
+                <span style={{
+                  width: "10px",
+                  height: "10px",
+                  borderRadius: "999px",
+                  background: "#22c55e",
+                  boxShadow: "0 0 18px rgba(34, 197, 94, 0.85)",
+                }} />
+              </div>
+              <h3 style={{
+                margin: "0 0 8px",
+                color: "#f8fafc",
+                fontSize: "16px",
+              }}>
+                {title}
+              </h3>
+              <p style={{
+                margin: 0,
+                color: "#cbd5e1",
+                lineHeight: 1.6,
+                fontSize: "14px",
+              }}>
+                {description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
 
           <div style={cardStyle}>
             <h2 style={{ marginBottom: "16px" }}>Build Log</h2>
