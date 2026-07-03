@@ -15,6 +15,7 @@ export default function Home() {
   const [selectedIndustryPack, setSelectedIndustryPack] = useState("Universal Business Pack");
   const [customIndustrySector, setCustomIndustrySector] = useState("");
   const [customOwnerRule, setCustomOwnerRule] = useState("");
+  const [approvalQueueFilter, setApprovalQueueFilter] = useState<"All" | "Pending Owner Approval" | "Approved" | "Rejected">("All");
 
   const totalRequests = responseHistory.length;
   const pendingRequests = responseHistory.filter(
@@ -443,7 +444,7 @@ ${aiInput}`,
   function getExecutionGuardLabel(status: string) {
     if (status === "Approved") return "Ready for Safe Execution";
     if (status === "Rejected") return "Permanently Blocked";
-    return "Locked Ã¢â‚¬â€ Owner Approval Required";
+    return "Locked ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Owner Approval Required";
   }
 
   function getExecutionGuardDetail(status: string) {
@@ -472,6 +473,10 @@ ${aiInput}`,
   const approvedApprovalCount = responseHistory.filter((item) => item.status === "Approved").length;
   const rejectedApprovalCount = responseHistory.filter((item) => item.status === "Rejected").length;
   const totalApprovalRoutes = responseHistory.length;
+  const filteredApprovalRoutes =
+    approvalQueueFilter === "All"
+      ? responseHistory
+      : responseHistory.filter((item) => item.status === approvalQueueFilter);
   if (!isLaunched) {
     return (
       <main
@@ -730,9 +735,9 @@ ${aiInput}`,
           <h2 style={{ marginBottom: "16px" }}>Owner Approval Routing v1</h2>
 
           {responseHistory.length === 0 ? (
-            <p style={{ color: "#94a3b8" }}>No owner approval requests yet. Generate one AI response to create the first approval route.</p>
+            <p style={{ color: "#94a3b8" }}>No approval routes match this filter yet.</p>
           ) : (
-            responseHistory.map((item) => (
+            filteredApprovalRoutes.map((item) => (
               <div
                 key={item.id}
                 style={{
