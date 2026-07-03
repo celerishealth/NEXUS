@@ -750,6 +750,29 @@ ${aiInput}`,
         <section style={{ ...cardStyle, marginTop: "28px" }}>
           <h2 style={{ marginBottom: "16px" }}>Owner Approval Routing v1</h2>
 
+              <div
+                style={{
+                  background: "#111827",
+                  border: "1px solid #334155",
+                  borderRadius: "14px",
+                  padding: "14px",
+                  marginBottom: "16px",
+                }}
+              >
+                <p style={{ color: "#f8fafc", fontWeight: 700, marginBottom: "8px" }}>
+                  Owner Approval Review Checklist
+                </p>
+                <ul style={{ color: "#cbd5e1", paddingLeft: "18px", margin: 0 }}>
+                  <li>Verify customer request and AI response before owner decision.</li>
+                  <li>Check pricing, payment, stock, delivery, return, refund, and trust risk.</li>
+                  <li>Approve only when safe under owner-approved business rules.</li>
+                  <li>Reject unclear, unsafe, incomplete, or policy-breaking routes.</li>
+                </ul>
+                <p style={{ color: "#94a3b8", fontSize: "12px", marginTop: "10px" }}>
+                  Advisory UI only. This checklist does not execute, approve, reject, or change route status.
+                </p>
+              </div>
+
           {responseHistory.length === 0 ? (
             <p style={{ color: "#94a3b8" }}>No approval routes match this filter yet.</p>
           ) : (
