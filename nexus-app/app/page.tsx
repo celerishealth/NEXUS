@@ -310,6 +310,7 @@ export default function Home() {
   ];
 
   const buildLogs = [
+    "Day 54 competitor attack map v1 added",
     "Day 53 customer memory proof panel v1 added",
     "Day 52 audit chain integrity panel v1 added",
     "Day 51 risk decision timeline v1 added",
@@ -1473,6 +1474,117 @@ ${aiInput}`,
         }}>
           UI-only customer memory proof layer. It does not store new memory, expose private data,
           approve, reject, execute, or modify risky route behavior.
+        </p>
+      </div>
+
+      <div style={cardStyle}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "14px",
+          alignItems: "flex-start",
+          marginBottom: "16px",
+          flexWrap: "wrap",
+        }}>
+          <div>
+            <p style={{
+              margin: "0 0 8px",
+              color: "#facc15",
+              fontSize: "12px",
+              fontWeight: 900,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}>
+              Competitor Attack Map v1
+            </p>
+            <h2 style={{ margin: 0 }}>Competitor Attack Map</h2>
+            <p style={{
+              margin: "10px 0 0",
+              color: "#cbd5e1",
+              maxWidth: "800px",
+              lineHeight: 1.65,
+            }}>
+              NEXUS tracks competitor categories and answers them with owner control, zero damage discipline,
+              audit proof, customer memory, fallback recovery, and no hidden execution.
+            </p>
+          </div>
+
+          <div style={{
+            border: "1px solid rgba(250, 204, 21, 0.38)",
+            borderRadius: "999px",
+            padding: "10px 14px",
+            color: "#fef9c3",
+            background: "rgba(113, 63, 18, 0.24)",
+            fontWeight: 900,
+            fontSize: "13px",
+            whiteSpace: "nowrap",
+          }}>
+            Category war-room
+          </div>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: "10px",
+        }}>
+          {[
+            ["CRM Suites", "Record-heavy systems can miss risky action control.", "Owner Approval + Audit Proof"],
+            ["ERP Suites", "Operational modules can become complex and slow.", "Zero Damage + Business Rules"],
+            ["Work OS", "Task workflows do not guarantee safe business decisions.", "Decision Gate + Evidence Trail"],
+            ["AI Agent Builders", "Agents can act fast without enough business protection.", "No Hidden Execution"],
+            ["Helpdesk AI", "Support automation can overpromise refunds, discounts, or delivery.", "Risk Detector + Owner Gate"],
+            ["Automation Tools", "Workflows execute steps but may not understand damage risk.", "Safety Layer + Fallback Recovery"],
+            ["Ecommerce Support Apps", "Store support can handle tickets but not full owner-safe command control.", "Customer Memory + Revenue Lock"],
+          ].map(([category, weakness, weapon]) => (
+            <div key={category} style={{
+              border: "1px solid rgba(148, 163, 184, 0.18)",
+              borderRadius: "16px",
+              padding: "14px",
+              background: "linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(113, 63, 18, 0.24))",
+              boxShadow: "0 14px 32px rgba(2, 6, 23, 0.2)",
+            }}>
+              <p style={{
+                margin: "0 0 8px",
+                color: "#fde68a",
+                fontSize: "12px",
+                fontWeight: 900,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}>
+                {category}
+              </p>
+              <p style={{
+                margin: "0 0 10px",
+                color: "#cbd5e1",
+                lineHeight: 1.55,
+                fontSize: "13px",
+              }}>
+                {weakness}
+              </p>
+              <div style={{
+                border: "1px solid rgba(34, 197, 94, 0.28)",
+                borderRadius: "999px",
+                padding: "8px 10px",
+                color: "#bbf7d0",
+                background: "rgba(20, 83, 45, 0.22)",
+                fontSize: "12px",
+                fontWeight: 900,
+              }}>
+                NEXUS Counter-Weapon: {weapon}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p style={{
+          margin: "14px 0 0",
+          color: "#cbd5e1",
+          fontSize: "12px",
+          lineHeight: 1.6,
+        }}>
+          UI-only competitor attack map. It does not call external services, approve, reject,
+          execute, change payment state, or modify risky route behavior.
         </p>
       </div>
       <div style={cardStyle}>
