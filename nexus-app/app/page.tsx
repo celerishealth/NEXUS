@@ -310,6 +310,7 @@ export default function Home() {
   ];
 
   const buildLogs = [
+    "Day 72 backend customer memory review queue contract v1 added",
     "Day 71 backend customer memory write gate v1 added",
     "Day 70 backend customer memory retention policy v1 added",
     "Day 69 backend customer memory sanitizer v1 added",
@@ -2067,6 +2068,120 @@ ${aiInput}`,
 
 
 
+
+      <div style={cardStyle}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "14px",
+          alignItems: "flex-start",
+          marginBottom: "16px",
+          flexWrap: "wrap",
+        }}>
+          <div>
+            <p style={{
+              margin: "0 0 8px",
+              color: "#0ea5e9",
+              fontSize: "12px",
+              fontWeight: 900,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}>
+              Backend Customer Memory Review Queue Contract v1
+            </p>
+            <h2 style={{ margin: 0 }}>Backend Customer Memory Review Queue Contract</h2>
+            <p style={{
+              margin: "10px 0 0",
+              color: "#cbd5e1",
+              maxWidth: "820px",
+              lineHeight: 1.65,
+            }}>
+              NEXUS customer memory review queue contract defines the future safe queue item shape before
+              any memory is written: tenant, customer, sanitized candidate, category, retention, source audit,
+              scope proof, sanitization proof, owner review status, and timeline.
+            </p>
+          </div>
+
+          <div style={{
+            border: "1px solid rgba(14, 165, 233, 0.38)",
+            borderRadius: "999px",
+            padding: "10px 14px",
+            color: "#e0f2fe",
+            background: "rgba(12, 74, 110, 0.26)",
+            fontWeight: 900,
+            fontSize: "13px",
+            whiteSpace: "nowrap",
+          }}>
+            Queue contract only
+          </div>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: "10px",
+        }}>
+          {[
+            ["Queue Item ID", "Unique id for every future memory review candidate.", "No invisible candidate"],
+            ["Tenant Boundary", "Memory review must stay inside one business account.", "No business leak"],
+            ["Customer Boundary", "Memory review must stay inside one customer scope.", "No customer leak"],
+            ["Sanitized Candidate", "Only sanitized memory candidate can enter future review.", "No raw secret review"],
+            ["Retention Window", "Every candidate carries expiry and review discipline.", "No forever memory"],
+            ["Source Audit Event", "Memory candidate links back to original audit proof.", "No missing origin"],
+            ["Scope Proof", "Tenant and customer scope result remains visible.", "No scope bypass"],
+            ["Owner Review Status", "Future write requires explicit review status.", "No silent memory write"],
+          ].map(([field, purpose, lock]) => (
+            <div key={field} style={{
+              border: "1px solid rgba(148, 163, 184, 0.18)",
+              borderRadius: "16px",
+              padding: "14px",
+              background: "linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(12, 74, 110, 0.22))",
+              boxShadow: "0 14px 32px rgba(2, 6, 23, 0.2)",
+            }}>
+              <p style={{
+                margin: "0 0 8px",
+                color: "#bae6fd",
+                fontSize: "12px",
+                fontWeight: 900,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}>
+                {field}
+              </p>
+              <p style={{
+                margin: "0 0 10px",
+                color: "#cbd5e1",
+                lineHeight: 1.55,
+                fontSize: "13px",
+              }}>
+                {purpose}
+              </p>
+              <div style={{
+                border: "1px solid rgba(34, 197, 94, 0.28)",
+                borderRadius: "999px",
+                padding: "8px 10px",
+                color: "#bbf7d0",
+                background: "rgba(20, 83, 45, 0.22)",
+                fontSize: "12px",
+                fontWeight: 900,
+              }}>
+                Lock: {lock}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p style={{
+          margin: "14px 0 0",
+          color: "#cbd5e1",
+          fontSize: "12px",
+          lineHeight: 1.6,
+        }}>
+          Backend customer memory review queue route added at /api/nexus/customer-memory-review-queue.
+          It is read-only and does not create queue items, write memory, delete memory, approve, reject,
+          send messages, write customer data, change payment state, or execute risky actions.
+        </p>
+      </div>
       <div style={cardStyle}>
         <div style={{
           display: "flex",
