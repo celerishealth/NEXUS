@@ -974,6 +974,32 @@ ${aiInput}`,
                   <div
                     style={{
                       background: "#020617",
+                      border: "1px solid #f59e0b",
+                      borderRadius: "12px",
+                      padding: "12px",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    <p style={{ color: "#f8fafc", fontWeight: 700, marginBottom: "8px" }}>
+                      Client Pitch Snapshot v1
+                    </p>
+                    <ul style={{ color: "#cbd5e1", paddingLeft: "18px", margin: 0 }}>
+                      <li>Problem: Businesses lose time, miss follow-ups, and risk wrong replies.</li>
+                      <li>Solution: NEXUS handles customer requests with AI draft support and owner control.</li>
+                      <li>Owner Control: Risky pricing, payment, delivery, refund, and stock decisions need approval.</li>
+                      <li>Safety Layer: NEXUS catches risky routes before business damage happens.</li>
+                      <li>Audit Logs: Owner can review what happened, when it happened, and why it happened.</li>
+                      <li>Customer Memory: NEXUS remembers recent customer context for better follow-up.</li>
+                      <li>Paid Plan Value: Subscription lock protects revenue after plan expiry.</li>
+                      <li>Positioning: NEXUS is not a chatbot. It is an AI Business Operating System.</li>
+                    </ul>
+                    <p style={{ color: "#94a3b8", fontSize: "12px", marginTop: "10px" }}>
+                      UI-only client pitch snapshot. It does not execute actions, approve routes, reject routes, process payments, block users, or change backend logic.
+                    </p>
+                  </div>
+                  <div
+                    style={{
+                      background: "#020617",
                       border: "1px solid #14b8a6",
                       borderRadius: "12px",
                       padding: "12px",
