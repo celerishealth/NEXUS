@@ -854,6 +854,30 @@ ${aiInput}`,
                   <div
                     style={{
                       background: "#020617",
+                      border: "1px solid #f59e0b",
+                      borderRadius: "12px",
+                      padding: "12px",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    <p style={{ color: "#f8fafc", fontWeight: 700, marginBottom: "8px" }}>
+                      Fallback Mode Readiness v1
+                    </p>
+                    <ul style={{ color: "#cbd5e1", paddingLeft: "18px", margin: 0 }}>
+                      <li>Safe Mode activates when AI, API, or system confidence is not enough.</li>
+                      <li>Owner Review Required keeps risky routes from moving automatically.</li>
+                      <li>Risky Route Hold protects pricing, payment, delivery, stock, refund, and trust decisions.</li>
+                      <li>Audit Log Preserved keeps the review trail visible.</li>
+                      <li>Customer Memory Preserved keeps context available for owner review.</li>
+                      <li>No Auto Damage keeps NEXUS from executing unsafe actions.</li>
+                    </ul>
+                    <p style={{ color: "#94a3b8", fontSize: "12px", marginTop: "10px" }}>
+                      UI-only fallback readiness panel. It does not execute actions, approve routes, reject routes, or change backend logic.
+                    </p>
+                  </div>
+                  <div
+                    style={{
+                      background: "#020617",
                       border: "1px solid #22c55e",
                       borderRadius: "12px",
                       padding: "12px",
