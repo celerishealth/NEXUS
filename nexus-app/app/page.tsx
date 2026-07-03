@@ -16,6 +16,7 @@ export default function Home() {
   const [customIndustrySector, setCustomIndustrySector] = useState("");
   const [customOwnerRule, setCustomOwnerRule] = useState("");
   const [approvalQueueFilter, setApprovalQueueFilter] = useState<"All" | "Pending Owner Approval" | "Approved" | "Rejected">("All");
+  const [approvalQueueSearch, setApprovalQueueSearch] = useState("");
 
   const totalRequests = responseHistory.length;
   const pendingRequests = responseHistory.filter(
@@ -444,7 +445,7 @@ ${aiInput}`,
   function getExecutionGuardLabel(status: string) {
     if (status === "Approved") return "Ready for Safe Execution";
     if (status === "Rejected") return "Permanently Blocked";
-    return "Locked ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Owner Approval Required";
+    return "Locked ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Owner Approval Required";
   }
 
   function getExecutionGuardDetail(status: string) {
@@ -473,10 +474,21 @@ ${aiInput}`,
   const approvedApprovalCount = responseHistory.filter((item) => item.status === "Approved").length;
   const rejectedApprovalCount = responseHistory.filter((item) => item.status === "Rejected").length;
   const totalApprovalRoutes = responseHistory.length;
-  const filteredApprovalRoutes =
+  const approvalRoutesByStatus =
     approvalQueueFilter === "All"
       ? responseHistory
       : responseHistory.filter((item) => item.status === approvalQueueFilter);
+
+  const normalizedApprovalQueueSearch = approvalQueueSearch.trim().toLowerCase();
+
+  const filteredApprovalRoutes =
+    normalizedApprovalQueueSearch.length === 0
+      ? approvalRoutesByStatus
+      : approvalRoutesByStatus.filter(
+          (item) =>
+            item.input.toLowerCase().includes(normalizedApprovalQueueSearch) ||
+            item.response.toLowerCase().includes(normalizedApprovalQueueSearch)
+        );
   if (!isLaunched) {
     return (
       <main
