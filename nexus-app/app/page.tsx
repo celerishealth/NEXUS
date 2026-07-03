@@ -310,6 +310,7 @@ export default function Home() {
   ];
 
   const buildLogs = [
+    "Day 49 owner decision matrix v1 added",
     "Day 48 owner command briefing panel v1 added",
     "Day 47 demo recording control strip v1 added",
     "Day 46 mobile cinematic demo polish v1 added",
@@ -987,7 +988,94 @@ ${aiInput}`,
               </p>
             ))}
           </div>
-        <div style={cardStyle}>
+  
+      <div style={cardStyle}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "14px",
+          alignItems: "flex-start",
+          marginBottom: "16px",
+          flexWrap: "wrap",
+        }}>
+          <div>
+            <p style={{
+              margin: "0 0 8px",
+              color: "#facc15",
+              fontSize: "12px",
+              fontWeight: 900,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}>
+              Owner Decision Matrix v1
+            </p>
+            <h2 style={{ margin: 0 }}>Owner Decision Matrix</h2>
+            <p style={{
+              margin: "10px 0 0",
+              color: "#cbd5e1",
+              maxWidth: "760px",
+              lineHeight: 1.65,
+            }}>
+              NEXUS shows the owner what must be checked before any risky business route can move forward.
+              This is a safe UI layer only; it does not approve, reject, execute, or change route status.
+            </p>
+          </div>
+
+          <div style={{
+            border: "1px solid rgba(250, 204, 21, 0.35)",
+            borderRadius: "999px",
+            padding: "10px 14px",
+            color: "#fef3c7",
+            background: "rgba(113, 63, 18, 0.22)",
+            fontWeight: 900,
+            fontSize: "13px",
+            whiteSpace: "nowrap",
+          }}>
+            Owner gate locked
+          </div>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))",
+          gap: "10px",
+        }}>
+          {[
+            ["Pricing Risk", "Rate, discount, margin, or wrong quote damage."],
+            ["Stock Risk", "Unavailable, wrong quantity, or false stock promise."],
+            ["Payment Risk", "Unclear payment, credit, refund, or collection exposure."],
+            ["Delivery Risk", "Wrong timeline, wrong address, delay, or commitment risk."],
+            ["Return / Damage Risk", "Replacement, return, damaged goods, or policy conflict."],
+            ["Customer Trust Risk", "Tone, promise, relationship, or reputation damage."],
+            ["Final Owner Gate", "Owner must approve before risky business action moves forward."],
+          ].map(([title, detail]) => (
+            <div key={title} style={{
+              border: "1px solid rgba(148, 163, 184, 0.18)",
+              borderRadius: "16px",
+              padding: "14px",
+              background: "linear-gradient(135deg, rgba(15, 23, 42, 0.88), rgba(30, 41, 59, 0.62))",
+              boxShadow: "0 14px 32px rgba(2, 6, 23, 0.2)",
+            }}>
+              <h3 style={{
+                margin: "0 0 8px",
+                color: "#f8fafc",
+                fontSize: "15px",
+              }}>
+                {title}
+              </h3>
+              <p style={{
+                margin: 0,
+                color: "#cbd5e1",
+                lineHeight: 1.55,
+                fontSize: "13px",
+              }}>
+                {detail}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={cardStyle}>
           <h2 style={{ marginBottom: "16px" }}>Safety Layer v1</h2>
           <p style={{ color: "#22c55e", fontWeight: 700 }}>Safe Mode: Active</p>
           <p style={{ color: "#cbd5e1" }}>Response Mode: Draft Only</p>
