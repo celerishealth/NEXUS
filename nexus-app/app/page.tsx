@@ -974,6 +974,33 @@ ${aiInput}`,
                   <div
                     style={{
                       background: "#020617",
+                      border: "1px solid #6366f1",
+                      borderRadius: "12px",
+                      padding: "12px",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    <p style={{ color: "#f8fafc", fontWeight: 700, marginBottom: "8px" }}>
+                      Phone/Public Link Deployment Readiness v1
+                    </p>
+                    <ul style={{ color: "#cbd5e1", paddingLeft: "18px", margin: 0 }}>
+                      <li>Local demo flow is ready for public demo preparation.</li>
+                      <li>Next launch step is a secure phone/public demo link.</li>
+                      <li>Vercel deployment path is the preferred demo launch route.</li>
+                      <li>Environment variables must stay safe before deployment.</li>
+                      <li>.env.local must never be pushed to GitHub.</li>
+                      <li>Production build must pass before every deploy.</li>
+                      <li>Public demo link must remain view-only and safe.</li>
+                      <li>No real business action should execute from public demo mode.</li>
+                      <li>Client can open the demo from phone after deployment.</li>
+                    </ul>
+                    <p style={{ color: "#94a3b8", fontSize: "12px", marginTop: "10px" }}>
+                      UI-only deployment readiness panel. It does not deploy the app, expose secrets, execute actions, approve routes, reject routes, process payments, block users, or change backend logic.
+                    </p>
+                  </div>
+                  <div
+                    style={{
+                      background: "#020617",
                       border: "1px solid #38bdf8",
                       borderRadius: "12px",
                       padding: "12px",
