@@ -974,6 +974,32 @@ ${aiInput}`,
                   <div
                     style={{
                       background: "#020617",
+                      border: "1px solid #eab308",
+                      borderRadius: "12px",
+                      padding: "12px",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    <p style={{ color: "#f8fafc", fontWeight: 700, marginBottom: "8px" }}>
+                      Demo Mode Final Review v1
+                    </p>
+                    <ul style={{ color: "#cbd5e1", paddingLeft: "18px", margin: 0 }}>
+                      <li>AI request flow is ready for safe demo explanation.</li>
+                      <li>Owner Approval is visible for risky business decisions.</li>
+                      <li>Safety Layer is visible for business damage prevention.</li>
+                      <li>Audit Logs are visible for review and accountability.</li>
+                      <li>Customer Memory is visible for follow-up context.</li>
+                      <li>Recovery and Fallback readiness are visible for failure safety.</li>
+                      <li>Subscription Access Lock readiness is visible for paid plan protection.</li>
+                      <li>Demo mode is safe and does not execute real business actions.</li>
+                    </ul>
+                    <p style={{ color: "#94a3b8", fontSize: "12px", marginTop: "10px" }}>
+                      UI-only final demo review panel. It does not execute actions, approve routes, reject routes, process payments, block users, or change backend logic.
+                    </p>
+                  </div>
+                  <div
+                    style={{
+                      background: "#020617",
                       border: "1px solid #f59e0b",
                       borderRadius: "12px",
                       padding: "12px",
