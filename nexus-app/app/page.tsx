@@ -310,6 +310,7 @@ export default function Home() {
   ];
 
   const buildLogs = [
+    "Day 61 backend guardrail registry v1 added",
     "Day 60 backend safety contract v1 added",
     "Day 59 backend foundation map v1 added",
     "Day 58 demo script control panel v1 added",
@@ -2045,6 +2046,119 @@ ${aiInput}`,
       </div>
 
 
+
+      <div style={cardStyle}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "14px",
+          alignItems: "flex-start",
+          marginBottom: "16px",
+          flexWrap: "wrap",
+        }}>
+          <div>
+            <p style={{
+              margin: "0 0 8px",
+              color: "#fb7185",
+              fontSize: "12px",
+              fontWeight: 900,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}>
+              Backend Guardrail Registry v1
+            </p>
+            <h2 style={{ margin: 0 }}>Backend Guardrail Registry</h2>
+            <p style={{
+              margin: "10px 0 0",
+              color: "#cbd5e1",
+              maxWidth: "820px",
+              lineHeight: 1.65,
+            }}>
+              NEXUS backend guardrail registry defines what must be blocked before risky execution:
+              unsafe actions, owner bypass, payment movement, customer message sending, data writes,
+              memory leaks, provider failure, and missing audit proof.
+            </p>
+          </div>
+
+          <div style={{
+            border: "1px solid rgba(251, 113, 133, 0.38)",
+            borderRadius: "999px",
+            padding: "10px 14px",
+            color: "#ffe4e6",
+            background: "rgba(136, 19, 55, 0.26)",
+            fontWeight: 900,
+            fontSize: "13px",
+            whiteSpace: "nowrap",
+          }}>
+            Guardrails live
+          </div>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: "10px",
+        }}>
+          {[
+            ["Risky Action Blocklist", "Blocks unsafe business movement before execution.", "Zero Damage"],
+            ["Owner Approval Requirement", "Keeps risky movement behind owner approval.", "Owner Control"],
+            ["Payment State Lock", "Prevents unsafe billing, refund, or charge changes.", "Revenue Discipline"],
+            ["Message Send Lock", "Prevents unsafe customer message dispatch.", "Customer Trust"],
+            ["Data Write Lock", "Prevents read-only routes from writing business data.", "Data Integrity"],
+            ["Memory Scope Lock", "Prevents unrelated memory from leaking into replies.", "Memory Safety"],
+            ["Provider Failure Lock", "Keeps fallback recovery ready if AI or provider fails.", "Zero Stop"],
+            ["Audit Trace Requirement", "Requires evidence for important AI decisions.", "Audit Proof"],
+          ].map(([guardrail, purpose, protects]) => (
+            <div key={guardrail} style={{
+              border: "1px solid rgba(148, 163, 184, 0.18)",
+              borderRadius: "16px",
+              padding: "14px",
+              background: "linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(136, 19, 55, 0.22))",
+              boxShadow: "0 14px 32px rgba(2, 6, 23, 0.2)",
+            }}>
+              <p style={{
+                margin: "0 0 8px",
+                color: "#fecdd3",
+                fontSize: "12px",
+                fontWeight: 900,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}>
+                {guardrail}
+              </p>
+              <p style={{
+                margin: "0 0 10px",
+                color: "#cbd5e1",
+                lineHeight: 1.55,
+                fontSize: "13px",
+              }}>
+                {purpose}
+              </p>
+              <div style={{
+                border: "1px solid rgba(34, 197, 94, 0.28)",
+                borderRadius: "999px",
+                padding: "8px 10px",
+                color: "#bbf7d0",
+                background: "rgba(20, 83, 45, 0.22)",
+                fontSize: "12px",
+                fontWeight: 900,
+              }}>
+                Protects: {protects}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p style={{
+          margin: "14px 0 0",
+          color: "#cbd5e1",
+          fontSize: "12px",
+          lineHeight: 1.6,
+        }}>
+          Backend guardrail route added at /api/nexus/guardrails. It is read-only and does not approve,
+          reject, send messages, write customer data, change payment state, or execute risky actions.
+        </p>
+      </div>
       <div style={cardStyle}>
         <div style={{
           display: "flex",
