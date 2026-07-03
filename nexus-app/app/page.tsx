@@ -310,6 +310,7 @@ export default function Home() {
   ];
 
   const buildLogs = [
+    "Day 52 audit chain integrity panel v1 added",
     "Day 51 risk decision timeline v1 added",
     "Day 50 owner approval evidence panel v1 added",
     "Day 49 owner decision matrix v1 added",
@@ -1276,6 +1277,103 @@ ${aiInput}`,
           lineHeight: 1.6,
         }}>
           UI-only timeline. It does not approve, reject, execute, change payment state,
+          or modify risky route behavior.
+        </p>
+      </div>
+
+      <div style={cardStyle}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "14px",
+          alignItems: "flex-start",
+          marginBottom: "16px",
+          flexWrap: "wrap",
+        }}>
+          <div>
+            <p style={{
+              margin: "0 0 8px",
+              color: "#34d399",
+              fontSize: "12px",
+              fontWeight: 900,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}>
+              Audit Chain Integrity Panel v1
+            </p>
+            <h2 style={{ margin: 0 }}>Audit Chain Integrity</h2>
+            <p style={{
+              margin: "10px 0 0",
+              color: "#cbd5e1",
+              maxWidth: "760px",
+              lineHeight: 1.65,
+            }}>
+              NEXUS keeps every risky decision traceable from customer input to owner gate, decision proof,
+              and recovery path. This protects the business from hidden execution and unclear responsibility.
+            </p>
+          </div>
+
+          <div style={{
+            border: "1px solid rgba(52, 211, 153, 0.35)",
+            borderRadius: "999px",
+            padding: "10px 14px",
+            color: "#bbf7d0",
+            background: "rgba(6, 78, 59, 0.24)",
+            fontWeight: 900,
+            fontSize: "13px",
+            whiteSpace: "nowrap",
+          }}>
+            Audit chain locked
+          </div>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))",
+          gap: "10px",
+        }}>
+          {[
+            ["Customer Input Captured", "Original customer request remains part of the decision trail."],
+            ["AI Draft Stored", "AI response draft stays visible before any owner-controlled action."],
+            ["Risk Classification Saved", "Risk type and business exposure remain traceable."],
+            ["Owner Gate Timestamp", "Owner review stage is clearly separated from AI draft creation."],
+            ["Decision Proof Locked", "Approval or rejection proof stays linked to the route."],
+            ["Recovery Path Linked", "Fallback and recovery context remain available if action is unsafe."],
+            ["No Hidden Execution", "Nothing risky moves forward without visible owner control."],
+          ].map(([title, detail]) => (
+            <div key={title} style={{
+              border: "1px solid rgba(148, 163, 184, 0.18)",
+              borderRadius: "16px",
+              padding: "14px",
+              background: "linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(6, 78, 59, 0.28))",
+              boxShadow: "0 14px 32px rgba(2, 6, 23, 0.2)",
+            }}>
+              <h3 style={{
+                margin: "0 0 8px",
+                color: "#f8fafc",
+                fontSize: "15px",
+              }}>
+                {title}
+              </h3>
+              <p style={{
+                margin: 0,
+                color: "#cbd5e1",
+                lineHeight: 1.55,
+                fontSize: "13px",
+              }}>
+                {detail}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <p style={{
+          margin: "14px 0 0",
+          color: "#cbd5e1",
+          fontSize: "12px",
+          lineHeight: 1.6,
+        }}>
+          UI-only audit integrity layer. It does not approve, reject, execute, change payment state,
           or modify risky route behavior.
         </p>
       </div>
