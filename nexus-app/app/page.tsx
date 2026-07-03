@@ -695,10 +695,10 @@ ${aiInput}`,
         </section>
 
         <section style={{ ...cardStyle, marginTop: "28px" }}>
-          <h2 style={{ marginBottom: "16px" }}>Recent AI Request Log v1</h2>
+          <h2 style={{ marginBottom: "16px" }}>Owner Approval Routing v1</h2>
 
           {responseHistory.length === 0 ? (
-            <p style={{ color: "#94a3b8" }}>No AI requests logged yet. Generate one response to create the first audit log.</p>
+            <p style={{ color: "#94a3b8" }}>No owner approval requests yet. Generate one AI response to create the first approval route.</p>
           ) : (
             responseHistory.map((item) => (
               <div
