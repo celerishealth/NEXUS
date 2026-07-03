@@ -310,6 +310,7 @@ export default function Home() {
   ];
 
   const buildLogs = [
+    "Day 46 mobile cinematic demo polish v1 added",
     "Day 45 cinematic demo story flow v1 added",
     "NEXUS v2 frontend started",
     "Home screen completed",
@@ -728,7 +729,7 @@ ${aiInput}`,
             ))}
           </div>
 
-      <div style={cardStyle}>
+      <div style={{ ...cardStyle, gridColumn: "1 / -1" }}>
         <div style={{
           display: "flex",
           justifyContent: "space-between",
@@ -774,9 +775,31 @@ ${aiInput}`,
           </div>
         </div>
 
+
+        <div style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "8px",
+          marginBottom: "14px",
+        }}>
+          {["Mobile Cinematic Demo Polish v1", "Risk In", "AI Draft", "Owner Gate", "Audit Trail", "Fallback", "Revenue Lock"].map((label) => (
+            <span key={label} style={{
+              border: "1px solid rgba(103, 232, 249, 0.22)",
+              borderRadius: "999px",
+              padding: "8px 10px",
+              color: "#cffafe",
+              background: "rgba(8, 47, 73, 0.34)",
+              fontSize: "12px",
+              fontWeight: 800,
+              letterSpacing: "0.02em",
+            }}>
+              {label}
+            </span>
+          ))}
+        </div>
         <div style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
           gap: "12px",
         }}>
           {[
