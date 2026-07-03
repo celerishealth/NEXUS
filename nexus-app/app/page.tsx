@@ -854,6 +854,54 @@ ${aiInput}`,
                   <div
                     style={{
                       background: "#020617",
+                      border: "1px solid #22c55e",
+                      borderRadius: "12px",
+                      padding: "12px",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    <p style={{ color: "#f8fafc", fontWeight: 700, marginBottom: "8px" }}>
+                      System Health Sentinel v1
+                    </p>
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+                        gap: "8px",
+                      }}
+                    >
+                      {[
+                        ["AI Brain", "Active"],
+                        ["Safety Layer", "Active"],
+                        ["Owner Approval", "Active"],
+                        ["Audit Logs", "Active"],
+                        ["Customer Memory", "Active"],
+                        ["Fallback Mode", "Ready"],
+                        ["Zero Damage Guard", "Enabled"],
+                      ].map(([healthName, healthStatus]) => (
+                        <div
+                          key={healthName}
+                          style={{
+                            background: "#111827",
+                            border: "1px solid #334155",
+                            borderRadius: "10px",
+                            padding: "10px",
+                          }}
+                        >
+                          <p style={{ color: "#94a3b8", fontSize: "12px", marginBottom: "4px" }}>
+                            {healthName}
+                          </p>
+                          <p style={{ color: "#22c55e", fontWeight: 700 }}>{healthStatus}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <p style={{ color: "#94a3b8", fontSize: "12px", marginTop: "10px" }}>
+                      UI-only health sentinel. It does not execute actions, approve routes, reject routes, or change backend logic.
+                    </p>
+                  </div>
+                  <div
+                    style={{
+                      background: "#020617",
                       border: "1px solid #334155",
                       borderRadius: "12px",
                       padding: "12px",
