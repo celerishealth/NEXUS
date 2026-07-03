@@ -310,6 +310,7 @@ export default function Home() {
   ];
 
   const buildLogs = [
+    "Day 47 demo recording control strip v1 added",
     "Day 46 mobile cinematic demo polish v1 added",
     "Day 45 cinematic demo story flow v1 added",
     "NEXUS v2 frontend started",
@@ -776,6 +777,48 @@ ${aiInput}`,
         </div>
 
 
+
+        <div style={{
+          border: "1px solid rgba(34, 197, 94, 0.28)",
+          borderRadius: "22px",
+          padding: "14px",
+          marginBottom: "14px",
+          background: "linear-gradient(135deg, rgba(6, 78, 59, 0.22), rgba(15, 23, 42, 0.72))",
+          boxShadow: "0 18px 44px rgba(2, 6, 23, 0.28)",
+        }}>
+          <p style={{
+            margin: "0 0 10px",
+            color: "#86efac",
+            fontSize: "12px",
+            fontWeight: 900,
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+          }}>
+            Demo Recording Control Strip v1
+          </p>
+
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+            gap: "10px",
+          }}>
+            {["Live Safe Demo", "Owner Controlled", "No Risky Execution", "Audit Ready", "Zero Damage Mode"].map((label) => (
+              <div key={label} style={{
+                border: "1px solid rgba(148, 163, 184, 0.18)",
+                borderRadius: "16px",
+                padding: "12px",
+                background: "rgba(15, 23, 42, 0.72)",
+                color: "#f8fafc",
+                fontSize: "13px",
+                fontWeight: 900,
+                textAlign: "center",
+                boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.04)",
+              }}>
+                {label}
+              </div>
+            ))}
+          </div>
+        </div>
         <div style={{
           display: "flex",
           flexWrap: "wrap",
