@@ -974,6 +974,32 @@ ${aiInput}`,
                   <div
                     style={{
                       background: "#020617",
+                      border: "1px solid #22c55e",
+                      borderRadius: "12px",
+                      padding: "12px",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    <p style={{ color: "#f8fafc", fontWeight: 700, marginBottom: "8px" }}>
+                      Subscription Access Lock Readiness v1
+                    </p>
+                    <ul style={{ color: "#cbd5e1", paddingLeft: "18px", margin: 0 }}>
+                      <li>Active plan allows full dashboard access.</li>
+                      <li>Trial plan allows limited access based on owner rules.</li>
+                      <li>Expired plan locks the app until renewal.</li>
+                      <li>Blocked plan allows no business access.</li>
+                      <li>Renew page remains available for payment recovery.</li>
+                      <li>API and business actions must be blocked after expiry.</li>
+                      <li>Audit log remains preserved for owner review.</li>
+                      <li>No bypass access after plan expiry.</li>
+                    </ul>
+                    <p style={{ color: "#94a3b8", fontSize: "12px", marginTop: "10px" }}>
+                      UI-only subscription lock readiness panel. It does not process payments, block real users, change auth middleware, execute actions, or change backend logic.
+                    </p>
+                  </div>
+                  <div
+                    style={{
+                      background: "#020617",
                       border: "1px solid #a855f7",
                       borderRadius: "12px",
                       padding: "12px",
