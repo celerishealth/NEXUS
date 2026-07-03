@@ -310,6 +310,7 @@ export default function Home() {
   ];
 
   const buildLogs = [
+    "Day 64 backend audit event contract v1 added",
     "Day 63 backend owner approval policy v1 added",
     "Day 62 backend risk classifier v1 added",
     "Day 61 backend guardrail registry v1 added",
@@ -2051,6 +2052,119 @@ ${aiInput}`,
 
 
 
+
+      <div style={cardStyle}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "14px",
+          alignItems: "flex-start",
+          marginBottom: "16px",
+          flexWrap: "wrap",
+        }}>
+          <div>
+            <p style={{
+              margin: "0 0 8px",
+              color: "#c084fc",
+              fontSize: "12px",
+              fontWeight: 900,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}>
+              Backend Audit Event Contract v1
+            </p>
+            <h2 style={{ margin: 0 }}>Backend Audit Event Contract</h2>
+            <p style={{
+              margin: "10px 0 0",
+              color: "#cbd5e1",
+              maxWidth: "820px",
+              lineHeight: 1.65,
+            }}>
+              NEXUS backend audit contract defines the future proof structure for every important decision:
+              event id, tenant boundary, original customer request, AI draft, risk level, owner decision,
+              guardrail result, and timestamp.
+            </p>
+          </div>
+
+          <div style={{
+            border: "1px solid rgba(192, 132, 252, 0.38)",
+            borderRadius: "999px",
+            padding: "10px 14px",
+            color: "#f3e8ff",
+            background: "rgba(88, 28, 135, 0.26)",
+            fontWeight: 900,
+            fontSize: "13px",
+            whiteSpace: "nowrap",
+          }}>
+            Audit contract only
+          </div>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: "10px",
+        }}>
+          {[
+            ["Event ID", "Unique trace id for every future audit event.", "No invisible decision"],
+            ["Tenant ID", "Business account boundary for multi-tenant safety.", "No cross-business mix"],
+            ["Customer Request", "Original customer input stays traceable.", "No missing source"],
+            ["AI Draft", "AI suggestion remains visible before owner decision.", "No hidden output"],
+            ["Risk Level", "Risk classification is linked to the event.", "No unclassified movement"],
+            ["Owner Decision", "Owner decision is required before risky execution.", "No owner bypass"],
+            ["Guardrail Result", "Safety result remains reviewable.", "No silent safety failure"],
+            ["Created At", "Timestamp supports future investigation and recovery.", "No missing timeline"],
+          ].map(([field, purpose, lock]) => (
+            <div key={field} style={{
+              border: "1px solid rgba(148, 163, 184, 0.18)",
+              borderRadius: "16px",
+              padding: "14px",
+              background: "linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(88, 28, 135, 0.22))",
+              boxShadow: "0 14px 32px rgba(2, 6, 23, 0.2)",
+            }}>
+              <p style={{
+                margin: "0 0 8px",
+                color: "#e9d5ff",
+                fontSize: "12px",
+                fontWeight: 900,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}>
+                {field}
+              </p>
+              <p style={{
+                margin: "0 0 10px",
+                color: "#cbd5e1",
+                lineHeight: 1.55,
+                fontSize: "13px",
+              }}>
+                {purpose}
+              </p>
+              <div style={{
+                border: "1px solid rgba(34, 197, 94, 0.28)",
+                borderRadius: "999px",
+                padding: "8px 10px",
+                color: "#bbf7d0",
+                background: "rgba(20, 83, 45, 0.22)",
+                fontSize: "12px",
+                fontWeight: 900,
+              }}>
+                Lock: {lock}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p style={{
+          margin: "14px 0 0",
+          color: "#cbd5e1",
+          fontSize: "12px",
+          lineHeight: 1.6,
+        }}>
+          Backend audit contract route added at /api/nexus/audit. It is read-only and does not create records,
+          approve, reject, send messages, write customer data, change payment state, or execute risky actions.
+        </p>
+      </div>
       <div style={cardStyle}>
         <div style={{
           display: "flex",
