@@ -310,6 +310,7 @@ export default function Home() {
   ];
 
   const buildLogs = [
+    "Day 69 backend customer memory sanitizer v1 added",
     "Day 68 backend customer memory scope validator v1 added",
     "Day 67 backend customer memory contract v1 added",
     "Day 66 backend audit redaction policy v1 added",
@@ -2061,6 +2062,116 @@ ${aiInput}`,
 
 
 
+
+      <div style={cardStyle}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "14px",
+          alignItems: "flex-start",
+          marginBottom: "16px",
+          flexWrap: "wrap",
+        }}>
+          <div>
+            <p style={{
+              margin: "0 0 8px",
+              color: "#22c55e",
+              fontSize: "12px",
+              fontWeight: 900,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}>
+              Backend Customer Memory Sanitizer v1
+            </p>
+            <h2 style={{ margin: 0 }}>Backend Customer Memory Sanitizer</h2>
+            <p style={{
+              margin: "10px 0 0",
+              color: "#cbd5e1",
+              maxWidth: "820px",
+              lineHeight: 1.65,
+            }}>
+              NEXUS backend customer memory sanitizer previews how sensitive details are removed before future
+              memory review, while preserving safe business context like delivery, order, complaint, and follow-up needs.
+            </p>
+          </div>
+
+          <div style={{
+            border: "1px solid rgba(34, 197, 94, 0.38)",
+            borderRadius: "999px",
+            padding: "10px 14px",
+            color: "#dcfce7",
+            background: "rgba(20, 83, 45, 0.26)",
+            fontWeight: 900,
+            fontSize: "13px",
+            whiteSpace: "nowrap",
+          }}>
+            Sanitization preview only
+          </div>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: "10px",
+        }}>
+          {[
+            ["Email Redaction", "Full email addresses are removed from memory preview.", "Email protected"],
+            ["Phone Redaction", "Full phone numbers are removed from memory preview.", "Phone protected"],
+            ["OTP Block", "OTP values are blocked from memory storage.", "OTP protected"],
+            ["Password Block", "Passwords and secrets are blocked from memory storage.", "Secret protected"],
+            ["Payment Secret Block", "UPI PIN, CVV, card, and bank secrets are blocked.", "Money protected"],
+            ["Business Context Preserve", "Safe delivery, order, complaint, and follow-up context stays visible.", "Context preserved"],
+          ].map(([rule, purpose, lock]) => (
+            <div key={rule} style={{
+              border: "1px solid rgba(148, 163, 184, 0.18)",
+              borderRadius: "16px",
+              padding: "14px",
+              background: "linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(20, 83, 45, 0.22))",
+              boxShadow: "0 14px 32px rgba(2, 6, 23, 0.2)",
+            }}>
+              <p style={{
+                margin: "0 0 8px",
+                color: "#bbf7d0",
+                fontSize: "12px",
+                fontWeight: 900,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}>
+                {rule}
+              </p>
+              <p style={{
+                margin: "0 0 10px",
+                color: "#cbd5e1",
+                lineHeight: 1.55,
+                fontSize: "13px",
+              }}>
+                {purpose}
+              </p>
+              <div style={{
+                border: "1px solid rgba(34, 197, 94, 0.28)",
+                borderRadius: "999px",
+                padding: "8px 10px",
+                color: "#bbf7d0",
+                background: "rgba(20, 83, 45, 0.22)",
+                fontSize: "12px",
+                fontWeight: 900,
+              }}>
+                Lock: {lock}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p style={{
+          margin: "14px 0 0",
+          color: "#cbd5e1",
+          fontSize: "12px",
+          lineHeight: 1.6,
+        }}>
+          Backend customer memory sanitizer route added at /api/nexus/customer-memory-sanitizer. It is read-only and does not write memory,
+          approve, reject, send messages, write customer data, change payment state, or execute risky actions.
+        </p>
+      </div>
       <div style={cardStyle}>
         <div style={{
           display: "flex",
