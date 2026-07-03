@@ -429,6 +429,23 @@ ${aiInput}`,
     );
   }
 
+  function getExecutionGuardLabel(status: string) {
+    if (status === "Approved") return "Ready for Safe Execution";
+    if (status === "Rejected") return "Permanently Blocked";
+    return "Locked — Owner Approval Required";
+  }
+
+  function getExecutionGuardDetail(status: string) {
+    if (status === "Approved") {
+      return "Owner approved. NEXUS may now continue toward safe execution.";
+    }
+
+    if (status === "Rejected") {
+      return "Owner rejected. NEXUS must not execute this risky action.";
+    }
+
+    return "Pending approval. NEXUS must not perform any final risky action.";
+  }
   function copyResponse() {
     if (!aiResponse) return;
     navigator.clipboard.writeText(aiResponse);
