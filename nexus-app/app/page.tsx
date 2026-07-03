@@ -310,6 +310,7 @@ export default function Home() {
   ];
 
   const buildLogs = [
+    "Day 71 backend customer memory write gate v1 added",
     "Day 70 backend customer memory retention policy v1 added",
     "Day 69 backend customer memory sanitizer v1 added",
     "Day 68 backend customer memory scope validator v1 added",
@@ -2065,6 +2066,117 @@ ${aiInput}`,
 
 
 
+
+      <div style={cardStyle}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "14px",
+          alignItems: "flex-start",
+          marginBottom: "16px",
+          flexWrap: "wrap",
+        }}>
+          <div>
+            <p style={{
+              margin: "0 0 8px",
+              color: "#38bdf8",
+              fontSize: "12px",
+              fontWeight: 900,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}>
+              Backend Customer Memory Write Gate v1
+            </p>
+            <h2 style={{ margin: 0 }}>Backend Customer Memory Write Gate</h2>
+            <p style={{
+              margin: "10px 0 0",
+              color: "#cbd5e1",
+              maxWidth: "820px",
+              lineHeight: 1.65,
+            }}>
+              NEXUS backend customer memory write gate previews whether future memory is eligible for storage:
+              scope-safe, sanitized, retention-safe, business-useful, and owner-safe. This route still writes nothing.
+            </p>
+          </div>
+
+          <div style={{
+            border: "1px solid rgba(56, 189, 248, 0.38)",
+            borderRadius: "999px",
+            padding: "10px 14px",
+            color: "#e0f2fe",
+            background: "rgba(7, 89, 133, 0.26)",
+            fontWeight: 900,
+            fontSize: "13px",
+            whiteSpace: "nowrap",
+          }}>
+            Write gate preview only
+          </div>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: "10px",
+        }}>
+          {[
+            ["Scope Validation", "Memory must match tenant and customer boundary.", "No cross-scope write"],
+            ["Sanitization Check", "Sensitive signals must be removed or blocked first.", "No secret write"],
+            ["Retention Check", "Memory category must follow retention discipline.", "No forever memory"],
+            ["Business Usefulness", "Memory must help support, order, delivery, complaint, or trust continuity.", "No random memory"],
+            ["Future Eligibility", "Gate can mark future write eligibility without writing anything.", "No write now"],
+            ["Execution Lock", "Gate never writes, deletes, sends, pays, approves, rejects, or executes.", "Safe route only"],
+          ].map(([check, purpose, lock]) => (
+            <div key={check} style={{
+              border: "1px solid rgba(148, 163, 184, 0.18)",
+              borderRadius: "16px",
+              padding: "14px",
+              background: "linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(7, 89, 133, 0.22))",
+              boxShadow: "0 14px 32px rgba(2, 6, 23, 0.2)",
+            }}>
+              <p style={{
+                margin: "0 0 8px",
+                color: "#bae6fd",
+                fontSize: "12px",
+                fontWeight: 900,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}>
+                {check}
+              </p>
+              <p style={{
+                margin: "0 0 10px",
+                color: "#cbd5e1",
+                lineHeight: 1.55,
+                fontSize: "13px",
+              }}>
+                {purpose}
+              </p>
+              <div style={{
+                border: "1px solid rgba(34, 197, 94, 0.28)",
+                borderRadius: "999px",
+                padding: "8px 10px",
+                color: "#bbf7d0",
+                background: "rgba(20, 83, 45, 0.22)",
+                fontSize: "12px",
+                fontWeight: 900,
+              }}>
+                Lock: {lock}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p style={{
+          margin: "14px 0 0",
+          color: "#cbd5e1",
+          fontSize: "12px",
+          lineHeight: 1.6,
+        }}>
+          Backend customer memory write gate route added at /api/nexus/customer-memory-write-gate.
+          It is read-only and does not write memory, delete memory, approve, reject, send messages,
+          write customer data, change payment state, or execute risky actions.
+        </p>
+      </div>
       <div style={cardStyle}>
         <div style={{
           display: "flex",
