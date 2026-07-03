@@ -310,6 +310,7 @@ export default function Home() {
   ];
 
   const buildLogs = [
+    "Day 73 backend customer memory review queue validator v1 added",
     "Day 72 backend customer memory review queue contract v1 added",
     "Day 71 backend customer memory write gate v1 added",
     "Day 70 backend customer memory retention policy v1 added",
@@ -2069,6 +2070,117 @@ ${aiInput}`,
 
 
 
+
+      <div style={cardStyle}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "14px",
+          alignItems: "flex-start",
+          marginBottom: "16px",
+          flexWrap: "wrap",
+        }}>
+          <div>
+            <p style={{
+              margin: "0 0 8px",
+              color: "#0284c7",
+              fontSize: "12px",
+              fontWeight: 900,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}>
+              Backend Customer Memory Review Queue Validator v1
+            </p>
+            <h2 style={{ margin: 0 }}>Backend Customer Memory Review Queue Validator</h2>
+            <p style={{
+              margin: "10px 0 0",
+              color: "#cbd5e1",
+              maxWidth: "820px",
+              lineHeight: 1.65,
+            }}>
+              NEXUS customer memory review queue validator checks future queue item shape before any memory
+              is written: required fields, sanitized candidate, scope proof, sanitization proof, and valid owner review status.
+            </p>
+          </div>
+
+          <div style={{
+            border: "1px solid rgba(2, 132, 199, 0.38)",
+            borderRadius: "999px",
+            padding: "10px 14px",
+            color: "#e0f2fe",
+            background: "rgba(7, 89, 133, 0.26)",
+            fontWeight: 900,
+            fontSize: "13px",
+            whiteSpace: "nowrap",
+          }}>
+            Queue validation only
+          </div>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: "10px",
+        }}>
+          {[
+            ["Required Fields", "Future queue item must include every contract field.", "No incomplete item"],
+            ["Sanitized Candidate", "Queue item must not contain raw sensitive memory.", "No raw secret queue"],
+            ["Scope Proof", "Tenant and customer scope proof must remain visible.", "No scope bypass"],
+            ["Sanitization Proof", "Sensitive signal handling proof must remain visible.", "No hidden sensitive data"],
+            ["Review Status", "Queue item must carry valid owner review status.", "No silent memory write"],
+            ["Execution Lock", "Validator never creates, writes, deletes, sends, pays, approves, rejects, or executes.", "Safe route only"],
+          ].map(([check, purpose, lock]) => (
+            <div key={check} style={{
+              border: "1px solid rgba(148, 163, 184, 0.18)",
+              borderRadius: "16px",
+              padding: "14px",
+              background: "linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(7, 89, 133, 0.22))",
+              boxShadow: "0 14px 32px rgba(2, 6, 23, 0.2)",
+            }}>
+              <p style={{
+                margin: "0 0 8px",
+                color: "#bae6fd",
+                fontSize: "12px",
+                fontWeight: 900,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}>
+                {check}
+              </p>
+              <p style={{
+                margin: "0 0 10px",
+                color: "#cbd5e1",
+                lineHeight: 1.55,
+                fontSize: "13px",
+              }}>
+                {purpose}
+              </p>
+              <div style={{
+                border: "1px solid rgba(34, 197, 94, 0.28)",
+                borderRadius: "999px",
+                padding: "8px 10px",
+                color: "#bbf7d0",
+                background: "rgba(20, 83, 45, 0.22)",
+                fontSize: "12px",
+                fontWeight: 900,
+              }}>
+                Lock: {lock}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p style={{
+          margin: "14px 0 0",
+          color: "#cbd5e1",
+          fontSize: "12px",
+          lineHeight: 1.6,
+        }}>
+          Backend customer memory review queue validator route added at /api/nexus/customer-memory-review-queue-validator.
+          It is read-only and does not create queue items, write memory, delete memory, approve, reject,
+          send messages, write customer data, change payment state, or execute risky actions.
+        </p>
+      </div>
       <div style={cardStyle}>
         <div style={{
           display: "flex",
