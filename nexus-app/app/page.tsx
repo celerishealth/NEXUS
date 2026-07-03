@@ -854,6 +854,30 @@ ${aiInput}`,
                   <div
                     style={{
                       background: "#020617",
+                      border: "1px solid #38bdf8",
+                      borderRadius: "12px",
+                      padding: "12px",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    <p style={{ color: "#f8fafc", fontWeight: 700, marginBottom: "8px" }}>
+                      Recovery Queue Readiness v1
+                    </p>
+                    <ul style={{ color: "#cbd5e1", paddingLeft: "18px", margin: 0 }}>
+                      <li>Failed request is held safely instead of disappearing or executing blindly.</li>
+                      <li>Retry later keeps NEXUS moving without forcing unsafe action.</li>
+                      <li>Owner notified keeps business control with the owner.</li>
+                      <li>Audit trail preserved keeps every failure reviewable.</li>
+                      <li>Customer memory preserved keeps context available after recovery.</li>
+                      <li>No unsafe auto execution protects the business from system failure damage.</li>
+                    </ul>
+                    <p style={{ color: "#94a3b8", fontSize: "12px", marginTop: "10px" }}>
+                      UI-only recovery readiness panel. It does not retry requests, execute actions, approve routes, reject routes, or change backend logic.
+                    </p>
+                  </div>
+                  <div
+                    style={{
+                      background: "#020617",
                       border: "1px solid #f59e0b",
                       borderRadius: "12px",
                       padding: "12px",
