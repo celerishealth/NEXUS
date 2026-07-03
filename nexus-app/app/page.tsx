@@ -310,6 +310,7 @@ export default function Home() {
   ];
 
   const buildLogs = [
+    "Day 53 customer memory proof panel v1 added",
     "Day 52 audit chain integrity panel v1 added",
     "Day 51 risk decision timeline v1 added",
     "Day 50 owner approval evidence panel v1 added",
@@ -1375,6 +1376,103 @@ ${aiInput}`,
         }}>
           UI-only audit integrity layer. It does not approve, reject, execute, change payment state,
           or modify risky route behavior.
+        </p>
+      </div>
+
+      <div style={cardStyle}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "14px",
+          alignItems: "flex-start",
+          marginBottom: "16px",
+          flexWrap: "wrap",
+        }}>
+          <div>
+            <p style={{
+              margin: "0 0 8px",
+              color: "#f472b6",
+              fontSize: "12px",
+              fontWeight: 900,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}>
+              Customer Memory Proof Panel v1
+            </p>
+            <h2 style={{ margin: 0 }}>Customer Memory Proof</h2>
+            <p style={{
+              margin: "10px 0 0",
+              color: "#cbd5e1",
+              maxWidth: "760px",
+              lineHeight: 1.65,
+            }}>
+              NEXUS keeps customer context useful for safer replies while protecting boundaries.
+              Memory supports owner decisions, but it does not expose unrelated customer data.
+            </p>
+          </div>
+
+          <div style={{
+            border: "1px solid rgba(244, 114, 182, 0.35)",
+            borderRadius: "999px",
+            padding: "10px 14px",
+            color: "#fce7f3",
+            background: "rgba(131, 24, 67, 0.22)",
+            fontWeight: 900,
+            fontSize: "13px",
+            whiteSpace: "nowrap",
+          }}>
+            Memory stays controlled
+          </div>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))",
+          gap: "10px",
+        }}>
+          {[
+            ["Customer Context Remembered", "Useful customer context remains available for safer business replies."],
+            ["Previous Requests Linked", "Prior customer requests stay connected to current review context."],
+            ["Risk History Visible", "Repeated risk patterns remain visible before owner decision."],
+            ["Trust Notes Preserved", "Customer trust signals stay available without creating unsafe promises."],
+            ["Owner Decision Context", "Owner sees memory context before approving a risky route."],
+            ["Future Reply Safer", "Stored context helps reduce repeated mistakes in future replies."],
+            ["No Memory Leak", "Customer memory stays scoped and does not expose unrelated data."],
+          ].map(([title, detail]) => (
+            <div key={title} style={{
+              border: "1px solid rgba(148, 163, 184, 0.18)",
+              borderRadius: "16px",
+              padding: "14px",
+              background: "linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(131, 24, 67, 0.26))",
+              boxShadow: "0 14px 32px rgba(2, 6, 23, 0.2)",
+            }}>
+              <h3 style={{
+                margin: "0 0 8px",
+                color: "#f8fafc",
+                fontSize: "15px",
+              }}>
+                {title}
+              </h3>
+              <p style={{
+                margin: 0,
+                color: "#cbd5e1",
+                lineHeight: 1.55,
+                fontSize: "13px",
+              }}>
+                {detail}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <p style={{
+          margin: "14px 0 0",
+          color: "#cbd5e1",
+          fontSize: "12px",
+          lineHeight: 1.6,
+        }}>
+          UI-only customer memory proof layer. It does not store new memory, expose private data,
+          approve, reject, execute, or modify risky route behavior.
         </p>
       </div>
       <div style={cardStyle}>
