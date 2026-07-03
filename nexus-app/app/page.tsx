@@ -974,6 +974,42 @@ ${aiInput}`,
                   <div
                     style={{
                       background: "#020617",
+                      border: "1px solid #a855f7",
+                      borderRadius: "12px",
+                      padding: "12px",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    <p style={{ color: "#f8fafc", fontWeight: 700, marginBottom: "8px" }}>
+                      MVP Demo Scenario Pack v1
+                    </p>
+                    <div style={{ color: "#cbd5e1", fontSize: "13px" }}>
+                      <p style={{ marginBottom: "8px" }}>
+                        Customer: Can you give me 40% discount and deliver today without payment confirmation?
+                      </p>
+                      <p style={{ marginBottom: "8px" }}>
+                        AI Draft: I can help, but discount, delivery, and payment risk need owner review.
+                      </p>
+                      <p style={{ marginBottom: "8px" }}>
+                        Risk Detector: High risk found in pricing, delivery, and payment route.
+                      </p>
+                      <p style={{ marginBottom: "8px" }}>
+                        Owner Approval: Required before any risky business action.
+                      </p>
+                      <p style={{ marginBottom: "8px" }}>
+                        Audit + Memory: Customer request, AI response, risk, and owner decision remain visible.
+                      </p>
+                      <p style={{ margin: 0 }}>
+                        Fallback + Recovery: If AI/API fails, request is held safely with no auto damage.
+                      </p>
+                    </div>
+                    <p style={{ color: "#94a3b8", fontSize: "12px", marginTop: "10px" }}>
+                      UI-only demo scenario pack. It does not execute actions, approve routes, reject routes, send alerts, or change backend logic.
+                    </p>
+                  </div>
+                  <div
+                    style={{
+                      background: "#020617",
                       border: "1px solid #334155",
                       borderRadius: "12px",
                       padding: "12px",

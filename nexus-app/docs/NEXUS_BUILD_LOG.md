@@ -672,3 +672,24 @@ Build:
 - Strengthens Recovery Queue readiness.
 - Strengthens owner control and alert visibility.
 - Keeps NEXUS as AI Business Operating System, not chatbot/CRM/ERP clone.
+
+## Day 36: MVP Demo Scenario Pack v1
+
+### Completed
+- Added MVP Demo Scenario Pack v1 inside the owner dashboard demo flow area.
+- Added client-ready scenario showing customer risky request, AI draft, risk detection, owner approval requirement, audit + memory capture, and fallback/recovery safety.
+- UI-only demo scenario panel.
+- No risky execution behavior changed.
+- No approve/reject logic changed.
+- No backend execution logic changed.
+- No payment logic changed.
+
+### Vision Alignment
+- Strengthens MVP demo clarity.
+- Strengthens Owner Approval.
+- Strengthens Safety Layer.
+- Strengthens Risk Detection.
+- Strengthens Audit Logs.
+- Strengthens Customer Memory.
+- Strengthens Zero Damage.
+- Keeps NEXUS as AI Business Operating System, not chatbot/CRM/ERP clone.
