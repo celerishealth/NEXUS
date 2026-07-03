@@ -310,6 +310,7 @@ export default function Home() {
   ];
 
   const buildLogs = [
+    "Day 51 risk decision timeline v1 added",
     "Day 50 owner approval evidence panel v1 added",
     "Day 49 owner decision matrix v1 added",
     "Day 48 owner command briefing panel v1 added",
@@ -1169,6 +1170,112 @@ ${aiInput}`,
           lineHeight: 1.6,
         }}>
           UI-only evidence panel. It does not approve, reject, execute, change payment state,
+          or modify risky route behavior.
+        </p>
+      </div>
+
+      <div style={cardStyle}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "14px",
+          alignItems: "flex-start",
+          marginBottom: "16px",
+          flexWrap: "wrap",
+        }}>
+          <div>
+            <p style={{
+              margin: "0 0 8px",
+              color: "#38bdf8",
+              fontSize: "12px",
+              fontWeight: 900,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}>
+              Risk Decision Timeline v1
+            </p>
+            <h2 style={{ margin: 0 }}>Risk Decision Timeline</h2>
+            <p style={{
+              margin: "10px 0 0",
+              color: "#cbd5e1",
+              maxWidth: "760px",
+              lineHeight: 1.65,
+            }}>
+              NEXUS shows the safe path of a risky customer request before any owner-controlled business action moves forward.
+              This keeps the business protected without changing approval behavior.
+            </p>
+          </div>
+
+          <div style={{
+            border: "1px solid rgba(56, 189, 248, 0.35)",
+            borderRadius: "999px",
+            padding: "10px 14px",
+            color: "#cffafe",
+            background: "rgba(8, 47, 73, 0.28)",
+            fontWeight: 900,
+            fontSize: "13px",
+            whiteSpace: "nowrap",
+          }}>
+            Safe route visible
+          </div>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))",
+          gap: "10px",
+        }}>
+          {[
+            ["01", "Request Received", "Customer message enters NEXUS safely."],
+            ["02", "AI Draft Prepared", "AI creates a draft, not an unsafe action."],
+            ["03", "Risk Detected", "Risk detector checks possible business damage."],
+            ["04", "Evidence Reviewed", "Owner sees request, draft, risk, and impact proof."],
+            ["05", "Owner Decision Required", "Risky route waits behind owner approval gate."],
+            ["06", "Audit Saved", "Decision path stays traceable for review."],
+            ["07", "Recovery Ready", "Fallback path remains ready so business does not stop."],
+          ].map(([step, title, detail]) => (
+            <div key={step} style={{
+              border: "1px solid rgba(148, 163, 184, 0.18)",
+              borderRadius: "16px",
+              padding: "14px",
+              background: "linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(8, 47, 73, 0.28))",
+              boxShadow: "0 14px 32px rgba(2, 6, 23, 0.2)",
+            }}>
+              <p style={{
+                margin: "0 0 8px",
+                color: "#67e8f9",
+                fontSize: "12px",
+                fontWeight: 900,
+                letterSpacing: "0.12em",
+              }}>
+                {step}
+              </p>
+              <h3 style={{
+                margin: "0 0 8px",
+                color: "#f8fafc",
+                fontSize: "15px",
+              }}>
+                {title}
+              </h3>
+              <p style={{
+                margin: 0,
+                color: "#cbd5e1",
+                lineHeight: 1.55,
+                fontSize: "13px",
+              }}>
+                {detail}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <p style={{
+          margin: "14px 0 0",
+          color: "#cbd5e1",
+          fontSize: "12px",
+          lineHeight: 1.6,
+        }}>
+          UI-only timeline. It does not approve, reject, execute, change payment state,
           or modify risky route behavior.
         </p>
       </div>
