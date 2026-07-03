@@ -310,6 +310,7 @@ export default function Home() {
   ];
 
   const buildLogs = [
+    "Day 58 demo script control panel v1 added",
     "Day 57 MVP launch readiness panel v1 added",
     "Day 56 NEXUS moat dashboard v1 added",
     "Day 55 competitor weakness matrix v1 added",
@@ -1923,6 +1924,120 @@ ${aiInput}`,
           lineHeight: 1.6,
         }}>
           UI-only MVP launch readiness panel. It does not call external services, approve, reject,
+          execute, change payment state, or modify risky route behavior.
+        </p>
+      </div>
+
+      <div style={cardStyle}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "14px",
+          alignItems: "flex-start",
+          marginBottom: "16px",
+          flexWrap: "wrap",
+        }}>
+          <div>
+            <p style={{
+              margin: "0 0 8px",
+              color: "#22d3ee",
+              fontSize: "12px",
+              fontWeight: 900,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}>
+              Demo Script Control Panel v1
+            </p>
+            <h2 style={{ margin: 0 }}>Demo Script Control Panel</h2>
+            <p style={{
+              margin: "10px 0 0",
+              color: "#cbd5e1",
+              maxWidth: "820px",
+              lineHeight: 1.65,
+            }}>
+              NEXUS demo must show one clean business story: customer request enters,
+              AI prepares a safe draft, risk is detected, owner approval protects the business,
+              audit proof is saved, memory improves context, fallback stays ready, and the owner sees control.
+            </p>
+          </div>
+
+          <div style={{
+            border: "1px solid rgba(34, 211, 238, 0.38)",
+            borderRadius: "999px",
+            padding: "10px 14px",
+            color: "#cffafe",
+            background: "rgba(8, 145, 178, 0.22)",
+            fontWeight: 900,
+            fontSize: "13px",
+            whiteSpace: "nowrap",
+          }}>
+            Recording ready
+          </div>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: "10px",
+        }}>
+          {[
+            ["Opening Hook", "Show NEXUS as a safety-first AI Business Operating System, not a chatbot.", "Start Strong"],
+            ["Customer Request Scene", "A real customer request enters the business control room.", "Request Visible"],
+            ["AI Draft Scene", "AI prepares a response draft without executing risky action.", "Draft Safe"],
+            ["Risk Detection Scene", "Pricing, payment, stock, delivery, return, and trust risk are checked.", "Risk Visible"],
+            ["Owner Approval Scene", "Owner sees the decision before anything risky moves forward.", "Owner Gate"],
+            ["Audit Proof Scene", "Decision evidence stays traceable for review and recovery.", "Proof Saved"],
+            ["Customer Memory Scene", "Useful customer context stays available without memory leak.", "Memory Scoped"],
+            ["Fallback Recovery Scene", "If AI or route fails, recovery path protects business continuity.", "Zero Stop"],
+            ["Closing CTA", "End with NEXUS protecting revenue, trust, speed, and control.", "Close Premium"],
+          ].map(([scene, purpose, status]) => (
+            <div key={scene} style={{
+              border: "1px solid rgba(148, 163, 184, 0.18)",
+              borderRadius: "16px",
+              padding: "14px",
+              background: "linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(8, 145, 178, 0.22))",
+              boxShadow: "0 14px 32px rgba(2, 6, 23, 0.2)",
+            }}>
+              <p style={{
+                margin: "0 0 8px",
+                color: "#a5f3fc",
+                fontSize: "12px",
+                fontWeight: 900,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}>
+                {scene}
+              </p>
+              <p style={{
+                margin: "0 0 10px",
+                color: "#cbd5e1",
+                lineHeight: 1.55,
+                fontSize: "13px",
+              }}>
+                {purpose}
+              </p>
+              <div style={{
+                border: "1px solid rgba(34, 197, 94, 0.28)",
+                borderRadius: "999px",
+                padding: "8px 10px",
+                color: "#bbf7d0",
+                background: "rgba(20, 83, 45, 0.22)",
+                fontSize: "12px",
+                fontWeight: 900,
+              }}>
+                Script Step: {status}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p style={{
+          margin: "14px 0 0",
+          color: "#cbd5e1",
+          fontSize: "12px",
+          lineHeight: 1.6,
+        }}>
+          UI-only demo script control panel. It does not call external services, approve, reject,
           execute, change payment state, or modify risky route behavior.
         </p>
       </div>
