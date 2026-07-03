@@ -974,6 +974,32 @@ ${aiInput}`,
                   <div
                     style={{
                       background: "#020617",
+                      border: "1px solid #a855f7",
+                      borderRadius: "12px",
+                      padding: "12px",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    <p style={{ color: "#f8fafc", fontWeight: 700, marginBottom: "8px" }}>
+                      Public Demo Link Preflight v1
+                    </p>
+                    <ul style={{ color: "#cbd5e1", paddingLeft: "18px", margin: 0 }}>
+                      <li>GitHub must be clean before deployment.</li>
+                      <li>Production build must pass before deployment.</li>
+                      <li>.env.local must not be committed or exposed.</li>
+                      <li>Public demo link must stay safe and view-only.</li>
+                      <li>No real business action should execute from demo link.</li>
+                      <li>No API key, secret, or private config should leak.</li>
+                      <li>Phone demo becomes ready after secure deployment.</li>
+                      <li>Owner Approval, Safety Layer, Audit Logs, Customer Memory, and Fallback story must remain visible.</li>
+                    </ul>
+                    <p style={{ color: "#94a3b8", fontSize: "12px", marginTop: "10px" }}>
+                      UI-only public demo preflight panel. It does not deploy the app, expose secrets, execute actions, approve routes, reject routes, process payments, block users, or change backend logic.
+                    </p>
+                  </div>
+                  <div
+                    style={{
+                      background: "#020617",
                       border: "1px solid #6366f1",
                       borderRadius: "12px",
                       padding: "12px",
