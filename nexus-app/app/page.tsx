@@ -974,6 +974,32 @@ ${aiInput}`,
                   <div
                     style={{
                       background: "#020617",
+                      border: "1px solid #14b8a6",
+                      borderRadius: "12px",
+                      padding: "12px",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    <p style={{ color: "#f8fafc", fontWeight: 700, marginBottom: "8px" }}>
+                      MVP Demo Polish Panel v1
+                    </p>
+                    <ul style={{ color: "#cbd5e1", paddingLeft: "18px", margin: 0 }}>
+                      <li>NEXUS is an AI Business Operating System, not a simple chatbot.</li>
+                      <li>Customer requests are handled with AI draft support.</li>
+                      <li>Risk detector protects pricing, payment, delivery, stock, refund, and trust decisions.</li>
+                      <li>Owner Approval keeps risky business decisions under owner control.</li>
+                      <li>Audit Logs keep every important action reviewable.</li>
+                      <li>Customer Memory keeps context available for better follow-up.</li>
+                      <li>Fallback and Recovery readiness protect against AI/API/system failure.</li>
+                      <li>Subscription Access Lock protects paid plan revenue after expiry.</li>
+                    </ul>
+                    <p style={{ color: "#94a3b8", fontSize: "12px", marginTop: "10px" }}>
+                      UI-only demo polish panel. It does not execute actions, approve routes, reject routes, process payments, block users, or change backend logic.
+                    </p>
+                  </div>
+                  <div
+                    style={{
+                      background: "#020617",
                       border: "1px solid #22c55e",
                       borderRadius: "12px",
                       padding: "12px",
