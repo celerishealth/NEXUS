@@ -310,6 +310,7 @@ export default function Home() {
   ];
 
   const buildLogs = [
+    "Day 68 backend customer memory scope validator v1 added",
     "Day 67 backend customer memory contract v1 added",
     "Day 66 backend audit redaction policy v1 added",
     "Day 65 backend audit event validator v1 added",
@@ -2059,6 +2060,116 @@ ${aiInput}`,
 
 
 
+
+      <div style={cardStyle}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "14px",
+          alignItems: "flex-start",
+          marginBottom: "16px",
+          flexWrap: "wrap",
+        }}>
+          <div>
+            <p style={{
+              margin: "0 0 8px",
+              color: "#14b8a6",
+              fontSize: "12px",
+              fontWeight: 900,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}>
+              Backend Customer Memory Scope Validator v1
+            </p>
+            <h2 style={{ margin: 0 }}>Backend Customer Memory Scope Validator</h2>
+            <p style={{
+              margin: "10px 0 0",
+              color: "#cbd5e1",
+              maxWidth: "820px",
+              lineHeight: 1.65,
+            }}>
+              NEXUS backend customer memory scope validator checks that future memory stays inside the correct
+              business and customer boundary before any memory storage exists.
+            </p>
+          </div>
+
+          <div style={{
+            border: "1px solid rgba(20, 184, 166, 0.38)",
+            borderRadius: "999px",
+            padding: "10px 14px",
+            color: "#ccfbf1",
+            background: "rgba(19, 78, 74, 0.26)",
+            fontWeight: 900,
+            fontSize: "13px",
+            whiteSpace: "nowrap",
+          }}>
+            Scope validation only
+          </div>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: "10px",
+        }}>
+          {[
+            ["Tenant Scope Check", "Memory must belong to one business account only.", "No business leak"],
+            ["Customer Scope Check", "One customer context must not leak into another customer reply.", "No customer leak"],
+            ["Allowed Context Check", "Memory stays limited to business preference, support, order, or trust context.", "No unrelated memory"],
+            ["Blocked Signal Check", "Secrets, OTPs, payment credentials, and passwords are blocked.", "No unsafe storage"],
+            ["Scope Preview", "Route validates memory scope without writing anything.", "No memory write"],
+            ["Execution Lock", "Validator never approves, rejects, pays, sends, writes, or executes.", "Safe route only"],
+          ].map(([check, purpose, lock]) => (
+            <div key={check} style={{
+              border: "1px solid rgba(148, 163, 184, 0.18)",
+              borderRadius: "16px",
+              padding: "14px",
+              background: "linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(19, 78, 74, 0.22))",
+              boxShadow: "0 14px 32px rgba(2, 6, 23, 0.2)",
+            }}>
+              <p style={{
+                margin: "0 0 8px",
+                color: "#99f6e4",
+                fontSize: "12px",
+                fontWeight: 900,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}>
+                {check}
+              </p>
+              <p style={{
+                margin: "0 0 10px",
+                color: "#cbd5e1",
+                lineHeight: 1.55,
+                fontSize: "13px",
+              }}>
+                {purpose}
+              </p>
+              <div style={{
+                border: "1px solid rgba(34, 197, 94, 0.28)",
+                borderRadius: "999px",
+                padding: "8px 10px",
+                color: "#bbf7d0",
+                background: "rgba(20, 83, 45, 0.22)",
+                fontSize: "12px",
+                fontWeight: 900,
+              }}>
+                Lock: {lock}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p style={{
+          margin: "14px 0 0",
+          color: "#cbd5e1",
+          fontSize: "12px",
+          lineHeight: 1.6,
+        }}>
+          Backend customer memory scope route added at /api/nexus/customer-memory-scope. It is read-only and does not write memory,
+          approve, reject, send messages, write customer data, change payment state, or execute risky actions.
+        </p>
+      </div>
       <div style={cardStyle}>
         <div style={{
           display: "flex",
