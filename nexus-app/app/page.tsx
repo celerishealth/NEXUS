@@ -416,7 +416,7 @@ ${aiInput}`,
   function approveRequest(requestId: number) {
     setResponseHistory((prev) =>
       prev.map((item) =>
-        item.id === requestId ? { ...item, status: "Approved" } : item
+        item.id === requestId ? { ...item, status: "Approved", ownerDecisionAt: new Date().toLocaleString() } : item
       )
     );
   }
@@ -424,15 +424,26 @@ ${aiInput}`,
   function rejectRequest(requestId: number) {
     setResponseHistory((prev) =>
       prev.map((item) =>
-        item.id === requestId ? { ...item, status: "Rejected" } : item
+        item.id === requestId ? { ...item, status: "Rejected", ownerDecisionAt: new Date().toLocaleString() } : item
       )
     );
   }
 
+  function getOwnerDecisionAudit(status: string, ownerDecisionAt?: string) {
+    if (status === "Approved") {
+      return `Approved by owner at ${ownerDecisionAt ?? "decision time unavailable"}`;
+    }
+
+    if (status === "Rejected") {
+      return `Rejected by owner at ${ownerDecisionAt ?? "decision time unavailable"}`;
+    }
+
+    return "Awaiting owner decision";
+  }
   function getExecutionGuardLabel(status: string) {
     if (status === "Approved") return "Ready for Safe Execution";
     if (status === "Rejected") return "Permanently Blocked";
-    return "Locked — Owner Approval Required";
+    return "Locked â€” Owner Approval Required";
   }
 
   function getExecutionGuardDetail(status: string) {
