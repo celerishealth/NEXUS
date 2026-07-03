@@ -443,7 +443,7 @@ ${aiInput}`,
   function getExecutionGuardLabel(status: string) {
     if (status === "Approved") return "Ready for Safe Execution";
     if (status === "Rejected") return "Permanently Blocked";
-    return "Locked â€” Owner Approval Required";
+    return "Locked Ã¢â‚¬â€ Owner Approval Required";
   }
 
   function getExecutionGuardDetail(status: string) {
@@ -468,6 +468,10 @@ ${aiInput}`,
     setSelectedTemplate("Custom Prompt");
   }
 
+  const pendingApprovalCount = responseHistory.filter((item) => item.status === "Pending Owner Approval").length;
+  const approvedApprovalCount = responseHistory.filter((item) => item.status === "Approved").length;
+  const rejectedApprovalCount = responseHistory.filter((item) => item.status === "Rejected").length;
+  const totalApprovalRoutes = responseHistory.length;
   if (!isLaunched) {
     return (
       <main
