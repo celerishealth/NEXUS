@@ -445,7 +445,7 @@ ${aiInput}`,
   function getExecutionGuardLabel(status: string) {
     if (status === "Approved") return "Ready for Safe Execution";
     if (status === "Rejected") return "Permanently Blocked";
-    return "Locked ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Owner Approval Required";
+    return "Locked ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â Owner Approval Required";
   }
 
   function getExecutionGuardDetail(status: string) {
@@ -481,7 +481,7 @@ ${aiInput}`,
 
   const normalizedApprovalQueueSearch = approvalQueueSearch.trim().toLowerCase();
 
-  const filteredApprovalRoutes =
+  const searchedApprovalRoutes =
     normalizedApprovalQueueSearch.length === 0
       ? approvalRoutesByStatus
       : approvalRoutesByStatus.filter(
@@ -489,6 +489,10 @@ ${aiInput}`,
             item.input.toLowerCase().includes(normalizedApprovalQueueSearch) ||
             item.response.toLowerCase().includes(normalizedApprovalQueueSearch)
         );
+
+  const filteredApprovalRoutes = [...searchedApprovalRoutes].sort(
+    (a, b) => b.id - a.id
+  );
   if (!isLaunched) {
     return (
       <main
