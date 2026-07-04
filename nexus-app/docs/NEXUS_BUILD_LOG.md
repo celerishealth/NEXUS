@@ -1504,3 +1504,29 @@ Safety:
 - No AI model calls.
 - No third-party mutation.
 - Route is safe read-only preview-only.
+
+## Day 106: NEXUS Pilot Trust Evidence Contract v1
+
+Completed the Pilot Trust Evidence Contract for the Trust + Pilot Readiness phase.
+
+Added:
+- `lib/nexus/nexusPilotTrustEvidenceContract.ts`
+- `app/api/nexus/pilot-trust-evidence-contract/route.ts`
+
+Purpose:
+- Defines what trust evidence NEXUS may show during Shadow Mode before a real pilot.
+- Confirms evidence is preview-only and cannot execute, persist, mutate, send, approve, reject, charge, or call AI.
+- Shows owner control, Safety Layer posture, blocked execution posture, Customer Memory boundary, audit visibility boundary, fallback/recovery boundary, and Subscription Lock boundary.
+- Keeps NEXUS positioned as an owner-controlled AI Business Operating Layer above existing business software.
+
+Safety:
+- No real customer data write.
+- No real DB memory read/write.
+- No audit persistence.
+- No recovery execution.
+- No approve/reject execution.
+- No payment execution.
+- No message sending.
+- No AI model calls.
+- No third-party mutation.
+- Route is safe read-only preview-only.
