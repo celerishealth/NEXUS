@@ -5937,6 +5937,49 @@ ${aiInput}`,
             </div>
           </div>
         </section>
+
+        <section className="rounded-3xl border border-teal-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-teal-950/20">
+          <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-teal-300">
+                Day 96 - Customer Memory
+              </p>
+              <h2 className="mt-2 text-2xl font-semibold text-white">
+                Backend Customer Memory Recovery/Fallback Contract v1
+              </h2>
+              <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">
+                Read-only preview contract for customer memory recovery and fallback behavior. It defines safe fallback
+                routing after the safety pipeline while blocking recovery execution, audit persistence, DB access, customer
+                data writes, memory writes, message sending, payments, AI model calls, response generation, approve/reject
+                execution, owner decision execution, and risky actions.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-emerald-400/20 bg-emerald-500/10 px-4 py-3 text-sm font-semibold text-emerald-200">
+              Recovery contract - No execution
+            </div>
+          </div>
+
+          <div className="mt-5 grid gap-3 md:grid-cols-3">
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-sm font-semibold text-white">Zero Stop fallback</p>
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                Routes blocked, unclear, or failed pipeline states to safe fallback preview or manual owner review.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-sm font-semibold text-white">Zero Damage wall</p>
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                No recovery execution, no DB write, no memory write, no audit persistence, no sending, no payment execution.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-sm font-semibold text-white">Route</p>
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                /api/nexus/customer-memory-recovery-fallback-contract
+              </p>
+            </div>
+          </div>
+        </section>
 </main>
   );
 }
@@ -5987,6 +6030,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 
