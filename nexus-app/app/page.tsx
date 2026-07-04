@@ -5894,6 +5894,49 @@ ${aiInput}`,
             </div>
           </div>
         </section>
+
+        <section className="rounded-3xl border border-lime-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-lime-950/20">
+          <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-lime-300">
+                Day 95 - Customer Memory
+              </p>
+              <h2 className="mt-2 text-2xl font-semibold text-white">
+                Backend Customer Memory Audit Event Validator v1
+              </h2>
+              <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">
+                Read-only preview validator for customer memory audit event previews. It validates audit contract readiness,
+                deterministic audit preview ID, event type, safety decision, subject trust, write boundaries, and execution intent
+                while blocking audit persistence, DB writes, memory writes, customer data writes, message sending, payments,
+                AI model calls, response generation, approve/reject execution, owner decision execution, and risky actions.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-emerald-400/20 bg-emerald-500/10 px-4 py-3 text-sm font-semibold text-emerald-200">
+              Audit validator - No persistence
+            </div>
+          </div>
+
+          <div className="mt-5 grid gap-3 md:grid-cols-3">
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-sm font-semibold text-white">Audit validation</p>
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                Confirms preview ID, event type, safety decision, audit subject trust, source boundaries, and contract readiness.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-sm font-semibold text-white">Persistence blocked</p>
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                No audit persistence, no DB write, no memory write, no customer data write, no sending, no payment execution.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-sm font-semibold text-white">Route</p>
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                /api/nexus/customer-memory-audit-event-validator
+              </p>
+            </div>
+          </div>
+        </section>
 </main>
   );
 }
@@ -5944,6 +5987,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 
