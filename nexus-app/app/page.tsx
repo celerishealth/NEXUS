@@ -310,6 +310,7 @@ export default function Home() {
   ];
 
   const buildLogs = [
+    "Day 75 backend customer memory review decision validator v1 added",
     "Day 74 backend customer memory review decision policy v1 added",
     "Day 73 backend customer memory review queue validator v1 added",
     "Day 72 backend customer memory review queue contract v1 added",
@@ -2073,6 +2074,118 @@ ${aiInput}`,
 
 
 
+
+      <div style={cardStyle}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "14px",
+          alignItems: "flex-start",
+          marginBottom: "16px",
+          flexWrap: "wrap",
+        }}>
+          <div>
+            <p style={{
+              margin: "0 0 8px",
+              color: "#1d4ed8",
+              fontSize: "12px",
+              fontWeight: 900,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}>
+              Backend Customer Memory Review Decision Validator v1
+            </p>
+            <h2 style={{ margin: 0 }}>Backend Customer Memory Review Decision Validator</h2>
+            <p style={{
+              margin: "10px 0 0",
+              color: "#cbd5e1",
+              maxWidth: "820px",
+              lineHeight: 1.65,
+            }}>
+              NEXUS customer memory review decision validator checks future decision safety:
+              allowed decision, future-write eligibility proof, blocked decision discipline, reviewer trace,
+              and timestamp proof — without executing any write.
+            </p>
+          </div>
+
+          <div style={{
+            border: "1px solid rgba(29, 78, 216, 0.38)",
+            borderRadius: "999px",
+            padding: "10px 14px",
+            color: "#dbeafe",
+            background: "rgba(30, 64, 175, 0.26)",
+            fontWeight: 900,
+            fontSize: "13px",
+            whiteSpace: "nowrap",
+          }}>
+            Decision validation only
+          </div>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: "10px",
+        }}>
+          {[
+            ["Allowed Decision", "Decision must match locked policy values.", "No unknown decision"],
+            ["Write Eligibility Proof", "Future-write eligible needs scope, sanitization, retention, and usefulness proof.", "No unsafe write"],
+            ["Blocked Decision", "Blocked decisions stay blocked and never trigger writes.", "No blocked execution"],
+            ["Reviewer Trace", "Decision preview must carry reviewer trace.", "No invisible reviewer"],
+            ["Timeline Proof", "Decision preview must carry createdAt timestamp.", "No missing timeline"],
+            ["Execution Lock", "Validator never creates, writes, deletes, sends, pays, approves, rejects, or executes.", "Safe route only"],
+          ].map(([check, purpose, lock]) => (
+            <div key={check} style={{
+              border: "1px solid rgba(148, 163, 184, 0.18)",
+              borderRadius: "16px",
+              padding: "14px",
+              background: "linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(30, 64, 175, 0.22))",
+              boxShadow: "0 14px 32px rgba(2, 6, 23, 0.2)",
+            }}>
+              <p style={{
+                margin: "0 0 8px",
+                color: "#bfdbfe",
+                fontSize: "12px",
+                fontWeight: 900,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}>
+                {check}
+              </p>
+              <p style={{
+                margin: "0 0 10px",
+                color: "#cbd5e1",
+                lineHeight: 1.55,
+                fontSize: "13px",
+              }}>
+                {purpose}
+              </p>
+              <div style={{
+                border: "1px solid rgba(34, 197, 94, 0.28)",
+                borderRadius: "999px",
+                padding: "8px 10px",
+                color: "#bbf7d0",
+                background: "rgba(20, 83, 45, 0.22)",
+                fontSize: "12px",
+                fontWeight: 900,
+              }}>
+                Lock: {lock}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p style={{
+          margin: "14px 0 0",
+          color: "#cbd5e1",
+          fontSize: "12px",
+          lineHeight: 1.6,
+        }}>
+          Backend customer memory review decision validator route added at /api/nexus/customer-memory-review-decision-validator.
+          It is read-only and does not create queue items, write memory, delete memory, approve, reject,
+          send messages, write customer data, change payment state, or execute risky actions.
+        </p>
+      </div>
       <div style={cardStyle}>
         <div style={{
           display: "flex",
