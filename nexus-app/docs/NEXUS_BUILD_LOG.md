@@ -2335,3 +2335,35 @@ Outcome:
 - Confirms all planned architecture layers remain planning-only.
 - Confirms no layer is implemented or executable now.
 - Confirms next safe step is dashboard contract only.
+
+## Day 135: NEXUS Real Pilot Execution Architecture Planning Dashboard Contract v1
+
+Status: Completed.
+
+Added a preview-only dashboard contract for the real pilot execution architecture planning phase.
+
+Safety:
+- Planning dashboard contract only.
+- Preview-only.
+- Planning-only.
+- Read-only.
+- Non-executable.
+- Real pilot still blocked.
+- Execution architecture not approved.
+- No real pilot start action.
+- No approve/reject execution.
+- No payment execution.
+- No message sending.
+- No customer data write.
+- No real DB memory read/write.
+- No audit persistence.
+- No recovery execution.
+- No AI model calls.
+- No third-party mutation.
+- No adapter execution.
+- No subscription mutation.
+
+Outcome:
+- Defines safe dashboard cards for planning foundation, planned architecture layers, real pilot block, execution architecture block, hard safety blocks, identity lock, and next safe step.
+- Confirms no execution layer is implemented.
+- Confirms NEXUS remains an owner-controlled AI Business Operating Layer above existing business software.
