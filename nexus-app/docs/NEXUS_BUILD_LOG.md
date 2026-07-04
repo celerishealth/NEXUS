@@ -3730,3 +3730,58 @@ Future execution prerequisites documented:
 
 Next recommended step:
 Day 203: Controlled Paid Pilot Launch Owner Execution Gate Contract v1.
+
+## Day 204: Controlled Paid Pilot Launch Risk Scoring and Action Class Contract v1
+
+Completed Day 204 read-only risk scoring and action-class contract for the Controlled Paid Pilot Launch Execution Architecture Planning phase.
+
+Added:
+- `lib/nexus/controlledPaidPilotLaunchRiskScoringActionClassContract.ts`
+- `app/api/nexus/controlled-paid-pilot-launch-risk-scoring-action-class/route.ts`
+- Dashboard access card for the Day 204 risk scoring API.
+
+Purpose:
+- Defines deterministic risk levels for future controlled paid pilot execution planning.
+- Documents low, medium, high, and blocked action classes.
+- Keeps NEXUS as an owner-controlled AI Business Operating Layer above existing business software.
+- Preserves the locked non-chatbot, non-CRM-clone, non-ERP-clone, non-Make/Zapier-clone identity.
+- Keeps execution default blocked unless owner-approved execution architecture is completed later.
+
+Safety status:
+- Read-only risk-scoring-action-class-preview-only route.
+- No approve/reject execution.
+- No payment execution.
+- No invoice creation.
+- No subscription activation.
+- No entitlement writes.
+- No message sending.
+- No customer data write.
+- No real DB memory read/write.
+- No audit persistence.
+- No recovery execution.
+- No third-party mutation.
+- No AI model calls.
+
+Risk scoring principles locked:
+- Blocked by default.
+- Risk before action.
+- Money, access, data, and communication are high-risk.
+- Preview is not permission.
+- Deterministic safety route.
+
+Hard-blocked surfaces documented:
+- Approve/reject execution.
+- Payment execution.
+- Invoice creation.
+- Subscription activation.
+- Entitlement writes.
+- Message sending.
+- Customer data writes.
+- Real DB memory reads/writes.
+- Audit persistence.
+- Recovery execution.
+- Third-party mutation.
+- AI model calls.
+
+Next recommended step:
+Day 205: Controlled Paid Pilot Launch Action-Class Allowlist and Blocklist Contract v1.

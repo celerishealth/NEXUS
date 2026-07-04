@@ -6602,6 +6602,20 @@ ${aiInput}`,
     View Day 203 owner gate API
   </a>
 </section>
+
+<section className="rounded-3xl border border-rose-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-rose-950/20">
+  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-rose-300">Day 204 · Risk Scoring</p>
+  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Risk Scoring and Action Class Contract v1</h2>
+  <p className="mt-3 text-sm leading-6 text-slate-300">
+    Read-only risk scoring and action-class contract defining low, medium, high, and blocked surfaces while keeping all real execution, payments, invoices, subscriptions, messages, customer data, memory, audit persistence, recovery, third-party mutation, and AI calls blocked.
+  </p>
+  <a
+    href="/api/nexus/controlled-paid-pilot-launch-risk-scoring-action-class"
+    className="mt-5 inline-flex rounded-full border border-rose-300/30 px-4 py-2 text-sm font-semibold text-rose-100 hover:border-rose-200 hover:bg-rose-300/10"
+  >
+    View Day 204 risk scoring API
+  </a>
+</section>
 </main>
   );
 }
@@ -6652,6 +6666,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 
