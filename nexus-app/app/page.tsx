@@ -6644,6 +6644,20 @@ ${aiInput}`,
     View Day 206 preview lifecycle API
   </a>
 </section>
+
+<section className="rounded-3xl border border-fuchsia-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-fuchsia-950/20">
+  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-fuchsia-300">Day 207 · Owner Review Packet</p>
+  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Owner Review Packet Contract v1</h2>
+  <p className="mt-3 text-sm leading-6 text-slate-300">
+    Read-only owner review packet contract defining proposed action summary, action class, risk score, affected surface, blocked status, owner attention, audit readiness, rollback readiness, and safe next step while blocking all decisions and execution.
+  </p>
+  <a
+    href="/api/nexus/controlled-paid-pilot-launch-owner-review-packet"
+    className="mt-5 inline-flex rounded-full border border-fuchsia-300/30 px-4 py-2 text-sm font-semibold text-fuchsia-100 hover:border-fuchsia-200 hover:bg-fuchsia-300/10"
+  >
+    View Day 207 owner review packet API
+  </a>
+</section>
 </main>
   );
 }
@@ -6694,6 +6708,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 
