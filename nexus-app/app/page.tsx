@@ -6574,6 +6574,20 @@ ${aiInput}`,
     View Day 201 final review API
   </a>
 </section>
+
+<section className="rounded-3xl border border-emerald-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-emerald-950/20">
+  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300">Day 202 · Execution Boundary</p>
+  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Execution Architecture Boundary Contract v1</h2>
+  <p className="mt-3 text-sm leading-6 text-slate-300">
+    Read-only boundary contract defining what future controlled execution must require while keeping payments, invoices, subscriptions, messages, customer data, memory, audit persistence, recovery, third-party mutation, and AI calls blocked.
+  </p>
+  <a
+    href="/api/nexus/controlled-paid-pilot-launch-execution-architecture-boundary"
+    className="mt-5 inline-flex rounded-full border border-emerald-300/30 px-4 py-2 text-sm font-semibold text-emerald-100 hover:border-emerald-200 hover:bg-emerald-300/10"
+  >
+    View Day 202 boundary API
+  </a>
+</section>
 </main>
   );
 }
@@ -6624,6 +6638,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 
