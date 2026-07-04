@@ -5723,6 +5723,48 @@ ${aiInput}`,
             </div>
           </div>
         </section>
+
+        <section className="rounded-3xl border border-rose-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-rose-950/20">
+          <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-rose-300">
+                Day 91 - Customer Memory
+              </p>
+              <h2 className="mt-2 text-2xl font-semibold text-white">
+                Backend Customer Memory Owner Review Contract v1
+              </h2>
+              <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">
+                Read-only preview contract for routing customer memory response drafts into owner review. It prepares
+                safe review context while blocking approve/reject execution, message sending, payments, AI model calls,
+                response generation, response sending, DB memory access, customer data writes, and risky execution.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-emerald-400/20 bg-emerald-500/10 px-4 py-3 text-sm font-semibold text-emerald-200">
+              Owner review - No execution
+            </div>
+          </div>
+
+          <div className="mt-5 grid gap-3 md:grid-cols-3">
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-sm font-semibold text-white">Review routing</p>
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                Confirms owner scope, response draft validation readiness, context safety, and review-only routing.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-sm font-semibold text-white">Execution blocked</p>
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                No approve/reject execution, no AI model call, no response sending, no DB write, no payment execution.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-sm font-semibold text-white">Route</p>
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                /api/nexus/customer-memory-owner-review-contract
+              </p>
+            </div>
+          </div>
+        </section>
 </main>
   );
 }
@@ -5773,6 +5815,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 
