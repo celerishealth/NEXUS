@@ -6024,6 +6024,49 @@ ${aiInput}`,
             </div>
           </div>
         </section>
+
+        <section className="rounded-3xl border border-blue-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-blue-950/20">
+          <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-blue-300">
+                Day 98 - Customer Memory
+              </p>
+              <h2 className="mt-2 text-2xl font-semibold text-white">
+                Backend Customer Memory Full Pipeline Preview Orchestrator v1
+              </h2>
+              <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">
+                Read-only preview orchestrator for the complete customer memory safety pipeline. It summarizes every
+                preview-only stage from write eligibility through recovery fallback while blocking real pipeline execution,
+                DB access, audit persistence, customer data writes, memory writes, message sending, payments, AI model calls,
+                response generation, approve/reject execution, owner decision execution, and risky actions.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-emerald-400/20 bg-emerald-500/10 px-4 py-3 text-sm font-semibold text-emerald-200">
+              Pipeline preview - No execution
+            </div>
+          </div>
+
+          <div className="mt-5 grid gap-3 md:grid-cols-3">
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-sm font-semibold text-white">Full safety chain</p>
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                Covers write eligibility, storage, retrieval, context, prompt, response draft, owner review, final gate, audit, and fallback.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-sm font-semibold text-white">Execution blocked</p>
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                No pipeline execution, no AI model call, no sending, no DB write, no audit persistence, no payment execution.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-sm font-semibold text-white">Route</p>
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                /api/nexus/customer-memory-full-pipeline-preview-orchestrator
+              </p>
+            </div>
+          </div>
+        </section>
 </main>
   );
 }
@@ -6074,6 +6117,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 
