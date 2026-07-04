@@ -6588,6 +6588,20 @@ ${aiInput}`,
     View Day 202 boundary API
   </a>
 </section>
+
+<section className="rounded-3xl border border-amber-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-amber-950/20">
+  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-300">Day 203 · Owner Execution Gate</p>
+  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Owner Execution Gate Contract v1</h2>
+  <p className="mt-3 text-sm leading-6 text-slate-300">
+    Read-only owner-only execution gate contract defining the future approval boundary required before any controlled paid pilot action can move from preview/shadow mode toward real-world execution.
+  </p>
+  <a
+    href="/api/nexus/controlled-paid-pilot-launch-owner-execution-gate"
+    className="mt-5 inline-flex rounded-full border border-amber-300/30 px-4 py-2 text-sm font-semibold text-amber-100 hover:border-amber-200 hover:bg-amber-300/10"
+  >
+    View Day 203 owner gate API
+  </a>
+</section>
 </main>
   );
 }
@@ -6638,6 +6652,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 
