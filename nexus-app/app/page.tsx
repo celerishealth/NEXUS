@@ -5765,6 +5765,49 @@ ${aiInput}`,
             </div>
           </div>
         </section>
+
+        <section className="rounded-3xl border border-pink-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-pink-950/20">
+          <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-pink-300">
+                Day 92 - Customer Memory
+              </p>
+              <h2 className="mt-2 text-2xl font-semibold text-white">
+                Backend Customer Memory Owner Review Validator v1
+              </h2>
+              <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">
+                Read-only preview validator for customer memory owner review routing. It validates owner scope,
+                contract readiness, manual review instructions, draft preview safety, context trust, and high-risk routing
+                while blocking approve/reject execution, owner decision execution, message sending, payments, AI model calls,
+                response generation, response sending, DB memory access, customer data writes, and risky execution.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-emerald-400/20 bg-emerald-500/10 px-4 py-3 text-sm font-semibold text-emerald-200">
+              Owner review validator - No execution
+            </div>
+          </div>
+
+          <div className="mt-5 grid gap-3 md:grid-cols-3">
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-sm font-semibold text-white">Manual review validation</p>
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                Confirms owner scope, upstream contract readiness, safe review context, and non-executing review instructions.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-sm font-semibold text-white">Decision execution blocked</p>
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                No approve/reject execution, no owner decision execution, no AI model call, no response send, no DB write.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-sm font-semibold text-white">Route</p>
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                /api/nexus/customer-memory-owner-review-validator
+              </p>
+            </div>
+          </div>
+        </section>
 </main>
   );
 }
@@ -5815,6 +5858,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 
