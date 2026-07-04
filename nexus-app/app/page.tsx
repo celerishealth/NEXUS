@@ -6686,6 +6686,20 @@ ${aiInput}`,
     View Day 209 audit readiness API
   </a>
 </section>
+
+<section className="rounded-3xl border border-orange-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-orange-950/20">
+  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-orange-300">Day 210 · Rollback / Fallback Readiness</p>
+  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Rollback and Fallback Readiness Contract v1</h2>
+  <p className="mt-3 text-sm leading-6 text-slate-300">
+    Read-only rollback and fallback readiness contract defining future recovery controls, fallback checks, Zero Damage, Zero Stop, manual owner override, audit linkage, and fail-closed behavior while blocking all recovery execution and mutation.
+  </p>
+  <a
+    href="/api/nexus/controlled-paid-pilot-launch-rollback-fallback-readiness"
+    className="mt-5 inline-flex rounded-full border border-orange-300/30 px-4 py-2 text-sm font-semibold text-orange-100 hover:border-orange-200 hover:bg-orange-300/10"
+  >
+    View Day 210 rollback/fallback API
+  </a>
+</section>
 </main>
   );
 }
@@ -6736,6 +6750,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 

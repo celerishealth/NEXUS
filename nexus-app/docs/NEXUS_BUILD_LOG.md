@@ -3870,3 +3870,46 @@ Decision rules locked:
 
 Next recommended step:
 Day 209: Controlled Paid Pilot Launch Audit Readiness Contract v1.
+
+## Day 210: Controlled Paid Pilot Launch Rollback and Fallback Readiness Contract v1
+
+Completed Day 210 read-only rollback and fallback readiness contract for the Controlled Paid Pilot Launch Execution Architecture Planning phase.
+
+Added:
+- `lib/nexus/controlledPaidPilotLaunchRollbackFallbackReadinessContract.ts`
+- `app/api/nexus/controlled-paid-pilot-launch-rollback-fallback-readiness/route.ts`
+- Dashboard access card for the Day 210 rollback/fallback readiness API.
+
+Purpose:
+- Defines rollback and fallback readiness requirements for future controlled paid pilot execution.
+- Documents required future rollback controls, fallback readiness checks, rollback guards, and blocked rollback transitions.
+- Protects Zero Damage through fail-closed rollback readiness.
+- Protects Zero Stop through safe fallback planning and manual owner control.
+- Keeps NEXUS as an owner-controlled AI Business Operating Layer above existing business software.
+- Preserves the locked non-chatbot, non-CRM-clone, non-ERP-clone, non-Make/Zapier-clone identity.
+- Keeps recovery execution and mutation blocked unless owner-approved execution architecture is completed later.
+
+Safety status:
+- Read-only rollback-fallback-readiness-preview-only route.
+- No approve/reject execution.
+- No payment execution.
+- No invoice creation.
+- No subscription activation.
+- No entitlement writes.
+- No message sending.
+- No customer data write.
+- No real DB memory read/write.
+- No audit persistence.
+- No recovery execution.
+- No third-party mutation.
+- No AI model calls.
+
+Rollback guards locked:
+- Read-only readiness.
+- Rollback before mutation.
+- Fallback before dependency.
+- Manual owner control.
+- No hidden recovery.
+
+Next recommended step:
+Day 211: Controlled Paid Pilot Launch Incident Response Readiness Contract v1.
