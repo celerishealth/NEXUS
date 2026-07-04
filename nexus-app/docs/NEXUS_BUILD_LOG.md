@@ -2501,3 +2501,12 @@ Outcome:
 - Confirms the real pilot execution architecture planning phase is cleared for architecture phase close while all real execution remains blocked.
 - This route does not execute risky actions, approve/reject actions, payments, message sending, customer data writes, real DB memory reads/writes, audit persistence, recovery execution, or AI model calls.
 - Preserves locked NEXUS identity as an owner-controlled AI Business Operating Layer above existing business software.
+
+## Day 151: Paid Pilot Readiness Planning Contract v1
+
+- Started the next safe planning phase after the Day 150 real pilot execution architecture planning final checkpoint.
+- Added a safe read-only preview-only paid pilot readiness planning contract.
+- Added API route: `/api/nexus/paid-pilot-readiness-planning-contract`.
+- Defines paid pilot planning boundaries for pilot scope, Subscription Lock, owner approval, read-only pilot discipline, trust-first NEXUS identity, and AI model isolation.
+- This route does not execute risky actions, approve/reject actions, payments, invoice creation, subscription activation, entitlement writes, message sending, customer data writes, real DB memory reads/writes, audit persistence, recovery execution, third-party mutation, or AI model calls.
+- Preserves locked NEXUS identity as an owner-controlled AI Business Operating Layer above existing business software.
