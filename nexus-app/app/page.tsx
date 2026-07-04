@@ -6658,6 +6658,20 @@ ${aiInput}`,
     View Day 207 owner review packet API
   </a>
 </section>
+
+<section className="rounded-3xl border border-lime-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-lime-950/20">
+  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-lime-300">Day 208 · Execution Eligibility</p>
+  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Execution Eligibility Decision Contract v1</h2>
+  <p className="mt-3 text-sm leading-6 text-slate-300">
+    Read-only execution eligibility decision contract defining not-eligible, preview-only, future-eligible-after-contracts, and blocked states while preserving owner control and blocking all real decisions, mutation, persistence, payment, messaging, customer data, recovery, third-party mutation, and AI calls.
+  </p>
+  <a
+    href="/api/nexus/controlled-paid-pilot-launch-execution-eligibility-decision"
+    className="mt-5 inline-flex rounded-full border border-lime-300/30 px-4 py-2 text-sm font-semibold text-lime-100 hover:border-lime-200 hover:bg-lime-300/10"
+  >
+    View Day 208 eligibility API
+  </a>
+</section>
 </main>
   );
 }
@@ -6708,6 +6722,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 

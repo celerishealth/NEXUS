@@ -3826,3 +3826,47 @@ Lifecycle guards locked:
 
 Next recommended step:
 Day 207: Controlled Paid Pilot Launch Owner Review Packet Contract v1.
+
+## Day 208: Controlled Paid Pilot Launch Execution Eligibility Decision Contract v1
+
+Completed Day 208 read-only execution eligibility decision contract for the Controlled Paid Pilot Launch Execution Architecture Planning phase.
+
+Added:
+- `lib/nexus/controlledPaidPilotLaunchExecutionEligibilityDecisionContract.ts`
+- `app/api/nexus/controlled-paid-pilot-launch-execution-eligibility-decision/route.ts`
+- Dashboard access card for the Day 208 execution eligibility API.
+
+Purpose:
+- Defines preview-only execution eligibility decision rules for controlled paid pilot actions.
+- Documents not-eligible, preview-only, future-eligible-after-contracts, and blocked states.
+- Documents required eligibility inputs, decision rules, and hard ineligibility reasons.
+- Keeps NEXUS as an owner-controlled AI Business Operating Layer above existing business software.
+- Preserves the locked non-chatbot, non-CRM-clone, non-ERP-clone, non-Make/Zapier-clone identity.
+- Keeps execution default not eligible unless owner-approved execution architecture is completed later.
+
+Safety status:
+- Read-only execution-eligibility-decision-preview-only route.
+- No approve/reject execution.
+- No payment execution.
+- No invoice creation.
+- No subscription activation.
+- No entitlement writes.
+- No message sending.
+- No customer data write.
+- No real DB memory read/write.
+- No audit persistence.
+- No recovery execution.
+- No third-party mutation.
+- No AI model calls.
+
+Decision rules locked:
+- Default not eligible.
+- Hard-blocked surface blocks eligibility.
+- Owner gate required.
+- Audit required.
+- Rollback required.
+- Preview is not permission.
+- Fail closed on uncertainty.
+
+Next recommended step:
+Day 209: Controlled Paid Pilot Launch Audit Readiness Contract v1.
