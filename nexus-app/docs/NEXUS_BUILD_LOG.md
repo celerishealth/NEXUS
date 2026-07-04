@@ -1,3 +1,25 @@
+﻿## Day 84 - Backend Customer Memory Context Assembly Validator v1
+
+Completed:
+- Added safe backend Customer Memory Context Assembly Validator v1.
+- Added `lib/nexus/customerMemoryContextAssemblyValidator.ts`.
+- Added `app/api/nexus/customer-memory-context-assembly-validator/route.ts`.
+- Updated premium dashboard visibility for the Day 84 safe preview route.
+- Validator is read-only, preview-only, and context-assembly-validation-preview-only.
+
+Locked safety:
+- No real DB memory read.
+- No customer memory write.
+- No memory create/update/delete.
+- No customer data write.
+- No approve/reject execution.
+- No payment execution.
+- No message sending.
+- No risky execution.
+
+Verification:
+- `npm run build` must pass twice before commit.
+- Git log and clean working tree must be verified after push.
 # NEXUS Build Log
 
 ## Day 9 - Recent AI Request Log v1
@@ -396,7 +418,7 @@ Build:
 
 ### Completed
 - Added Execution Guard labels for Owner Approval flow.
-- Pending risky actions now show: Locked � Owner Approval Required.
+- Pending risky actions now show: Locked — Owner Approval Required.
 - Approved actions now show: Ready for Safe Execution.
 - Rejected actions now show: Permanently Blocked.
 - Added execution guard detail text inside approval cards.
@@ -863,3 +885,4 @@ Build:
 - Strengthens founder pitch confidence.
 - Makes NEXUS easier to explain during live demo.
 - Keeps NEXUS as AI Business Operating System, not chatbot/CRM/ERP clone.
+
