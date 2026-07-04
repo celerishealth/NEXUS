@@ -6672,6 +6672,20 @@ ${aiInput}`,
     View Day 208 eligibility API
   </a>
 </section>
+
+<section className="rounded-3xl border border-cyan-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-cyan-950/20">
+  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-300">Day 209 · Audit Readiness</p>
+  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Audit Readiness Contract v1</h2>
+  <p className="mt-3 text-sm leading-6 text-slate-300">
+    Read-only audit readiness contract defining future audit fields, traceability checks, owner decision visibility, rollback linkage, and fail-closed audit requirements while blocking audit persistence and all real execution.
+  </p>
+  <a
+    href="/api/nexus/controlled-paid-pilot-launch-audit-readiness"
+    className="mt-5 inline-flex rounded-full border border-cyan-300/30 px-4 py-2 text-sm font-semibold text-cyan-100 hover:border-cyan-200 hover:bg-cyan-300/10"
+  >
+    View Day 209 audit readiness API
+  </a>
+</section>
 </main>
   );
 }
@@ -6722,6 +6736,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 
