@@ -2042,3 +2042,32 @@ Outcome:
 - Confirms that real pilot remains blocked.
 - Confirms that execution architecture is still not approved.
 - Confirms that NEXUS remains an owner-controlled AI Business Operating Layer above existing business software.
+
+## Day 125: NEXUS Real Pilot Architecture Boundary Dashboard Contract v1
+
+Status: Completed.
+
+Added a preview-only dashboard contract for the real pilot architecture boundary.
+
+Safety:
+- Dashboard contract only.
+- Preview-only.
+- Planning-only.
+- Read-only.
+- Non-executable.
+- No real pilot start action.
+- No approve/reject execution.
+- No payment execution.
+- No message sending.
+- No customer data write.
+- No real DB memory read/write.
+- No audit persistence.
+- No recovery execution.
+- No AI model calls.
+- No third-party mutation.
+
+Outcome:
+- Defines dashboard cards for architecture boundary, execution block, identity lock, safety lock, and next safe planning step.
+- Confirms that real pilot remains blocked.
+- Confirms that execution architecture is not approved.
+- Keeps NEXUS as an owner-controlled AI Business Operating Layer above existing business software.
