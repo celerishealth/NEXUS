@@ -310,6 +310,7 @@ export default function Home() {
   ];
 
   const buildLogs = [
+    "Day 79 backend customer memory storage contract v1 added",
     "Day 78 backend customer memory final write eligibility gate v1 added",
     "Day 77 backend customer memory review audit link validator v1 added",
     "Day 76 backend customer memory review audit link contract v1 added",
@@ -2081,6 +2082,120 @@ ${aiInput}`,
 
 
 
+
+      <div style={cardStyle}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "14px",
+          alignItems: "flex-start",
+          marginBottom: "16px",
+          flexWrap: "wrap",
+        }}>
+          <div>
+            <p style={{
+              margin: "0 0 8px",
+              color: "#06b6d4",
+              fontSize: "12px",
+              fontWeight: 900,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}>
+              Backend Customer Memory Storage Contract v1
+            </p>
+            <h2 style={{ margin: 0 }}>Backend Customer Memory Storage Contract</h2>
+            <p style={{
+              margin: "10px 0 0",
+              color: "#cbd5e1",
+              maxWidth: "820px",
+              lineHeight: 1.65,
+            }}>
+              NEXUS customer memory storage contract defines the future safe memory record shape:
+              tenant boundary, customer boundary, sanitized memory, category, retention, source audit proof,
+              review queue link, review decision, audit link status, write eligibility status, and timeline.
+            </p>
+          </div>
+
+          <div style={{
+            border: "1px solid rgba(6, 182, 212, 0.38)",
+            borderRadius: "999px",
+            padding: "10px 14px",
+            color: "#cffafe",
+            background: "rgba(8, 145, 178, 0.22)",
+            fontWeight: 900,
+            fontSize: "13px",
+            whiteSpace: "nowrap",
+          }}>
+            Storage contract only
+          </div>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: "10px",
+        }}>
+          {[
+            ["Memory Record ID", "Unique id for every future memory record.", "No invisible record"],
+            ["Tenant Boundary", "Memory stays inside one business account.", "No business leak"],
+            ["Customer Boundary", "Memory stays inside one customer scope.", "No customer leak"],
+            ["Sanitized Memory", "Only sanitized business memory can be stored in future.", "No raw sensitive memory"],
+            ["Retention Until", "Every memory record carries expiry discipline.", "No forever memory"],
+            ["Source Audit Proof", "Memory links back to original audit event.", "No missing origin"],
+            ["Review Queue Link", "Memory links back to queue candidate.", "No silent creation"],
+            ["Write Eligibility Status", "Final eligibility status remains visible.", "No unsafe write"],
+          ].map(([field, purpose, lock]) => (
+            <div key={field} style={{
+              border: "1px solid rgba(148, 163, 184, 0.18)",
+              borderRadius: "16px",
+              padding: "14px",
+              background: "linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(8, 145, 178, 0.22))",
+              boxShadow: "0 14px 32px rgba(2, 6, 23, 0.2)",
+            }}>
+              <p style={{
+                margin: "0 0 8px",
+                color: "#a5f3fc",
+                fontSize: "12px",
+                fontWeight: 900,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}>
+                {field}
+              </p>
+              <p style={{
+                margin: "0 0 10px",
+                color: "#cbd5e1",
+                lineHeight: 1.55,
+                fontSize: "13px",
+              }}>
+                {purpose}
+              </p>
+              <div style={{
+                border: "1px solid rgba(34, 197, 94, 0.28)",
+                borderRadius: "999px",
+                padding: "8px 10px",
+                color: "#bbf7d0",
+                background: "rgba(20, 83, 45, 0.22)",
+                fontSize: "12px",
+                fontWeight: 900,
+              }}>
+                Lock: {lock}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p style={{
+          margin: "14px 0 0",
+          color: "#cbd5e1",
+          fontSize: "12px",
+          lineHeight: 1.6,
+        }}>
+          Backend customer memory storage contract route added at /api/nexus/customer-memory-storage-contract.
+          It is read-only and does not create memory records, write memory, delete memory, approve, reject,
+          send messages, write customer data, change payment state, or execute risky actions.
+        </p>
+      </div>
       <div style={cardStyle}>
         <div style={{
           display: "flex",
