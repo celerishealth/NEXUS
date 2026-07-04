@@ -1412,3 +1412,34 @@ Safety:
 - No AI model calls.
 - No third-party mutation.
 - Route is safe read-only preview-only.
+
+## Day 103: NEXUS Pilot Readiness Contract v1
+
+Completed the Pilot Readiness Contract for the Trust + Pilot Readiness phase.
+
+Added:
+- `lib/nexus/nexusPilotReadinessContract.ts`
+- `app/api/nexus/pilot-readiness-contract/route.ts`
+
+Purpose:
+- Defines what NEXUS is allowed to show before a real pilot.
+- Confirms Shadow Mode preview is allowed, but real pilot execution is not allowed yet.
+- Lists the architecture gates required before any real customer-facing pilot execution.
+- Keeps NEXUS positioned as an owner-controlled AI Business Operating Layer above existing business software.
+
+Readiness position:
+- Shadow Mode preview allowed.
+- Real pilot execution blocked.
+- Real execution architecture not yet approved.
+
+Safety:
+- No real customer data write.
+- No real DB memory read/write.
+- No audit persistence.
+- No recovery execution.
+- No approve/reject execution.
+- No payment execution.
+- No message sending.
+- No AI model calls.
+- No third-party mutation.
+- Route is safe read-only preview-only.
