@@ -6616,6 +6616,20 @@ ${aiInput}`,
     View Day 204 risk scoring API
   </a>
 </section>
+
+<section className="rounded-3xl border border-violet-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-violet-950/20">
+  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-violet-300">Day 205 · Allowlist / Blocklist</p>
+  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Action-Class Allowlist and Blocklist Contract v1</h2>
+  <p className="mt-3 text-sm leading-6 text-slate-300">
+    Read-only action-class contract defining preview-only allowlisted actions, future eligible classes, and hard-blocked execution surfaces while preserving owner control and blocking all real mutation.
+  </p>
+  <a
+    href="/api/nexus/controlled-paid-pilot-launch-action-class-allowlist-blocklist"
+    className="mt-5 inline-flex rounded-full border border-violet-300/30 px-4 py-2 text-sm font-semibold text-violet-100 hover:border-violet-200 hover:bg-violet-300/10"
+  >
+    View Day 205 allowlist/blocklist API
+  </a>
+</section>
 </main>
   );
 }
@@ -6666,6 +6680,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 
