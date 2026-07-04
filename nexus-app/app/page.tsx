@@ -5637,6 +5637,49 @@ ${aiInput}`,
             </div>
           </div>
         </section>
+
+        <section className="rounded-3xl border border-amber-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-amber-950/20">
+          <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-amber-300">
+                Day 89 - Customer Memory
+              </p>
+              <h2 className="mt-2 text-2xl font-semibold text-white">
+                Backend Customer Memory Response Draft Contract v1
+              </h2>
+              <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">
+                Read-only preview contract for safe customer memory response drafting rules. It defines how validated
+                prompt context may support a future non-sending response draft while blocking AI model calls, prompt
+                execution, real DB memory access, customer data writes, message sending, payments, approve/reject behavior,
+                and risky execution.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-emerald-400/20 bg-emerald-500/10 px-4 py-3 text-sm font-semibold text-emerald-200">
+              Draft contract - No sending
+            </div>
+          </div>
+
+          <div className="mt-5 grid gap-3 md:grid-cols-3">
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-sm font-semibold text-white">Draft scope</p>
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                Confirms business, customer, conversation, upstream prompt validation, safe source, and confidence boundaries.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-sm font-semibold text-white">No outbound action</p>
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                No AI model call, no response sending, no DB memory read/write, no payment, no approve/reject execution.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-sm font-semibold text-white">Route</p>
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                /api/nexus/customer-memory-response-draft-contract
+              </p>
+            </div>
+          </div>
+        </section>
 </main>
   );
 }
@@ -5687,6 +5730,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 
