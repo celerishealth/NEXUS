@@ -1935,3 +1935,27 @@ Safety:
 - No AI model calls.
 - No third-party mutation.
 - Route is safe read-only preview-only.
+
+## Day 121: NEXUS Real Pilot Architecture Boundary Contract v1
+
+Status: Completed.
+
+Added a planning-only real pilot architecture boundary contract for NEXUS.
+
+Safety:
+- No real pilot execution.
+- No approve/reject execution.
+- No payment execution.
+- No message sending.
+- No customer data write.
+- No real DB memory read/write.
+- No audit persistence.
+- No recovery execution.
+- No AI model calls.
+- No third-party mutation.
+- Route is safe read-only planning/preview only.
+
+Outcome:
+- NEXUS remains an owner-controlled AI Business Operating Layer above existing business software.
+- NEXUS remains not a chatbot, not a CRM clone, not an ERP clone, and not a Make/Zapier clone.
+- Real pilot remains blocked until explicit execution architecture is planned and validated safely.
