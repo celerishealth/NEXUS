@@ -1638,3 +1638,30 @@ Safety:
 - No AI model calls.
 - No third-party mutation.
 - Route is safe read-only preview-only.
+
+## Day 111: NEXUS Read-Only Pilot Onboarding Summary v1
+
+Completed the Read-Only Pilot Onboarding Summary for the Trust + Pilot Readiness phase.
+
+Added:
+- `lib/nexus/nexusReadOnlyPilotOnboardingSummary.ts`
+- `app/api/nexus/read-only-pilot-onboarding-summary/route.ts`
+
+Purpose:
+- Summarizes Day 109 and Day 110 Read-Only Pilot Onboarding artifacts.
+- Confirms onboarding preview is ready only in Shadow Mode.
+- Confirms real pilot onboarding and real execution remain blocked.
+- Presents business fit, owner trust, and pilot boundary cards as preview-only onboarding evidence.
+- Keeps NEXUS positioned as an owner-controlled AI Business Operating Layer above existing business software.
+
+Safety:
+- No real customer data write.
+- No real DB memory read/write.
+- No audit persistence.
+- No recovery execution.
+- No approve/reject execution.
+- No payment execution.
+- No message sending.
+- No AI model calls.
+- No third-party mutation.
+- Route is safe read-only preview-only.
