@@ -589,7 +589,21 @@ ${aiInput}`,
             Launch NEXUS
           </button>
         </section>
-      </main>
+      
+<section className="rounded-3xl border border-cyan-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-cyan-950/20">
+  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-300">Day 201 · Final Review</p>
+  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Readiness Completion Final Review v1</h2>
+  <p className="mt-3 text-sm leading-6 text-slate-300">
+    Read-only final review confirming locked NEXUS vision, owner control, safety boundaries, monetization discipline, and controlled paid pilot launch readiness without execution.
+  </p>
+  <a
+    href="/api/nexus/controlled-paid-pilot-launch-readiness-completion-final-review"
+    className="mt-5 inline-flex rounded-full border border-cyan-300/30 px-4 py-2 text-sm font-semibold text-cyan-100 hover:border-cyan-200 hover:bg-cyan-300/10"
+  >
+    View Day 201 final review API
+  </a>
+</section>
+</main>
     );
   }
 
@@ -6546,7 +6560,21 @@ ${aiInput}`,
               message sending, customer-data write, real memory read/write, audit persistence, recovery execution,
               third-party mutation, or AI model call is performed.
             </p>
-          </div></main>
+          </div>
+<section className="rounded-3xl border border-cyan-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-cyan-950/20">
+  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-300">Day 201 · Final Review</p>
+  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Readiness Completion Final Review v1</h2>
+  <p className="mt-3 text-sm leading-6 text-slate-300">
+    Read-only final review confirming locked NEXUS vision, owner control, safety boundaries, monetization discipline, and controlled paid pilot launch readiness without execution.
+  </p>
+  <a
+    href="/api/nexus/controlled-paid-pilot-launch-readiness-completion-final-review"
+    className="mt-5 inline-flex rounded-full border border-cyan-300/30 px-4 py-2 text-sm font-semibold text-cyan-100 hover:border-cyan-200 hover:bg-cyan-300/10"
+  >
+    View Day 201 final review API
+  </a>
+</section>
+</main>
   );
 }
 
@@ -6596,6 +6624,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 
