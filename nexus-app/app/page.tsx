@@ -6700,6 +6700,20 @@ ${aiInput}`,
     View Day 210 rollback/fallback API
   </a>
 </section>
+
+<section className="rounded-3xl border border-red-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-red-950/20">
+  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-red-300">Day 211 · Incident Response Readiness</p>
+  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Incident Response Readiness Contract v1</h2>
+  <p className="mt-3 text-sm leading-6 text-slate-300">
+    Read-only incident response readiness contract defining future severity classification, affected surface visibility, owner control, safe stop rules, rollback/audit linkage, and post-incident review while blocking all incident execution, notifications, recovery, persistence, mutation, third-party calls, and AI calls.
+  </p>
+  <a
+    href="/api/nexus/controlled-paid-pilot-launch-incident-response-readiness"
+    className="mt-5 inline-flex rounded-full border border-red-300/30 px-4 py-2 text-sm font-semibold text-red-100 hover:border-red-200 hover:bg-red-300/10"
+  >
+    View Day 211 incident readiness API
+  </a>
+</section>
 </main>
   );
 }
@@ -6750,6 +6764,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 
