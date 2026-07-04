@@ -3785,3 +3785,44 @@ Hard-blocked surfaces documented:
 
 Next recommended step:
 Day 205: Controlled Paid Pilot Launch Action-Class Allowlist and Blocklist Contract v1.
+
+## Day 206: Controlled Paid Pilot Launch Pilot Action Preview Lifecycle Contract v1
+
+Completed Day 206 read-only pilot action preview lifecycle contract for the Controlled Paid Pilot Launch Execution Architecture Planning phase.
+
+Added:
+- `lib/nexus/controlledPaidPilotLaunchPilotActionPreviewLifecycleContract.ts`
+- `app/api/nexus/controlled-paid-pilot-launch-pilot-action-preview-lifecycle/route.ts`
+- Dashboard access card for the Day 206 pilot action preview lifecycle API.
+
+Purpose:
+- Defines the safe preview-only lifecycle for future controlled paid pilot actions.
+- Documents pilot action intake preview, action-class lookup preview, risk scoring preview, blocked surface check preview, owner review packet preview, execution eligibility preview, and safe next-step recommendation preview.
+- Keeps NEXUS as an owner-controlled AI Business Operating Layer above existing business software.
+- Preserves the locked non-chatbot, non-CRM-clone, non-ERP-clone, non-Make/Zapier-clone identity.
+- Keeps execution default blocked unless owner-approved execution architecture is completed later.
+
+Safety status:
+- Read-only pilot-action-preview-lifecycle-preview-only route.
+- No approve/reject execution.
+- No payment execution.
+- No invoice creation.
+- No subscription activation.
+- No entitlement writes.
+- No message sending.
+- No customer data write.
+- No real DB memory read/write.
+- No audit persistence.
+- No recovery execution.
+- No third-party mutation.
+- No AI model calls.
+
+Lifecycle guards locked:
+- Preview-only default.
+- No preview-to-execution jump.
+- Blocked surface first.
+- Owner gate before any future execution.
+- Fail closed on unknown.
+
+Next recommended step:
+Day 207: Controlled Paid Pilot Launch Owner Review Packet Contract v1.

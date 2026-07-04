@@ -6630,6 +6630,20 @@ ${aiInput}`,
     View Day 205 allowlist/blocklist API
   </a>
 </section>
+
+<section className="rounded-3xl border border-sky-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-sky-950/20">
+  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-300">Day 206 · Preview Lifecycle</p>
+  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Pilot Action Preview Lifecycle Contract v1</h2>
+  <p className="mt-3 text-sm leading-6 text-slate-300">
+    Read-only pilot action preview lifecycle contract defining intake, action-class lookup, risk scoring, blocked surface checks, owner review packet preview, execution eligibility preview, and safe next-step recommendation while blocking all real mutation.
+  </p>
+  <a
+    href="/api/nexus/controlled-paid-pilot-launch-pilot-action-preview-lifecycle"
+    className="mt-5 inline-flex rounded-full border border-sky-300/30 px-4 py-2 text-sm font-semibold text-sky-100 hover:border-sky-200 hover:bg-sky-300/10"
+  >
+    View Day 206 preview lifecycle API
+  </a>
+</section>
 </main>
   );
 }
@@ -6680,6 +6694,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 
