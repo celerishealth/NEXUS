@@ -1,12 +1,16 @@
 ﻿import type { CSSProperties } from "react";
 import {
-  getNexusDay308GuidedDemoStoryMode,
-  validateNexusDay308GuidedDemoStoryMode
-} from "@/lib/nexus/day308GuidedDemoStoryMode";
-import {
   getNexusDay309PremiumDemoCopyLayoutPolish,
   validateNexusDay309PremiumDemoCopyLayoutPolish
 } from "@/lib/nexus/day309PremiumDemoCopyLayoutPolish";
+import {
+  getNexusDay310CinematicDemoReviewCheckpoint,
+  validateNexusDay310CinematicDemoReviewCheckpoint
+} from "@/lib/nexus/day310CinematicDemoReviewCheckpoint";
+import {
+  getNexusDay311CinematicDemoAccessNavigationPolish,
+  validateNexusDay311CinematicDemoAccessNavigationPolish
+} from "@/lib/nexus/day311CinematicDemoAccessNavigationPolish";
 
 type StyleMap = Record<string, CSSProperties>;
 
@@ -77,16 +81,16 @@ const styles: StyleMap = {
     marginTop: "32px",
     marginBottom: "14px"
   },
-  polishGrid: {
+  navGrid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-    gap: "16px",
+    gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+    gap: "14px",
     marginTop: "18px"
   },
-  polishCard: {
+  navCard: {
     border: "1px solid rgba(103, 232, 249, 0.23)",
-    borderRadius: "28px",
-    padding: "24px",
+    borderRadius: "24px",
+    padding: "20px",
     background:
       "linear-gradient(135deg, rgba(8, 47, 73, 0.26), rgba(15, 23, 42, 0.76))",
     boxShadow: "0 18px 62px rgba(8, 47, 73, 0.22)"
@@ -100,7 +104,7 @@ const styles: StyleMap = {
     fontWeight: 800
   },
   headline: {
-    fontSize: "25px",
+    fontSize: "23px",
     fontWeight: 900,
     letterSpacing: "-0.05em",
     lineHeight: 1.08
@@ -115,19 +119,6 @@ const styles: StyleMap = {
     fontSize: "12px",
     color: "#a5f3fc",
     background: "rgba(8, 47, 73, 0.32)"
-  },
-  narrationGrid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-    gap: "12px"
-  },
-  narrationCard: {
-    border: "1px solid rgba(168, 85, 247, 0.24)",
-    borderRadius: "20px",
-    padding: "16px",
-    background: "rgba(88, 28, 135, 0.16)",
-    color: "#f3e8ff",
-    lineHeight: 1.6
   },
   shield: {
     marginTop: "24px",
@@ -153,13 +144,15 @@ const styles: StyleMap = {
 };
 
 export default function NexusCinematicDemoPage() {
-  const storyMode = getNexusDay308GuidedDemoStoryMode();
   const polish = getNexusDay309PremiumDemoCopyLayoutPolish();
+  const checkpoint = getNexusDay310CinematicDemoReviewCheckpoint();
+  const access = getNexusDay311CinematicDemoAccessNavigationPolish();
 
-  const storyValidation = validateNexusDay308GuidedDemoStoryMode();
   const polishValidation = validateNexusDay309PremiumDemoCopyLayoutPolish();
+  const checkpointValidation = validateNexusDay310CinematicDemoReviewCheckpoint();
+  const accessValidation = validateNexusDay311CinematicDemoAccessNavigationPolish();
 
-  const safe = storyValidation.ok && polishValidation.ok;
+  const safe = polishValidation.ok && checkpointValidation.ok && accessValidation.ok;
 
   return (
     <main style={styles.shell}>
@@ -171,50 +164,57 @@ export default function NexusCinematicDemoPage() {
         </div>
 
         <section style={styles.hero}>
-          <div style={styles.eyebrow}>Day 309 · Premium Demo Polish</div>
-          <h1 style={styles.h1}>A command layer that feels ready before it acts.</h1>
-          <p style={styles.heroText}>{polish.premiumPositioning}</p>
+          <div style={styles.eyebrow}>Day 311 · Demo Access + Navigation Polish</div>
+          <h1 style={styles.h1}>Review the command layer without unlocking execution.</h1>
+          <p style={styles.heroText}>{access.accessPromise}</p>
         </section>
 
-        <h2 style={styles.sectionTitle}>Premium Demo Structure</h2>
-        <section style={styles.polishGrid} aria-label="Premium demo polish sections">
-          {polish.polishSections.map((section) => (
-            <article key={section.label} style={styles.polishCard}>
-              <div style={styles.label}>{section.label}</div>
-              <div style={styles.headline}>{section.headline}</div>
-              <div style={styles.muted}>{section.copy}</div>
-              <div style={styles.muted}>{section.visualIntent}</div>
-              <span style={styles.status}>{section.safetyState}</span>
+        <h2 style={styles.sectionTitle}>Demo Navigation</h2>
+        <section style={styles.navGrid} aria-label="NEXUS cinematic demo navigation">
+          {access.navigationItems.map((item) => (
+            <article key={item.label} style={styles.navCard}>
+              <div style={styles.label}>{item.label}</div>
+              <div style={styles.headline}>{item.destination}</div>
+              <div style={styles.muted}>{item.purpose}</div>
+              <span style={styles.status}>{item.safetyState}</span>
             </article>
           ))}
         </section>
 
-        <h2 style={styles.sectionTitle}>Cinematic Narration</h2>
-        <section style={styles.narrationGrid} aria-label="Cinematic narration">
-          {storyMode.demoNarration.map((line) => (
-            <div key={line} style={styles.narrationCard}>
-              {line}
-            </div>
-          ))}
+        <h2 style={styles.sectionTitle}>Demo Review Checkpoint</h2>
+        <section style={styles.navCard} aria-label="Day 310 review checkpoint">
+          <div style={styles.label}>Checkpoint Status</div>
+          <div style={styles.headline}>{checkpoint.checkpointStatus}</div>
+          <div style={styles.muted}>
+            Day {checkpoint.day} confirms the cinematic demo phase remains read-only,
+            preview-only, sample-data-only, and not launch-authorized.
+          </div>
+        </section>
+
+        <h2 style={styles.sectionTitle}>Premium Positioning</h2>
+        <section style={styles.navCard} aria-label="Premium positioning">
+          <div style={styles.label}>NEXUS Position</div>
+          <div style={styles.headline}>Owner-controlled AI Business Operating Layer</div>
+          <div style={styles.muted}>{polish.premiumPositioning}</div>
         </section>
 
         <section style={styles.shield}>
-          <h2 style={styles.sectionTitle}>Premium Safety Boundary</h2>
+          <h2 style={styles.sectionTitle}>Access Safety Boundary</h2>
           <p style={styles.muted}>
-            This polished demo is commercial-looking, but it cannot launch, charge, invoice, write
+            Demo access improves review clarity only. It cannot launch, charge, invoice, write
             entitlements, execute GST, generate e-way bills, mutate government APIs, send messages,
             call AI models, mutate third-party systems, execute global trade, or use real customer data.
           </p>
           <div style={styles.shieldGrid}>
-            {polish.blockedExecutionProof.map((item) => (
+            {access.blockedExecutionProof.map((item) => (
               <div key={item} style={styles.shieldItem}>{item}</div>
             ))}
           </div>
         </section>
 
         <p style={styles.footer}>
-          Route: {polish.routePath}. Source: Day {polish.sourceDay}. Completion:{" "}
-          {polish.completionResult}. Launch remains {polish.launchAuthorization}.
+          Route: {access.routePath}. Source: Day {access.sourceDay}. Completion:{" "}
+          {access.completionResult}. Launch remains {access.launchAuthorization}.
         </p>
       </div>
     </main>
