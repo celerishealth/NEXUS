@@ -4250,3 +4250,40 @@ Purpose:
 Status:
 - Read-only preview/planning route only.
 - Controlled paid pilot launch discipline preserved.
+
+## Day 225: NEXUS Controlled Paid Pilot Subscription Lock Boundary Validator v1
+
+Timestamp: 2026-07-05 08:29:14
+
+Added safe read-only validator for the Day 224 controlled paid pilot subscription lock boundary contract.
+
+Files added:
+- lib/nexus/controlledPaidPilotSubscriptionLockBoundaryValidator.ts
+- app/api/nexus/controlled-paid-pilot-subscription-lock-boundary-validator/route.ts
+
+Validation coverage:
+- Confirms read-only preview contract mode.
+- Confirms locked NEXUS identity as owner-controlled AI Business Operating Layer.
+- Confirms NEXUS is not a chatbot, CRM clone, ERP clone, Make/Zapier clone, or uncontrolled automation runner.
+- Confirms unknown/unapproved subscription state defaults locked.
+- Confirms subscription activation, subscription mutation, payment execution, invoice creation, entitlement writes, customer-data writes, third-party mutation, and audit persistence are blocked.
+- Confirms future access gates require owner approval, safe read-only entitlement verification, Safe Stop, and Manual Escalation.
+- Confirms forbidden execution actions remain blocked.
+- Confirms owner override is not executed by this validator.
+
+Safety boundary:
+- Read-only preview validator only.
+- No subscription activation.
+- No payment execution.
+- No invoice creation.
+- No entitlement writes.
+- No customer data writes.
+- No real DB customer memory read/write.
+- No audit persistence.
+- No approve/reject execution.
+- No message sending.
+- No third-party mutation.
+- No AI model calls.
+
+Status:
+- Controlled paid pilot subscription lock boundary validated for planning discipline only.
