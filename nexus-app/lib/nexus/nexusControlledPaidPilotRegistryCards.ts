@@ -197,9 +197,19 @@
     href: "/api/nexus/controlled-paid-pilot-access-entitlement-safety",
     accent: "amber",
   },
+  {
+    day: 223,
+    label: "Entitlement Validator",
+    title: "NEXUS Controlled Paid Pilot Access and Entitlement Safety Validator v1",
+    description:
+      "Read-only validator confirming Day 222 access and entitlement safety keeps subscription activation, entitlement writes, payment execution, invoice creation, customer data, audit persistence, recovery, third-party mutation, and AI calls blocked.",
+    href: "/api/nexus/controlled-paid-pilot-access-entitlement-safety-validator",
+    accent: "emerald",
+  },
 ] as const;
 
 export type NexusControlledPaidPilotRegistryCard = (typeof nexusControlledPaidPilotRegistryCards)[number];
+
 
 
 
