@@ -3958,3 +3958,47 @@ Owner override principles locked:
 
 Next recommended step:
 Day 213: Controlled Paid Pilot Launch Safe Stop and Manual Escalation Contract v1.
+
+## Day 214: NEXUS Dashboard Registry Cleanup and Page Weight Reduction v1
+
+Completed Day 214 dashboard architecture cleanup.
+
+Added:
+- `lib/nexus/nexusControlledPaidPilotRegistryCards.ts`
+- `components/nexus/NexusControlledPaidPilotRegistry.tsx`
+- `lib/nexus/nexusDashboardRegistryCleanupPageWeightReduction.ts`
+- `app/api/nexus/dashboard-registry-cleanup-page-weight-reduction/route.ts`
+
+Changed:
+- Consolidated recent controlled paid pilot dashboard cards into a reusable registry component.
+- Reduced direct repeated card weight inside `app/page.tsx`.
+- Preserved dashboard API access links for Days 201-213 through the registry component.
+- Preserved premium dashboard visibility while improving maintainability.
+
+Safety status:
+- Read-only dashboard-registry-cleanup-preview-only route.
+- No approve/reject execution.
+- No payment execution.
+- No invoice creation.
+- No subscription activation.
+- No entitlement writes.
+- No message sending.
+- No customer data write.
+- No real DB memory read/write.
+- No audit persistence.
+- No recovery execution.
+- No third-party mutation.
+- No AI model calls.
+- No execution behavior changed.
+- No safety behavior changed.
+
+Vision status:
+- NEXUS remains an owner-controlled AI Business Operating Layer above existing business software.
+- Not a chatbot.
+- Not a CRM clone.
+- Not an ERP clone.
+- Not a Make/Zapier clone.
+- Owner Approval, Safety Layer, Zero Damage, Zero Stop, Audit readiness, Rollback/Fallback readiness, Incident readiness, and Manual Owner Override remain preserved.
+
+Next recommended step:
+Day 215: NEXUS Dashboard Registry Cleanup Validator v1.

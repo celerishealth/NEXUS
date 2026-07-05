@@ -1,5 +1,7 @@
 ﻿"use client";
 
+
+import NexusControlledPaidPilotRegistry from "@/components/nexus/NexusControlledPaidPilotRegistry";
 import { useState } from "react";
 
 export default function Home() {
@@ -590,19 +592,6 @@ ${aiInput}`,
           </button>
         </section>
       
-<section className="rounded-3xl border border-cyan-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-cyan-950/20">
-  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-300">Day 201 · Final Review</p>
-  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Readiness Completion Final Review v1</h2>
-  <p className="mt-3 text-sm leading-6 text-slate-300">
-    Read-only final review confirming locked NEXUS vision, owner control, safety boundaries, monetization discipline, and controlled paid pilot launch readiness without execution.
-  </p>
-  <a
-    href="/api/nexus/controlled-paid-pilot-launch-readiness-completion-final-review"
-    className="mt-5 inline-flex rounded-full border border-cyan-300/30 px-4 py-2 text-sm font-semibold text-cyan-100 hover:border-cyan-200 hover:bg-cyan-300/10"
-  >
-    View Day 201 final review API
-  </a>
-</section>
 </main>
     );
   }
@@ -6561,187 +6550,20 @@ ${aiInput}`,
               third-party mutation, or AI model call is performed.
             </p>
           </div>
-<section className="rounded-3xl border border-cyan-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-cyan-950/20">
-  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-300">Day 201 · Final Review</p>
-  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Readiness Completion Final Review v1</h2>
-  <p className="mt-3 text-sm leading-6 text-slate-300">
-    Read-only final review confirming locked NEXUS vision, owner control, safety boundaries, monetization discipline, and controlled paid pilot launch readiness without execution.
-  </p>
-  <a
-    href="/api/nexus/controlled-paid-pilot-launch-readiness-completion-final-review"
-    className="mt-5 inline-flex rounded-full border border-cyan-300/30 px-4 py-2 text-sm font-semibold text-cyan-100 hover:border-cyan-200 hover:bg-cyan-300/10"
-  >
-    View Day 201 final review API
-  </a>
-</section>
 
-<section className="rounded-3xl border border-emerald-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-emerald-950/20">
-  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300">Day 202 · Execution Boundary</p>
-  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Execution Architecture Boundary Contract v1</h2>
-  <p className="mt-3 text-sm leading-6 text-slate-300">
-    Read-only boundary contract defining what future controlled execution must require while keeping payments, invoices, subscriptions, messages, customer data, memory, audit persistence, recovery, third-party mutation, and AI calls blocked.
-  </p>
-  <a
-    href="/api/nexus/controlled-paid-pilot-launch-execution-architecture-boundary"
-    className="mt-5 inline-flex rounded-full border border-emerald-300/30 px-4 py-2 text-sm font-semibold text-emerald-100 hover:border-emerald-200 hover:bg-emerald-300/10"
-  >
-    View Day 202 boundary API
-  </a>
-</section>
 
-<section className="rounded-3xl border border-amber-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-amber-950/20">
-  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-300">Day 203 · Owner Execution Gate</p>
-  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Owner Execution Gate Contract v1</h2>
-  <p className="mt-3 text-sm leading-6 text-slate-300">
-    Read-only owner-only execution gate contract defining the future approval boundary required before any controlled paid pilot action can move from preview/shadow mode toward real-world execution.
-  </p>
-  <a
-    href="/api/nexus/controlled-paid-pilot-launch-owner-execution-gate"
-    className="mt-5 inline-flex rounded-full border border-amber-300/30 px-4 py-2 text-sm font-semibold text-amber-100 hover:border-amber-200 hover:bg-amber-300/10"
-  >
-    View Day 203 owner gate API
-  </a>
-</section>
 
-<section className="rounded-3xl border border-rose-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-rose-950/20">
-  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-rose-300">Day 204 · Risk Scoring</p>
-  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Risk Scoring and Action Class Contract v1</h2>
-  <p className="mt-3 text-sm leading-6 text-slate-300">
-    Read-only risk scoring and action-class contract defining low, medium, high, and blocked surfaces while keeping all real execution, payments, invoices, subscriptions, messages, customer data, memory, audit persistence, recovery, third-party mutation, and AI calls blocked.
-  </p>
-  <a
-    href="/api/nexus/controlled-paid-pilot-launch-risk-scoring-action-class"
-    className="mt-5 inline-flex rounded-full border border-rose-300/30 px-4 py-2 text-sm font-semibold text-rose-100 hover:border-rose-200 hover:bg-rose-300/10"
-  >
-    View Day 204 risk scoring API
-  </a>
-</section>
 
-<section className="rounded-3xl border border-violet-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-violet-950/20">
-  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-violet-300">Day 205 · Allowlist / Blocklist</p>
-  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Action-Class Allowlist and Blocklist Contract v1</h2>
-  <p className="mt-3 text-sm leading-6 text-slate-300">
-    Read-only action-class contract defining preview-only allowlisted actions, future eligible classes, and hard-blocked execution surfaces while preserving owner control and blocking all real mutation.
-  </p>
-  <a
-    href="/api/nexus/controlled-paid-pilot-launch-action-class-allowlist-blocklist"
-    className="mt-5 inline-flex rounded-full border border-violet-300/30 px-4 py-2 text-sm font-semibold text-violet-100 hover:border-violet-200 hover:bg-violet-300/10"
-  >
-    View Day 205 allowlist/blocklist API
-  </a>
-</section>
 
-<section className="rounded-3xl border border-sky-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-sky-950/20">
-  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-300">Day 206 · Preview Lifecycle</p>
-  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Pilot Action Preview Lifecycle Contract v1</h2>
-  <p className="mt-3 text-sm leading-6 text-slate-300">
-    Read-only pilot action preview lifecycle contract defining intake, action-class lookup, risk scoring, blocked surface checks, owner review packet preview, execution eligibility preview, and safe next-step recommendation while blocking all real mutation.
-  </p>
-  <a
-    href="/api/nexus/controlled-paid-pilot-launch-pilot-action-preview-lifecycle"
-    className="mt-5 inline-flex rounded-full border border-sky-300/30 px-4 py-2 text-sm font-semibold text-sky-100 hover:border-sky-200 hover:bg-sky-300/10"
-  >
-    View Day 206 preview lifecycle API
-  </a>
-</section>
 
-<section className="rounded-3xl border border-fuchsia-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-fuchsia-950/20">
-  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-fuchsia-300">Day 207 · Owner Review Packet</p>
-  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Owner Review Packet Contract v1</h2>
-  <p className="mt-3 text-sm leading-6 text-slate-300">
-    Read-only owner review packet contract defining proposed action summary, action class, risk score, affected surface, blocked status, owner attention, audit readiness, rollback readiness, and safe next step while blocking all decisions and execution.
-  </p>
-  <a
-    href="/api/nexus/controlled-paid-pilot-launch-owner-review-packet"
-    className="mt-5 inline-flex rounded-full border border-fuchsia-300/30 px-4 py-2 text-sm font-semibold text-fuchsia-100 hover:border-fuchsia-200 hover:bg-fuchsia-300/10"
-  >
-    View Day 207 owner review packet API
-  </a>
-</section>
 
-<section className="rounded-3xl border border-lime-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-lime-950/20">
-  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-lime-300">Day 208 · Execution Eligibility</p>
-  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Execution Eligibility Decision Contract v1</h2>
-  <p className="mt-3 text-sm leading-6 text-slate-300">
-    Read-only execution eligibility decision contract defining not-eligible, preview-only, future-eligible-after-contracts, and blocked states while preserving owner control and blocking all real decisions, mutation, persistence, payment, messaging, customer data, recovery, third-party mutation, and AI calls.
-  </p>
-  <a
-    href="/api/nexus/controlled-paid-pilot-launch-execution-eligibility-decision"
-    className="mt-5 inline-flex rounded-full border border-lime-300/30 px-4 py-2 text-sm font-semibold text-lime-100 hover:border-lime-200 hover:bg-lime-300/10"
-  >
-    View Day 208 eligibility API
-  </a>
-</section>
 
-<section className="rounded-3xl border border-cyan-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-cyan-950/20">
-  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-300">Day 209 · Audit Readiness</p>
-  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Audit Readiness Contract v1</h2>
-  <p className="mt-3 text-sm leading-6 text-slate-300">
-    Read-only audit readiness contract defining future audit fields, traceability checks, owner decision visibility, rollback linkage, and fail-closed audit requirements while blocking audit persistence and all real execution.
-  </p>
-  <a
-    href="/api/nexus/controlled-paid-pilot-launch-audit-readiness"
-    className="mt-5 inline-flex rounded-full border border-cyan-300/30 px-4 py-2 text-sm font-semibold text-cyan-100 hover:border-cyan-200 hover:bg-cyan-300/10"
-  >
-    View Day 209 audit readiness API
-  </a>
-</section>
 
-<section className="rounded-3xl border border-orange-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-orange-950/20">
-  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-orange-300">Day 210 · Rollback / Fallback Readiness</p>
-  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Rollback and Fallback Readiness Contract v1</h2>
-  <p className="mt-3 text-sm leading-6 text-slate-300">
-    Read-only rollback and fallback readiness contract defining future recovery controls, fallback checks, Zero Damage, Zero Stop, manual owner override, audit linkage, and fail-closed behavior while blocking all recovery execution and mutation.
-  </p>
-  <a
-    href="/api/nexus/controlled-paid-pilot-launch-rollback-fallback-readiness"
-    className="mt-5 inline-flex rounded-full border border-orange-300/30 px-4 py-2 text-sm font-semibold text-orange-100 hover:border-orange-200 hover:bg-orange-300/10"
-  >
-    View Day 210 rollback/fallback API
-  </a>
-</section>
 
-<section className="rounded-3xl border border-red-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-red-950/20">
-  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-red-300">Day 211 · Incident Response Readiness</p>
-  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Incident Response Readiness Contract v1</h2>
-  <p className="mt-3 text-sm leading-6 text-slate-300">
-    Read-only incident response readiness contract defining future severity classification, affected surface visibility, owner control, safe stop rules, rollback/audit linkage, and post-incident review while blocking all incident execution, notifications, recovery, persistence, mutation, third-party calls, and AI calls.
-  </p>
-  <a
-    href="/api/nexus/controlled-paid-pilot-launch-incident-response-readiness"
-    className="mt-5 inline-flex rounded-full border border-red-300/30 px-4 py-2 text-sm font-semibold text-red-100 hover:border-red-200 hover:bg-red-300/10"
-  >
-    View Day 211 incident readiness API
-  </a>
-</section>
 
-<section className="rounded-3xl border border-yellow-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-yellow-950/20">
-  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-yellow-300">Day 212 · Manual Owner Override</p>
-  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Manual Owner Override Readiness Contract v1</h2>
-  <p className="mt-3 text-sm leading-6 text-slate-300">
-    Read-only manual owner override readiness contract preserving owner final authority, manual safe stop, escalation control, audit linkage, rollback linkage, and fail-closed behavior while blocking all override execution, notifications, recovery, persistence, mutation, third-party calls, and AI calls.
-  </p>
-  <a
-    href="/api/nexus/controlled-paid-pilot-launch-manual-owner-override-readiness"
-    className="mt-5 inline-flex rounded-full border border-yellow-300/30 px-4 py-2 text-sm font-semibold text-yellow-100 hover:border-yellow-200 hover:bg-yellow-300/10"
-  >
-    View Day 212 manual override API
-  </a>
-</section>
 
-<section className="rounded-3xl border border-emerald-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-emerald-950/20">
-  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300">Day 213 · Safe Stop / Manual Escalation</p>
-  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Safe Stop and Manual Escalation Contract v1</h2>
-  <p className="mt-3 text-sm leading-6 text-slate-300">
-    Read-only safe stop and manual escalation contract defining fail-closed triggers, owner-visible escalation reasons, safe manual handling, audit linkage, rollback linkage, and blocked transitions while preventing uncontrolled execution.
-  </p>
-  <a
-    href="/api/nexus/controlled-paid-pilot-launch-safe-stop-manual-escalation"
-    className="mt-5 inline-flex rounded-full border border-emerald-300/30 px-4 py-2 text-sm font-semibold text-emerald-100 hover:border-emerald-200 hover:bg-emerald-300/10"
-  >
-    View Day 213 safe stop API
-  </a>
-</section>
+
+<NexusControlledPaidPilotRegistry />
 </main>
   );
 }
@@ -6792,6 +6614,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 
