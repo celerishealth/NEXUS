@@ -116,6 +116,26 @@
     href: "/api/nexus/controlled-paid-pilot-launch-safe-stop-manual-escalation",
     accent: "emerald",
   },
+  {
+    day: 214,
+    label: "Dashboard Cleanup",
+    title: "NEXUS Dashboard Registry Cleanup and Page Weight Reduction v1",
+    description:
+      "Read-only dashboard architecture cleanup consolidating recent safety cards into a reusable registry without changing execution or safety behavior.",
+    href: "/api/nexus/dashboard-registry-cleanup-page-weight-reduction",
+    accent: "cyan",
+  },
+  {
+    day: 215,
+    label: "Cleanup Validator",
+    title: "NEXUS Dashboard Registry Cleanup Validator v1",
+    description:
+      "Read-only validator confirming the dashboard registry cleanup preserved API links, reduced page weight, and kept all NEXUS safety boundaries intact.",
+    href: "/api/nexus/dashboard-registry-cleanup-validator",
+    accent: "emerald",
+  },
 ] as const;
 
 export type NexusControlledPaidPilotRegistryCard = (typeof nexusControlledPaidPilotRegistryCards)[number];
+
+
