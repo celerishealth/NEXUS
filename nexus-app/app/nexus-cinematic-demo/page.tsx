@@ -1,12 +1,12 @@
 import type { CSSProperties } from "react";
 import {
-  getNexusDay312CinematicDemoVisualQaChecklist,
-  validateNexusDay312CinematicDemoVisualQaChecklist
-} from "@/lib/nexus/day312CinematicDemoVisualQaChecklist";
-import {
   getNexusDay313CinematicDemoSharingSafetyPack,
   validateNexusDay313CinematicDemoSharingSafetyPack
 } from "@/lib/nexus/day313CinematicDemoSharingSafetyPack";
+import {
+  getNexusDay314CinematicDemoOwnerReviewGate,
+  validateNexusDay314CinematicDemoOwnerReviewGate
+} from "@/lib/nexus/day314CinematicDemoOwnerReviewGate";
 
 type StyleMap = Record<string, CSSProperties>;
 
@@ -77,13 +77,13 @@ const styles: StyleMap = {
     marginTop: "32px",
     marginBottom: "14px"
   },
-  ruleGrid: {
+  gateGrid: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))",
     gap: "14px",
     marginTop: "18px"
   },
-  ruleCard: {
+  gateCard: {
     border: "1px solid rgba(103, 232, 249, 0.23)",
     borderRadius: "24px",
     padding: "20px",
@@ -110,12 +110,12 @@ const styles: StyleMap = {
   status: {
     display: "inline-block",
     marginTop: "15px",
-    border: "1px solid rgba(103, 232, 249, 0.34)",
+    border: "1px solid rgba(251, 191, 36, 0.36)",
     borderRadius: "999px",
     padding: "7px 10px",
     fontSize: "12px",
-    color: "#a5f3fc",
-    background: "rgba(8, 47, 73, 0.32)"
+    color: "#fde68a",
+    background: "rgba(113, 63, 18, 0.30)"
   },
   shield: {
     marginTop: "24px",
@@ -141,67 +141,60 @@ const styles: StyleMap = {
 };
 
 export default function NexusCinematicDemoPage() {
-  const visualQa = getNexusDay312CinematicDemoVisualQaChecklist();
   const sharing = getNexusDay313CinematicDemoSharingSafetyPack();
+  const gate = getNexusDay314CinematicDemoOwnerReviewGate();
 
-  const visualQaValidation = validateNexusDay312CinematicDemoVisualQaChecklist();
   const sharingValidation = validateNexusDay313CinematicDemoSharingSafetyPack();
+  const gateValidation = validateNexusDay314CinematicDemoOwnerReviewGate();
 
-  const safe = visualQaValidation.ok && sharingValidation.ok;
+  const safe = sharingValidation.ok && gateValidation.ok;
 
   return (
     <main style={styles.shell}>
       <div style={styles.frame}>
         <div style={styles.topBar}>
-          <div style={styles.badge}>NEXUS / Demo Sharing Safety</div>
+          <div style={styles.badge}>NEXUS / Owner Review Gate</div>
           <div style={styles.badge}>Read-only · Preview-only · Sample data only</div>
           <div style={styles.badge}>Validation: {safe ? "SAFE" : "CHECK REQUIRED"}</div>
         </div>
 
         <section style={styles.hero}>
-          <div style={styles.eyebrow}>Day 313 · Cinematic Demo Sharing Safety</div>
-          <h1 style={styles.h1}>Share the vision without implying launch.</h1>
-          <p style={styles.heroText}>{sharing.sharingPromise}</p>
+          <div style={styles.eyebrow}>Day 314 · Cinematic Demo Owner Review Gate</div>
+          <h1 style={styles.h1}>Owner review required before any next phase.</h1>
+          <p style={styles.heroText}>{gate.ownerReviewPromise}</p>
         </section>
 
-        <h2 style={styles.sectionTitle}>Safe Sharing Rules</h2>
-        <section style={styles.ruleGrid} aria-label="NEXUS cinematic demo sharing rules">
-          {sharing.sharingRules.map((rule) => (
-            <article key={rule.area} style={styles.ruleCard}>
-              <div style={styles.label}>{rule.area}</div>
-              <div style={styles.headline}>Allowed: {rule.allowedMessage}</div>
-              <div style={styles.blocked}>Blocked: {rule.blockedMessage}</div>
-              <div style={styles.muted}>{rule.safetyReason}</div>
-              <span style={styles.status}>sharing-safe</span>
+        <h2 style={styles.sectionTitle}>Owner Review Gates</h2>
+        <section style={styles.gateGrid} aria-label="NEXUS cinematic demo owner review gates">
+          {gate.ownerReviewGates.map((item) => (
+            <article key={item.gate} style={styles.gateCard}>
+              <div style={styles.label}>{item.gate}</div>
+              <div style={styles.headline}>{item.ownerQuestion}</div>
+              <div style={styles.muted}>{item.requiredAnswerBeforeNextPhase}</div>
+              <div style={styles.blocked}>{item.blockedUntilAnswered}</div>
+              <span style={styles.status}>owner-review-required</span>
             </article>
           ))}
         </section>
 
         <section style={styles.shield}>
-          <h2 style={styles.sectionTitle}>Demo Safe Script</h2>
-          <p style={styles.muted}>
-            Visual QA status: {visualQa.reviewDecision}. Use this script only as controlled
-            review language.
-          </p>
-          <div style={styles.shieldGrid}>
-            {sharing.demoSafeScript.map((line) => (
-              <div key={line} style={styles.shieldItem}>{line}</div>
-            ))}
-          </div>
+          <h2 style={styles.sectionTitle}>Sharing Safety Context</h2>
+          <p style={styles.muted}>{sharing.sharingPromise}</p>
         </section>
 
         <section style={styles.shield}>
-          <h2 style={styles.sectionTitle}>Blocked Claims</h2>
+          <h2 style={styles.sectionTitle}>Blocked Next Phase Actions</h2>
           <div style={styles.shieldGrid}>
-            {sharing.blockedClaims.map((claim) => (
-              <div key={claim} style={styles.shieldItem}>{claim}</div>
+            {gate.blockedNextPhaseActions.map((item) => (
+              <div key={item} style={styles.shieldItem}>{item}</div>
             ))}
           </div>
         </section>
 
         <p style={styles.footer}>
-          Route: {sharing.routePath}. Source: Day {sharing.sourceDay}. Completion:{" "}
-          {sharing.completionResult}. Launch remains {sharing.launchAuthorization}.
+          Route: {gate.routePath}. Source: Day {gate.sourceDay}. Completion:{" "}
+          {gate.completionResult}. Launch: {gate.launchAuthorization}. Pilot:{" "}
+          {gate.pilotAuthorization}. Paid access: {gate.paidAccessAuthorization}.
         </p>
       </div>
     </main>
