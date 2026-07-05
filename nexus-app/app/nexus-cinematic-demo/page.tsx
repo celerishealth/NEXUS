@@ -1,12 +1,12 @@
 import type { CSSProperties } from "react";
 import {
-  getNexusDay321OwnerReviewPrepChecklist,
-  validateNexusDay321OwnerReviewPrepChecklist
-} from "@/lib/nexus/day321OwnerReviewPrepChecklist";
-import {
   getNexusDay322OwnerReviewPrepValidator,
   validateNexusDay322OwnerReviewPrepValidator
 } from "@/lib/nexus/day322OwnerReviewPrepValidator";
+import {
+  getNexusDay323OwnerReviewPrepCheckpoint,
+  validateNexusDay323OwnerReviewPrepCheckpoint
+} from "@/lib/nexus/day323OwnerReviewPrepCheckpoint";
 
 type StyleMap = Record<string, CSSProperties>;
 
@@ -140,63 +140,63 @@ const styles: StyleMap = {
 };
 
 export default function NexusCinematicDemoPage() {
-  const checklist = getNexusDay321OwnerReviewPrepChecklist();
   const validator = getNexusDay322OwnerReviewPrepValidator();
+  const checkpoint = getNexusDay323OwnerReviewPrepCheckpoint();
 
-  const checklistValidation = validateNexusDay321OwnerReviewPrepChecklist();
   const validatorValidation = validateNexusDay322OwnerReviewPrepValidator();
+  const checkpointValidation = validateNexusDay323OwnerReviewPrepCheckpoint();
 
-  const safe = checklistValidation.ok && validatorValidation.ok;
+  const safe = validatorValidation.ok && checkpointValidation.ok;
 
   return (
     <main style={styles.shell}>
       <div style={styles.frame}>
         <div style={styles.topBar}>
-          <div style={styles.badge}>NEXUS / Owner Review Prep Validator</div>
+          <div style={styles.badge}>NEXUS / Owner Review Prep Checkpoint</div>
           <div style={styles.badge}>Read-only · Preview-only · Sample data only</div>
           <div style={styles.badge}>Validation: {safe ? "SAFE" : "CHECK REQUIRED"}</div>
         </div>
 
         <section style={styles.hero}>
-          <div style={styles.eyebrow}>Day 322 · Owner Review Prep Validator</div>
-          <h1 style={styles.h1}>Owner review validated. Execution remains locked.</h1>
-          <p style={styles.heroText}>{validator.validatorPromise}</p>
+          <div style={styles.eyebrow}>Day 323 · Owner Review Prep Checkpoint</div>
+          <h1 style={styles.h1}>Checkpoint locked: review is not approval.</h1>
+          <p style={styles.heroText}>{checkpoint.checkpointPromise}</p>
         </section>
 
-        <h2 style={styles.sectionTitle}>Validator Items</h2>
-        <section style={styles.cardGrid} aria-label="NEXUS owner review prep validator items">
-          {validator.validatorItems.map((item) => (
-            <article key={item.validation} style={styles.card}>
-              <div style={styles.label}>{item.validation}</div>
-              <div style={styles.headline}>{item.expected}</div>
-              <span style={styles.status}>{item.result}</span>
+        <h2 style={styles.sectionTitle}>Checkpoint Items</h2>
+        <section style={styles.cardGrid} aria-label="NEXUS owner review prep checkpoint items">
+          {checkpoint.checkpointItems.map((item) => (
+            <article key={item.checkpoint} style={styles.card}>
+              <div style={styles.label}>{item.checkpoint}</div>
+              <div style={styles.headline}>{item.proof}</div>
+              <span style={styles.status}>{item.status}</span>
             </article>
           ))}
         </section>
 
         <section style={styles.shield}>
-          <h2 style={styles.sectionTitle}>Checklist Context</h2>
+          <h2 style={styles.sectionTitle}>Validator Context</h2>
           <p style={styles.muted}>
-            Day {checklist.day}: {checklist.checklistStatus}. Owner review only:{" "}
-            {checklist.readyForOwnerReviewOnly ? "true" : "false"}. Launch:{" "}
-            {checklist.launchAuthorization}. Pilot: {checklist.pilotAuthorization}. Paid access:{" "}
-            {checklist.paidAccessAuthorization}. External sharing:{" "}
-            {checklist.externalDemoSharingAuthorization}.
+            Day {validator.day}: {validator.validatorStatus}. Owner review only:{" "}
+            {validator.readyForOwnerReviewOnly ? "true" : "false"}. Launch:{" "}
+            {validator.launchAuthorization}. Pilot: {validator.pilotAuthorization}. Paid access:{" "}
+            {validator.paidAccessAuthorization}. External sharing:{" "}
+            {validator.externalDemoSharingAuthorization}.
           </p>
         </section>
 
         <section style={styles.shield}>
           <h2 style={styles.sectionTitle}>Blocked Review Misuse Proof</h2>
           <div style={styles.shieldGrid}>
-            {validator.blockedReviewMisuseProof.map((item) => (
+            {checkpoint.blockedReviewMisuseProof.map((item) => (
               <div key={item} style={styles.shieldItem}>{item}</div>
             ))}
           </div>
         </section>
 
         <p style={styles.footer}>
-          Route: {validator.routePath}. Source: Day {validator.sourceDay}. Completion:{" "}
-          {validator.completionResult}. Next: {validator.nextRecommendedStep}.
+          Route: {checkpoint.routePath}. Source: Day {checkpoint.sourceDay}. Completion:{" "}
+          {checkpoint.completionResult}. Next: {checkpoint.nextRecommendedStep}.
         </p>
       </div>
     </main>
