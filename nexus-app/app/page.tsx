@@ -6728,6 +6728,20 @@ ${aiInput}`,
     View Day 212 manual override API
   </a>
 </section>
+
+<section className="rounded-3xl border border-emerald-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-emerald-950/20">
+  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300">Day 213 · Safe Stop / Manual Escalation</p>
+  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Safe Stop and Manual Escalation Contract v1</h2>
+  <p className="mt-3 text-sm leading-6 text-slate-300">
+    Read-only safe stop and manual escalation contract defining fail-closed triggers, owner-visible escalation reasons, safe manual handling, audit linkage, rollback linkage, and blocked transitions while preventing uncontrolled execution.
+  </p>
+  <a
+    href="/api/nexus/controlled-paid-pilot-launch-safe-stop-manual-escalation"
+    className="mt-5 inline-flex rounded-full border border-emerald-300/30 px-4 py-2 text-sm font-semibold text-emerald-100 hover:border-emerald-200 hover:bg-emerald-300/10"
+  >
+    View Day 213 safe stop API
+  </a>
+</section>
 </main>
   );
 }
@@ -6778,6 +6792,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 
