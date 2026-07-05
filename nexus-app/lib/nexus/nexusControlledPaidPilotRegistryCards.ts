@@ -143,9 +143,19 @@
     href: "/api/nexus/architecture-integrity-checkpoint",
     accent: "violet",
   },
+  {
+    day: 217,
+    label: "Integrity Validator",
+    title: "NEXUS Architecture Integrity Checkpoint Validator v1",
+    description:
+      "Read-only validator confirming the Day 216 architecture checkpoint preserves locked NEXUS vision, owner control, safety boundaries, dashboard registry discipline, and blocked execution surfaces.",
+    href: "/api/nexus/architecture-integrity-checkpoint-validator",
+    accent: "emerald",
+  },
 ] as const;
 
 export type NexusControlledPaidPilotRegistryCard = (typeof nexusControlledPaidPilotRegistryCards)[number];
+
 
 
 
