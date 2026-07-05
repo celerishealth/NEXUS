@@ -7920,3 +7920,60 @@ Future compliance lock:
 Result:
 - Day 300 legal-safe milestone summary completed for safe planning-only completion.
 - No launch authorization granted.
+
+---
+
+## Day 301 — Premium Cinematic Demo Phase Contract v1
+
+Started the NEXUS Premium Cinematic Demo Experience phase after the Day 300 legal-safe milestone.
+
+Added:
+- `lib/nexus/day301CinematicDemoPhaseContract.ts`
+- `app/api/nexus/day-301-cinematic-demo-phase-contract/route.ts`
+
+Contract confirms:
+- Day 300 legal-safe milestone remains completed.
+- Cinematic demo phase is started safely.
+- Demo remains read-only, preview-only, planning-only.
+- Launch remains not authorized.
+- Demo uses sample data only.
+- No real customer data is allowed.
+- No real payment is allowed.
+- No subscription activation is allowed.
+- No invoice creation is allowed.
+- No GST execution is allowed.
+- No e-way bill generation is allowed.
+- No government API mutation is allowed.
+- No message sending is allowed.
+- No AI model calls are allowed.
+- No third-party mutation is allowed.
+- No global trade execution is allowed.
+
+Demo direction:
+- Premium Owner Command Center.
+- Business Health Pulse preview.
+- AI Risk Radar preview.
+- Owner Approval Queue cinematic preview.
+- Subscription Lock preview.
+- Legal-Safe Compliance Shield preview.
+- Global Trade Readiness preview-only card.
+- Customer Memory preview-only card with sample data only.
+- Zero Damage / Zero Stop safety story.
+
+Identity lock:
+- NEXUS remains an owner-controlled AI Business Operating Layer.
+- NEXUS is not chatbot, not CRM clone, not ERP clone, not Make/Zapier clone, not marketplace clone, not IndiaMART clone, and not uncontrolled automation runner.
+
+Legal safety lock:
+- No illegal matter.
+- No grey-zone execution.
+- No compliance shortcuts.
+- No government API misuse.
+- No fake invoice generation.
+- No fake e-way bill generation.
+- No GST bypass.
+- No unauthorized payment, invoice, shipment, trade, or customer/vendor commitment execution.
+
+Result:
+- Day 301 cinematic demo phase contract started safely.
+- No launch authorization granted.
