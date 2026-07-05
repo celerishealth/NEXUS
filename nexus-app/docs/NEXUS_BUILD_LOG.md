@@ -4179,3 +4179,41 @@ Safety status:
 
 Next recommended step:
 Day 223: NEXUS Controlled Paid Pilot Access and Entitlement Safety Validator v1.
+
+## Day 224: NEXUS Controlled Paid Pilot Subscription Lock Boundary Contract v1
+
+Completed Day 224 read-only controlled paid pilot subscription lock boundary contract.
+
+Added:
+- `lib/nexus/nexusControlledPaidPilotSubscriptionLockBoundaryContract.ts`
+- `app/api/nexus/controlled-paid-pilot-subscription-lock-boundary/route.ts`
+
+Updated:
+- `lib/nexus/nexusControlledPaidPilotRegistryCards.ts`
+- Added Day 224 subscription lock boundary registry entry.
+
+Purpose:
+- Defines subscription lock boundaries for future controlled paid pilot access.
+- Keeps subscription activation, subscription mutation, entitlement writes, payment execution, invoice creation, customer data writes, audit persistence, recovery execution, third-party mutation, and AI calls blocked.
+- Locks subscription blocked by default, billing proof required, subscription/entitlement separation, owner gate, least-privilege access, and fail-closed behavior.
+- Preserves NEXUS as an owner-controlled AI Business Operating Layer above existing business software.
+
+Safety status:
+- Read-only controlled-paid-pilot-subscription-lock-boundary-preview-only route.
+- No approve/reject execution.
+- No payment execution.
+- No invoice creation.
+- No subscription activation.
+- No entitlement writes.
+- No message sending.
+- No customer data write.
+- No real DB memory read/write.
+- No audit persistence.
+- No recovery execution.
+- No third-party mutation.
+- No AI model calls.
+- No execution behavior changed.
+- No safety behavior changed.
+
+Next recommended step:
+Day 225: NEXUS Controlled Paid Pilot Subscription Lock Boundary Validator v1.

@@ -206,9 +206,19 @@
     href: "/api/nexus/controlled-paid-pilot-access-entitlement-safety-validator",
     accent: "emerald",
   },
+  {
+    day: 224,
+    label: "Subscription Lock",
+    title: "NEXUS Controlled Paid Pilot Subscription Lock Boundary Contract v1",
+    description:
+      "Read-only subscription lock boundary contract blocking subscription activation, subscription mutation, entitlement writes, payment execution, invoice creation, customer data writes, audit persistence, recovery, third-party mutation, and AI calls.",
+    href: "/api/nexus/controlled-paid-pilot-subscription-lock-boundary",
+    accent: "violet",
+  },
 ] as const;
 
 export type NexusControlledPaidPilotRegistryCard = (typeof nexusControlledPaidPilotRegistryCards)[number];
+
 
 
 
