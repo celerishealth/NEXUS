@@ -179,9 +179,19 @@
     href: "/api/nexus/controlled-paid-pilot-execution-architecture-checkpoint",
     accent: "violet",
   },
+  {
+    day: 221,
+    label: "Checkpoint Validator",
+    title: "NEXUS Controlled Paid Pilot Execution Architecture Checkpoint Validator v1",
+    description:
+      "Read-only validator confirming the Day 220 execution architecture checkpoint preserves locked vision, owner control, safety, Zero Damage, Zero Stop, dashboard integrity, mountain-strength locks, and blocked execution surfaces.",
+    href: "/api/nexus/controlled-paid-pilot-execution-architecture-checkpoint-validator",
+    accent: "emerald",
+  },
 ] as const;
 
 export type NexusControlledPaidPilotRegistryCard = (typeof nexusControlledPaidPilotRegistryCards)[number];
+
 
 
 
