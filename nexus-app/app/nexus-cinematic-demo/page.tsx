@@ -1,12 +1,12 @@
 import type { CSSProperties } from "react";
 import {
-  getNexusDay319ControlledDemoReviewReadinessCheckpoint,
-  validateNexusDay319ControlledDemoReviewReadinessCheckpoint
-} from "@/lib/nexus/day319ControlledDemoReviewReadinessCheckpoint";
-import {
   getNexusDay320ControlledDemoReviewReadinessFinalSummary,
   validateNexusDay320ControlledDemoReviewReadinessFinalSummary
 } from "@/lib/nexus/day320ControlledDemoReviewReadinessFinalSummary";
+import {
+  getNexusDay321OwnerReviewPrepChecklist,
+  validateNexusDay321OwnerReviewPrepChecklist
+} from "@/lib/nexus/day321OwnerReviewPrepChecklist";
 
 type StyleMap = Record<string, CSSProperties>;
 
@@ -106,6 +106,7 @@ const styles: StyleMap = {
     lineHeight: 1.12
   },
   muted: { color: "#cbd5e1", lineHeight: 1.65, marginTop: "10px" },
+  blocked: { color: "#fecaca", lineHeight: 1.65, marginTop: "10px" },
   status: {
     display: "inline-block",
     marginTop: "15px",
@@ -140,63 +141,74 @@ const styles: StyleMap = {
 };
 
 export default function NexusCinematicDemoPage() {
-  const checkpoint = getNexusDay319ControlledDemoReviewReadinessCheckpoint();
-  const summary = getNexusDay320ControlledDemoReviewReadinessFinalSummary();
+  const finalSummary = getNexusDay320ControlledDemoReviewReadinessFinalSummary();
+  const checklist = getNexusDay321OwnerReviewPrepChecklist();
 
-  const checkpointValidation = validateNexusDay319ControlledDemoReviewReadinessCheckpoint();
-  const summaryValidation = validateNexusDay320ControlledDemoReviewReadinessFinalSummary();
+  const finalSummaryValidation = validateNexusDay320ControlledDemoReviewReadinessFinalSummary();
+  const checklistValidation = validateNexusDay321OwnerReviewPrepChecklist();
 
-  const safe = checkpointValidation.ok && summaryValidation.ok;
+  const safe = finalSummaryValidation.ok && checklistValidation.ok;
 
   return (
     <main style={styles.shell}>
       <div style={styles.frame}>
         <div style={styles.topBar}>
-          <div style={styles.badge}>NEXUS / Controlled Demo Final Summary</div>
+          <div style={styles.badge}>NEXUS / Owner Review Prep</div>
           <div style={styles.badge}>Read-only · Preview-only · Sample data only</div>
           <div style={styles.badge}>Validation: {safe ? "SAFE" : "CHECK REQUIRED"}</div>
         </div>
 
         <section style={styles.hero}>
-          <div style={styles.eyebrow}>Day 320 · Controlled Demo Review Final Summary</div>
-          <h1 style={styles.h1}>Final summary locked: owner review only.</h1>
-          <p style={styles.heroText}>{summary.finalSummaryPromise}</p>
+          <div style={styles.eyebrow}>Day 321 · Owner Review Prep Checklist</div>
+          <h1 style={styles.h1}>Review the demo. Do not unlock execution.</h1>
+          <p style={styles.heroText}>{checklist.checklistPromise}</p>
         </section>
 
-        <h2 style={styles.sectionTitle}>Final Summary Items</h2>
-        <section style={styles.cardGrid} aria-label="NEXUS controlled demo final summary items">
-          {summary.finalSummaryItems.map((item) => (
-            <article key={item.area} style={styles.card}>
-              <div style={styles.label}>{item.area}</div>
-              <div style={styles.headline}>{item.finalProof}</div>
-              <span style={styles.status}>{item.finalStatus}</span>
+        <h2 style={styles.sectionTitle}>Owner Review Prep Items</h2>
+        <section style={styles.cardGrid} aria-label="NEXUS owner review prep checklist">
+          {checklist.ownerReviewPrepItems.map((item) => (
+            <article key={item.reviewArea} style={styles.card}>
+              <div style={styles.label}>{item.reviewArea}</div>
+              <div style={styles.headline}>{item.ownerMustCheck}</div>
+              <div style={styles.muted}>{item.passCondition}</div>
+              <div style={styles.blocked}>{item.stillBlocked}</div>
+              <span style={styles.status}>owner-review-only</span>
             </article>
           ))}
         </section>
 
         <section style={styles.shield}>
-          <h2 style={styles.sectionTitle}>Checkpoint Context</h2>
+          <h2 style={styles.sectionTitle}>Final Summary Context</h2>
           <p style={styles.muted}>
-            Day {checkpoint.day}: {checkpoint.checkpointStatus}. Owner review only:{" "}
-            {checkpoint.readyForOwnerReviewOnly ? "true" : "false"}. Launch:{" "}
-            {checkpoint.launchAuthorization}. Pilot: {checkpoint.pilotAuthorization}. Paid access:{" "}
-            {checkpoint.paidAccessAuthorization}. External sharing:{" "}
-            {checkpoint.externalDemoSharingAuthorization}.
+            Day {finalSummary.day}: {finalSummary.finalSummaryStatus}. Owner review only:{" "}
+            {finalSummary.readyForOwnerReviewOnly ? "true" : "false"}. Launch:{" "}
+            {finalSummary.launchAuthorization}. Pilot: {finalSummary.pilotAuthorization}. Paid access:{" "}
+            {finalSummary.paidAccessAuthorization}. External sharing:{" "}
+            {finalSummary.externalDemoSharingAuthorization}.
           </p>
+        </section>
+
+        <section style={styles.shield}>
+          <h2 style={styles.sectionTitle}>Owner Review Warnings</h2>
+          <div style={styles.shieldGrid}>
+            {checklist.ownerReviewWarnings.map((item) => (
+              <div key={item} style={styles.shieldItem}>{item}</div>
+            ))}
+          </div>
         </section>
 
         <section style={styles.shield}>
           <h2 style={styles.sectionTitle}>Not Authorized Actions</h2>
           <div style={styles.shieldGrid}>
-            {summary.notAuthorizedActions.map((item) => (
+            {checklist.notAuthorizedActions.map((item) => (
               <div key={item} style={styles.shieldItem}>{item}</div>
             ))}
           </div>
         </section>
 
         <p style={styles.footer}>
-          Route: {summary.routePath}. Source: Day {summary.sourceDay}. Completion:{" "}
-          {summary.completionResult}. Next: {summary.nextRecommendedStep}.
+          Route: {checklist.routePath}. Source: Day {checklist.sourceDay}. Completion:{" "}
+          {checklist.completionResult}. Next: {checklist.nextRecommendedStep}.
         </p>
       </div>
     </main>

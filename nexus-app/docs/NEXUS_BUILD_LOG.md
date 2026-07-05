@@ -9162,3 +9162,72 @@ Result:
 - Day 320 controlled demo review readiness final summary locked safely.
 - Existing main dashboard was not overwritten.
 - No launch, pilot, paid access, external sharing, onboarding, or real execution authorization granted.
+
+---
+
+## Day 321 — Owner Review Prep Checklist v1
+
+Added owner review prep checklist for the controlled cinematic demo.
+
+Added:
+- `lib/nexus/day321OwnerReviewPrepChecklist.ts`
+- `app/api/nexus/day-321-owner-review-prep-checklist/route.ts`
+
+Updated:
+- `app/nexus-cinematic-demo/page.tsx`
+
+Screen:
+- `/nexus-cinematic-demo`
+
+Added owner review checks:
+- Visual quality.
+- NEXUS identity.
+- Safety boundary.
+- Legal-safe boundary.
+- Sharing language.
+- Next phase boundary.
+
+Added warnings:
+- Owner review is not launch approval.
+- Owner review is not pilot approval.
+- Owner review is not paid access approval.
+- Owner review is not external sharing approval.
+- Owner review is not customer onboarding approval.
+- Owner review must not connect real customer data, activate payments, create invoices, write entitlements, execute GST/e-way bills, mutate government APIs, send live messages, call AI models, mutate third-party systems, or execute global trade.
+
+Safety confirmed:
+- Read-only.
+- Preview-only.
+- Sample data only.
+- Owner review required.
+- Ready for owner review only.
+- No launch authorization.
+- No pilot authorization.
+- No paid access authorization.
+- No external demo sharing authorization.
+- No customer onboarding authorization.
+- No real customer data.
+- No payment execution.
+- No subscription activation.
+- No invoice creation.
+- No entitlement writes.
+- No customer data writes.
+- No GST execution.
+- No e-way bill generation.
+- No government API mutation.
+- No compliance filing.
+- No message sending.
+- No AI model calls.
+- No third-party mutation.
+- No global trade execution.
+- No approve/reject execution.
+- No owner override execution.
+- No recovery/rollback execution.
+- No illegal matter.
+- No grey-zone execution.
+- No compliance shortcuts.
+
+Result:
+- Day 321 owner review prep checklist created safely.
+- Existing main dashboard was not overwritten.
+- No launch, pilot, paid access, external sharing, onboarding, or real execution authorization granted.
