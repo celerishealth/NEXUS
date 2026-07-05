@@ -1,12 +1,12 @@
 import type { CSSProperties } from "react";
 import {
-  getNexusDay320ControlledDemoReviewReadinessFinalSummary,
-  validateNexusDay320ControlledDemoReviewReadinessFinalSummary
-} from "@/lib/nexus/day320ControlledDemoReviewReadinessFinalSummary";
-import {
   getNexusDay321OwnerReviewPrepChecklist,
   validateNexusDay321OwnerReviewPrepChecklist
 } from "@/lib/nexus/day321OwnerReviewPrepChecklist";
+import {
+  getNexusDay322OwnerReviewPrepValidator,
+  validateNexusDay322OwnerReviewPrepValidator
+} from "@/lib/nexus/day322OwnerReviewPrepValidator";
 
 type StyleMap = Record<string, CSSProperties>;
 
@@ -106,7 +106,6 @@ const styles: StyleMap = {
     lineHeight: 1.12
   },
   muted: { color: "#cbd5e1", lineHeight: 1.65, marginTop: "10px" },
-  blocked: { color: "#fecaca", lineHeight: 1.65, marginTop: "10px" },
   status: {
     display: "inline-block",
     marginTop: "15px",
@@ -141,74 +140,63 @@ const styles: StyleMap = {
 };
 
 export default function NexusCinematicDemoPage() {
-  const finalSummary = getNexusDay320ControlledDemoReviewReadinessFinalSummary();
   const checklist = getNexusDay321OwnerReviewPrepChecklist();
+  const validator = getNexusDay322OwnerReviewPrepValidator();
 
-  const finalSummaryValidation = validateNexusDay320ControlledDemoReviewReadinessFinalSummary();
   const checklistValidation = validateNexusDay321OwnerReviewPrepChecklist();
+  const validatorValidation = validateNexusDay322OwnerReviewPrepValidator();
 
-  const safe = finalSummaryValidation.ok && checklistValidation.ok;
+  const safe = checklistValidation.ok && validatorValidation.ok;
 
   return (
     <main style={styles.shell}>
       <div style={styles.frame}>
         <div style={styles.topBar}>
-          <div style={styles.badge}>NEXUS / Owner Review Prep</div>
+          <div style={styles.badge}>NEXUS / Owner Review Prep Validator</div>
           <div style={styles.badge}>Read-only · Preview-only · Sample data only</div>
           <div style={styles.badge}>Validation: {safe ? "SAFE" : "CHECK REQUIRED"}</div>
         </div>
 
         <section style={styles.hero}>
-          <div style={styles.eyebrow}>Day 321 · Owner Review Prep Checklist</div>
-          <h1 style={styles.h1}>Review the demo. Do not unlock execution.</h1>
-          <p style={styles.heroText}>{checklist.checklistPromise}</p>
+          <div style={styles.eyebrow}>Day 322 · Owner Review Prep Validator</div>
+          <h1 style={styles.h1}>Owner review validated. Execution remains locked.</h1>
+          <p style={styles.heroText}>{validator.validatorPromise}</p>
         </section>
 
-        <h2 style={styles.sectionTitle}>Owner Review Prep Items</h2>
-        <section style={styles.cardGrid} aria-label="NEXUS owner review prep checklist">
-          {checklist.ownerReviewPrepItems.map((item) => (
-            <article key={item.reviewArea} style={styles.card}>
-              <div style={styles.label}>{item.reviewArea}</div>
-              <div style={styles.headline}>{item.ownerMustCheck}</div>
-              <div style={styles.muted}>{item.passCondition}</div>
-              <div style={styles.blocked}>{item.stillBlocked}</div>
-              <span style={styles.status}>owner-review-only</span>
+        <h2 style={styles.sectionTitle}>Validator Items</h2>
+        <section style={styles.cardGrid} aria-label="NEXUS owner review prep validator items">
+          {validator.validatorItems.map((item) => (
+            <article key={item.validation} style={styles.card}>
+              <div style={styles.label}>{item.validation}</div>
+              <div style={styles.headline}>{item.expected}</div>
+              <span style={styles.status}>{item.result}</span>
             </article>
           ))}
         </section>
 
         <section style={styles.shield}>
-          <h2 style={styles.sectionTitle}>Final Summary Context</h2>
+          <h2 style={styles.sectionTitle}>Checklist Context</h2>
           <p style={styles.muted}>
-            Day {finalSummary.day}: {finalSummary.finalSummaryStatus}. Owner review only:{" "}
-            {finalSummary.readyForOwnerReviewOnly ? "true" : "false"}. Launch:{" "}
-            {finalSummary.launchAuthorization}. Pilot: {finalSummary.pilotAuthorization}. Paid access:{" "}
-            {finalSummary.paidAccessAuthorization}. External sharing:{" "}
-            {finalSummary.externalDemoSharingAuthorization}.
+            Day {checklist.day}: {checklist.checklistStatus}. Owner review only:{" "}
+            {checklist.readyForOwnerReviewOnly ? "true" : "false"}. Launch:{" "}
+            {checklist.launchAuthorization}. Pilot: {checklist.pilotAuthorization}. Paid access:{" "}
+            {checklist.paidAccessAuthorization}. External sharing:{" "}
+            {checklist.externalDemoSharingAuthorization}.
           </p>
         </section>
 
         <section style={styles.shield}>
-          <h2 style={styles.sectionTitle}>Owner Review Warnings</h2>
+          <h2 style={styles.sectionTitle}>Blocked Review Misuse Proof</h2>
           <div style={styles.shieldGrid}>
-            {checklist.ownerReviewWarnings.map((item) => (
-              <div key={item} style={styles.shieldItem}>{item}</div>
-            ))}
-          </div>
-        </section>
-
-        <section style={styles.shield}>
-          <h2 style={styles.sectionTitle}>Not Authorized Actions</h2>
-          <div style={styles.shieldGrid}>
-            {checklist.notAuthorizedActions.map((item) => (
+            {validator.blockedReviewMisuseProof.map((item) => (
               <div key={item} style={styles.shieldItem}>{item}</div>
             ))}
           </div>
         </section>
 
         <p style={styles.footer}>
-          Route: {checklist.routePath}. Source: Day {checklist.sourceDay}. Completion:{" "}
-          {checklist.completionResult}. Next: {checklist.nextRecommendedStep}.
+          Route: {validator.routePath}. Source: Day {validator.sourceDay}. Completion:{" "}
+          {validator.completionResult}. Next: {validator.nextRecommendedStep}.
         </p>
       </div>
     </main>
