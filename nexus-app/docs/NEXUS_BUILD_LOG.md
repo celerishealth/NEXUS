@@ -4141,3 +4141,41 @@ Safety status:
 
 Next recommended step:
 Day 221: NEXUS Controlled Paid Pilot Execution Architecture Checkpoint Validator v1.
+
+## Day 222: NEXUS Controlled Paid Pilot Access and Entitlement Safety Contract v1
+
+Completed Day 222 read-only controlled paid pilot access and entitlement safety contract.
+
+Added:
+- `lib/nexus/nexusControlledPaidPilotAccessEntitlementSafetyContract.ts`
+- `app/api/nexus/controlled-paid-pilot-access-entitlement-safety/route.ts`
+
+Updated:
+- `lib/nexus/nexusControlledPaidPilotRegistryCards.ts`
+- Added Day 222 access and entitlement safety registry entry.
+
+Purpose:
+- Defines safe access and entitlement boundaries for future controlled paid pilot users.
+- Keeps subscription activation, entitlement writes, payment execution, invoice creation, customer data access, audit persistence, recovery execution, third-party mutation, and AI calls blocked.
+- Locks least-privilege access, owner gate, entitlement proof, billing proof verification, audit linkage, rollback linkage, and fail-closed behavior.
+- Preserves NEXUS as an owner-controlled AI Business Operating Layer above existing business software.
+
+Safety status:
+- Read-only controlled-paid-pilot-access-entitlement-safety-preview-only route.
+- No approve/reject execution.
+- No payment execution.
+- No invoice creation.
+- No subscription activation.
+- No entitlement writes.
+- No message sending.
+- No customer data write.
+- No real DB memory read/write.
+- No audit persistence.
+- No recovery execution.
+- No third-party mutation.
+- No AI model calls.
+- No execution behavior changed.
+- No safety behavior changed.
+
+Next recommended step:
+Day 223: NEXUS Controlled Paid Pilot Access and Entitlement Safety Validator v1.

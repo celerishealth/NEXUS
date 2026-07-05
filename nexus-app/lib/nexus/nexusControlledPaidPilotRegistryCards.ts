@@ -188,9 +188,19 @@
     href: "/api/nexus/controlled-paid-pilot-execution-architecture-checkpoint-validator",
     accent: "emerald",
   },
+  {
+    day: 222,
+    label: "Access / Entitlement",
+    title: "NEXUS Controlled Paid Pilot Access and Entitlement Safety Contract v1",
+    description:
+      "Read-only access and entitlement safety contract blocking subscription activation, entitlement writes, payment execution, invoice creation, customer data writes, audit persistence, recovery, third-party mutation, and AI calls.",
+    href: "/api/nexus/controlled-paid-pilot-access-entitlement-safety",
+    accent: "amber",
+  },
 ] as const;
 
 export type NexusControlledPaidPilotRegistryCard = (typeof nexusControlledPaidPilotRegistryCards)[number];
+
 
 
 
