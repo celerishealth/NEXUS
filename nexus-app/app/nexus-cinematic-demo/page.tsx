@@ -1,12 +1,12 @@
 import type { CSSProperties } from "react";
 import {
-  getNexusDay314CinematicDemoOwnerReviewGate,
-  validateNexusDay314CinematicDemoOwnerReviewGate
-} from "@/lib/nexus/day314CinematicDemoOwnerReviewGate";
-import {
   getNexusDay315CinematicDemoOwnerReviewGateValidator,
   validateNexusDay315CinematicDemoOwnerReviewGateValidator
 } from "@/lib/nexus/day315CinematicDemoOwnerReviewGateValidator";
+import {
+  getNexusDay316CinematicDemoOwnerReviewGateCheckpoint,
+  validateNexusDay316CinematicDemoOwnerReviewGateCheckpoint
+} from "@/lib/nexus/day316CinematicDemoOwnerReviewGateCheckpoint";
 
 type StyleMap = Record<string, CSSProperties>;
 
@@ -77,13 +77,13 @@ const styles: StyleMap = {
     marginTop: "32px",
     marginBottom: "14px"
   },
-  checkGrid: {
+  cardGrid: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))",
     gap: "14px",
     marginTop: "18px"
   },
-  checkCard: {
+  card: {
     border: "1px solid rgba(103, 232, 249, 0.23)",
     borderRadius: "24px",
     padding: "20px",
@@ -140,60 +140,61 @@ const styles: StyleMap = {
 };
 
 export default function NexusCinematicDemoPage() {
-  const gate = getNexusDay314CinematicDemoOwnerReviewGate();
   const validator = getNexusDay315CinematicDemoOwnerReviewGateValidator();
+  const checkpoint = getNexusDay316CinematicDemoOwnerReviewGateCheckpoint();
 
-  const gateValidation = validateNexusDay314CinematicDemoOwnerReviewGate();
   const validatorValidation = validateNexusDay315CinematicDemoOwnerReviewGateValidator();
+  const checkpointValidation = validateNexusDay316CinematicDemoOwnerReviewGateCheckpoint();
 
-  const safe = gateValidation.ok && validatorValidation.ok;
+  const safe = validatorValidation.ok && checkpointValidation.ok;
 
   return (
     <main style={styles.shell}>
       <div style={styles.frame}>
         <div style={styles.topBar}>
-          <div style={styles.badge}>NEXUS / Owner Review Validator</div>
+          <div style={styles.badge}>NEXUS / Owner Review Checkpoint</div>
           <div style={styles.badge}>Read-only · Preview-only · Sample data only</div>
           <div style={styles.badge}>Validation: {safe ? "SAFE" : "CHECK REQUIRED"}</div>
         </div>
 
         <section style={styles.hero}>
-          <div style={styles.eyebrow}>Day 315 · Owner Review Gate Validator</div>
-          <h1 style={styles.h1}>Next phase stays locked until owner review passes.</h1>
-          <p style={styles.heroText}>{validator.validatorPromise}</p>
+          <div style={styles.eyebrow}>Day 316 · Owner Review Gate Checkpoint</div>
+          <h1 style={styles.h1}>Owner review is locked before the next phase.</h1>
+          <p style={styles.heroText}>{checkpoint.checkpointPromise}</p>
         </section>
 
-        <h2 style={styles.sectionTitle}>Validator Checks</h2>
-        <section style={styles.checkGrid} aria-label="NEXUS owner review gate validator checks">
-          {validator.validatorChecks.map((item) => (
-            <article key={item.check} style={styles.checkCard}>
-              <div style={styles.label}>{item.check}</div>
-              <div style={styles.headline}>{item.expected}</div>
-              <span style={styles.status}>{item.result}</span>
+        <h2 style={styles.sectionTitle}>Checkpoint Items</h2>
+        <section style={styles.cardGrid} aria-label="NEXUS owner review checkpoint items">
+          {checkpoint.checkpointItems.map((item) => (
+            <article key={item.checkpoint} style={styles.card}>
+              <div style={styles.label}>{item.checkpoint}</div>
+              <div style={styles.headline}>{item.proof}</div>
+              <span style={styles.status}>{item.status}</span>
             </article>
           ))}
         </section>
 
         <section style={styles.shield}>
-          <h2 style={styles.sectionTitle}>Owner Gate Context</h2>
+          <h2 style={styles.sectionTitle}>Validator Context</h2>
           <p style={styles.muted}>
-            Gate status: {gate.gateStatus}. Launch: {gate.launchAuthorization}. Pilot:{" "}
-            {gate.pilotAuthorization}. Paid access: {gate.paidAccessAuthorization}.
+            Validator: {validator.validatorStatus}. Gate: {validator.gateStatusConfirmed}. Launch:{" "}
+            {validator.launchAuthorization}. Pilot: {validator.pilotAuthorization}. Paid access:{" "}
+            {validator.paidAccessAuthorization}.
           </p>
         </section>
 
         <section style={styles.shield}>
-          <h2 style={styles.sectionTitle}>Blocked Authorization Proof</h2>
+          <h2 style={styles.sectionTitle}>Blocked Next Phase Actions</h2>
           <div style={styles.shieldGrid}>
-            {validator.blockedAuthorizationProof.map((item) => (
+            {checkpoint.blockedNextPhaseActions.map((item) => (
               <div key={item} style={styles.shieldItem}>{item}</div>
             ))}
           </div>
         </section>
 
         <p style={styles.footer}>
-          Route: {validator.routePath}. Source: Day {validator.sourceDay}. Completion:{" "}
-          {validator.completionResult}. Gate: {validator.gateStatusConfirmed}.
+          Route: {checkpoint.routePath}. Source: Day {checkpoint.sourceDay}. Completion:{" "}
+          {checkpoint.completionResult}. Next: {checkpoint.nextRecommendedStep}.
         </p>
       </div>
     </main>
