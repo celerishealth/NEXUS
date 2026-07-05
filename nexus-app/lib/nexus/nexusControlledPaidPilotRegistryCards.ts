@@ -152,9 +152,19 @@
     href: "/api/nexus/architecture-integrity-checkpoint-validator",
     accent: "emerald",
   },
+  {
+    day: 218,
+    label: "Execution Summary",
+    title: "NEXUS Controlled Paid Pilot Execution Architecture Summary v1",
+    description:
+      "Read-only summary of controlled paid pilot execution architecture confirming owner control, safety, Zero Damage, Zero Stop, audit readiness, rollback readiness, incident readiness, manual override, safe stop, and dashboard integrity.",
+    href: "/api/nexus/controlled-paid-pilot-execution-architecture-summary",
+    accent: "sky",
+  },
 ] as const;
 
 export type NexusControlledPaidPilotRegistryCard = (typeof nexusControlledPaidPilotRegistryCards)[number];
+
 
 
 
