@@ -1,15 +1,15 @@
 ﻿import {
-  controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary,
-  validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary
-} from "./controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary";
+  controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary,
+  validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary
+} from "./controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary";
 
 export type NexusControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryValidator = {
-  day: 263;
+  day: 269;
   title: string;
   mode: "read-only-validator-preview-only";
-  sourceDay: 262;
+  sourceDay: 268;
   validationStatus: "passed";
-  summaryCompletionValid: boolean;
+  summaryCompleted: boolean;
   launchNotAuthorized: boolean;
   subscriptionActivationBlocked: boolean;
   paymentExecutionBlocked: boolean;
@@ -26,126 +26,135 @@ export type NexusControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpoin
   aiModelCallsBlocked: boolean;
   globalTradeExecutionBlocked: boolean;
   identityLockValid: boolean;
-  globalTradePlanningOnlyValid: boolean;
+  futureGlobalTradePlanningOnlyValid: boolean;
   noCloneDriftValid: boolean;
   validatorNotes: string[];
 };
 
 export const controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryValidator: NexusControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryValidator = {
-  day: 263,
+  day: 269,
   title:
     "NEXUS Controlled Paid Pilot Subscription Lock Boundary Final Review Checkpoint Summary Validator v1",
   mode: "read-only-validator-preview-only",
-  sourceDay: 262,
+  sourceDay: 268,
   validationStatus: "passed",
-  summaryCompletionValid:
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.summaryStatus ===
+  summaryCompleted:
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.summaryStatus ===
       "completed" &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.completionResult ===
-      "safe-planning-only-summary-complete",
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.completionResult ===
+      "safe-planning-only-checkpoint-summary-complete",
   launchNotAuthorized:
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.launchStatus ===
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.launchStatus ===
     "not-authorized",
   subscriptionActivationBlocked:
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.subscriptionActivation ===
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.subscriptionActivation ===
     "blocked",
   paymentExecutionBlocked:
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.paymentExecution ===
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.paymentExecution ===
     "blocked",
   invoiceCreationBlocked:
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.invoiceCreation ===
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.invoiceCreation ===
     "blocked",
   entitlementWritesBlocked:
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.entitlementWrites ===
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.entitlementWrites ===
     "blocked",
   customerDataWritesBlocked:
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.customerDataWrites ===
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.customerDataWrites ===
     "blocked",
   realDbMemoryReadWriteBlocked:
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.realDbMemoryReadWrite ===
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.realDbMemoryReadWrite ===
     "blocked",
   auditPersistenceBlocked:
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.auditPersistence ===
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.auditPersistence ===
     "blocked",
   approveRejectExecutionBlocked:
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.approveRejectExecution ===
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.approveRejectExecution ===
     "blocked",
   ownerOverrideExecutionBlocked:
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.ownerOverrideExecution ===
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.ownerOverrideExecution ===
     "blocked",
   recoveryRollbackExecutionBlocked:
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.recoveryRollbackExecution ===
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.recoveryRollbackExecution ===
     "blocked",
   messageSendingBlocked:
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.messageSending ===
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.messageSending ===
     "blocked",
   thirdPartyMutationBlocked:
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.thirdPartyMutation ===
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.thirdPartyMutation ===
     "blocked",
   aiModelCallsBlocked:
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.aiModelCalls ===
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.aiModelCalls ===
     "blocked",
   globalTradeExecutionBlocked:
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.globalTradeExecution ===
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.globalTradeExecution ===
     "blocked",
   identityLockValid:
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.identitySummary.includes(
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.identitySummary.includes(
       "owner-controlled AI Business Operating Layer"
     ) &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.identitySummary.includes(
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.identitySummary.includes(
       "not chatbot"
     ) &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.identitySummary.includes(
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.identitySummary.includes(
       "not CRM clone"
     ) &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.identitySummary.includes(
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.identitySummary.includes(
       "not ERP clone"
     ) &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.identitySummary.includes(
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.identitySummary.includes(
       "not Make/Zapier clone"
     ) &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.identitySummary.includes(
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.identitySummary.includes(
+      "not marketplace clone"
+    ) &&
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.identitySummary.includes(
+      "not IndiaMART clone"
+    ) &&
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.identitySummary.includes(
       "not uncontrolled automation runner"
     ),
-  globalTradePlanningOnlyValid:
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.futureGlobalTradeSummary
+  futureGlobalTradePlanningOnlyValid:
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.futureGlobalTradeSummary
       .join(" ")
       .includes("future safe planning only") &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.futureGlobalTradeSummary
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.futureGlobalTradeSummary
       .join(" ")
       .includes("no order placement") &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.futureGlobalTradeSummary
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.futureGlobalTradeSummary
       .join(" ")
       .includes("no shipment booking") &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.futureGlobalTradeSummary
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.futureGlobalTradeSummary
       .join(" ")
-      .includes("no customer commitment") &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.futureGlobalTradeSummary
+      .includes("no customer/vendor commitment") &&
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.futureGlobalTradeSummary
       .join(" ")
-      .includes("no vendor/customer message sending"),
+      .includes("no vendor/customer message sending") &&
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.futureGlobalTradeSummary
+      .join(" ")
+      .includes("no third-party mutation"),
   noCloneDriftValid:
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.futureGlobalTradeSummary
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.futureGlobalTradeSummary
       .join(" ")
       .includes("no IndiaMART clone") &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.futureGlobalTradeSummary
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.futureGlobalTradeSummary
       .join(" ")
       .includes("no marketplace clone") &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.futureGlobalTradeSummary
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.futureGlobalTradeSummary
       .join(" ")
       .includes("no CRM clone") &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.futureGlobalTradeSummary
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.futureGlobalTradeSummary
       .join(" ")
       .includes("no ERP clone") &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary.futureGlobalTradeSummary
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary.futureGlobalTradeSummary
       .join(" ")
       .includes("no uncontrolled automation runner"),
   validatorNotes: [
-    "Validator confirms Day 262 summary is completed for safe planning only.",
+    "Validator confirms Day 268 checkpoint summary is completed for safe planning only.",
     "Validator confirms launch is still not authorized.",
     "Validator confirms subscription activation, payment execution, invoice creation, entitlement writes, customer data writes, real DB memory read/write, and audit persistence remain blocked.",
     "Validator confirms approve/reject, owner override, recovery/rollback, message sending, third-party mutation, and AI model calls remain blocked.",
-    "Validator confirms global trade remains future planning-only with no order placement, shipment booking, customer/vendor commitment, vendor/customer message sending, or third-party mutation.",
-    "Validator confirms NEXUS identity remains owner-controlled operating layer only, with no chatbot, CRM, ERP, Make/Zapier, marketplace, IndiaMART, or uncontrolled automation runner drift."
+    "Validator confirms global trade execution remains blocked with no order placement, shipment booking, customer/vendor commitment, vendor/customer message sending, third-party mutation, payment activation, invoice creation, or entitlement writes.",
+    "Validator confirms NEXUS identity remains owner-controlled operating layer only with no chatbot, CRM, ERP, Make/Zapier, marketplace, IndiaMART, or uncontrolled automation runner drift."
   ]
 };
 
@@ -155,13 +164,14 @@ export function getControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpo
 
 export function validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryValidator() {
   const summaryValidation =
-    validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummary();
+    validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary();
 
   const validator =
     controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryValidator;
 
   const requiredFlags = [
-    validator.summaryCompletionValid,
+    summaryValidation.ok,
+    validator.summaryCompleted,
     validator.launchNotAuthorized,
     validator.subscriptionActivationBlocked,
     validator.paymentExecutionBlocked,
@@ -178,12 +188,12 @@ export function validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCh
     validator.aiModelCallsBlocked,
     validator.globalTradeExecutionBlocked,
     validator.identityLockValid,
-    validator.globalTradePlanningOnlyValid,
+    validator.futureGlobalTradePlanningOnlyValid,
     validator.noCloneDriftValid
   ];
 
   return {
-    ok: summaryValidation.ok && requiredFlags.every(Boolean),
+    ok: requiredFlags.every(Boolean),
     day: validator.day,
     sourceDay: validator.sourceDay,
     title: validator.title,
@@ -191,7 +201,7 @@ export function validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCh
     validationStatus: validator.validationStatus,
     summaryValidation,
     requiredFlagsPassed: requiredFlags.every(Boolean),
-    summaryCompletionValid: validator.summaryCompletionValid,
+    summaryCompleted: validator.summaryCompleted,
     launchNotAuthorized: validator.launchNotAuthorized,
     subscriptionActivationBlocked: validator.subscriptionActivationBlocked,
     paymentExecutionBlocked: validator.paymentExecutionBlocked,
@@ -205,7 +215,7 @@ export function validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCh
     aiModelCallsBlocked: validator.aiModelCallsBlocked,
     globalTradeExecutionBlocked: validator.globalTradeExecutionBlocked,
     identityLockValid: validator.identityLockValid,
-    globalTradePlanningOnlyValid: validator.globalTradePlanningOnlyValid,
+    futureGlobalTradePlanningOnlyValid: validator.futureGlobalTradePlanningOnlyValid,
     noCloneDriftValid: validator.noCloneDriftValid
   };
 }
