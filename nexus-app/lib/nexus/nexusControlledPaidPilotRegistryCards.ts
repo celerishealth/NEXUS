@@ -134,8 +134,18 @@
     href: "/api/nexus/dashboard-registry-cleanup-validator",
     accent: "emerald",
   },
+  {
+    day: 216,
+    label: "Integrity Checkpoint",
+    title: "NEXUS Architecture Integrity Checkpoint v1",
+    description:
+      "Read-only architecture integrity checkpoint confirming NEXUS vision, owner control, safety, registry cleanup, Zero Damage, Zero Stop, audit readiness, rollback readiness, and execution boundaries remain preserved.",
+    href: "/api/nexus/architecture-integrity-checkpoint",
+    accent: "violet",
+  },
 ] as const;
 
 export type NexusControlledPaidPilotRegistryCard = (typeof nexusControlledPaidPilotRegistryCards)[number];
+
 
 
