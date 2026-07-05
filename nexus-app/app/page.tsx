@@ -6714,6 +6714,20 @@ ${aiInput}`,
     View Day 211 incident readiness API
   </a>
 </section>
+
+<section className="rounded-3xl border border-yellow-400/20 bg-slate-950/70 p-6 shadow-2xl shadow-yellow-950/20">
+  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-yellow-300">Day 212 · Manual Owner Override</p>
+  <h2 className="mt-3 text-2xl font-bold text-white">Controlled Paid Pilot Launch Manual Owner Override Readiness Contract v1</h2>
+  <p className="mt-3 text-sm leading-6 text-slate-300">
+    Read-only manual owner override readiness contract preserving owner final authority, manual safe stop, escalation control, audit linkage, rollback linkage, and fail-closed behavior while blocking all override execution, notifications, recovery, persistence, mutation, third-party calls, and AI calls.
+  </p>
+  <a
+    href="/api/nexus/controlled-paid-pilot-launch-manual-owner-override-readiness"
+    className="mt-5 inline-flex rounded-full border border-yellow-300/30 px-4 py-2 text-sm font-semibold text-yellow-100 hover:border-yellow-200 hover:bg-yellow-300/10"
+  >
+    View Day 212 manual override API
+  </a>
+</section>
 </main>
   );
 }
@@ -6764,6 +6778,7 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
+
 
 
 
