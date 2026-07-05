@@ -4324,3 +4324,44 @@ Safety boundary:
 Status:
 - Controlled paid pilot subscription lock boundary summarized for planning discipline only.
 - Next recommended step: Day 227 Controlled Paid Pilot Subscription Lock Boundary Checkpoint v1.
+
+## Day 227: NEXUS Controlled Paid Pilot Subscription Lock Boundary Checkpoint v1
+
+Timestamp: 2026-07-05 08:34:43
+
+Added safe read-only checkpoint for the controlled paid pilot subscription lock boundary.
+
+Files added:
+- lib/nexus/controlledPaidPilotSubscriptionLockBoundaryCheckpoint.ts
+- app/api/nexus/controlled-paid-pilot-subscription-lock-boundary-checkpoint/route.ts
+
+Checkpoint coverage:
+- Checkpoints Day 224 contract, Day 225 validator, and Day 226 summary.
+- Confirms NEXUS remains an owner-controlled AI Business Operating Layer.
+- Confirms NEXUS remains not a chatbot, CRM clone, ERP clone, Make/Zapier clone, or uncontrolled automation runner.
+- Confirms unknown subscription state stays locked.
+- Confirms missing entitlement scope stays locked.
+- Confirms unapproved pilot account stays locked.
+- Confirms billing ambiguity stays locked and escalates.
+- Confirms owner approval, read-only entitlement verification, Safe Stop, and Manual Escalation are required before any future unlock.
+- Confirms audit readiness, fallback to locked state, rollback planning, and manual owner review path.
+
+Safety boundary:
+- Read-only preview checkpoint only.
+- No subscription activation.
+- No payment execution.
+- No invoice creation.
+- No entitlement writes.
+- No customer data writes.
+- No real DB customer memory read/write.
+- No audit persistence.
+- No approve/reject execution.
+- No recovery execution.
+- No rollback execution.
+- No message sending.
+- No third-party mutation.
+- No AI model calls.
+
+Status:
+- Controlled paid pilot subscription lock boundary checkpoint completed for planning discipline only.
+- Next recommended step: Day 228 Controlled Paid Pilot Subscription Lock Boundary Final Review v1.
