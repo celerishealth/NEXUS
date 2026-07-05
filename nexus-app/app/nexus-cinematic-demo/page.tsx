@@ -1,12 +1,12 @@
 ﻿import type { CSSProperties } from "react";
 import {
-  getNexusDay307LegalSafeComplianceShieldPanel,
-  validateNexusDay307LegalSafeComplianceShieldPanel
-} from "@/lib/nexus/day307LegalSafeComplianceShieldPanel";
-import {
   getNexusDay308GuidedDemoStoryMode,
   validateNexusDay308GuidedDemoStoryMode
 } from "@/lib/nexus/day308GuidedDemoStoryMode";
+import {
+  getNexusDay309PremiumDemoCopyLayoutPolish,
+  validateNexusDay309PremiumDemoCopyLayoutPolish
+} from "@/lib/nexus/day309PremiumDemoCopyLayoutPolish";
 
 type StyleMap = Record<string, CSSProperties>;
 
@@ -14,17 +14,17 @@ const styles: StyleMap = {
   shell: {
     minHeight: "100vh",
     background:
-      "radial-gradient(circle at top left, rgba(52, 211, 153, 0.18), transparent 32%), radial-gradient(circle at top right, rgba(59, 130, 246, 0.18), transparent 34%), radial-gradient(circle at bottom, rgba(168, 85, 247, 0.12), transparent 36%), linear-gradient(135deg, #020617 0%, #07111f 48%, #020617 100%)",
+      "radial-gradient(circle at top left, rgba(52, 211, 153, 0.20), transparent 30%), radial-gradient(circle at top right, rgba(59, 130, 246, 0.20), transparent 34%), radial-gradient(circle at bottom, rgba(168, 85, 247, 0.14), transparent 38%), linear-gradient(135deg, #020617 0%, #07111f 48%, #020617 100%)",
     color: "#f8fafc",
     fontFamily:
       "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
-    padding: "32px"
+    padding: "34px"
   },
-  frame: { maxWidth: "1220px", margin: "0 auto" },
+  frame: { maxWidth: "1240px", margin: "0 auto" },
   topBar: {
     display: "flex",
     justifyContent: "space-between",
-    gap: "16px",
+    gap: "14px",
     alignItems: "center",
     marginBottom: "28px",
     flexWrap: "wrap"
@@ -32,88 +32,83 @@ const styles: StyleMap = {
   badge: {
     border: "1px solid rgba(148, 163, 184, 0.28)",
     borderRadius: "999px",
-    padding: "8px 12px",
+    padding: "9px 13px",
     color: "#cbd5e1",
     background: "rgba(15, 23, 42, 0.72)",
     boxShadow: "0 0 40px rgba(15, 23, 42, 0.5)",
     fontSize: "13px"
   },
   hero: {
-    border: "1px solid rgba(148, 163, 184, 0.22)",
-    borderRadius: "32px",
-    padding: "34px",
-    background: "rgba(15, 23, 42, 0.78)",
-    boxShadow: "0 24px 90px rgba(0, 0, 0, 0.45)",
-    backdropFilter: "blur(16px)",
-    marginBottom: "22px"
+    border: "1px solid rgba(148, 163, 184, 0.24)",
+    borderRadius: "34px",
+    padding: "38px",
+    background:
+      "linear-gradient(135deg, rgba(15, 23, 42, 0.86), rgba(15, 23, 42, 0.62))",
+    boxShadow: "0 28px 100px rgba(0, 0, 0, 0.48)",
+    backdropFilter: "blur(18px)",
+    marginBottom: "24px"
   },
   eyebrow: {
     color: "#67e8f9",
     textTransform: "uppercase",
-    letterSpacing: "0.18em",
+    letterSpacing: "0.2em",
     fontSize: "12px",
-    fontWeight: 700,
-    marginBottom: "14px"
+    fontWeight: 800,
+    marginBottom: "15px"
   },
   h1: {
-    fontSize: "clamp(38px, 7vw, 82px)",
-    lineHeight: "0.92",
-    letterSpacing: "-0.07em",
+    fontSize: "clamp(42px, 7vw, 92px)",
+    lineHeight: "0.9",
+    letterSpacing: "-0.08em",
     margin: 0,
-    maxWidth: "980px"
+    maxWidth: "1040px"
   },
   heroText: {
     color: "#cbd5e1",
-    fontSize: "18px",
-    lineHeight: 1.7,
-    maxWidth: "900px",
-    marginTop: "20px",
+    fontSize: "19px",
+    lineHeight: 1.75,
+    maxWidth: "920px",
+    marginTop: "22px",
     marginBottom: 0
   },
-  sceneStack: {
-    display: "grid",
-    gridTemplateColumns: "1fr",
-    gap: "16px",
-    marginTop: "22px"
+  sectionTitle: {
+    fontSize: "28px",
+    letterSpacing: "-0.045em",
+    marginTop: "32px",
+    marginBottom: "14px"
   },
-  sceneCard: {
-    border: "1px solid rgba(103, 232, 249, 0.24)",
+  polishGrid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+    gap: "16px",
+    marginTop: "18px"
+  },
+  polishCard: {
+    border: "1px solid rgba(103, 232, 249, 0.23)",
     borderRadius: "28px",
     padding: "24px",
     background:
-      "linear-gradient(135deg, rgba(8, 47, 73, 0.28), rgba(15, 23, 42, 0.78))",
-    boxShadow: "0 18px 58px rgba(8, 47, 73, 0.22)"
+      "linear-gradient(135deg, rgba(8, 47, 73, 0.26), rgba(15, 23, 42, 0.76))",
+    boxShadow: "0 18px 62px rgba(8, 47, 73, 0.22)"
   },
-  fourGrid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-    gap: "12px",
-    marginTop: "16px"
-  },
-  miniPanel: {
-    border: "1px solid rgba(148, 163, 184, 0.18)",
-    borderRadius: "18px",
-    padding: "14px",
-    background: "rgba(2, 6, 23, 0.26)"
-  },
-  kpiLabel: {
+  label: {
     color: "#94a3b8",
     fontSize: "12px",
     textTransform: "uppercase",
-    letterSpacing: "0.14em",
-    marginBottom: "10px"
+    letterSpacing: "0.15em",
+    marginBottom: "11px",
+    fontWeight: 800
   },
-  sceneTitle: { fontSize: "24px", fontWeight: 900, letterSpacing: "-0.04em" },
-  muted: { color: "#cbd5e1", lineHeight: 1.6, marginTop: "8px" },
-  sectionTitle: {
-    fontSize: "26px",
-    letterSpacing: "-0.04em",
-    marginTop: "30px",
-    marginBottom: "14px"
+  headline: {
+    fontSize: "25px",
+    fontWeight: 900,
+    letterSpacing: "-0.05em",
+    lineHeight: 1.08
   },
+  muted: { color: "#cbd5e1", lineHeight: 1.65, marginTop: "10px" },
   status: {
     display: "inline-block",
-    marginTop: "14px",
+    marginTop: "15px",
     border: "1px solid rgba(103, 232, 249, 0.34)",
     borderRadius: "999px",
     padding: "7px 10px",
@@ -131,20 +126,21 @@ const styles: StyleMap = {
     borderRadius: "20px",
     padding: "16px",
     background: "rgba(88, 28, 135, 0.16)",
-    color: "#f3e8ff"
+    color: "#f3e8ff",
+    lineHeight: 1.6
   },
   shield: {
-    marginTop: "22px",
-    border: "1px solid rgba(52, 211, 153, 0.26)",
-    borderRadius: "28px",
-    padding: "24px",
+    marginTop: "24px",
+    border: "1px solid rgba(52, 211, 153, 0.28)",
+    borderRadius: "30px",
+    padding: "26px",
     background: "rgba(6, 78, 59, 0.18)"
   },
   shieldGrid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+    gridTemplateColumns: "repeat(auto-fit, minmax(235px, 1fr))",
     gap: "10px",
-    marginTop: "14px"
+    marginTop: "15px"
   },
   shieldItem: {
     border: "1px solid rgba(52, 211, 153, 0.2)",
@@ -157,59 +153,44 @@ const styles: StyleMap = {
 };
 
 export default function NexusCinematicDemoPage() {
-  const compliancePanel = getNexusDay307LegalSafeComplianceShieldPanel();
   const storyMode = getNexusDay308GuidedDemoStoryMode();
+  const polish = getNexusDay309PremiumDemoCopyLayoutPolish();
 
-  const complianceValidation = validateNexusDay307LegalSafeComplianceShieldPanel();
   const storyValidation = validateNexusDay308GuidedDemoStoryMode();
+  const polishValidation = validateNexusDay309PremiumDemoCopyLayoutPolish();
 
-  const safe = complianceValidation.ok && storyValidation.ok;
+  const safe = storyValidation.ok && polishValidation.ok;
 
   return (
     <main style={styles.shell}>
       <div style={styles.frame}>
         <div style={styles.topBar}>
-          <div style={styles.badge}>NEXUS / Guided Cinematic Demo</div>
+          <div style={styles.badge}>NEXUS / Premium Cinematic Demo</div>
           <div style={styles.badge}>Read-only · Preview-only · Sample data only</div>
           <div style={styles.badge}>Validation: {safe ? "SAFE" : "CHECK REQUIRED"}</div>
         </div>
 
         <section style={styles.hero}>
-          <div style={styles.eyebrow}>Day 308 · Guided Demo Story Mode</div>
-          <h1 style={styles.h1}>A movie-style operating story with execution locked.</h1>
-          <p style={styles.heroText}>{storyMode.storyModePromise}</p>
+          <div style={styles.eyebrow}>Day 309 · Premium Demo Polish</div>
+          <h1 style={styles.h1}>A command layer that feels ready before it acts.</h1>
+          <p style={styles.heroText}>{polish.premiumPositioning}</p>
         </section>
 
-        <section style={styles.sceneStack} aria-label="Guided demo story scenes">
-          {storyMode.guidedScenes.map((scene) => (
-            <article key={scene.scene} style={styles.sceneCard}>
-              <div style={styles.kpiLabel}>{scene.scene}</div>
-              <div style={styles.sceneTitle}>{scene.cinematicTitle}</div>
-              <div style={styles.fourGrid}>
-                <div style={styles.miniPanel}>
-                  <div style={styles.kpiLabel}>Owner sees</div>
-                  <div style={styles.muted}>{scene.ownerSees}</div>
-                </div>
-                <div style={styles.miniPanel}>
-                  <div style={styles.kpiLabel}>NEXUS detects</div>
-                  <div style={styles.muted}>{scene.nexusDetects}</div>
-                </div>
-                <div style={styles.miniPanel}>
-                  <div style={styles.kpiLabel}>Safety gate</div>
-                  <div style={styles.muted}>{scene.safetyGate}</div>
-                </div>
-                <div style={styles.miniPanel}>
-                  <div style={styles.kpiLabel}>Execution boundary</div>
-                  <div style={styles.muted}>{scene.executionBoundary}</div>
-                </div>
-              </div>
-              <span style={styles.status}>{scene.visualStatus}</span>
+        <h2 style={styles.sectionTitle}>Premium Demo Structure</h2>
+        <section style={styles.polishGrid} aria-label="Premium demo polish sections">
+          {polish.polishSections.map((section) => (
+            <article key={section.label} style={styles.polishCard}>
+              <div style={styles.label}>{section.label}</div>
+              <div style={styles.headline}>{section.headline}</div>
+              <div style={styles.muted}>{section.copy}</div>
+              <div style={styles.muted}>{section.visualIntent}</div>
+              <span style={styles.status}>{section.safetyState}</span>
             </article>
           ))}
         </section>
 
-        <h2 style={styles.sectionTitle}>Demo Narration</h2>
-        <section style={styles.narrationGrid} aria-label="Demo narration">
+        <h2 style={styles.sectionTitle}>Cinematic Narration</h2>
+        <section style={styles.narrationGrid} aria-label="Cinematic narration">
           {storyMode.demoNarration.map((line) => (
             <div key={line} style={styles.narrationCard}>
               {line}
@@ -218,18 +199,22 @@ export default function NexusCinematicDemoPage() {
         </section>
 
         <section style={styles.shield}>
-          <h2 style={styles.sectionTitle}>Legal-Safe Story Shield</h2>
-          <p style={styles.muted}>{compliancePanel.complianceShieldPromise}</p>
+          <h2 style={styles.sectionTitle}>Premium Safety Boundary</h2>
+          <p style={styles.muted}>
+            This polished demo is commercial-looking, but it cannot launch, charge, invoice, write
+            entitlements, execute GST, generate e-way bills, mutate government APIs, send messages,
+            call AI models, mutate third-party systems, execute global trade, or use real customer data.
+          </p>
           <div style={styles.shieldGrid}>
-            {storyMode.blockedExecutionProof.map((item) => (
+            {polish.blockedExecutionProof.map((item) => (
               <div key={item} style={styles.shieldItem}>{item}</div>
             ))}
           </div>
         </section>
 
         <p style={styles.footer}>
-          Route: {storyMode.routePath}. Source: Day {storyMode.sourceDay}. Completion:{" "}
-          {storyMode.completionResult}. Launch remains {storyMode.launchAuthorization}.
+          Route: {polish.routePath}. Source: Day {polish.sourceDay}. Completion:{" "}
+          {polish.completionResult}. Launch remains {polish.launchAuthorization}.
         </p>
       </div>
     </main>
