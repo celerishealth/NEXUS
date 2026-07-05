@@ -161,9 +161,19 @@
     href: "/api/nexus/controlled-paid-pilot-execution-architecture-summary",
     accent: "sky",
   },
+  {
+    day: 219,
+    label: "Summary Validator",
+    title: "NEXUS Controlled Paid Pilot Execution Architecture Summary Validator v1",
+    description:
+      "Read-only validator confirming the Day 218 controlled paid pilot execution architecture summary preserves owner control, safety, Zero Damage, Zero Stop, audit readiness, rollback readiness, dashboard integrity, and blocked execution.",
+    href: "/api/nexus/controlled-paid-pilot-execution-architecture-summary-validator",
+    accent: "emerald",
+  },
 ] as const;
 
 export type NexusControlledPaidPilotRegistryCard = (typeof nexusControlledPaidPilotRegistryCards)[number];
+
 
 
 
