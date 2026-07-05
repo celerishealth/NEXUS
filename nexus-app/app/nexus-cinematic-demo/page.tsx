@@ -1,12 +1,12 @@
 import type { CSSProperties } from "react";
 import {
-  getNexusDay311CinematicDemoAccessNavigationPolish,
-  validateNexusDay311CinematicDemoAccessNavigationPolish
-} from "@/lib/nexus/day311CinematicDemoAccessNavigationPolish";
-import {
   getNexusDay312CinematicDemoVisualQaChecklist,
   validateNexusDay312CinematicDemoVisualQaChecklist
 } from "@/lib/nexus/day312CinematicDemoVisualQaChecklist";
+import {
+  getNexusDay313CinematicDemoSharingSafetyPack,
+  validateNexusDay313CinematicDemoSharingSafetyPack
+} from "@/lib/nexus/day313CinematicDemoSharingSafetyPack";
 
 type StyleMap = Record<string, CSSProperties>;
 
@@ -77,13 +77,13 @@ const styles: StyleMap = {
     marginTop: "32px",
     marginBottom: "14px"
   },
-  qaGrid: {
+  ruleGrid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+    gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))",
     gap: "14px",
     marginTop: "18px"
   },
-  qaCard: {
+  ruleCard: {
     border: "1px solid rgba(103, 232, 249, 0.23)",
     borderRadius: "24px",
     padding: "20px",
@@ -100,12 +100,13 @@ const styles: StyleMap = {
     fontWeight: 800
   },
   headline: {
-    fontSize: "22px",
+    fontSize: "21px",
     fontWeight: 900,
-    letterSpacing: "-0.05em",
-    lineHeight: 1.08
+    letterSpacing: "-0.045em",
+    lineHeight: 1.12
   },
   muted: { color: "#cbd5e1", lineHeight: 1.65, marginTop: "10px" },
+  blocked: { color: "#fecaca", lineHeight: 1.65, marginTop: "10px" },
   status: {
     display: "inline-block",
     marginTop: "15px",
@@ -140,66 +141,67 @@ const styles: StyleMap = {
 };
 
 export default function NexusCinematicDemoPage() {
-  const access = getNexusDay311CinematicDemoAccessNavigationPolish();
-  const checklist = getNexusDay312CinematicDemoVisualQaChecklist();
+  const visualQa = getNexusDay312CinematicDemoVisualQaChecklist();
+  const sharing = getNexusDay313CinematicDemoSharingSafetyPack();
 
-  const accessValidation = validateNexusDay311CinematicDemoAccessNavigationPolish();
-  const checklistValidation = validateNexusDay312CinematicDemoVisualQaChecklist();
+  const visualQaValidation = validateNexusDay312CinematicDemoVisualQaChecklist();
+  const sharingValidation = validateNexusDay313CinematicDemoSharingSafetyPack();
 
-  const safe = accessValidation.ok && checklistValidation.ok;
+  const safe = visualQaValidation.ok && sharingValidation.ok;
 
   return (
     <main style={styles.shell}>
       <div style={styles.frame}>
         <div style={styles.topBar}>
-          <div style={styles.badge}>NEXUS / Visual QA Review</div>
+          <div style={styles.badge}>NEXUS / Demo Sharing Safety</div>
           <div style={styles.badge}>Read-only · Preview-only · Sample data only</div>
           <div style={styles.badge}>Validation: {safe ? "SAFE" : "CHECK REQUIRED"}</div>
         </div>
 
         <section style={styles.hero}>
-          <div style={styles.eyebrow}>Day 312 · Cinematic Demo Visual QA</div>
-          <h1 style={styles.h1}>Premium demo review without execution risk.</h1>
-          <p style={styles.heroText}>{checklist.qaPromise}</p>
+          <div style={styles.eyebrow}>Day 313 · Cinematic Demo Sharing Safety</div>
+          <h1 style={styles.h1}>Share the vision without implying launch.</h1>
+          <p style={styles.heroText}>{sharing.sharingPromise}</p>
         </section>
 
-        <h2 style={styles.sectionTitle}>Visual QA Checklist</h2>
-        <section style={styles.qaGrid} aria-label="NEXUS cinematic demo visual QA checklist">
-          {checklist.visualQaItems.map((item) => (
-            <article key={item.area} style={styles.qaCard}>
-              <div style={styles.label}>{item.area}</div>
-              <div style={styles.headline}>{item.check}</div>
-              <div style={styles.muted}>{item.passCondition}</div>
-              <span style={styles.status}>{item.safetyState}</span>
+        <h2 style={styles.sectionTitle}>Safe Sharing Rules</h2>
+        <section style={styles.ruleGrid} aria-label="NEXUS cinematic demo sharing rules">
+          {sharing.sharingRules.map((rule) => (
+            <article key={rule.area} style={styles.ruleCard}>
+              <div style={styles.label}>{rule.area}</div>
+              <div style={styles.headline}>Allowed: {rule.allowedMessage}</div>
+              <div style={styles.blocked}>Blocked: {rule.blockedMessage}</div>
+              <div style={styles.muted}>{rule.safetyReason}</div>
+              <span style={styles.status}>sharing-safe</span>
             </article>
           ))}
         </section>
 
         <section style={styles.shield}>
-          <h2 style={styles.sectionTitle}>Blocked UI Patterns</h2>
+          <h2 style={styles.sectionTitle}>Demo Safe Script</h2>
           <p style={styles.muted}>
-            Access path: {access.routePath}. Launch remains {access.launchAuthorization}.
-            Demo review is safe only because live execution controls are not present.
+            Visual QA status: {visualQa.reviewDecision}. Use this script only as controlled
+            review language.
           </p>
           <div style={styles.shieldGrid}>
-            {checklist.blockedUiPatterns.map((item) => (
-              <div key={item} style={styles.shieldItem}>{item}</div>
+            {sharing.demoSafeScript.map((line) => (
+              <div key={line} style={styles.shieldItem}>{line}</div>
             ))}
           </div>
         </section>
 
         <section style={styles.shield}>
-          <h2 style={styles.sectionTitle}>Execution Block Proof</h2>
+          <h2 style={styles.sectionTitle}>Blocked Claims</h2>
           <div style={styles.shieldGrid}>
-            {checklist.blockedExecutionProof.map((item) => (
-              <div key={item} style={styles.shieldItem}>{item}</div>
+            {sharing.blockedClaims.map((claim) => (
+              <div key={claim} style={styles.shieldItem}>{claim}</div>
             ))}
           </div>
         </section>
 
         <p style={styles.footer}>
-          Route: {checklist.routePath}. Source: Day {checklist.sourceDay}. Completion:{" "}
-          {checklist.completionResult}. Review decision: {checklist.reviewDecision}.
+          Route: {sharing.routePath}. Source: Day {sharing.sourceDay}. Completion:{" "}
+          {sharing.completionResult}. Launch remains {sharing.launchAuthorization}.
         </p>
       </div>
     </main>
