@@ -1,24 +1,12 @@
 ﻿import type { CSSProperties } from "react";
 import {
-  getNexusDay302CinematicDemoDashboardStructure,
-  validateNexusDay302CinematicDemoDashboardStructure
-} from "@/lib/nexus/day302CinematicDemoDashboardStructure";
-import {
-  getNexusDay303OwnerCommandCenterVisualStory,
-  validateNexusDay303OwnerCommandCenterVisualStory
-} from "@/lib/nexus/day303OwnerCommandCenterVisualStory";
-import {
-  getNexusDay304SampleCustomerRequestSimulation,
-  validateNexusDay304SampleCustomerRequestSimulation
-} from "@/lib/nexus/day304SampleCustomerRequestSimulation";
-import {
-  getNexusDay305AiRiskRadarOwnerApprovalFlow,
-  validateNexusDay305AiRiskRadarOwnerApprovalFlow
-} from "@/lib/nexus/day305AiRiskRadarOwnerApprovalFlow";
-import {
   getNexusDay306SubscriptionLockVisualPanel,
   validateNexusDay306SubscriptionLockVisualPanel
 } from "@/lib/nexus/day306SubscriptionLockVisualPanel";
+import {
+  getNexusDay307LegalSafeComplianceShieldPanel,
+  validateNexusDay307LegalSafeComplianceShieldPanel
+} from "@/lib/nexus/day307LegalSafeComplianceShieldPanel";
 
 type StyleMap = Record<string, CSSProperties>;
 
@@ -82,12 +70,6 @@ const styles: StyleMap = {
     marginTop: "20px",
     marginBottom: 0
   },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-    gap: "14px",
-    marginBottom: "22px"
-  },
   twoGrid: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
@@ -101,15 +83,15 @@ const styles: StyleMap = {
     background: "rgba(15, 23, 42, 0.68)",
     boxShadow: "0 18px 48px rgba(0, 0, 0, 0.28)"
   },
-  subscriptionCard: {
-    border: "1px solid rgba(251, 191, 36, 0.26)",
+  complianceCard: {
+    border: "1px solid rgba(52, 211, 153, 0.28)",
     borderRadius: "26px",
     padding: "22px",
     background:
-      "linear-gradient(135deg, rgba(146, 64, 14, 0.25), rgba(15, 23, 42, 0.78))",
-    boxShadow: "0 18px 58px rgba(146, 64, 14, 0.22)"
+      "linear-gradient(135deg, rgba(6, 78, 59, 0.24), rgba(15, 23, 42, 0.78))",
+    boxShadow: "0 18px 58px rgba(6, 78, 59, 0.22)"
   },
-  gateCard: {
+  dangerCard: {
     border: "1px solid rgba(248, 113, 113, 0.26)",
     borderRadius: "26px",
     padding: "22px",
@@ -146,12 +128,12 @@ const styles: StyleMap = {
   status: {
     display: "inline-block",
     marginTop: "14px",
-    border: "1px solid rgba(103, 232, 249, 0.32)",
+    border: "1px solid rgba(52, 211, 153, 0.34)",
     borderRadius: "999px",
     padding: "7px 10px",
     fontSize: "12px",
-    color: "#a5f3fc",
-    background: "rgba(8, 47, 73, 0.32)"
+    color: "#bbf7d0",
+    background: "rgba(6, 78, 59, 0.28)"
   },
   lockedStatus: {
     display: "inline-block",
@@ -162,15 +144,6 @@ const styles: StyleMap = {
     fontSize: "12px",
     color: "#fde68a",
     background: "rgba(113, 63, 18, 0.28)"
-  },
-  copyStrip: { display: "flex", flexWrap: "wrap", gap: "10px", marginTop: "12px" },
-  copyPill: {
-    border: "1px solid rgba(168, 85, 247, 0.28)",
-    borderRadius: "999px",
-    padding: "10px 12px",
-    background: "rgba(88, 28, 135, 0.18)",
-    color: "#f3e8ff",
-    fontSize: "13px"
   },
   shield: {
     marginTop: "22px",
@@ -196,24 +169,13 @@ const styles: StyleMap = {
 };
 
 export default function NexusCinematicDemoPage() {
-  const dashboard = getNexusDay302CinematicDemoDashboardStructure();
-  const story = getNexusDay303OwnerCommandCenterVisualStory();
-  const simulation = getNexusDay304SampleCustomerRequestSimulation();
-  const riskFlow = getNexusDay305AiRiskRadarOwnerApprovalFlow();
   const subscriptionPanel = getNexusDay306SubscriptionLockVisualPanel();
+  const compliancePanel = getNexusDay307LegalSafeComplianceShieldPanel();
 
-  const dashboardValidation = validateNexusDay302CinematicDemoDashboardStructure();
-  const storyValidation = validateNexusDay303OwnerCommandCenterVisualStory();
-  const simulationValidation = validateNexusDay304SampleCustomerRequestSimulation();
-  const riskFlowValidation = validateNexusDay305AiRiskRadarOwnerApprovalFlow();
   const subscriptionValidation = validateNexusDay306SubscriptionLockVisualPanel();
+  const complianceValidation = validateNexusDay307LegalSafeComplianceShieldPanel();
 
-  const safe =
-    dashboardValidation.ok &&
-    storyValidation.ok &&
-    simulationValidation.ok &&
-    riskFlowValidation.ok &&
-    subscriptionValidation.ok;
+  const safe = subscriptionValidation.ok && complianceValidation.ok;
 
   return (
     <main style={styles.shell}>
@@ -225,85 +187,57 @@ export default function NexusCinematicDemoPage() {
         </div>
 
         <section style={styles.hero}>
-          <div style={styles.eyebrow}>Day 306 · Subscription Lock Visual Panel</div>
-          <h1 style={styles.h1}>Paid access visible. Execution locked.</h1>
-          <p style={styles.heroText}>{subscriptionPanel.subscriptionLockPromise}</p>
-          <div style={styles.copyStrip}>
-            {story.cinematicCopyBlocks.map((line) => (
-              <span key={line} style={styles.copyPill}>{line}</span>
-            ))}
-          </div>
+          <div style={styles.eyebrow}>Day 307 · Legal-Safe Compliance Shield</div>
+          <h1 style={styles.h1}>Compliance visible. Execution blocked.</h1>
+          <p style={styles.heroText}>{compliancePanel.complianceShieldPromise}</p>
         </section>
 
-        <section style={styles.grid} aria-label="NEXUS cinematic demo KPI cards">
-          {dashboard.demoKpis.map((item) => (
-            <article key={item.label} style={styles.card}>
-              <div style={styles.kpiLabel}>{item.label}</div>
-              <div style={styles.kpiValue}>{item.value}</div>
-              <div style={styles.muted}>{item.detail}</div>
-              <span style={styles.status}>{item.safety}</span>
+        <h2 style={styles.sectionTitle}>Compliance Readiness Map</h2>
+        <section style={styles.twoGrid} aria-label="Compliance readiness map">
+          {compliancePanel.readinessItems.map((item) => (
+            <article key={item.area} style={styles.complianceCard}>
+              <div style={styles.kpiLabel}>{item.area}</div>
+              <div style={styles.kpiValue}>{item.visibleState}</div>
+              <div style={styles.muted}>{item.blockedExecution}</div>
+              <div style={styles.muted}>{item.requiredBeforeFutureExecution}</div>
+              <span style={styles.status}>readiness only</span>
             </article>
           ))}
         </section>
 
-        <h2 style={styles.sectionTitle}>Subscription Plan Preview</h2>
-        <section style={styles.twoGrid} aria-label="Subscription lock plan previews">
-          {subscriptionPanel.planPreviews.map((plan) => (
-            <article key={plan.plan} style={styles.subscriptionCard}>
-              <div style={styles.kpiLabel}>{plan.plan}</div>
-              <div style={styles.kpiValue}>{plan.displayPrice}</div>
-              <div style={styles.muted}>{plan.targetUse}</div>
-              <div style={styles.muted}>{plan.boundary}</div>
-              <span style={styles.lockedStatus}>{plan.lockState}</span>
-            </article>
-          ))}
-        </section>
-
-        <h2 style={styles.sectionTitle}>Subscription Safety Gates</h2>
-        <section style={styles.twoGrid} aria-label="Subscription safety gates">
-          {subscriptionPanel.subscriptionGates.map((gate) => (
-            <article key={gate.gate} style={styles.gateCard}>
-              <div style={styles.kpiLabel}>{gate.gate}</div>
-              <div style={styles.sceneTitle}>{gate.visibleState}</div>
-              <div style={styles.muted}>{gate.blockedExecution}</div>
-              <div style={styles.muted}>{gate.ownerRequirement}</div>
+        <h2 style={styles.sectionTitle}>Owner Legal Rules</h2>
+        <section style={styles.twoGrid} aria-label="Owner legal rules">
+          {compliancePanel.ownerLegalRules.map((rule) => (
+            <article key={rule} style={styles.dangerCard}>
+              <div style={styles.sceneTitle}>{rule}</div>
               <span style={styles.lockedStatus}>locked</span>
             </article>
           ))}
         </section>
 
-        <h2 style={styles.sectionTitle}>AI Risk Radar Context</h2>
-        <section style={styles.card} aria-label="AI risk radar context">
-          <div style={styles.sceneTitle}>Risk appears before action. Owner stays final.</div>
-          <div style={styles.muted}>{riskFlow.riskRadarPromise}</div>
-        </section>
-
-        <h2 style={styles.sectionTitle}>Sample Request Context</h2>
-        <section style={styles.card} aria-label="Sample customer request context">
-          <div style={styles.sceneTitle}>{simulation.sampleRequestTitle}</div>
-          <div style={styles.muted}>
-            Sample request remains preview-only. No customer reply, invoice, payment link, GST,
-            e-way bill, delivery promise, AI call, or third-party mutation is executed.
-          </div>
+        <h2 style={styles.sectionTitle}>Subscription Lock Context</h2>
+        <section style={styles.card} aria-label="Subscription lock context">
+          <div style={styles.sceneTitle}>Paid access visible. Execution locked.</div>
+          <div style={styles.muted}>{subscriptionPanel.subscriptionLockPromise}</div>
         </section>
 
         <section style={styles.shield}>
-          <h2 style={styles.sectionTitle}>Legal-Safe Subscription Shield</h2>
+          <h2 style={styles.sectionTitle}>Legal-Safe Execution Shield</h2>
           <p style={styles.muted}>
-            NEXUS does not launch, activate paid plans, charge customers, create invoices, write
-            entitlements, execute GST, generate e-way bills, send messages, call AI models, mutate
-            third-party systems, or use real customer data.
+            NEXUS does not launch, charge customers, create invoices, write entitlements, execute
+            GST, generate e-way bills, mutate government APIs, file compliance, send messages, call
+            AI models, mutate third-party systems, or use real customer data.
           </p>
           <div style={styles.shieldGrid}>
-            {subscriptionPanel.blockedExecutionProof.map((item) => (
+            {compliancePanel.blockedExecutionProof.map((item) => (
               <div key={item} style={styles.shieldItem}>{item}</div>
             ))}
           </div>
         </section>
 
         <p style={styles.footer}>
-          Route: {subscriptionPanel.routePath}. Source: Day {subscriptionPanel.sourceDay}. Completion:{" "}
-          {subscriptionPanel.completionResult}. Launch remains {subscriptionPanel.launchAuthorization}.
+          Route: {compliancePanel.routePath}. Source: Day {compliancePanel.sourceDay}. Completion:{" "}
+          {compliancePanel.completionResult}. Launch remains {compliancePanel.launchAuthorization}.
         </p>
       </div>
     </main>
