@@ -8134,3 +8134,102 @@ Result:
 - Day 304 sample customer request simulation created safely.
 - Existing main dashboard was not overwritten.
 - No launch authorization granted.
+
+---
+
+## Day 305 — AI Risk Radar + Owner Approval Cinematic Flow v1
+
+Added AI Risk Radar and Owner Approval cinematic flow to the isolated cinematic demo screen.
+
+Added:
+- `lib/nexus/day305AiRiskRadarOwnerApprovalFlow.ts`
+- `app/api/nexus/day-305-ai-risk-radar-owner-approval-flow/route.ts`
+
+Updated:
+- `app/nexus-cinematic-demo/page.tsx`
+
+Stability improvement:
+- Added explicit native command exit-code checks for builds, commit, and push in the Day 305 execution command.
+- Included a compatibility correction for Day 303 owner command signal status typing.
+
+Screen:
+- `/nexus-cinematic-demo`
+
+Added:
+- AI Risk Radar preview.
+- Pricing commitment risk.
+- Payment execution risk.
+- Invoice and tax risk.
+- Delivery promise risk.
+- Customer/vendor commitment risk.
+- Global trade readiness risk.
+- Owner Approval cinematic flow.
+- Owner approval rules.
+- Blocking proof for approval/reject/override/recovery/rollback and all real execution paths.
+
+Safety confirmed:
+- Read-only.
+- Preview-only.
+- Sample data only.
+- No launch authorization.
+- No real customer data.
+- No payment execution.
+- No subscription activation.
+- No invoice creation.
+- No GST execution.
+- No e-way bill generation.
+- No government API mutation.
+- No message sending.
+- No AI model calls.
+- No third-party mutation.
+- No global trade execution.
+- No approve/reject execution.
+- No owner override execution.
+- No recovery/rollback execution.
+- No illegal matter.
+- No grey-zone execution.
+- No compliance shortcuts.
+
+Identity lock:
+- NEXUS remains an owner-controlled AI Business Operating Layer.
+- NEXUS is not chatbot, not CRM clone, not ERP clone, not marketplace clone, not IndiaMART clone, not Make/Zapier clone, and not uncontrolled automation runner.
+
+Result:
+- Day 305 AI Risk Radar + Owner Approval cinematic flow created safely.
+- Existing main dashboard was not overwritten.
+- No launch authorization granted.
+
+### Day 305 repair note
+
+Compatibility repair added for older paid pilot / global trade planning validator references that still used direct legacy `sourceValidator.globalTradeExecutionBlocked` and `sourceValidator.noCloneDriftConfirmed` property access.
+
+Repair scope:
+- TypeScript compatibility only.
+- No launch authorization.
+- No payment execution.
+- No invoice creation.
+- No GST execution.
+- No e-way bill generation.
+- No government API mutation.
+- No message sending.
+- No AI model calls.
+- No third-party mutation.
+- No global trade execution.
+- No illegal matter.
+- No grey-zone execution.
+- No compliance shortcut.
+
+### Day 305 TypeScript Compatibility Repair
+
+During Day 305 build verification, legacy validator/checkpoint chain required TypeScript compatibility repair.
+
+Repair scope:
+- Added explicit return annotations to legacy validator functions when TypeScript circular inference could not infer return type.
+- Added missing compatibility exports when old imports referenced validator functions not present in target modules.
+- Replaced old direct compatibility property reads with safe JSON compatibility checks.
+- Preserved read-only preview-only behavior.
+- Preserved all launch, subscription, payment, invoice, entitlement, customer data, audit, approve/reject, owner override, recovery/rollback, message, third-party, AI model, global trade, GST, e-way bill, government API, illegal matter, grey-zone, compliance shortcut, and clone-drift blocks.
+
+Result:
+- Compatibility repair included in Day 305 commit.
+- No launch authorization granted.

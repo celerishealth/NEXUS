@@ -7,7 +7,7 @@ export type NexusDay303CommandSignal = {
   label: string;
   value: string;
   explanation: string;
-  status: "visible-preview" | "locked-safe" | "blocked-execution";
+  status: "visible-preview" | "locked-safe" | "requires-owner-review" | "blocked-execution";
 };
 
 export type NexusDay303OwnerAction = {
@@ -268,3 +268,4 @@ export function validateNexusDay303OwnerCommandCenterVisualStory() {
     completionResult: story.completionResult
   };
 }
+

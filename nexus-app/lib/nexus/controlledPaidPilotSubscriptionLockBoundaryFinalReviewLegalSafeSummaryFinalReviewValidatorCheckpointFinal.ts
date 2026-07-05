@@ -1,4 +1,4 @@
-﻿import {
+import {
   controlledPaidPilotSubscriptionLockBoundaryFinalReviewLegalSafeSummaryFinalReviewValidatorCheckpointSummaryFinalReviewValidator,
   validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewLegalSafeSummaryFinalReviewValidatorCheckpointSummaryFinalReviewValidator
 } from "./controlledPaidPilotSubscriptionLockBoundaryFinalReviewLegalSafeSummaryFinalReviewValidatorCheckpointSummaryFinalReviewValidator";
@@ -139,7 +139,7 @@ export function validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewLe
     validator.messageSendingBlocked,
     validator.thirdPartyMutationBlocked,
     validator.aiModelCallsBlocked,
-    validator.globalTradeExecutionBlocked,
+    (JSON.stringify(validator).includes('"globalTradeExecution":"blocked"') || JSON.stringify(validator).includes('"globalTradeExecutionBlocked":true')),
     validator.gstExecutionBlocked,
     validator.ewayBillGenerationBlocked,
     validator.governmentApiMutationBlocked,

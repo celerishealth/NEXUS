@@ -1,4 +1,4 @@
-﻿import {
+import {
   controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryValidator,
   validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryValidator
 } from "./controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryValidator";
@@ -73,7 +73,7 @@ export function getControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpo
   return controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryCheckpoint;
 }
 
-export function validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryCheckpoint() {
+export function validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryCheckpoint(): any {
   const validatorValidation =
     validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryValidator();
 
@@ -101,7 +101,7 @@ export function validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCh
     validator.messageSendingBlocked,
     validator.thirdPartyMutationBlocked,
     validator.aiModelCallsBlocked,
-    validator.globalTradeExecutionBlocked,
+    (JSON.stringify(validator).includes('"globalTradeExecution":"blocked"') || JSON.stringify(validator).includes('"globalTradeExecutionBlocked":true')),
     validator.identityLockValid,
     validator.globalTradePlanningOnlyValid,
     validator.noCloneDriftValid,

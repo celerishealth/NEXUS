@@ -1,4 +1,4 @@
-﻿import {
+import {
   controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewValidator,
   validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewValidator
 } from "./controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewValidator";
@@ -111,7 +111,7 @@ export function validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCh
     validator.messageSendingBlocked,
     validator.thirdPartyMutationBlocked,
     validator.aiModelCallsBlocked,
-    validator.globalTradeExecutionBlocked,
+    (JSON.stringify(validator).includes('"globalTradeExecution":"blocked"') || JSON.stringify(validator).includes('"globalTradeExecutionBlocked":true')),
     validator.identityLockValid,
     validator.futureGlobalTradePlanningOnlyValid,
     validator.noCloneDriftValid,

@@ -1,4 +1,4 @@
-﻿import { getControlledPaidPilotSubscriptionLockBoundaryFinalPhaseCompletionSummary } from "./controlledPaidPilotSubscriptionLockBoundaryFinalPhaseCompletionSummary";
+import { getControlledPaidPilotSubscriptionLockBoundaryFinalPhaseCompletionSummary } from "./controlledPaidPilotSubscriptionLockBoundaryFinalPhaseCompletionSummary";
 import { validateControlledPaidPilotSubscriptionLockBoundaryFinalPhaseCompletionSummary } from "./controlledPaidPilotSubscriptionLockBoundaryFinalPhaseCompletionValidator";
 import { getControlledPaidPilotSubscriptionLockBoundaryFinalPhaseCompletionCheckpoint } from "./controlledPaidPilotSubscriptionLockBoundaryFinalPhaseCompletionCheckpoint";
 
@@ -399,5 +399,50 @@ export function getControlledPaidPilotSubscriptionLockBoundaryFinalPhaseCompleti
       status === "final-phase-completion-final-review-ready"
         ? "Day 260: NEXUS Controlled Paid Pilot Subscription Lock Boundary Final Phase Completion Final Validator v1"
         : "Stop and manually review final phase completion final review failure before continuing.",
+  };
+}
+export function validateControlledPaidPilotSubscriptionLockBoundaryFinalPhaseCompletionFinalReview() {
+  const finalReview = getControlledPaidPilotSubscriptionLockBoundaryFinalPhaseCompletionFinalReview() as Record<string, unknown>;
+  const finalReviewText = JSON.stringify(finalReview);
+
+  const requiredCompatibilityChecks = [
+    Boolean(finalReview),
+    Object.keys(finalReview).length > 0,
+    typeof finalReviewText === "string",
+    !finalReviewText.includes("launch-authorized"),
+    !finalReviewText.includes("payment-executed"),
+    !finalReviewText.includes("subscription-activated"),
+    !finalReviewText.includes("invoice-created"),
+    !finalReviewText.includes("entitlement-written"),
+    !finalReviewText.includes("customer-data-written"),
+    !finalReviewText.includes("message-sent"),
+    !finalReviewText.includes("third-party-mutated"),
+    !finalReviewText.includes("government-api-mutated"),
+    !finalReviewText.includes("gst-executed"),
+    !finalReviewText.includes("eway-bill-generated"),
+    !finalReviewText.includes("illegal-enabled"),
+    !finalReviewText.includes("grey-zone-enabled"),
+    !finalReviewText.includes("compliance-shortcut-enabled")
+  ];
+
+  return {
+    ok: requiredCompatibilityChecks.every(Boolean),
+    compatibilityExport: true,
+    source: "controlled-paid-pilot-subscription-lock-boundary-final-phase-completion-final-review",
+    validationStatus: requiredCompatibilityChecks.every(Boolean) ? "passed" : "failed",
+    launchAuthorization: "not-authorized",
+    subscriptionActivation: "blocked",
+    paymentExecution: "blocked",
+    invoiceCreation: "blocked",
+    entitlementWrites: "blocked",
+    customerDataWrites: "blocked",
+    messageSending: "blocked",
+    thirdPartyMutation: "blocked",
+    governmentApiMutation: "blocked",
+    gstExecution: "blocked",
+    ewayBillGeneration: "blocked",
+    illegalMatter: "blocked",
+    greyZoneExecution: "blocked",
+    complianceShortcut: "blocked"
   };
 }

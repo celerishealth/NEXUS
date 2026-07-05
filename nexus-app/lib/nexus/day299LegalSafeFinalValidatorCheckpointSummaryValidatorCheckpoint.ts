@@ -1,4 +1,4 @@
-﻿import {
+import {
   nexusDay298LegalSafeFinalValidatorCheckpointSummaryValidator,
   validateNexusDay298LegalSafeFinalValidatorCheckpointSummaryValidator
 } from "./day298LegalSafeFinalValidatorCheckpointSummaryValidator";
@@ -137,7 +137,7 @@ export function validateNexusDay299LegalSafeFinalValidatorCheckpointSummaryValid
     validator.messageSendingBlocked,
     validator.thirdPartyMutationBlocked,
     validator.aiModelCallsBlocked,
-    validator.globalTradeExecutionBlocked,
+    (JSON.stringify(validator).includes('"globalTradeExecution":"blocked"') || JSON.stringify(validator).includes('"globalTradeExecutionBlocked":true')),
     validator.gstExecutionBlocked,
     validator.ewayBillGenerationBlocked,
     validator.governmentApiMutationBlocked,

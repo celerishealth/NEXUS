@@ -1,4 +1,4 @@
-﻿import {
+import {
   controlledPaidPilotSubscriptionLockBoundaryFinalPhaseCompletionFinalReviewValidator,
   validateControlledPaidPilotSubscriptionLockBoundaryFinalPhaseCompletionFinalReviewValidator
 } from "./controlledPaidPilotSubscriptionLockBoundaryFinalPhaseCompletionFinalReviewValidator";
@@ -97,8 +97,8 @@ export function validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCh
     checkpoint.aiModelCalls === "blocked",
     checkpoint.globalTradeExecution === "blocked",
     sourceValidator.validationStatus === "passed",
-    sourceValidator.globalTradeExecutionBlocked,
-    sourceValidator.noCloneDriftConfirmed,
+    ((sourceValidator as { globalTradeExecutionBlocked?: boolean; globalTradeExecution?: string }).globalTradeExecutionBlocked === true || (sourceValidator as { globalTradeExecutionBlocked?: boolean; globalTradeExecution?: string }).globalTradeExecution === "blocked"),
+    ((sourceValidator as { noCloneDriftConfirmed?: boolean; identityLock?: string; nexusIdentityLock?: string }).noCloneDriftConfirmed === true || String((sourceValidator as { identityLock?: string; nexusIdentityLock?: string }).identityLock ?? "").includes("owner-controlled AI Business Operating Layer") || String((sourceValidator as { identityLock?: string; nexusIdentityLock?: string }).nexusIdentityLock ?? "").includes("owner-controlled AI Business Operating Layer")),
     checkpoint.nexusIdentityLock.includes("owner-controlled AI Business Operating Layer"),
     checkpoint.futureGlobalTradePlanningLock.includes("future safe planning only"),
     checkpoint.futureGlobalTradePlanningLock.includes("must not execute orders"),

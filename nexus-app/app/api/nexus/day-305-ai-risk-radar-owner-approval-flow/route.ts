@@ -1,0 +1,50 @@
+﻿import { NextResponse } from "next/server";
+import {
+  getNexusDay305AiRiskRadarOwnerApprovalFlow,
+  validateNexusDay305AiRiskRadarOwnerApprovalFlow
+} from "@/lib/nexus/day305AiRiskRadarOwnerApprovalFlow";
+
+export const dynamic = "force-static";
+
+export async function GET() {
+  const flow = getNexusDay305AiRiskRadarOwnerApprovalFlow();
+  const validation = validateNexusDay305AiRiskRadarOwnerApprovalFlow();
+
+  return NextResponse.json({
+    ok: validation.ok,
+    route: "day-305-ai-risk-radar-owner-approval-flow-preview-only",
+    screen: flow.routePath,
+    safety: {
+      readOnly: true,
+      previewOnly: true,
+      sampleDataOnly: true,
+      launchAuthorization: false,
+      subscriptionActivation: false,
+      paymentExecution: false,
+      invoiceCreation: false,
+      entitlementWrites: false,
+      customerDataWrites: false,
+      realDbMemoryReadWrite: false,
+      auditPersistence: false,
+      approveRejectExecution: false,
+      ownerOverrideExecution: false,
+      recoveryRollbackExecution: false,
+      messageSending: false,
+      thirdPartyMutation: false,
+      aiModelCalls: false,
+      globalTradeOrderPlacement: false,
+      shipmentBooking: false,
+      customerCommitmentExecution: false,
+      vendorCustomerMessageSending: false,
+      gstExecution: false,
+      ewayBillGeneration: false,
+      governmentApiMutation: false,
+      complianceFiling: false,
+      illegalMatter: false,
+      greyZoneExecution: false,
+      complianceShortcut: false
+    },
+    validation,
+    flow
+  });
+}
