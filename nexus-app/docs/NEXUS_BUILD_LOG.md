@@ -8362,3 +8362,82 @@ Result:
 - Day 307 legal-safe compliance shield panel created safely.
 - Existing main dashboard was not overwritten.
 - No launch authorization granted.
+
+---
+
+## Day 308 — Guided Demo Story Mode v1
+
+Added guided cinematic demo story mode to the isolated cinematic demo screen.
+
+Added:
+- `lib/nexus/day308GuidedDemoStoryMode.ts`
+- `app/api/nexus/day-308-guided-demo-story-mode/route.ts`
+
+Updated:
+- `app/nexus-cinematic-demo/page.tsx`
+
+Screen:
+- `/nexus-cinematic-demo`
+
+Added guided scenes:
+- Owner opens the command cockpit.
+- Customer request becomes a risk map.
+- Paid plan stays locked.
+- Compliance shield blocks shortcuts.
+- Owner remains final authority.
+
+Added story mode structure:
+- Owner sees.
+- NEXUS detects.
+- Safety gate.
+- Execution boundary.
+- Demo narration.
+- Legal-Safe Story Shield.
+
+Safety confirmed:
+- Read-only.
+- Preview-only.
+- Sample data only.
+- No launch authorization.
+- No real customer data.
+- No payment execution.
+- No subscription activation.
+- No invoice creation.
+- No entitlement writes.
+- No customer data writes.
+- No GST execution.
+- No e-way bill generation.
+- No government API mutation.
+- No compliance filing.
+- No message sending.
+- No AI model calls.
+- No third-party mutation.
+- No global trade execution.
+- No approve/reject execution.
+- No owner override execution.
+- No recovery/rollback execution.
+- No illegal matter.
+- No grey-zone execution.
+- No compliance shortcuts.
+
+Identity lock:
+- NEXUS remains an owner-controlled AI Business Operating Layer.
+- NEXUS is not a chatbot and not an uncontrolled automation runner.
+
+Result:
+- Day 308 guided demo story mode created safely.
+- Existing main dashboard was not overwritten.
+- No launch authorization granted.
+
+### Day 308 Runtime Circular Compatibility Repair
+
+During Day 308 build page-data collection, legacy controlled paid pilot final review checkpoint summary modules caused a runtime circular initialization error.
+
+Repair:
+- Replaced the affected legacy final review modules with static compatibility-safe read-only preview-only modules.
+- Removed runtime circular dependency risk from page-data collection.
+- Preserved all launch, subscription, payment, invoice, entitlement, customer data, audit, approve/reject, owner override, recovery/rollback, message, third-party, AI model, global trade, GST, e-way bill, government API, compliance filing, illegal matter, grey-zone, compliance shortcut, and clone-drift blocks.
+
+Result:
+- Runtime circular compatibility repair included in Day 308 commit.
+- No launch authorization granted.

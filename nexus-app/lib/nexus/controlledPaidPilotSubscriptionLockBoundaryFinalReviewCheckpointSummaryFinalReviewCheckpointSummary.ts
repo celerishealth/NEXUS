@@ -1,15 +1,16 @@
-﻿import {
-  controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpoint,
-  validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpoint
-} from "./controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpoint";
+import {
+  controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview,
+  validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview
+} from "./controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview";
 
 export type NexusControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary = {
-  day: 268;
+  day: 308;
   title: string;
-  mode: "read-only-summary-preview-only";
-  sourceDay: 267;
-  summaryStatus: "completed";
-  launchStatus: "not-authorized";
+  mode: "read-only-runtime-compatibility-checkpoint-summary-preview-only";
+  source: "controlled-paid-pilot-subscription-lock-boundary-final-review-checkpoint-summary-final-review-checkpoint-summary";
+  sourceValidationStatus: "passed";
+  checkpointSummaryStatus: "passed";
+  launchAuthorization: "not-authorized";
   subscriptionActivation: "blocked";
   paymentExecution: "blocked";
   invoiceCreation: "blocked";
@@ -24,20 +25,27 @@ export type NexusControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpoin
   thirdPartyMutation: "blocked";
   aiModelCalls: "blocked";
   globalTradeExecution: "blocked";
-  identitySummary: string;
-  safetySummary: string[];
-  futureGlobalTradeSummary: string[];
-  completionResult: "safe-planning-only-checkpoint-summary-complete";
+  gstExecution: "blocked";
+  ewayBillGeneration: "blocked";
+  governmentApiMutation: "blocked";
+  complianceFiling: "blocked";
+  illegalMatter: "blocked";
+  greyZoneExecution: "blocked";
+  complianceShortcut: "blocked";
+  noCloneDriftConfirmed: true;
+  completionResult: "runtime-circular-compatibility-checkpoint-summary-safe";
 };
 
 export const controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary: NexusControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary = {
-  day: 268,
+  day: 308,
   title:
-    "NEXUS Controlled Paid Pilot Subscription Lock Boundary Final Review Checkpoint Summary Final Review Checkpoint Summary v1",
-  mode: "read-only-summary-preview-only",
-  sourceDay: 267,
-  summaryStatus: "completed",
-  launchStatus: "not-authorized",
+    "NEXUS Controlled Paid Pilot Subscription Lock Boundary Final Review Checkpoint Summary Final Review Checkpoint Summary Compatibility v1",
+  mode: "read-only-runtime-compatibility-checkpoint-summary-preview-only",
+  source:
+    "controlled-paid-pilot-subscription-lock-boundary-final-review-checkpoint-summary-final-review-checkpoint-summary",
+  sourceValidationStatus: "passed",
+  checkpointSummaryStatus: "passed",
+  launchAuthorization: "not-authorized",
   subscriptionActivation: "blocked",
   paymentExecution: "blocked",
   invoiceCreation: "blocked",
@@ -52,61 +60,47 @@ export const controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSum
   thirdPartyMutation: "blocked",
   aiModelCalls: "blocked",
   globalTradeExecution: "blocked",
-  identitySummary:
-    "NEXUS remains an owner-controlled AI Business Operating Layer. It is not chatbot, not CRM clone, not ERP clone, not Make/Zapier clone, not marketplace clone, not IndiaMART clone, and not uncontrolled automation runner.",
-  safetySummary: [
-    "Day 267 checkpoint is the locked source input for this summary.",
-    "Launch is not authorized.",
-    "Subscription activation is blocked.",
-    "Payment execution is blocked.",
-    "Invoice creation is blocked.",
-    "Entitlement writes are blocked.",
-    "Customer data writes are blocked.",
-    "Real DB memory read/write is blocked.",
-    "Audit persistence is blocked.",
-    "Approve/reject execution is blocked.",
-    "Owner override execution is blocked.",
-    "Recovery and rollback execution are blocked.",
-    "Message sending is blocked.",
-    "Third-party mutation is blocked.",
-    "AI model calls are blocked.",
-    "Global trade execution is blocked."
-  ],
-  futureGlobalTradeSummary: [
-    "NEXUS Global Trade Operating Layer remains future safe planning only.",
-    "Allowed future planning scope remains sourcing support, vendor and buyer coordination planning, quotation readiness, logistics checklist, document readiness, advance/payment safety review, and risk review.",
-    "Blocked execution scope remains no order placement, no shipment booking, no customer/vendor commitment, no vendor/customer message sending, no third-party mutation, no payment activation, no invoice creation, and no entitlement writes.",
-    "Clone drift remains blocked: no IndiaMART clone, no marketplace clone, no CRM clone, no ERP clone, and no uncontrolled automation runner."
-  ],
-  completionResult: "safe-planning-only-checkpoint-summary-complete"
+  gstExecution: "blocked",
+  ewayBillGeneration: "blocked",
+  governmentApiMutation: "blocked",
+  complianceFiling: "blocked",
+  illegalMatter: "blocked",
+  greyZoneExecution: "blocked",
+  complianceShortcut: "blocked",
+  noCloneDriftConfirmed: true,
+  completionResult: "runtime-circular-compatibility-checkpoint-summary-safe"
 };
 
 export function getControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary() {
   return controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary;
 }
 
-export function validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary() {
-  const checkpointValidation =
-    validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpoint();
+export function validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary(): any {
+  const sourceValidation =
+    validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview();
 
-  const checkpoint =
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpoint;
+  const source =
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview;
 
   const summary =
     controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary;
 
-  const summaryText = [
-    summary.identitySummary,
-    ...summary.safetySummary,
-    ...summary.futureGlobalTradeSummary
-  ].join(" ");
-
   const requiredLocks = [
-    checkpointValidation.ok,
-    checkpoint.checkpointStatus === "locked",
-    checkpoint.completionResult === "safe-planning-only-checkpoint-locked",
-    summary.summaryStatus === "completed",
-    summary.launchStatus === "not-authorized",
+    sourceValidation.ok,
+    source.launchAuthorization === "not-authorized",
+    source.subscriptionActivation === "blocked",
+    source.paymentExecution === "blocked",
+    source.invoiceCreation === "blocked",
+    source.globalTradeExecution === "blocked",
+    source.gstExecution === "blocked",
+    source.ewayBillGeneration === "blocked",
+    source.governmentApiMutation === "blocked",
+    source.illegalMatter === "blocked",
+    source.greyZoneExecution === "blocked",
+    source.complianceShortcut === "blocked",
+    summary.sourceValidationStatus === "passed",
+    summary.checkpointSummaryStatus === "passed",
+    summary.launchAuthorization === "not-authorized",
     summary.subscriptionActivation === "blocked",
     summary.paymentExecution === "blocked",
     summary.invoiceCreation === "blocked",
@@ -121,46 +115,20 @@ export function validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCh
     summary.thirdPartyMutation === "blocked",
     summary.aiModelCalls === "blocked",
     summary.globalTradeExecution === "blocked",
-    summaryText.includes("owner-controlled AI Business Operating Layer"),
-    summaryText.includes("not chatbot"),
-    summaryText.includes("not CRM clone"),
-    summaryText.includes("not ERP clone"),
-    summaryText.includes("not Make/Zapier clone"),
-    summaryText.includes("not marketplace clone"),
-    summaryText.includes("not IndiaMART clone"),
-    summaryText.includes("not uncontrolled automation runner"),
-    summaryText.includes("future safe planning only"),
-    summaryText.includes("no order placement"),
-    summaryText.includes("no shipment booking"),
-    summaryText.includes("no customer/vendor commitment"),
-    summaryText.includes("no vendor/customer message sending"),
-    summaryText.includes("no third-party mutation"),
-    summaryText.includes("no payment activation"),
-    summaryText.includes("no invoice creation"),
-    summaryText.includes("no entitlement writes")
+    summary.gstExecution === "blocked",
+    summary.ewayBillGeneration === "blocked",
+    summary.governmentApiMutation === "blocked",
+    summary.complianceFiling === "blocked",
+    summary.illegalMatter === "blocked",
+    summary.greyZoneExecution === "blocked",
+    summary.complianceShortcut === "blocked",
+    summary.noCloneDriftConfirmed === true
   ];
 
   return {
     ok: requiredLocks.every(Boolean),
-    day: summary.day,
-    sourceDay: summary.sourceDay,
-    title: summary.title,
-    mode: summary.mode,
-    summaryStatus: summary.summaryStatus,
-    checkpointValidation,
-    requiredLocksPassed: requiredLocks.every(Boolean),
-    launchStatus: summary.launchStatus,
-    subscriptionActivation: summary.subscriptionActivation,
-    paymentExecution: summary.paymentExecution,
-    invoiceCreation: summary.invoiceCreation,
-    entitlementWrites: summary.entitlementWrites,
-    customerDataWrites: summary.customerDataWrites,
-    realDbMemoryReadWrite: summary.realDbMemoryReadWrite,
-    auditPersistence: summary.auditPersistence,
-    messageSending: summary.messageSending,
-    thirdPartyMutation: summary.thirdPartyMutation,
-    aiModelCalls: summary.aiModelCalls,
-    globalTradeExecution: summary.globalTradeExecution,
-    completionResult: summary.completionResult
+    ...summary,
+    sourceValidation,
+    requiredLocksPassed: requiredLocks.every(Boolean)
   };
 }

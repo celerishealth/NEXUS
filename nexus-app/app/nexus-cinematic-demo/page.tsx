@@ -1,12 +1,12 @@
 ﻿import type { CSSProperties } from "react";
 import {
-  getNexusDay306SubscriptionLockVisualPanel,
-  validateNexusDay306SubscriptionLockVisualPanel
-} from "@/lib/nexus/day306SubscriptionLockVisualPanel";
-import {
   getNexusDay307LegalSafeComplianceShieldPanel,
   validateNexusDay307LegalSafeComplianceShieldPanel
 } from "@/lib/nexus/day307LegalSafeComplianceShieldPanel";
+import {
+  getNexusDay308GuidedDemoStoryMode,
+  validateNexusDay308GuidedDemoStoryMode
+} from "@/lib/nexus/day308GuidedDemoStoryMode";
 
 type StyleMap = Record<string, CSSProperties>;
 
@@ -60,7 +60,7 @@ const styles: StyleMap = {
     lineHeight: "0.92",
     letterSpacing: "-0.07em",
     margin: 0,
-    maxWidth: "960px"
+    maxWidth: "980px"
   },
   heroText: {
     color: "#cbd5e1",
@@ -70,34 +70,31 @@ const styles: StyleMap = {
     marginTop: "20px",
     marginBottom: 0
   },
-  twoGrid: {
+  sceneStack: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+    gridTemplateColumns: "1fr",
     gap: "16px",
-    marginBottom: "22px"
+    marginTop: "22px"
   },
-  card: {
-    border: "1px solid rgba(148, 163, 184, 0.2)",
-    borderRadius: "24px",
-    padding: "20px",
-    background: "rgba(15, 23, 42, 0.68)",
-    boxShadow: "0 18px 48px rgba(0, 0, 0, 0.28)"
-  },
-  complianceCard: {
-    border: "1px solid rgba(52, 211, 153, 0.28)",
-    borderRadius: "26px",
-    padding: "22px",
+  sceneCard: {
+    border: "1px solid rgba(103, 232, 249, 0.24)",
+    borderRadius: "28px",
+    padding: "24px",
     background:
-      "linear-gradient(135deg, rgba(6, 78, 59, 0.24), rgba(15, 23, 42, 0.78))",
-    boxShadow: "0 18px 58px rgba(6, 78, 59, 0.22)"
+      "linear-gradient(135deg, rgba(8, 47, 73, 0.28), rgba(15, 23, 42, 0.78))",
+    boxShadow: "0 18px 58px rgba(8, 47, 73, 0.22)"
   },
-  dangerCard: {
-    border: "1px solid rgba(248, 113, 113, 0.26)",
-    borderRadius: "26px",
-    padding: "22px",
-    background:
-      "linear-gradient(135deg, rgba(127, 29, 29, 0.22), rgba(15, 23, 42, 0.76))",
-    boxShadow: "0 18px 58px rgba(127, 29, 29, 0.18)"
+  fourGrid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+    gap: "12px",
+    marginTop: "16px"
+  },
+  miniPanel: {
+    border: "1px solid rgba(148, 163, 184, 0.18)",
+    borderRadius: "18px",
+    padding: "14px",
+    background: "rgba(2, 6, 23, 0.26)"
   },
   kpiLabel: {
     color: "#94a3b8",
@@ -106,11 +103,7 @@ const styles: StyleMap = {
     letterSpacing: "0.14em",
     marginBottom: "10px"
   },
-  kpiValue: {
-    fontSize: "30px",
-    fontWeight: 800,
-    letterSpacing: "-0.04em"
-  },
+  sceneTitle: { fontSize: "24px", fontWeight: 900, letterSpacing: "-0.04em" },
   muted: { color: "#cbd5e1", lineHeight: 1.6, marginTop: "8px" },
   sectionTitle: {
     fontSize: "26px",
@@ -118,32 +111,27 @@ const styles: StyleMap = {
     marginTop: "30px",
     marginBottom: "14px"
   },
-  sceneTitle: { fontSize: "20px", fontWeight: 800, marginBottom: "6px" },
-  sceneSubtitle: {
-    color: "#67e8f9",
-    fontSize: "13px",
-    fontWeight: 700,
-    marginBottom: "10px"
-  },
   status: {
     display: "inline-block",
     marginTop: "14px",
-    border: "1px solid rgba(52, 211, 153, 0.34)",
+    border: "1px solid rgba(103, 232, 249, 0.34)",
     borderRadius: "999px",
     padding: "7px 10px",
     fontSize: "12px",
-    color: "#bbf7d0",
-    background: "rgba(6, 78, 59, 0.28)"
+    color: "#a5f3fc",
+    background: "rgba(8, 47, 73, 0.32)"
   },
-  lockedStatus: {
-    display: "inline-block",
-    marginTop: "14px",
-    border: "1px solid rgba(251, 191, 36, 0.38)",
-    borderRadius: "999px",
-    padding: "7px 10px",
-    fontSize: "12px",
-    color: "#fde68a",
-    background: "rgba(113, 63, 18, 0.28)"
+  narrationGrid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+    gap: "12px"
+  },
+  narrationCard: {
+    border: "1px solid rgba(168, 85, 247, 0.24)",
+    borderRadius: "20px",
+    padding: "16px",
+    background: "rgba(88, 28, 135, 0.16)",
+    color: "#f3e8ff"
   },
   shield: {
     marginTop: "22px",
@@ -169,75 +157,79 @@ const styles: StyleMap = {
 };
 
 export default function NexusCinematicDemoPage() {
-  const subscriptionPanel = getNexusDay306SubscriptionLockVisualPanel();
   const compliancePanel = getNexusDay307LegalSafeComplianceShieldPanel();
+  const storyMode = getNexusDay308GuidedDemoStoryMode();
 
-  const subscriptionValidation = validateNexusDay306SubscriptionLockVisualPanel();
   const complianceValidation = validateNexusDay307LegalSafeComplianceShieldPanel();
+  const storyValidation = validateNexusDay308GuidedDemoStoryMode();
 
-  const safe = subscriptionValidation.ok && complianceValidation.ok;
+  const safe = complianceValidation.ok && storyValidation.ok;
 
   return (
     <main style={styles.shell}>
       <div style={styles.frame}>
         <div style={styles.topBar}>
-          <div style={styles.badge}>NEXUS / Premium Cinematic Demo</div>
+          <div style={styles.badge}>NEXUS / Guided Cinematic Demo</div>
           <div style={styles.badge}>Read-only · Preview-only · Sample data only</div>
           <div style={styles.badge}>Validation: {safe ? "SAFE" : "CHECK REQUIRED"}</div>
         </div>
 
         <section style={styles.hero}>
-          <div style={styles.eyebrow}>Day 307 · Legal-Safe Compliance Shield</div>
-          <h1 style={styles.h1}>Compliance visible. Execution blocked.</h1>
-          <p style={styles.heroText}>{compliancePanel.complianceShieldPromise}</p>
+          <div style={styles.eyebrow}>Day 308 · Guided Demo Story Mode</div>
+          <h1 style={styles.h1}>A movie-style operating story with execution locked.</h1>
+          <p style={styles.heroText}>{storyMode.storyModePromise}</p>
         </section>
 
-        <h2 style={styles.sectionTitle}>Compliance Readiness Map</h2>
-        <section style={styles.twoGrid} aria-label="Compliance readiness map">
-          {compliancePanel.readinessItems.map((item) => (
-            <article key={item.area} style={styles.complianceCard}>
-              <div style={styles.kpiLabel}>{item.area}</div>
-              <div style={styles.kpiValue}>{item.visibleState}</div>
-              <div style={styles.muted}>{item.blockedExecution}</div>
-              <div style={styles.muted}>{item.requiredBeforeFutureExecution}</div>
-              <span style={styles.status}>readiness only</span>
+        <section style={styles.sceneStack} aria-label="Guided demo story scenes">
+          {storyMode.guidedScenes.map((scene) => (
+            <article key={scene.scene} style={styles.sceneCard}>
+              <div style={styles.kpiLabel}>{scene.scene}</div>
+              <div style={styles.sceneTitle}>{scene.cinematicTitle}</div>
+              <div style={styles.fourGrid}>
+                <div style={styles.miniPanel}>
+                  <div style={styles.kpiLabel}>Owner sees</div>
+                  <div style={styles.muted}>{scene.ownerSees}</div>
+                </div>
+                <div style={styles.miniPanel}>
+                  <div style={styles.kpiLabel}>NEXUS detects</div>
+                  <div style={styles.muted}>{scene.nexusDetects}</div>
+                </div>
+                <div style={styles.miniPanel}>
+                  <div style={styles.kpiLabel}>Safety gate</div>
+                  <div style={styles.muted}>{scene.safetyGate}</div>
+                </div>
+                <div style={styles.miniPanel}>
+                  <div style={styles.kpiLabel}>Execution boundary</div>
+                  <div style={styles.muted}>{scene.executionBoundary}</div>
+                </div>
+              </div>
+              <span style={styles.status}>{scene.visualStatus}</span>
             </article>
           ))}
         </section>
 
-        <h2 style={styles.sectionTitle}>Owner Legal Rules</h2>
-        <section style={styles.twoGrid} aria-label="Owner legal rules">
-          {compliancePanel.ownerLegalRules.map((rule) => (
-            <article key={rule} style={styles.dangerCard}>
-              <div style={styles.sceneTitle}>{rule}</div>
-              <span style={styles.lockedStatus}>locked</span>
-            </article>
+        <h2 style={styles.sectionTitle}>Demo Narration</h2>
+        <section style={styles.narrationGrid} aria-label="Demo narration">
+          {storyMode.demoNarration.map((line) => (
+            <div key={line} style={styles.narrationCard}>
+              {line}
+            </div>
           ))}
-        </section>
-
-        <h2 style={styles.sectionTitle}>Subscription Lock Context</h2>
-        <section style={styles.card} aria-label="Subscription lock context">
-          <div style={styles.sceneTitle}>Paid access visible. Execution locked.</div>
-          <div style={styles.muted}>{subscriptionPanel.subscriptionLockPromise}</div>
         </section>
 
         <section style={styles.shield}>
-          <h2 style={styles.sectionTitle}>Legal-Safe Execution Shield</h2>
-          <p style={styles.muted}>
-            NEXUS does not launch, charge customers, create invoices, write entitlements, execute
-            GST, generate e-way bills, mutate government APIs, file compliance, send messages, call
-            AI models, mutate third-party systems, or use real customer data.
-          </p>
+          <h2 style={styles.sectionTitle}>Legal-Safe Story Shield</h2>
+          <p style={styles.muted}>{compliancePanel.complianceShieldPromise}</p>
           <div style={styles.shieldGrid}>
-            {compliancePanel.blockedExecutionProof.map((item) => (
+            {storyMode.blockedExecutionProof.map((item) => (
               <div key={item} style={styles.shieldItem}>{item}</div>
             ))}
           </div>
         </section>
 
         <p style={styles.footer}>
-          Route: {compliancePanel.routePath}. Source: Day {compliancePanel.sourceDay}. Completion:{" "}
-          {compliancePanel.completionResult}. Launch remains {compliancePanel.launchAuthorization}.
+          Route: {storyMode.routePath}. Source: Day {storyMode.sourceDay}. Completion:{" "}
+          {storyMode.completionResult}. Launch remains {storyMode.launchAuthorization}.
         </p>
       </div>
     </main>
