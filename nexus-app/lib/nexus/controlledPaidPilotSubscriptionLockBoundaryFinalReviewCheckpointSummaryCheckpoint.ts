@@ -86,7 +86,7 @@ export function validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCh
   const requiredLocks = [
     validatorValidation.ok,
     validator.validationStatus === "passed",
-    validator.summaryCompletionValid,
+    validator.summaryCompleted,
     validator.launchNotAuthorized,
     validator.subscriptionActivationBlocked,
     validator.paymentExecutionBlocked,
@@ -103,7 +103,7 @@ export function validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCh
     validator.aiModelCallsBlocked,
     (JSON.stringify(validator).includes('"globalTradeExecution":"blocked"') || JSON.stringify(validator).includes('"globalTradeExecutionBlocked":true')),
     validator.identityLockValid,
-    validator.globalTradePlanningOnlyValid,
+    validator.futureGlobalTradePlanningOnlyValid,
     validator.noCloneDriftValid,
     checkpoint.launchAuthorization === "not-authorized",
     checkpoint.subscriptionActivation === "blocked",

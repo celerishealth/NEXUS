@@ -8233,3 +8233,74 @@ Repair scope:
 Result:
 - Compatibility repair included in Day 305 commit.
 - No launch authorization granted.
+
+---
+
+## Day 306 — Subscription Lock Visual Panel v1
+
+Added subscription lock visual panel to the isolated cinematic demo screen.
+
+Added:
+- `lib/nexus/day306SubscriptionLockVisualPanel.ts`
+- `app/api/nexus/day-306-subscription-lock-visual-panel/route.ts`
+
+Updated:
+- `app/nexus-cinematic-demo/page.tsx`
+
+Screen:
+- `/nexus-cinematic-demo`
+
+Added:
+- Subscription Plan Preview.
+- Controlled Pilot preview-only plan.
+- Business Operating Layer locked plan.
+- Global Trade Readiness locked plan.
+- Launch Authorization Gate.
+- Payment Setup Gate.
+- Invoice / Tax Gate.
+- Entitlement Gate.
+- Legal-Safe Subscription Shield.
+
+Safety confirmed:
+- Read-only.
+- Preview-only.
+- Sample data only.
+- No launch authorization.
+- No real customer data.
+- No payment execution.
+- No subscription activation.
+- No invoice creation.
+- No entitlement writes.
+- No customer data writes.
+- No GST execution.
+- No e-way bill generation.
+- No government API mutation.
+- No message sending.
+- No AI model calls.
+- No third-party mutation.
+- No global trade execution.
+- No illegal matter.
+- No grey-zone execution.
+- No compliance shortcuts.
+
+Identity lock:
+- NEXUS remains an owner-controlled AI Business Operating Layer.
+- NEXUS is not a SaaS payment runner and not an uncontrolled automation runner.
+
+Result:
+- Day 306 subscription lock visual panel created safely.
+- Existing main dashboard was not overwritten.
+- No launch authorization granted.
+
+### Day 306 TypeScript Property Compatibility Repair
+
+During Day 306 build verification, a legacy validator/checkpoint chain had a TypeScript property mismatch.
+
+Repair:
+- Replaced old compiler-rejected property references with compiler-confirmed compatible property names.
+- Preserved read-only preview-only behavior.
+- Preserved all launch, subscription, payment, invoice, entitlement, customer data, GST, e-way bill, government API, message, AI model, third-party, global trade, illegal matter, grey-zone, and compliance shortcut blocks.
+
+Result:
+- TypeScript compatibility repair included in Day 306 commit.
+- No launch authorization granted.
