@@ -7,6 +7,10 @@ import {
   getNexusDay303OwnerCommandCenterVisualStory,
   validateNexusDay303OwnerCommandCenterVisualStory
 } from "@/lib/nexus/day303OwnerCommandCenterVisualStory";
+import {
+  getNexusDay304SampleCustomerRequestSimulation,
+  validateNexusDay304SampleCustomerRequestSimulation
+} from "@/lib/nexus/day304SampleCustomerRequestSimulation";
 
 type StyleMap = Record<string, CSSProperties>;
 
@@ -20,10 +24,7 @@ const styles: StyleMap = {
       "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
     padding: "32px"
   },
-  frame: {
-    maxWidth: "1220px",
-    margin: "0 auto"
-  },
+  frame: { maxWidth: "1220px", margin: "0 auto" },
   topBar: {
     display: "flex",
     justifyContent: "space-between",
@@ -100,6 +101,15 @@ const styles: StyleMap = {
       "linear-gradient(135deg, rgba(14, 116, 144, 0.22), rgba(15, 23, 42, 0.76))",
     boxShadow: "0 18px 58px rgba(8, 47, 73, 0.24)"
   },
+  requestCard: {
+    border: "1px solid rgba(250, 204, 21, 0.24)",
+    borderRadius: "28px",
+    padding: "24px",
+    background:
+      "linear-gradient(135deg, rgba(113, 63, 18, 0.24), rgba(15, 23, 42, 0.76))",
+    boxShadow: "0 18px 58px rgba(113, 63, 18, 0.2)",
+    marginBottom: "22px"
+  },
   kpiLabel: {
     color: "#94a3b8",
     fontSize: "12px",
@@ -112,11 +122,7 @@ const styles: StyleMap = {
     fontWeight: 800,
     letterSpacing: "-0.04em"
   },
-  muted: {
-    color: "#cbd5e1",
-    lineHeight: 1.6,
-    marginTop: "8px"
-  },
+  muted: { color: "#cbd5e1", lineHeight: 1.6, marginTop: "8px" },
   sectionTitle: {
     fontSize: "26px",
     letterSpacing: "-0.04em",
@@ -128,11 +134,7 @@ const styles: StyleMap = {
     gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
     gap: "16px"
   },
-  sceneTitle: {
-    fontSize: "20px",
-    fontWeight: 800,
-    marginBottom: "6px"
-  },
+  sceneTitle: { fontSize: "20px", fontWeight: 800, marginBottom: "6px" },
   sceneSubtitle: {
     color: "#67e8f9",
     fontSize: "13px",
@@ -159,12 +161,7 @@ const styles: StyleMap = {
     background: "rgba(2, 6, 23, 0.28)",
     marginBottom: "10px"
   },
-  copyStrip: {
-    display: "flex",
-    flexWrap: "wrap",
-    gap: "10px",
-    marginTop: "12px"
-  },
+  copyStrip: { display: "flex", flexWrap: "wrap", gap: "10px", marginTop: "12px" },
   copyPill: {
     border: "1px solid rgba(168, 85, 247, 0.28)",
     borderRadius: "999px",
@@ -172,6 +169,18 @@ const styles: StyleMap = {
     background: "rgba(88, 28, 135, 0.18)",
     color: "#f3e8ff",
     fontSize: "13px"
+  },
+  requestLineGrid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+    gap: "12px",
+    marginTop: "16px"
+  },
+  requestLine: {
+    border: "1px solid rgba(250, 204, 21, 0.2)",
+    borderRadius: "18px",
+    padding: "14px",
+    background: "rgba(69, 26, 3, 0.22)"
   },
   shield: {
     marginTop: "22px",
@@ -193,20 +202,19 @@ const styles: StyleMap = {
     color: "#d1fae5",
     background: "rgba(2, 44, 34, 0.35)"
   },
-  footer: {
-    color: "#94a3b8",
-    marginTop: "26px",
-    fontSize: "13px",
-    lineHeight: 1.7
-  }
+  footer: { color: "#94a3b8", marginTop: "26px", fontSize: "13px", lineHeight: 1.7 }
 };
 
 export default function NexusCinematicDemoPage() {
   const dashboard = getNexusDay302CinematicDemoDashboardStructure();
   const story = getNexusDay303OwnerCommandCenterVisualStory();
+  const simulation = getNexusDay304SampleCustomerRequestSimulation();
+
   const dashboardValidation = validateNexusDay302CinematicDemoDashboardStructure();
   const storyValidation = validateNexusDay303OwnerCommandCenterVisualStory();
-  const safe = dashboardValidation.ok && storyValidation.ok;
+  const simulationValidation = validateNexusDay304SampleCustomerRequestSimulation();
+
+  const safe = dashboardValidation.ok && storyValidation.ok && simulationValidation.ok;
 
   return (
     <main style={styles.shell}>
@@ -218,14 +226,12 @@ export default function NexusCinematicDemoPage() {
         </div>
 
         <section style={styles.hero}>
-          <div style={styles.eyebrow}>Day 303 · Owner Command Center</div>
-          <h1 style={styles.h1}>Command the business before the business acts.</h1>
+          <div style={styles.eyebrow}>Day 304 · Sample Customer Request Simulation</div>
+          <h1 style={styles.h1}>See the request. Catch the risk. Block execution.</h1>
           <p style={styles.heroText}>{story.commandCenterPromise}</p>
           <div style={styles.copyStrip}>
             {story.cinematicCopyBlocks.map((line) => (
-              <span key={line} style={styles.copyPill}>
-                {line}
-              </span>
+              <span key={line} style={styles.copyPill}>{line}</span>
             ))}
           </div>
         </section>
@@ -241,6 +247,45 @@ export default function NexusCinematicDemoPage() {
           ))}
         </section>
 
+        <section style={styles.requestCard} aria-label="Sample customer request simulation">
+          <div style={styles.eyebrow}>Sample Request Simulation</div>
+          <h2 style={styles.sectionTitle}>{simulation.sampleRequestTitle}</h2>
+          <p style={styles.muted}>
+            This section is cinematic and sample-only. NEXUS does not reply to customers, create
+            invoices, generate payment links, execute GST, generate e-way bills, or create business
+            commitments.
+          </p>
+          <div style={styles.requestLineGrid}>
+            {simulation.sampleRequestLines.map((line) => (
+              <div key={line.label} style={styles.requestLine}>
+                <div style={styles.kpiLabel}>{line.label}</div>
+                <div style={styles.muted}>{line.value}</div>
+                <span style={styles.status}>{line.safety}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <h2 style={styles.sectionTitle}>Simulation Stages</h2>
+        <section style={styles.card} aria-label="Sample request simulation stages">
+          {simulation.simulationStages.map((stage) => (
+            <div key={stage.stage} style={styles.flowStep}>
+              <div>
+                <div style={styles.kpiLabel}>{stage.stage}</div>
+                <span style={styles.status}>{stage.executionState}</span>
+              </div>
+              <div>
+                <div style={styles.sceneSubtitle}>Customer signal</div>
+                <div style={styles.muted}>{stage.customerSignal}</div>
+              </div>
+              <div>
+                <div style={styles.sceneSubtitle}>NEXUS preview</div>
+                <div style={styles.muted}>{stage.nexusPreview}</div>
+              </div>
+            </div>
+          ))}
+        </section>
+
         <h2 style={styles.sectionTitle}>Owner Command Signals</h2>
         <section style={styles.twoGrid} aria-label="Owner command center signals">
           {story.ownerCommandSignals.map((signal) => (
@@ -250,26 +295,6 @@ export default function NexusCinematicDemoPage() {
               <div style={styles.muted}>{signal.explanation}</div>
               <span style={styles.status}>{signal.status}</span>
             </article>
-          ))}
-        </section>
-
-        <h2 style={styles.sectionTitle}>Owner Story Flow</h2>
-        <section style={styles.card} aria-label="Owner command center story flow">
-          {story.ownerStoryFlow.map((flow) => (
-            <div key={flow.step} style={styles.flowStep}>
-              <div>
-                <div style={styles.kpiLabel}>{flow.step}</div>
-                <span style={styles.status}>{flow.executionState}</span>
-              </div>
-              <div>
-                <div style={styles.sceneSubtitle}>Owner sees</div>
-                <div style={styles.muted}>{flow.ownerSees}</div>
-              </div>
-              <div>
-                <div style={styles.sceneSubtitle}>NEXUS response</div>
-                <div style={styles.muted}>{flow.nexusResponse}</div>
-              </div>
-            </div>
           ))}
         </section>
 
@@ -293,17 +318,15 @@ export default function NexusCinematicDemoPage() {
             real customer data.
           </p>
           <div style={styles.shieldGrid}>
-            {story.blockedExecutionProof.map((item) => (
-              <div key={item} style={styles.shieldItem}>
-                {item}
-              </div>
+            {simulation.blockedExecutionProof.map((item) => (
+              <div key={item} style={styles.shieldItem}>{item}</div>
             ))}
           </div>
         </section>
 
         <p style={styles.footer}>
-          Route: {story.routePath}. Source: Day {story.sourceDay}. Completion:{" "}
-          {story.completionResult}. Launch remains {story.launchAuthorization}.
+          Route: {simulation.routePath}. Source: Day {simulation.sourceDay}. Completion:{" "}
+          {simulation.completionResult}. Launch remains {simulation.launchAuthorization}.
         </p>
       </div>
     </main>

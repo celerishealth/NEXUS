@@ -8082,3 +8082,55 @@ Result:
 - Day 303 premium Owner Command Center visual story created safely.
 - Existing main dashboard was not overwritten.
 - No launch authorization granted.
+
+---
+
+## Day 304 — Sample Customer Request Simulation v1
+
+Added sample customer request simulation to the isolated cinematic demo screen.
+
+Added:
+- `lib/nexus/day304SampleCustomerRequestSimulation.ts`
+- `app/api/nexus/day-304-sample-customer-request-simulation/route.ts`
+
+Updated:
+- `app/nexus-cinematic-demo/page.tsx`
+
+Screen:
+- `/nexus-cinematic-demo`
+
+Added:
+- Sample customer request simulation card.
+- Sample request lines.
+- Simulation stages.
+- Owner-controlled risk preview flow.
+- Blocking proof for customer reply, invoice, payment, GST, e-way bill, government API, AI call, message sending, third-party mutation, and global trade execution.
+
+Safety confirmed:
+- Read-only.
+- Preview-only.
+- Sample data only.
+- No launch authorization.
+- No real customer data.
+- No payment execution.
+- No subscription activation.
+- No invoice creation.
+- No GST execution.
+- No e-way bill generation.
+- No government API mutation.
+- No message sending.
+- No AI model calls.
+- No third-party mutation.
+- No global trade execution.
+- No illegal matter.
+- No grey-zone execution.
+- No compliance shortcuts.
+
+Identity lock:
+- NEXUS remains an owner-controlled AI Business Operating Layer.
+- NEXUS is not chatbot, not CRM clone, not ERP clone, not marketplace clone, not IndiaMART clone, not Make/Zapier clone, and not uncontrolled automation runner.
+
+Result:
+- Day 304 sample customer request simulation created safely.
+- Existing main dashboard was not overwritten.
+- No launch authorization granted.
