@@ -1,12 +1,12 @@
 import type { CSSProperties } from "react";
 import {
-  getNexusDay323OwnerReviewPrepCheckpoint,
-  validateNexusDay323OwnerReviewPrepCheckpoint
-} from "@/lib/nexus/day323OwnerReviewPrepCheckpoint";
-import {
   getNexusDay324OwnerReviewPrepFinalSummary,
   validateNexusDay324OwnerReviewPrepFinalSummary
 } from "@/lib/nexus/day324OwnerReviewPrepFinalSummary";
+import {
+  getNexusDay325OwnerReviewPackageFinalCheckpoint,
+  validateNexusDay325OwnerReviewPackageFinalCheckpoint
+} from "@/lib/nexus/day325OwnerReviewPackageFinalCheckpoint";
 
 type StyleMap = Record<string, CSSProperties>;
 
@@ -140,63 +140,63 @@ const styles: StyleMap = {
 };
 
 export default function NexusCinematicDemoPage() {
-  const checkpoint = getNexusDay323OwnerReviewPrepCheckpoint();
-  const summary = getNexusDay324OwnerReviewPrepFinalSummary();
+  const finalSummary = getNexusDay324OwnerReviewPrepFinalSummary();
+  const checkpoint = getNexusDay325OwnerReviewPackageFinalCheckpoint();
 
-  const checkpointValidation = validateNexusDay323OwnerReviewPrepCheckpoint();
-  const summaryValidation = validateNexusDay324OwnerReviewPrepFinalSummary();
+  const finalSummaryValidation = validateNexusDay324OwnerReviewPrepFinalSummary();
+  const checkpointValidation = validateNexusDay325OwnerReviewPackageFinalCheckpoint();
 
-  const safe = checkpointValidation.ok && summaryValidation.ok;
+  const safe = finalSummaryValidation.ok && checkpointValidation.ok;
 
   return (
     <main style={styles.shell}>
       <div style={styles.frame}>
         <div style={styles.topBar}>
-          <div style={styles.badge}>NEXUS / Owner Review Prep Final Summary</div>
+          <div style={styles.badge}>NEXUS / Owner Review Package Checkpoint</div>
           <div style={styles.badge}>Read-only · Preview-only · Sample data only</div>
           <div style={styles.badge}>Validation: {safe ? "SAFE" : "CHECK REQUIRED"}</div>
         </div>
 
         <section style={styles.hero}>
-          <div style={styles.eyebrow}>Day 324 · Owner Review Prep Final Summary</div>
-          <h1 style={styles.h1}>Owner review prepared. Authorization still locked.</h1>
-          <p style={styles.heroText}>{summary.finalSummaryPromise}</p>
+          <div style={styles.eyebrow}>Day 325 · Owner Review Package Final Checkpoint</div>
+          <h1 style={styles.h1}>Owner review package locked. Launch remains blocked.</h1>
+          <p style={styles.heroText}>{checkpoint.finalCheckpointPromise}</p>
         </section>
 
-        <h2 style={styles.sectionTitle}>Final Summary Items</h2>
-        <section style={styles.cardGrid} aria-label="NEXUS owner review prep final summary items">
-          {summary.finalSummaryItems.map((item) => (
-            <article key={item.area} style={styles.card}>
-              <div style={styles.label}>{item.area}</div>
-              <div style={styles.headline}>{item.finalProof}</div>
-              <span style={styles.status}>{item.finalStatus}</span>
+        <h2 style={styles.sectionTitle}>Final Checkpoint Items</h2>
+        <section style={styles.cardGrid} aria-label="NEXUS owner review package final checkpoint items">
+          {checkpoint.finalCheckpointItems.map((item) => (
+            <article key={item.checkpoint} style={styles.card}>
+              <div style={styles.label}>{item.checkpoint}</div>
+              <div style={styles.headline}>{item.proof}</div>
+              <span style={styles.status}>{item.status}</span>
             </article>
           ))}
         </section>
 
         <section style={styles.shield}>
-          <h2 style={styles.sectionTitle}>Checkpoint Context</h2>
+          <h2 style={styles.sectionTitle}>Final Summary Context</h2>
           <p style={styles.muted}>
-            Day {checkpoint.day}: {checkpoint.checkpointStatus}. Owner review only:{" "}
-            {checkpoint.readyForOwnerReviewOnly ? "true" : "false"}. Launch:{" "}
-            {checkpoint.launchAuthorization}. Pilot: {checkpoint.pilotAuthorization}. Paid access:{" "}
-            {checkpoint.paidAccessAuthorization}. External sharing:{" "}
-            {checkpoint.externalDemoSharingAuthorization}.
+            Day {finalSummary.day}: {finalSummary.finalSummaryStatus}. Owner review only:{" "}
+            {finalSummary.readyForOwnerReviewOnly ? "true" : "false"}. Launch:{" "}
+            {finalSummary.launchAuthorization}. Pilot: {finalSummary.pilotAuthorization}. Paid access:{" "}
+            {finalSummary.paidAccessAuthorization}. External sharing:{" "}
+            {finalSummary.externalDemoSharingAuthorization}.
           </p>
         </section>
 
         <section style={styles.shield}>
-          <h2 style={styles.sectionTitle}>Not Authorized Actions</h2>
+          <h2 style={styles.sectionTitle}>Absolute Blocked Actions</h2>
           <div style={styles.shieldGrid}>
-            {summary.notAuthorizedActions.map((item) => (
+            {checkpoint.absoluteBlockedActions.map((item) => (
               <div key={item} style={styles.shieldItem}>{item}</div>
             ))}
           </div>
         </section>
 
         <p style={styles.footer}>
-          Route: {summary.routePath}. Source: Day {summary.sourceDay}. Completion:{" "}
-          {summary.completionResult}. Next: {summary.nextRecommendedStep}.
+          Route: {checkpoint.routePath}. Source: Day {checkpoint.sourceDay}. Completion:{" "}
+          {checkpoint.completionResult}. Next: {checkpoint.nextRecommendedStep}.
         </p>
       </div>
     </main>
