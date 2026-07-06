@@ -12436,3 +12436,18 @@ Day 516 added the Pre Day 520 Internal Launch Boundary Guardrail Review v1.
 - Safe public launch estimate remains Day 520+
 - No launch, controlled trial, paid pilot, paid access, external sharing, customer onboarding, real execution, payment, subscription, invoice, customer data, GST, e-way bill, government API, message, AI model, third-party, global trade, approval, owner override, recovery, or rollback execution authorized
 - Documentation-only pre-Day-520 guardrail review
+
+## Day 517 — Pre Day 520 Internal Launch Boundary Guardrail Review Validator v1
+
+Day 517 added the Pre Day 520 Internal Launch Boundary Guardrail Review Validator v1.
+
+- Added: docs/nexus/day-517-pre-day-520-internal-launch-boundary-guardrail-review-validator-v1.md
+- Confirmed Day 516 baseline at commit 26ceb8f
+- Validated Day 516 pre-Day-520 launch boundary guardrail review
+- Preserved Day 520+ as a future readiness threshold, not launch approval
+- Preserved NEXUS identity as AI Business Operating System
+- Preserved locked launch model: Demo -> Controlled Trial -> Paid Pilot -> Subscription
+- Public launch remains unauthorized
+- Safe public launch estimate remains Day 520+
+- No launch, controlled trial, paid pilot, paid access, external sharing, customer onboarding, real execution, payment, subscription, invoice, customer data, GST, e-way bill, government API, message, AI model, third-party, global trade, approval, owner override, recovery, or rollback execution authorized
+- Documentation-only pre-Day-520 guardrail validator
