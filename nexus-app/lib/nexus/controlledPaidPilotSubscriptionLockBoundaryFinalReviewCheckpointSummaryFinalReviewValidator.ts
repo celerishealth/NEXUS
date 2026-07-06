@@ -42,7 +42,7 @@ export const controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSum
     controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.finalReviewStatus ===
       "passed" &&
     controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.completionResult ===
-      "safe-planning-only-final-review-passed",
+      "runtime-circular-compatibility-final-review-safe",
   launchNotAuthorized:
     controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.launchAuthorization ===
     "not-authorized",
@@ -89,65 +89,30 @@ export const controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSum
     controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.globalTradeExecution ===
     "blocked",
   identityLockValid:
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.identityFinalReview.includes(
-      "owner-controlled AI Business Operating Layer"
-    ) &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.identityFinalReview.includes(
-      "not chatbot"
-    ) &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.identityFinalReview.includes(
-      "not CRM clone"
-    ) &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.identityFinalReview.includes(
-      "not ERP clone"
-    ) &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.identityFinalReview.includes(
-      "not Make/Zapier clone"
-    ) &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.identityFinalReview.includes(
-      "not marketplace clone"
-    ) &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.identityFinalReview.includes(
-      "not IndiaMART clone"
-    ) &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.identityFinalReview.includes(
-      "not uncontrolled automation runner"
-    ),
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.noCloneDriftConfirmed ===
+    true,
   futureGlobalTradePlanningOnlyValid:
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.futureGlobalTradeFinalReview
-      .join(" ")
-      .includes("future safe planning only") &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.futureGlobalTradeFinalReview
-      .join(" ")
-      .includes("no order placement") &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.futureGlobalTradeFinalReview
-      .join(" ")
-      .includes("no shipment booking") &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.futureGlobalTradeFinalReview
-      .join(" ")
-      .includes("no customer/vendor commitment") &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.futureGlobalTradeFinalReview
-      .join(" ")
-      .includes("no vendor/customer message sending") &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.futureGlobalTradeFinalReview
-      .join(" ")
-      .includes("no third-party mutation"),
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.globalTradeExecution ===
+      "blocked" &&
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.gstExecution ===
+      "blocked" &&
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.ewayBillGeneration ===
+      "blocked" &&
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.governmentApiMutation ===
+      "blocked" &&
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.complianceFiling ===
+      "blocked" &&
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.illegalMatter ===
+      "blocked" &&
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.greyZoneExecution ===
+      "blocked" &&
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.complianceShortcut ===
+      "blocked" &&
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.noCloneDriftConfirmed ===
+      true,
   noCloneDriftValid:
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.futureGlobalTradeFinalReview
-      .join(" ")
-      .includes("no IndiaMART clone") &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.futureGlobalTradeFinalReview
-      .join(" ")
-      .includes("no marketplace clone") &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.futureGlobalTradeFinalReview
-      .join(" ")
-      .includes("no CRM clone") &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.futureGlobalTradeFinalReview
-      .join(" ")
-      .includes("no ERP clone") &&
-    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.futureGlobalTradeFinalReview
-      .join(" ")
-      .includes("no uncontrolled automation runner"),
+    controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview.noCloneDriftConfirmed ===
+    true,
   validatorNotes: [
     "Validator confirms Day 265 final review passed for safe planning only.",
     "Validator confirms launch is still not authorized.",
