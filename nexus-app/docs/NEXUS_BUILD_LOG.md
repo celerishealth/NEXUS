@@ -13210,3 +13210,24 @@ Day 561 added the External Controlled Demo Audience Scope Package v1.
 - Confirmed no unnecessary day extension
 - Preserved NEXUS identity as AI Business Operating System
 - Preserved locked launch model: Demo -> Controlled Trial -> Paid Pilot -> Subscription
+
+## Day 562 — External Controlled Demo Approval Decision Package v1
+
+Day 562 added the External Controlled Demo Approval Decision Package v1.
+
+- Added: docs/nexus/day-562-external-controlled-demo-approval-decision-package-v1.md
+- Confirmed Day 561 baseline at commit 3d03675
+- Converted external controlled demo audience scope into strict approval decision package
+- Confirmed no public launch
+- Confirmed no open signup
+- Confirmed no uncontrolled external sharing
+- Confirmed no customer onboarding
+- Confirmed no payment collection
+- Confirmed no subscription activation
+- Confirmed no production activation
+- Confirmed no customer data processing
+- Confirmed no real execution
+- Confirmed public launch target remains Day 571 only if Day 570 gives clean explicit GO
+- Confirmed no unnecessary day extension
+- Preserved NEXUS identity as AI Business Operating System
+- Preserved locked launch model: Demo -> Controlled Trial -> Paid Pilot -> Subscription
