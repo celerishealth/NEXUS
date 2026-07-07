@@ -13439,3 +13439,20 @@ Day 571 added the Public Launch Execution Package v1.
 - Confirmed real execution remains owner-controlled
 - Confirmed no unnecessary day extension
 - Preserved locked launch model: Demo -> Controlled Trial -> Paid Pilot -> Subscription
+
+## Day 572 — Public Launch Page Safe Inquiry CTA v1
+
+Day 572 added the Public Launch Page Safe Inquiry CTA v1.
+
+- Added route: /nexus-public-launch
+- Added file: app/nexus-public-launch/page.tsx
+- Added doc: docs/nexus/day-572-public-launch-page-safe-inquiry-cta-v1.md
+- Added public launch-facing page
+- Added safe Request Controlled Demo CTA
+- Confirmed no uncontrolled signup
+- Confirmed no uncontrolled onboarding
+- Confirmed no payment collection
+- Confirmed no subscription activation
+- Confirmed no uncontrolled customer data processing
+- Confirmed no uncontrolled real execution
+- Preserved NEXUS identity as AI Business Operating System
