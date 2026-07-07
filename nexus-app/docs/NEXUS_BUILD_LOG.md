@@ -13164,3 +13164,19 @@ Day 558 added the Owner-Only Internal Demo Rehearsal Final Close Script Validati
 - Preserved NEXUS identity as AI Business Operating System
 - Preserved locked launch model: Demo -> Controlled Trial -> Paid Pilot -> Subscription
 - Documentation-only owner-only internal rehearsal final close
+
+## Day 559 — External Controlled Demo Approval Boundary v1
+
+Day 559 added the External Controlled Demo Approval Boundary v1.
+
+- Added: docs/nexus/day-559-external-controlled-demo-approval-boundary-v1.md
+- Confirmed Day 558 baseline at commit d7dcca1
+- Opened the external controlled demo approval path
+- Confirmed external controlled demo is not approved yet
+- Confirmed public launch remains unauthorized
+- Confirmed customer demo access remains unauthorized
+- Confirmed controlled trial, paid pilot, subscription activation, customer onboarding, customer data processing, payment collection, production activation, and real execution remain unauthorized
+- Confirmed external controlled demo approval will require exact audience, access boundary, no customer data, no payment, no subscription, no production activation, no real execution, successful build proof, and clean pushed git proof
+- Preserved NEXUS identity as AI Business Operating System
+- Preserved locked launch model: Demo -> Controlled Trial -> Paid Pilot -> Subscription
+- Fast mode preserved without compromise
