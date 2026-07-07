@@ -13195,3 +13195,18 @@ Day 560 added the External Controlled Demo Approval Boundary Validator v1.
 - Confirmed controlled trial, paid pilot, subscription activation, customer onboarding, payment collection, customer data processing, production activation, and real execution remain unauthorized
 - Preserved NEXUS identity as AI Business Operating System
 - Preserved locked launch model: Demo -> Controlled Trial -> Paid Pilot -> Subscription
+
+## Day 561 — External Controlled Demo Audience Scope Package v1
+
+Day 561 added the External Controlled Demo Audience Scope Package v1.
+
+- Added: docs/nexus/day-561-external-controlled-demo-audience-scope-package-v1.md
+- Confirmed Day 560 baseline at commit 5851d90
+- Defined strict external controlled demo audience rules
+- Defined maximum first external controlled demo audience as owner-approved named reviewers only
+- Confirmed no public link, no open signup, no paid access, no customer onboarding, no customer data, no production activation, and no real execution
+- Confirmed this is not public launch approval
+- Confirmed public launch target remains Day 571 only if Day 570 gives clean explicit GO
+- Confirmed no unnecessary day extension
+- Preserved NEXUS identity as AI Business Operating System
+- Preserved locked launch model: Demo -> Controlled Trial -> Paid Pilot -> Subscription
