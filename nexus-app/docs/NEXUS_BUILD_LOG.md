@@ -13231,3 +13231,28 @@ Day 562 added the External Controlled Demo Approval Decision Package v1.
 - Confirmed no unnecessary day extension
 - Preserved NEXUS identity as AI Business Operating System
 - Preserved locked launch model: Demo -> Controlled Trial -> Paid Pilot -> Subscription
+
+## Day 563 — Controlled Trial Readiness Entry Package v1
+
+Day 563 added the Controlled Trial Readiness Entry Package v1.
+
+- Added: docs/nexus/day-563-controlled-trial-readiness-entry-package-v1.md
+- Confirmed Day 562 baseline at commit 3bf5b29
+- Started controlled trial readiness preparation
+- Defined controlled trial readiness requirements
+- Defined controlled trial audience rule
+- Defined trial safety gates
+- Confirmed this is not controlled trial activation
+- Confirmed no public launch
+- Confirmed no open signup
+- Confirmed no paid access
+- Confirmed no subscription activation
+- Confirmed no customer onboarding
+- Confirmed no payment collection
+- Confirmed no customer data processing
+- Confirmed no production activation
+- Confirmed no real execution
+- Confirmed public launch target remains Day 571 only if Day 570 gives clean explicit GO
+- Confirmed no unnecessary day extension
+- Preserved NEXUS identity as AI Business Operating System
+- Preserved locked launch model: Demo -> Controlled Trial -> Paid Pilot -> Subscription
