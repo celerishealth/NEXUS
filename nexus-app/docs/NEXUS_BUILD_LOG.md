@@ -13456,3 +13456,22 @@ Day 572 added the Public Launch Page Safe Inquiry CTA v1.
 - Confirmed no uncontrolled customer data processing
 - Confirmed no uncontrolled real execution
 - Preserved NEXUS identity as AI Business Operating System
+
+## Day 573 — Inquiry Capture Reviewer Feedback Setup v1
+
+Day 573 added Inquiry Capture Reviewer Feedback Setup v1.
+
+- Added route: /nexus-demo-request
+- Added file: app/nexus-demo-request/page.tsx
+- Updated public launch CTA in: app/nexus-public-launch/page.tsx
+- Added doc: docs/nexus/day-573-inquiry-capture-reviewer-feedback-setup-v1.md
+- Added safe request template
+- Added first reviewer feedback questions
+- Added owner review checklist
+- Confirmed no open signup
+- Confirmed no automatic access
+- Confirmed no payment collection
+- Confirmed no subscription activation
+- Confirmed no customer onboarding
+- Confirmed no customer data processing
+- Confirmed no real execution

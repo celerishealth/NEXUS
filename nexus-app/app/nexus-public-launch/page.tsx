@@ -52,7 +52,7 @@
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a
-                href="#request-controlled-demo"
+                href="/nexus-demo-request"
                 className="rounded-2xl bg-emerald-400 px-6 py-4 text-center text-sm font-black uppercase tracking-wide text-slate-950 shadow-lg shadow-emerald-400/20 transition hover:bg-emerald-300"
               >
                 Request Controlled Demo
@@ -148,3 +148,4 @@
     </main>
   );
 }
+
