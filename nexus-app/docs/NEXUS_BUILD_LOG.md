@@ -13414,3 +13414,28 @@ Day 570 added the Final Public Launch GO / NO-GO Decision v1.
 - Confirmed Day 571 remains public launch execution target
 - Preserved NEXUS identity as AI Business Operating System
 - Preserved locked launch model: Demo -> Controlled Trial -> Paid Pilot -> Subscription
+
+## Day 571 — Public Launch Execution Package v1
+
+Day 571 added the Public Launch Execution Package v1.
+
+- Added: docs/nexus/day-571-public-launch-execution-package-v1.md
+- Confirmed Day 570 baseline at commit a5c2718
+- Executed public launch entry under strict safety-locked mode
+- Confirmed NEXUS may now be publicly positioned as an AI Business Operating System
+- Confirmed NEXUS is not chatbot, CRM clone, ERP clone, or Make/Zapier clone
+- Added public launch message
+- Added public positioning rules
+- Added public claim rules
+- Added access boundary
+- Added customer data boundary
+- Added payment boundary
+- Added subscription boundary
+- Added real execution boundary
+- Confirmed customer onboarding remains owner-controlled
+- Confirmed payment collection remains owner-controlled
+- Confirmed subscription activation remains owner-controlled
+- Confirmed customer data processing remains owner-controlled
+- Confirmed real execution remains owner-controlled
+- Confirmed no unnecessary day extension
+- Preserved locked launch model: Demo -> Controlled Trial -> Paid Pilot -> Subscription
