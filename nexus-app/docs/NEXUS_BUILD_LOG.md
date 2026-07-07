@@ -13495,3 +13495,25 @@ Day 574 added the First Reviewer Outreach Package v1.
 - Confirmed no customer onboarding
 - Confirmed no customer data processing
 - Confirmed no real execution
+
+## Day 575 — Live Public Deployment Verification Package v1
+
+Day 575 added the Live Public Deployment Verification Package v1.
+
+- Added doc: docs/nexus/day-575-live-public-deployment-verification-package-v1.md
+- Included Vercel-generated .gitignore update
+- Confirmed Day 574 baseline at commit 8885ad6
+- Verified Vercel production deployment
+- Verified production base URL: https://nexus-app-ten-smoky.vercel.app
+- Verified public launch page: /nexus-public-launch
+- Verified demo request page: /nexus-demo-request
+- Verified reviewer outreach page: /nexus-reviewer-outreach
+- Confirmed NEXUS public launch surface is live
+- Confirmed public positioning as AI Business Operating System
+- Confirmed no uncontrolled signup
+- Confirmed no payment collection
+- Confirmed no subscription activation
+- Confirmed no customer onboarding
+- Confirmed no customer data processing
+- Confirmed no real execution
+- Confirmed next step is controlled first outreach and feedback collection
