@@ -13180,3 +13180,18 @@ Day 559 added the External Controlled Demo Approval Boundary v1.
 - Preserved NEXUS identity as AI Business Operating System
 - Preserved locked launch model: Demo -> Controlled Trial -> Paid Pilot -> Subscription
 - Fast mode preserved without compromise
+
+## Day 560 — External Controlled Demo Approval Boundary Validator v1
+
+Day 560 added the External Controlled Demo Approval Boundary Validator v1.
+
+- Added: docs/nexus/day-560-external-controlled-demo-approval-boundary-validator-v1.md
+- Confirmed Day 559 baseline at commit 3c32725
+- Validated the external controlled demo approval boundary
+- Confirmed this is not public launch approval
+- Confirmed this is not customer demo access approval
+- Confirmed public launch target remains Day 571 only if Day 570 gives clean explicit GO
+- Confirmed no unnecessary day extension
+- Confirmed controlled trial, paid pilot, subscription activation, customer onboarding, payment collection, customer data processing, production activation, and real execution remain unauthorized
+- Preserved NEXUS identity as AI Business Operating System
+- Preserved locked launch model: Demo -> Controlled Trial -> Paid Pilot -> Subscription
