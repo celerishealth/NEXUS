@@ -13256,3 +13256,27 @@ Day 563 added the Controlled Trial Readiness Entry Package v1.
 - Confirmed no unnecessary day extension
 - Preserved NEXUS identity as AI Business Operating System
 - Preserved locked launch model: Demo -> Controlled Trial -> Paid Pilot -> Subscription
+
+## Day 564 — Controlled Trial Readiness Gate Package v1
+
+Day 564 added the Controlled Trial Readiness Gate Package v1.
+
+- Added: docs/nexus/day-564-controlled-trial-readiness-gate-package-v1.md
+- Confirmed Day 563 baseline at commit 7287821
+- Converted controlled trial readiness into strict gate checks
+- Defined build, git, owner, audience, access, data, payment, subscription, execution, message, third-party, government API, global trade, approval, recovery, and audit gates
+- Confirmed any failed gate means STOP
+- Confirmed this is not controlled trial activation
+- Confirmed no public launch
+- Confirmed no open signup
+- Confirmed no paid access
+- Confirmed no subscription activation
+- Confirmed no customer onboarding
+- Confirmed no payment collection
+- Confirmed no customer data processing
+- Confirmed no production activation
+- Confirmed no real execution
+- Confirmed public launch target remains Day 571 only if Day 570 gives clean explicit GO
+- Confirmed no unnecessary day extension
+- Preserved NEXUS identity as AI Business Operating System
+- Preserved locked launch model: Demo -> Controlled Trial -> Paid Pilot -> Subscription
