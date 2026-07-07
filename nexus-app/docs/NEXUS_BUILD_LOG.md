@@ -13393,3 +13393,24 @@ Day 569 added the Public Launch Risk Closure Package v1.
 - Confirmed no unnecessary day extension
 - Preserved NEXUS identity as AI Business Operating System
 - Preserved locked launch model: Demo -> Controlled Trial -> Paid Pilot -> Subscription
+
+## Day 570 — Final Public Launch GO NO-GO Decision v1
+
+Day 570 added the Final Public Launch GO / NO-GO Decision v1.
+
+- Added: docs/nexus/day-570-final-public-launch-go-no-go-decision-v1.md
+- Confirmed Day 569 baseline at commit 0a06f46
+- Recorded GO for Day 571 public launch execution under strict safety-locked launch mode
+- Confirmed public launch does not mean uncontrolled real execution
+- Confirmed public launch does not mean uncontrolled customer onboarding
+- Confirmed public launch does not mean uncontrolled customer data processing
+- Confirmed public launch does not mean uncontrolled payment collection
+- Confirmed public launch does not mean uncontrolled subscription activation
+- Confirmed public launch does not mean government API execution
+- Confirmed public launch does not mean global trade execution
+- Confirmed public launch does not mean recovery or rollback execution
+- Confirmed public claims must remain disciplined and no-overpromise
+- Confirmed no unnecessary day extension
+- Confirmed Day 571 remains public launch execution target
+- Preserved NEXUS identity as AI Business Operating System
+- Preserved locked launch model: Demo -> Controlled Trial -> Paid Pilot -> Subscription
