@@ -13280,3 +13280,27 @@ Day 564 added the Controlled Trial Readiness Gate Package v1.
 - Confirmed no unnecessary day extension
 - Preserved NEXUS identity as AI Business Operating System
 - Preserved locked launch model: Demo -> Controlled Trial -> Paid Pilot -> Subscription
+
+## Day 565 — Controlled Trial Approval Decision Package v1
+
+Day 565 added the Controlled Trial Approval Decision Package v1.
+
+- Added: docs/nexus/day-565-controlled-trial-approval-decision-package-v1.md
+- Confirmed Day 564 baseline at commit a5d05e2
+- Converted controlled trial readiness gates into strict owner decision package
+- Defined controlled trial approval requirements
+- Defined controlled trial decision options
+- Confirmed this is not controlled trial activation
+- Confirmed no public launch
+- Confirmed no open signup
+- Confirmed no paid access
+- Confirmed no subscription activation
+- Confirmed no customer onboarding
+- Confirmed no payment collection
+- Confirmed no customer data processing
+- Confirmed no production activation
+- Confirmed no uncontrolled real execution
+- Confirmed public launch target remains Day 571 only if Day 570 gives clean explicit GO
+- Confirmed no unnecessary day extension
+- Preserved NEXUS identity as AI Business Operating System
+- Preserved locked launch model: Demo -> Controlled Trial -> Paid Pilot -> Subscription
