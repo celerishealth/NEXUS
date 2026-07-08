@@ -13623,3 +13623,30 @@ Day 580 added the World-Class Cinematic Demo Film Upgrade v1.
 - Confirmed no customer onboarding
 - Confirmed no customer data processing
 - Confirmed no real execution
+
+## Day 581 — Cinematic Screen Recording Plan v1
+
+Day 581 added the Cinematic Screen Recording Plan v1.
+
+- Added route: /nexus-screen-recording-plan
+- Added file: app/nexus-screen-recording-plan/page.tsx
+- Added doc: docs/nexus/day-581-cinematic-screen-recording-plan-v1.md
+- Added recording settings
+- Added production page recording order
+- Added shot duration, mouse movement, purpose, and must-show instructions
+- Added recording flow
+- Added camera rules
+- Added hard safety boundary
+- Confirmed production URL only
+- Confirmed no private tabs, terminal, GitHub, Vercel, or private account screens
+- Confirmed no real customer data
+- Confirmed no payment details
+- Confirmed no passwords
+- Confirmed no private business records
+- Confirmed no fake live customer claims
+- Confirmed no open signup
+- Confirmed no payment collection
+- Confirmed no subscription activation
+- Confirmed no customer onboarding
+- Confirmed no customer data processing
+- Confirmed no real execution
