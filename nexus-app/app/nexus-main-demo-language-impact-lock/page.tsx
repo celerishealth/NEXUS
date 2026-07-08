@@ -1,3 +1,7 @@
+// Day 592 safety amendment for Day 591 language impact lock:
+// No fake claims, no fake customers, no fake revenue, no fake traction, no fake partnerships, no fake market proof, no production-ready claim, and no launch-ready claim.
+// No open payment, no customer onboarding, no pilot access, and no real execution.
+// NEXUS remains an AI Business Operating System, not a chatbot, not a CRM clone, and not an ERP clone.
 const lockedLine = [
   "Chatbots answer.",
   "CRMs store.",
