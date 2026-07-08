@@ -13777,3 +13777,36 @@ Day 583 added the 3-5 Minute Main Demo Film Script v1.
   - No copyrighted music, movie clips, celebrity voices, or external brand assets.
   - No open signup, payment, customer onboarding, pilot access, or real execution.
 - Status: internal preview-only storyboard validator route.
+## Day 587 - Main Demo Asset List + Screen Recording Plan v1
+
+- Added route: `/nexus-main-demo-asset-screen-recording-plan`
+- Created the production-safe asset list and screen recording plan for the NEXUS 3-5 minute cinematic main demo film.
+- Locked practical recording segments:
+  - Fictional chaos opening.
+  - Old system limit comparison.
+  - NEXUS command layer reveal.
+  - Customer memory demo.
+  - Owner approval and safety lock.
+  - Fallback and recovery queue.
+  - Owner command dashboard.
+  - Trust close.
+- Locked allowed asset categories:
+  - Preview-only NEXUS screens.
+  - Fictional UI cards.
+  - Abstract system blocks.
+  - Original icons.
+  - Dark premium backgrounds.
+  - Text animation.
+  - Original voiceover and legal-safe audio.
+- Locked blocked assets:
+  - Real customer data.
+  - Private screenshots.
+  - Live database data.
+  - Production logs.
+  - Copyrighted music, movie clips, celebrity voices, and external brand assets.
+  - Fake traction, fake revenue, fake customers, fake partnerships, and market proof.
+  - Open signup, payment, customer onboarding, pilot access, or real execution.
+- Preserved NEXUS identity:
+  - AI Business Operating System.
+  - Not chatbot, not CRM clone, not ERP clone.
+- Status: internal preview-only asset and recording plan route.
