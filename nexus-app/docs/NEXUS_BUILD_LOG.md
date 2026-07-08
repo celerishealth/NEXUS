@@ -13746,3 +13746,34 @@ Day 583 added the 3-5 Minute Main Demo Film Script v1.
   - No fake traction, fake revenue, fake customers, fake partnerships, or market proof.
   - No open signup, payment, customer onboarding, pilot access, or real execution.
 - Status: internal preview-only cinematic storyboard route.
+## Day 586 - Main Demo Storyboard Shot List Validator v1
+
+- Added route: `/nexus-main-demo-storyboard-shot-list-validator`
+- Verified Day 585 baseline route before patching.
+- Validated the Day 585 storyboard and shot list against locked NEXUS identity:
+  - NEXUS remains an AI Business Operating System.
+  - NEXUS is not a chatbot, not a CRM clone, and not an ERP clone.
+  - Core line remains locked:
+    - Chatbots answer.
+    - CRMs store.
+    - ERPs manage.
+    - NEXUS operates.
+- Validated cinematic arc:
+  - Chaos -> Control -> Power -> Trust -> Command.
+- Validated storyboard completeness:
+  - Timing.
+  - Phase.
+  - Camera direction.
+  - Visual direction.
+  - Screen text.
+  - Motion guidance.
+  - Safety notes.
+- Validated production safety boundaries:
+  - No fake claims.
+  - No real customer data.
+  - No private screenshots.
+  - No live database data.
+  - No production logs.
+  - No copyrighted music, movie clips, celebrity voices, or external brand assets.
+  - No open signup, payment, customer onboarding, pilot access, or real execution.
+- Status: internal preview-only storyboard validator route.
