@@ -13701,3 +13701,25 @@ Day 583 added the 3-5 Minute Main Demo Film Script v1.
 - Confirmed no customer onboarding
 - Confirmed no customer data processing
 - Confirmed no real execution
+
+## Day 584 - Main Demo Film Script Validator v1
+
+- Added route: `/nexus-main-demo-film-script-validator`
+- Verified Day 583 baseline route before patching.
+- Added corrective Day 584 safety amendment to the Day 583 cinematic script source for missing fake-claims boundary.
+- Validated the 3-5 minute main demo film script against locked NEXUS identity:
+  - NEXUS remains an AI Business Operating System.
+  - NEXUS is not positioned as a chatbot, CRM clone, or ERP clone.
+  - Core line remains locked:
+    - Chatbots answer.
+    - CRMs store.
+    - ERPs manage.
+    - NEXUS operates.
+- Validated cinematic direction:
+  - Chaos -> Control -> Power -> Trust -> Command.
+- Validated legal-safe production boundaries:
+  - No fake traction, fake revenue, fake customer, fake partnership, production-usage, or launch-readiness claims.
+  - No real customer data.
+  - No copyrighted music, movie clips, celebrity voices, or brand assets.
+  - No open signup, payment, customer onboarding, pilot access, or real execution.
+- Status: internal preview-only validator route.

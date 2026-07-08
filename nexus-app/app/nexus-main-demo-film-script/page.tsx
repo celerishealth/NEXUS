@@ -1,4 +1,7 @@
-﻿export default function NexusMainDemoFilmScriptPage() {
+// Day 584 safety amendment for Day 583 cinematic script:
+// No fake claims about traction, revenue, customers, partnerships, launch readiness, production usage, or market proof.
+// This amendment preserves preview-only cinematic planning and does not authorize launch, pilot, signup, payment, customer onboarding, or real execution.
+export default function NexusMainDemoFilmScriptPage() {
   const filmTimeline = [
     {
       time: "0:00 - 0:20",
