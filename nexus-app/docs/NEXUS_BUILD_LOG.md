@@ -13882,3 +13882,41 @@ Day 583 added the 3-5 Minute Main Demo Film Script v1.
   - No fake traction, fake revenue, fake customers, fake partnerships, market proof, launch-readiness claims, or production usage claims.
   - No signup, payment, customer onboarding, pilot access, or real execution.
 - Status: internal preview-only editing timeline route.
+## Day 590 - Main Demo Recording Execution Pack v1
+
+- Added route: `/nexus-main-demo-recording-execution-pack`
+- Created the recording execution pack for the NEXUS 3-5 minute cinematic main demo film.
+- Converted locked script, storyboard, asset plan, voiceover, and editing timeline into a practical recording checklist.
+- Locked pre-recording execution steps:
+  - Clean browser setup.
+  - Preview route check.
+  - Screen recording setup.
+  - Voiceover recording.
+  - Cinematic capture pass.
+  - Safety review before editing.
+- Locked capture route order:
+  - `/nexus-main-demo-film-script`
+  - `/nexus-main-demo-film-script-validator`
+  - `/nexus-main-demo-storyboard-shot-list`
+  - `/nexus-main-demo-storyboard-shot-list-validator`
+  - `/nexus-main-demo-asset-screen-recording-plan`
+  - `/nexus-main-demo-voiceover-screen-text-final`
+  - `/nexus-main-demo-editing-timeline-plan`
+- Preserved locked NEXUS identity:
+  - NEXUS is an AI Business Operating System.
+  - NEXUS is not a chatbot, not a CRM clone, and not an ERP clone.
+  - Core line remains locked:
+    - Chatbots answer.
+    - CRMs store.
+    - ERPs manage.
+    - NEXUS operates.
+- Locked recording safety boundaries:
+  - No real customer data.
+  - No private screenshots.
+  - No API keys or environment files.
+  - No production logs.
+  - No personal notifications.
+  - No copyrighted music, movie clips, celebrity voices, copied trailer audio, or external brand assets.
+  - No fake traction, fake revenue, fake customers, fake partnerships, market proof, production usage, or launch-readiness claims.
+  - No signup, payment, customer onboarding, pilot access, or real execution.
+- Status: internal preview-only recording execution pack route.
