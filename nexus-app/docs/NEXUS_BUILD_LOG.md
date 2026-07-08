@@ -13676,3 +13676,28 @@ Day 582 added the 60-Second Cinematic Teaser Final Script v1.
 - Confirmed no customer onboarding
 - Confirmed no customer data processing
 - Confirmed no real execution
+
+## Day 583 — 3-5 Minute Main Demo Film Script v1
+
+Day 583 added the 3-5 Minute Main Demo Film Script v1.
+
+- Added route: /nexus-main-demo-film-script
+- Added file: app/nexus-main-demo-film-script/page.tsx
+- Added doc: docs/nexus/day-583-3-5-minute-main-demo-film-script-v1.md
+- Added A-to-Z main demo film timeline
+- Added full main film voiceover
+- Added required viewer understanding checklist
+- Added editing notes
+- Added hard safety boundary
+- Confirmed NEXUS is positioned as AI Business Operating System
+- Confirmed not chatbot, not CRM clone, not ERP clone
+- Confirmed no real customer data
+- Confirmed no fake live customer claims
+- Confirmed no copyrighted movie clips
+- Confirmed no copyrighted music
+- Confirmed no open signup
+- Confirmed no payment collection
+- Confirmed no subscription activation
+- Confirmed no customer onboarding
+- Confirmed no customer data processing
+- Confirmed no real execution
