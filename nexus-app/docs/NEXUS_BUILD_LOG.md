@@ -13723,3 +13723,26 @@ Day 583 added the 3-5 Minute Main Demo Film Script v1.
   - No copyrighted music, movie clips, celebrity voices, or brand assets.
   - No open signup, payment, customer onboarding, pilot access, or real execution.
 - Status: internal preview-only validator route.
+## Day 585 - Main Demo Storyboard Shot List v1
+
+- Added route: `/nexus-main-demo-storyboard-shot-list`
+- Created a production-safe storyboard and shot list for the 3-5 minute NEXUS main demo film.
+- Preserved locked cinematic arc:
+  - Chaos -> Control -> Power -> Trust -> Command.
+- Preserved locked NEXUS identity:
+  - NEXUS is an AI Business Operating System.
+  - NEXUS is not a chatbot, not a CRM clone, and not an ERP clone.
+  - Core line remains locked:
+    - Chatbots answer.
+    - CRMs store.
+    - ERPs manage.
+    - NEXUS operates.
+- Added shot-by-shot safety boundaries:
+  - No real customer data.
+  - No private screenshots.
+  - No live database data.
+  - No production logs.
+  - No copyrighted music, movie clips, celebrity voices, or external brand assets.
+  - No fake traction, fake revenue, fake customers, fake partnerships, or market proof.
+  - No open signup, payment, customer onboarding, pilot access, or real execution.
+- Status: internal preview-only cinematic storyboard route.
