@@ -1,3 +1,8 @@
+// Day 597 safety amendment for Day 596 sonic identity:
+// NEXUS remains an AI Business Operating System.
+// NEXUS is not a chatbot, not a CRM clone, not an ERP clone, and not generic automation.
+// NEXUS music must remain original, ownable, legal-safe, and aligned with owner command.
+// No copyrighted music, no copied movie trailer sound, no celebrity voice, and no known brand sonic logo.
 type SonicPrinciple = {
   principle: string;
   meaning: string;
@@ -160,7 +165,7 @@ const musicMovements: MusicMovement[] = [
     emotion:
       "Trust, context, no restart from zero.",
     blocked: [
-      "Emotional stock music cliché",
+      "Emotional stock music clichÃ©",
       "Sad piano template",
       "Sentimental overkill",
       "Copied melody",
