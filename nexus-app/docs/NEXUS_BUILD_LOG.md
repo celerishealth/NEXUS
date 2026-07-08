@@ -13920,3 +13920,43 @@ Day 583 added the 3-5 Minute Main Demo Film Script v1.
   - No fake traction, fake revenue, fake customers, fake partnerships, market proof, production usage, or launch-readiness claims.
   - No signup, payment, customer onboarding, pilot access, or real execution.
 - Status: internal preview-only recording execution pack route.
+## Day 591 - Main Demo Language Impact Lock v1
+
+- Added route: `/nexus-main-demo-language-impact-lock`
+- Added a language-impact gate after the Day 590 recording execution pack.
+- Locked the requirement that every NEXUS demo word must be:
+  - Simple.
+  - Powerful.
+  - Relatable.
+  - Premium.
+  - Trust-building.
+  - Legally safe.
+  - Aligned with the AI Business Operating System vision.
+- Preserved locked NEXUS identity:
+  - NEXUS is an AI Business Operating System.
+  - NEXUS is not a chatbot, not a CRM clone, and not an ERP clone.
+  - Core line remains locked:
+    - Chatbots answer.
+    - CRMs store.
+    - ERPs manage.
+    - NEXUS operates.
+- Added weak-to-strong language upgrades for the main demo.
+- Added power word locks:
+  - Operates.
+  - Command.
+  - Memory.
+  - Safety.
+  - Recovery.
+  - Approval.
+  - Context.
+  - Continuity.
+- Added blocked language:
+  - No fake revenue claims.
+  - No fake customer claims.
+  - No fake traction claims.
+  - No fake partnership claims.
+  - No production-ready claims.
+  - No launch-ready claims.
+  - No open payment or customer onboarding claims.
+- Locked final voiceover impact pass before recording and editing.
+- Status: internal preview-only language-impact route.
