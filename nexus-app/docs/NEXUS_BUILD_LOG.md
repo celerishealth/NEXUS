@@ -13574,3 +13574,25 @@ Day 578 added the First Feedback Intake Page v1.
 - Confirmed no customer onboarding
 - Confirmed no customer data processing
 - Confirmed no real execution
+
+## Day 579 — Cinematic Demo Video Production Package v1
+
+Day 579 added the Cinematic Demo Video Production Package v1.
+
+- Added route: /nexus-cinematic-demo-video
+- Added file: app/nexus-cinematic-demo-video/page.tsx
+- Added doc: docs/nexus/day-579-cinematic-demo-video-production-package-v1.md
+- Added teaser, main demo film, and owner walkthrough video structure
+- Added A-to-Z cinematic story
+- Added scene-by-scene visual, voiceover, and screen text plan
+- Added demo checklist
+- Added production rules
+- Added reviewer message for after video readiness
+- Confirmed original visuals and copyright-free music requirement
+- Confirmed no fake live customer claims
+- Confirmed no open signup
+- Confirmed no payment collection
+- Confirmed no subscription activation
+- Confirmed no customer onboarding
+- Confirmed no customer data processing
+- Confirmed no real execution
