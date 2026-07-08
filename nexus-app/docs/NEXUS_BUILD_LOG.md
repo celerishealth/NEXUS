@@ -14031,3 +14031,33 @@ Day 583 added the 3-5 Minute Main Demo Film Script v1.
   - No fake traction, revenue, customers, partnerships, market proof, production-ready claim, or launch-ready claim.
   - No signup, payment, customer onboarding, pilot access, or real execution.
 - Status: internal preview-only recording language alignment route.
+## Day 594 - Main Demo Screen Recording Checklist Final v1
+
+- Added route: `/nexus-main-demo-screen-recording-checklist-final`
+- Created the final screen recording checklist for the NEXUS 3-5 minute cinematic main demo.
+- Locked recording pre-flight checks:
+  - Clean browser.
+  - Clean display.
+  - Fictional data only.
+  - No secrets.
+  - No fake claims.
+  - No real execution.
+  - Legal-safe audio only.
+  - 10/10 language gate.
+- Locked approved recording route order across script, storyboard, asset plan, voiceover, timeline, recording pack, language lock, language validator, and recording-language alignment.
+- Preserved locked NEXUS identity:
+  - NEXUS is an AI Business Operating System.
+  - NEXUS is not a chatbot, not a CRM clone, and not an ERP clone.
+  - Core line remains locked:
+    - Chatbots answer.
+    - CRMs store.
+    - ERPs manage.
+    - NEXUS operates.
+- Preserved safety boundaries:
+  - No real customer data.
+  - No private screenshots.
+  - No API keys or environment files.
+  - No copyrighted assets.
+  - No fake traction, revenue, customers, partnerships, market proof, production-ready claim, or launch-ready claim.
+  - No signup, payment, customer onboarding, pilot access, or real execution.
+- Status: internal preview-only final screen recording checklist route.
