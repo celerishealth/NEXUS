@@ -13841,3 +13841,44 @@ Day 583 added the 3-5 Minute Main Demo Film Script v1.
   - No copyrighted music, movie clips, celebrity voices, or external brand assets.
   - No open signup, payment, customer onboarding, pilot access, or real execution.
 - Status: internal preview-only final voiceover and screen text route.
+## Day 589 - Main Demo Editing Timeline Plan v1
+
+- Added route: `/nexus-main-demo-editing-timeline-plan`
+- Created the second-by-second editing timeline plan for the NEXUS 3-5 minute cinematic main demo film.
+- Locked edit structure across:
+  - Chaos ignition.
+  - Chaos pressure.
+  - Old system limit.
+  - Operating layer need.
+  - NEXUS reveal.
+  - Command definition.
+  - Customer memory.
+  - Safe draft.
+  - Risk detected.
+  - Owner approval.
+  - Failure detection.
+  - Recovery queue.
+  - Owner command.
+  - Business operating view.
+  - Trust locks.
+  - Final lock.
+- Preserved locked NEXUS identity:
+  - NEXUS is an AI Business Operating System.
+  - NEXUS is not a chatbot, not a CRM clone, and not an ERP clone.
+  - Core line remains locked:
+    - Chatbots answer.
+    - CRMs store.
+    - ERPs manage.
+    - NEXUS operates.
+- Preserved cinematic arc:
+  - Chaos -> Control -> Power -> Trust -> Command.
+- Locked editing safety boundaries:
+  - No real customer data.
+  - No private screenshots.
+  - No API keys or environment files.
+  - No production logs.
+  - No personal notifications.
+  - No copyrighted music, copied trailer audio, movie clips, celebrity voices, or external brand assets.
+  - No fake traction, fake revenue, fake customers, fake partnerships, market proof, launch-readiness claims, or production usage claims.
+  - No signup, payment, customer onboarding, pilot access, or real execution.
+- Status: internal preview-only editing timeline route.
