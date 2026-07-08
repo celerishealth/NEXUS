@@ -13650,3 +13650,29 @@ Day 581 added the Cinematic Screen Recording Plan v1.
 - Confirmed no customer onboarding
 - Confirmed no customer data processing
 - Confirmed no real execution
+
+## Day 582 — 60-Second Cinematic Teaser Final Script v1
+
+Day 582 added the 60-Second Cinematic Teaser Final Script v1.
+
+- Added route: /nexus-teaser-final-script
+- Added file: app/nexus-teaser-final-script/page.tsx
+- Added doc: docs/nexus/day-582-60-second-cinematic-teaser-final-script-v1.md
+- Locked core teaser line: Chatbots answer, CRMs store, ERPs manage, NEXUS operates
+- Added exact 60-second timeline
+- Added scene-by-scene visual direction
+- Added final screen text
+- Added final voiceover
+- Added music cues
+- Added director rules
+- Added hard safety boundary
+- Confirmed no real customer data
+- Confirmed no fake live customer claims
+- Confirmed no copyrighted movie clips
+- Confirmed no copyrighted music
+- Confirmed no open signup
+- Confirmed no payment collection
+- Confirmed no subscription activation
+- Confirmed no customer onboarding
+- Confirmed no customer data processing
+- Confirmed no real execution
