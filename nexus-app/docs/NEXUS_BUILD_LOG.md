@@ -13810,3 +13810,34 @@ Day 583 added the 3-5 Minute Main Demo Film Script v1.
   - AI Business Operating System.
   - Not chatbot, not CRM clone, not ERP clone.
 - Status: internal preview-only asset and recording plan route.
+## Day 588 - Main Demo Voiceover + Screen Text Final v1
+
+- Added route: `/nexus-main-demo-voiceover-screen-text-final`
+- Added corrective Day 588 safety amendment to the Day 587 asset and recording plan source for recording-boundary stability.
+- Created the final voiceover and screen text package for the NEXUS 3-5 minute cinematic main demo film.
+- Preserved locked NEXUS identity:
+  - NEXUS is an AI Business Operating System.
+  - NEXUS is not a chatbot, not a CRM clone, and not an ERP clone.
+  - Core line remains locked:
+    - Chatbots answer.
+    - CRMs store.
+    - ERPs manage.
+    - NEXUS operates.
+- Locked voiceover segments:
+  - Chaos.
+  - Old system limit.
+  - NEXUS awakens.
+  - Customer memory.
+  - Owner approval and safety.
+  - Zero Stop recovery.
+  - Owner command layer.
+  - Trust close.
+- Locked screen text and voiceover rules:
+  - Calm, premium, serious tone.
+  - Short screen text only.
+  - No hype or exaggerated promises.
+  - No fake traction, fake revenue, fake customers, fake partnerships, or production usage claims.
+  - No real customer data, private screenshots, live database rows, or production logs.
+  - No copyrighted music, movie clips, celebrity voices, or external brand assets.
+  - No open signup, payment, customer onboarding, pilot access, or real execution.
+- Status: internal preview-only final voiceover and screen text route.

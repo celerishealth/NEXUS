@@ -1,3 +1,9 @@
+// Day 588 safety amendment for Day 587 asset and screen recording plan:
+// No real customer data, no private screenshots, no live database data, and no production logs.
+// No copyrighted music, no movie clips, no celebrity voices, and no external brand assets.
+// No fake traction, no fake revenue, no fake customers, no fake partnerships, no fake market proof, and no launch-readiness claim.
+// No open signup, no payment, no customer onboarding, no pilot access, and no real execution.
+// NEXUS remains an AI Business Operating System, not a chatbot, not a CRM clone, and not an ERP clone.
 type RecordingSegment = {
   segment: string;
   time: string;
