@@ -67,6 +67,10 @@ export interface IntegratedDispatchOutboxRecord {
   leaseFence: number;
   leaseExpiresAt: string | null;
   lastClaimToken: string | null;
+  lastHeartbeatToken: string | null;
+  lastHeartbeatAt: string | null;
+  lastHeartbeatWorkerId: string | null;
+  lastHeartbeatLeaseFence: number | null;
   lastOutcomeToken: string | null;
   lastFailureCode: string | null;
   lastFailureAt: string | null;
@@ -88,6 +92,7 @@ export interface IntegratedAuditEvent {
     | "CONTROLLED_ACTION_AUTHORIZED"
     | "CONTROLLED_ACTION_DISPATCH_ENQUEUED"
     | "DISPATCH_OUTBOX_CLAIMED"
+    | "DISPATCH_OUTBOX_LEASE_RENEWED"
     | "DISPATCH_OUTBOX_RETRY_SCHEDULED"
     | "DISPATCH_OUTBOX_DEAD_LETTERED"
     | "CONTROLLED_ACTION_FINALIZED"
@@ -160,6 +165,27 @@ export interface FinalizeIntegratedActionRequest {
   terminalReasonCode: string | null;
   auditId: string;
   now: string;
+}
+
+export interface RenewIntegratedDeliveryLeaseRequest {
+  actionId: string;
+  outboxId: string;
+  tenantId: string;
+  workerId: string;
+  leaseFence: number;
+  heartbeatToken: string;
+  extensionMs: number;
+  auditId: string;
+  now: string;
+}
+
+export interface IntegratedDeliveryLeaseHeartbeatResult {
+  action: IntegratedControlledAction;
+  outbox: IntegratedDispatchOutboxRecord;
+  disposition:
+    | "renewed"
+    | "replay_accepted"
+    | "extension_not_required";
 }
 
 export interface RecordIntegratedDeliveryFailureRequest {
@@ -448,6 +474,25 @@ function validateState(state: PersistentControlledActionState): void {
       parseTimestamp(
         outboxRecord.leaseExpiresAt,
         "Stored outbox leaseExpiresAt",
+      );
+    }
+
+    if (outboxRecord.lastHeartbeatAt) {
+      parseTimestamp(
+        outboxRecord.lastHeartbeatAt,
+        "Stored outbox lastHeartbeatAt",
+      );
+    }
+
+    if (
+      outboxRecord.lastHeartbeatLeaseFence !== null &&
+      (!Number.isSafeInteger(
+        outboxRecord.lastHeartbeatLeaseFence,
+      ) ||
+        outboxRecord.lastHeartbeatLeaseFence < 1)
+    ) {
+      throw new Error(
+        "Stored outbox heartbeat lease fence is invalid.",
       );
     }
 
@@ -818,6 +863,10 @@ export class PersistentControlledActionVerticalSlice {
         leaseFence: 0,
         leaseExpiresAt: null,
         lastClaimToken: null,
+        lastHeartbeatToken: null,
+        lastHeartbeatAt: null,
+        lastHeartbeatWorkerId: null,
+        lastHeartbeatLeaseFence: null,
         lastOutcomeToken: null,
         lastFailureCode: null,
         lastFailureAt: null,
@@ -1023,6 +1072,236 @@ export class PersistentControlledActionVerticalSlice {
     });
   }
 
+  async renewDeliveryLease(
+    request: RenewIntegratedDeliveryLeaseRequest,
+  ): Promise<IntegratedDeliveryLeaseHeartbeatResult> {
+    const actionId = requireNonEmpty(
+      request.actionId,
+      "Lease heartbeat actionId",
+    );
+
+    const outboxId = requireNonEmpty(
+      request.outboxId,
+      "Lease heartbeat outboxId",
+    );
+
+    const tenantId = requireNonEmpty(
+      request.tenantId,
+      "Lease heartbeat tenantId",
+    );
+
+    const workerId = requireNonEmpty(
+      request.workerId,
+      "Lease heartbeat workerId",
+    );
+
+    const heartbeatToken = requireNonEmpty(
+      request.heartbeatToken,
+      "Lease heartbeat token",
+    );
+
+    const auditId = requireNonEmpty(
+      request.auditId,
+      "Lease heartbeat auditId",
+    );
+
+    const now = parseTimestamp(
+      request.now,
+      "Lease heartbeat now",
+    );
+
+    if (
+      !Number.isSafeInteger(request.leaseFence) ||
+      request.leaseFence < 1
+    ) {
+      throw new Error(
+        "Lease heartbeat leaseFence must be a positive safe integer.",
+      );
+    }
+
+    if (
+      !Number.isSafeInteger(request.extensionMs) ||
+      request.extensionMs < 1 ||
+      request.extensionMs > MAX_LEASE_DURATION_MS
+    ) {
+      throw new Error(
+        `Lease heartbeat extensionMs must be between 1 and ${MAX_LEASE_DURATION_MS}.`,
+      );
+    }
+
+    return this.transact((state) => {
+      if (state.killSwitch.engaged) {
+        throw new Error(
+          "Operational kill switch is engaged. Lease heartbeat denied.",
+        );
+      }
+
+      const action = state.actions[actionId];
+
+      if (!action) {
+        throw new Error("Controlled action not found.");
+      }
+
+      const outboxRecord = state.outbox[outboxId];
+
+      if (!outboxRecord) {
+        throw new Error("Dispatch outbox record not found.");
+      }
+
+      if (
+        action.tenantId !== tenantId ||
+        outboxRecord.tenantId !== tenantId
+      ) {
+        throw new Error("Lease heartbeat tenant mismatch.");
+      }
+
+      if (
+        action.outboxId !== outboxId ||
+        outboxRecord.actionId !== actionId
+      ) {
+        throw new Error(
+          "Controlled action and outbox relationship is invalid.",
+        );
+      }
+
+      if (
+        outboxRecord.status === "delivering" &&
+        action.status === "executing" &&
+        outboxRecord.lastHeartbeatToken === heartbeatToken &&
+        outboxRecord.lastHeartbeatWorkerId === workerId &&
+        outboxRecord.lastHeartbeatLeaseFence ===
+          request.leaseFence
+      ) {
+        return {
+          changed: false,
+          value: {
+            action,
+            outbox: outboxRecord,
+            disposition: "replay_accepted" as const,
+          },
+        };
+      }
+
+      if (action.status !== "executing") {
+        throw new Error(
+          "Only an executing controlled action can renew its lease.",
+        );
+      }
+
+      if (outboxRecord.status !== "delivering") {
+        throw new Error(
+          "Only a delivering outbox record can renew its lease.",
+        );
+      }
+
+      if (
+        action.leaseOwner !== workerId ||
+        outboxRecord.leaseOwner !== workerId
+      ) {
+        throw new Error(
+          "Lease heartbeat worker does not own the active lease.",
+        );
+      }
+
+      if (
+        action.leaseFence !== request.leaseFence ||
+        outboxRecord.leaseFence !== request.leaseFence
+      ) {
+        throw new Error("Lease heartbeat fence mismatch.");
+      }
+
+      if (
+        !action.leaseExpiresAt ||
+        !outboxRecord.leaseExpiresAt
+      ) {
+        throw new Error("Lease heartbeat expiry is missing.");
+      }
+
+      const actionLeaseExpiresAt = parseTimestamp(
+        action.leaseExpiresAt,
+        "Action leaseExpiresAt",
+      );
+
+      const outboxLeaseExpiresAt = parseTimestamp(
+        outboxRecord.leaseExpiresAt,
+        "Outbox leaseExpiresAt",
+      );
+
+      if (
+        actionLeaseExpiresAt <= now ||
+        outboxLeaseExpiresAt <= now
+      ) {
+        throw new Error("Lease heartbeat cannot renew an expired lease.");
+      }
+
+      if (actionLeaseExpiresAt !== outboxLeaseExpiresAt) {
+        throw new Error(
+          "Action and outbox lease expiry values are inconsistent.",
+        );
+      }
+
+      const proposedLeaseExpiresAt =
+        now + request.extensionMs;
+
+      if (proposedLeaseExpiresAt <= actionLeaseExpiresAt) {
+        return {
+          changed: false,
+          value: {
+            action,
+            outbox: outboxRecord,
+            disposition: "extension_not_required" as const,
+          },
+        };
+      }
+
+      const committedLeaseExpiresAt = new Date(
+        proposedLeaseExpiresAt,
+      ).toISOString();
+
+      action.version += 1;
+      action.leaseExpiresAt = committedLeaseExpiresAt;
+      action.updatedAt = request.now;
+
+      outboxRecord.version += 1;
+      outboxRecord.leaseExpiresAt =
+        committedLeaseExpiresAt;
+      outboxRecord.lastHeartbeatToken =
+        heartbeatToken;
+      outboxRecord.lastHeartbeatAt = request.now;
+      outboxRecord.lastHeartbeatWorkerId = workerId;
+      outboxRecord.lastHeartbeatLeaseFence =
+        request.leaseFence;
+      outboxRecord.updatedAt = request.now;
+
+      appendAudit(state, {
+        auditId,
+        tenantId,
+        actionId,
+        outboxId,
+        eventType: "DISPATCH_OUTBOX_LEASE_RENEWED",
+        occurredAt: request.now,
+        details: {
+          workerId,
+          leaseFence: request.leaseFence,
+          heartbeatToken,
+          previousLeaseExpiresAt:
+            new Date(actionLeaseExpiresAt).toISOString(),
+          committedLeaseExpiresAt,
+          actionVersion: action.version,
+          outboxVersion: outboxRecord.version,
+        },
+      });
+
+      return {
+        changed: true,
+        value: {
+          action,
+          outbox: outboxRecord,
+          disposition: "renewed" as const,
+        },
+      };
+    });
+  }
   async recordDeliveryFailure(
     request: RecordIntegratedDeliveryFailureRequest,
   ): Promise<IntegratedDeliveryFailureResult> {
@@ -1738,5 +2017,6 @@ export class PersistentControlledActionVerticalSlice {
     }
   }
 }
+
 
 
