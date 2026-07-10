@@ -14,6 +14,9 @@ import {
   SQLiteControlledActionStateRepository,
 } from "@/lib/nexus/sqliteControlledActionStateRepository";
 import {
+  SQLiteSignedGatewayRequestStore,
+} from "@/lib/nexus/sqliteSignedGatewayRequestStore";
+import {
   calculateGatewayReplayExpiry,
   PersistentControlledActionGatewayReplayGuard,
   verifySignedControlledActionGatewayEnvelope,
@@ -28,6 +31,10 @@ const actionStatePath = resolve(
     ".nexus-runtime/controlled-action-state.json",
 );
 
+const controlledActionStorageMode =
+  process.env.NEXUS_CONTROLLED_ACTION_STORAGE?.trim() ??
+  "file";
+
 const sqliteDatabasePath = resolve(
   process.cwd(),
   process.env.NEXUS_CONTROLLED_ACTION_SQLITE_PATH ??
@@ -35,11 +42,7 @@ const sqliteDatabasePath = resolve(
 );
 
 function createControlledActionEngine() {
-  const storageMode =
-    process.env.NEXUS_CONTROLLED_ACTION_STORAGE?.trim() ??
-    "file";
-
-  if (storageMode === "sqlite") {
+  if (controlledActionStorageMode === "sqlite") {
     return new PersistentControlledActionVerticalSlice(
       new SQLiteControlledActionStateRepository(
         sqliteDatabasePath,
@@ -47,7 +50,7 @@ function createControlledActionEngine() {
     );
   }
 
-  if (storageMode === "file") {
+  if (controlledActionStorageMode === "file") {
     return new PersistentControlledActionVerticalSlice(
       actionStatePath,
     );
@@ -74,12 +77,21 @@ const gateway = new ControlledActionCommandGateway(
   createControlledActionEngine(),
 );
 
+const sqliteSignedGatewayStore =
+  controlledActionStorageMode === "sqlite"
+    ? new SQLiteSignedGatewayRequestStore(
+        sqliteDatabasePath,
+      )
+    : null;
+
 const replayGuard =
+  sqliteSignedGatewayStore ??
   new PersistentControlledActionGatewayReplayGuard(
     replayStatePath,
   );
 
 const outcomeJournal =
+  sqliteSignedGatewayStore ??
   new DurableSignedGatewayOutcomeJournal(
     outcomeJournalPath,
   );
@@ -343,4 +355,5 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
 
