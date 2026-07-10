@@ -237,6 +237,7 @@ function inspectProtectedRoutes(repositoryRoot) {
   const missingRequestGuards = [];
   const missingSignedEnvelopeGuards = [];
   const missingDurableReplayStores = [];
+  const missingTenantAuthorizationGuards = [];
 
   const unsafePatterns = [
     {
@@ -323,6 +324,21 @@ function inspectProtectedRoutes(repositoryRoot) {
     ) {
       missingDurableReplayStores.push(file);
     }
+    if (
+      content.includes(
+        "export async function POST",
+      ) &&
+      (
+        !content.includes(
+          "authorizeProtectedApiTenantOwnerContext"
+        ) ||
+        !content.includes(
+          "getProtectedApiTenantAuthorizationStore"
+        )
+      )
+    ) {
+      missingTenantAuthorizationGuards.push(file);
+    }
     for (const pattern of unsafePatterns) {
       if (pattern.expression.test(content)) {
         unsafeIndicators.push({
@@ -340,6 +356,7 @@ function inspectProtectedRoutes(repositoryRoot) {
     missingRequestGuards,
     missingSignedEnvelopeGuards,
     missingDurableReplayStores,
+    missingTenantAuthorizationGuards,
   };
 }
 
@@ -754,6 +771,14 @@ export function runCriticalRiskAudit({
         ? "Every protected POST route is connected to the PostgreSQL atomic replay ledger."
         : protectedRoutes.missingDurableReplayStores,
     ),
+    createControl(
+      "CRITICAL_PROTECTED_ROUTES_REQUIRE_DURABLE_TENANT_OWNER_AUTHORIZATION",
+      "CRITICAL",
+      protectedRoutes.missingTenantAuthorizationGuards.length === 0,
+      protectedRoutes.missingTenantAuthorizationGuards.length === 0
+        ? "Every protected POST route requires durable PostgreSQL tenant-owner membership authorization."
+        : protectedRoutes.missingTenantAuthorizationGuards,
+    ),
 createControl(
       "CRITICAL_NO_REAL_EXECUTION_IN_PROTECTED_ROUTES",
       "CRITICAL",
@@ -986,6 +1011,7 @@ createControl(
     }),
   });
 }
+
 
 
 

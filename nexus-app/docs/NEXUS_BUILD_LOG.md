@@ -14575,3 +14575,49 @@ No live migration was run. No customer data, payment, WhatsApp message,
 provider action, or uncontrolled AI action is executed. Production
 protected requests remain blocked until the database is configured and
 the migration is applied through an authorized process.
+
+## Day 671 — Durable Tenant-Owner Membership Authorization v1
+
+Connected every protected NEXUS POST route to a durable PostgreSQL
+tenant-owner membership authorization boundary.
+
+Prepared database boundaries:
+
+- `nexus_tenant`
+- `nexus_owner_identity`
+- `nexus_tenant_owner_membership`
+
+Integrated controls:
+
+- Signed request context required
+- Tenant identity binding
+- Owner identity binding
+- Active tenant requirement
+- Active owner identity requirement
+- Active tenant-owner membership requirement
+- OWNER role enforcement
+- Authority-epoch requirement
+- Cross-tenant membership substitution rejection
+- Production durable replay verification requirement
+- Missing database or query failure fail-closed behavior
+- Every protected POST route guarded before business pipeline evaluation
+- Critical Risk Gate enforcement of durable tenant authorization
+
+Migration prepared but not executed:
+
+- `db/migrations/0002_nexus_tenant_owner_membership.sql`
+
+Required protected API configuration:
+
+- `DATABASE_URL`
+- `NEXUS_PROTECTED_API_HMAC_SECRET`
+- `NEXUS_PROTECTED_API_REPLAY_MODE=postgres-atomic-v1`
+- `NEXUS_TENANT_AUTHORIZATION_MODE=postgres-membership-v1`
+
+Visible posture:
+
+- `/nexus-tenant-authorization`
+
+No live migration, tenant creation, owner creation, customer data write,
+provider invocation, payment, WhatsApp delivery, public launch, or
+uncontrolled AI action was performed.

@@ -1,4 +1,11 @@
 ﻿import {
+  authorizeProtectedApiTenantOwnerContext,
+} from "../../../../lib/nexus/protectedApiTenantAuthorizationGuard.mjs";
+
+import {
+  getProtectedApiTenantAuthorizationStore,
+} from "../../../../lib/nexus/protectedApiTenantAuthorizationStore.mjs";
+import {
   getProtectedApiReplayStore,
 } from "../../../../lib/nexus/protectedApiReplayStore.mjs";
 import {
@@ -260,6 +267,31 @@ export async function POST(request) {
       },
     );
   }
+  const tenantAuthorizationGuard =
+    await authorizeProtectedApiTenantOwnerContext(
+      signedEnvelopeGuard.authorizationContext,
+      {
+        requestId:
+          requestGuard.requestId,
+        mode:
+          process.env
+            .NEXUS_TENANT_AUTHORIZATION_MODE,
+        store:
+          getProtectedApiTenantAuthorizationStore(),
+      },
+    );
+
+  if (!tenantAuthorizationGuard.ok) {
+    return NextResponse.json(
+      tenantAuthorizationGuard.error,
+      {
+        status:
+          tenantAuthorizationGuard.status,
+        headers:
+          tenantAuthorizationGuard.headers,
+      },
+    );
+  }
   const signingSecret =
     process.env.NEXUS_OWNER_RESOLUTION_SIGNING_SECRET?.trim();
 
@@ -370,6 +402,7 @@ export async function POST(request) {
     },
   );
 }
+
 
 
 
