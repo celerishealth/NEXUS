@@ -4,7 +4,6 @@
 } from "./durableProviderContainmentReader"
 import {
   assertLeaseSafeContinuityStore,
-  type CompareAndSwapProviderContinuityInput,
   type CompareAndSwapProviderContinuityResult,
   type ProviderContinuityDurableRecord,
   type ProviderContinuityDurableStore,
@@ -16,8 +15,13 @@ import type {
   ProviderDomain,
 } from "./providerRecoveryQueue"
 
+export type DurableProviderExecutionReceiptStatus =
+  | "in-flight"
+  | "retry-authorized"
+  | "completed"
+
 export type DurableProviderExecutionReceiptPayload = {
-  status: "in-flight" | "completed"
+  status: DurableProviderExecutionReceiptStatus
   operationId: string
   ownerId: string
   reason: string
@@ -25,7 +29,16 @@ export type DurableProviderExecutionReceiptPayload = {
   fenceToken: number
   startedAt: number
   completedAt: number | null
+  retryAuthorizationId: string | null
+  retryAuthorizedBy: string | null
+  retryAuthorizedAt: number | null
+  verificationReference: string | null
   [key: string]: ProviderContinuityJsonValue
+}
+
+export interface DurableProviderManualRetryAuthorization {
+  authorizationId: string
+  ownerId: string
 }
 
 export interface DurableProviderExecutionInput {
@@ -37,6 +50,8 @@ export interface DurableProviderExecutionInput {
   leaseTtlMs: number
   executionTimeoutMs: number
   safetyMarginMs?: number
+  manualRetryAuthorization?:
+    DurableProviderManualRetryAuthorization
 }
 
 export interface DurableProviderExecutionContext {
@@ -71,6 +86,8 @@ export type DurableProviderExecutionResult<T> =
         | "LEASE_SAFETY_WINDOW_EXHAUSTED"
         | "PROVIDER_OPERATION_ALREADY_COMPLETED"
         | "PROVIDER_OPERATION_INDETERMINATE"
+        | "PROVIDER_OPERATION_MANUAL_RETRY_AUTHORIZATION_REQUIRED"
+        | "PROVIDER_OPERATION_MANUAL_RETRY_AUTHORIZATION_MISMATCH"
       activeContainments:
         DurableActiveProviderContainment[]
       activeLease: ProviderContinuityLease | null
@@ -187,7 +204,50 @@ const requireNonNegativeInteger = (
   return value
 }
 
-const createIdempotencyKey = (
+const readOptionalString = (
+  value: unknown,
+  fieldName: string,
+): string | null => {
+  if (value === null || value === undefined) {
+    return null
+  }
+
+  if (
+    typeof value !== "string" ||
+    value.trim().length === 0
+  ) {
+    throw new DurableProviderExecutionReceiptError(
+      "MALFORMED_EXECUTION_RECEIPT",
+      `invalid durable execution receipt field: ${fieldName}`,
+    )
+  }
+
+  return value
+}
+
+const readOptionalTimestamp = (
+  value: unknown,
+  fieldName: string,
+): number | null => {
+  if (value === null || value === undefined) {
+    return null
+  }
+
+  if (
+    typeof value !== "number" ||
+    !Number.isFinite(value) ||
+    value < 0
+  ) {
+    throw new DurableProviderExecutionReceiptError(
+      "MALFORMED_EXECUTION_RECEIPT",
+      `invalid durable execution receipt field: ${fieldName}`,
+    )
+  }
+
+  return value
+}
+
+export const createDurableProviderExecutionIdempotencyKey = (
   tenantId: string,
   providerDomain: ProviderDomain,
   operationId: string,
@@ -204,7 +264,7 @@ const createIdempotencyKey = (
     )
     .join("|")
 
-const createReceiptScope = (
+export const createDurableProviderExecutionReceiptScope = (
   tenantId: string,
   providerDomain: ProviderDomain,
   idempotencyKey: string,
@@ -254,7 +314,7 @@ const runAbortableOperation = async <T>(
   }
 }
 
-const validateReceipt = (
+export const validateDurableProviderExecutionReceipt = (
   record:
     ProviderContinuityDurableRecord<DurableProviderExecutionReceiptPayload>,
   expected: {
@@ -267,22 +327,81 @@ const validateReceipt = (
   if (
     (
       payload.status !== "in-flight" &&
+      payload.status !== "retry-authorized" &&
       payload.status !== "completed"
     ) ||
     typeof payload.operationId !== "string" ||
+    payload.operationId.trim().length === 0 ||
     typeof payload.ownerId !== "string" ||
+    payload.ownerId.trim().length === 0 ||
     typeof payload.reason !== "string" ||
+    payload.reason.trim().length === 0 ||
     typeof payload.idempotencyKey !== "string" ||
+    payload.idempotencyKey.trim().length === 0 ||
     typeof payload.fenceToken !== "number" ||
+    !Number.isInteger(payload.fenceToken) ||
+    payload.fenceToken < 1 ||
     typeof payload.startedAt !== "number" ||
-    (
-      payload.completedAt !== null &&
-      typeof payload.completedAt !== "number"
-    )
+    !Number.isFinite(payload.startedAt) ||
+    payload.startedAt < 0
   ) {
     throw new DurableProviderExecutionReceiptError(
       "MALFORMED_EXECUTION_RECEIPT",
       "durable provider execution receipt is malformed",
+    )
+  }
+
+  const completedAt = readOptionalTimestamp(
+    payload.completedAt,
+    "completedAt",
+  )
+
+  const retryAuthorizationId =
+    readOptionalString(
+      payload.retryAuthorizationId,
+      "retryAuthorizationId",
+    )
+
+  const retryAuthorizedBy =
+    readOptionalString(
+      payload.retryAuthorizedBy,
+      "retryAuthorizedBy",
+    )
+
+  const retryAuthorizedAt =
+    readOptionalTimestamp(
+      payload.retryAuthorizedAt,
+      "retryAuthorizedAt",
+    )
+
+  const verificationReference =
+    readOptionalString(
+      payload.verificationReference,
+      "verificationReference",
+    )
+
+  if (
+    payload.status === "retry-authorized" &&
+    (
+      !retryAuthorizationId ||
+      !retryAuthorizedBy ||
+      retryAuthorizedAt === null ||
+      !verificationReference
+    )
+  ) {
+    throw new DurableProviderExecutionReceiptError(
+      "MALFORMED_EXECUTION_RECEIPT",
+      "manual retry receipt is missing owner authorization evidence",
+    )
+  }
+
+  if (
+    payload.status === "completed" &&
+    completedAt === null
+  ) {
+    throw new DurableProviderExecutionReceiptError(
+      "MALFORMED_EXECUTION_RECEIPT",
+      "completed execution receipt is missing completedAt",
     )
   }
 
@@ -298,7 +417,17 @@ const validateReceipt = (
     )
   }
 
-  return record
+  return {
+    ...record,
+    payload: {
+      ...payload,
+      completedAt,
+      retryAuthorizationId,
+      retryAuthorizedBy,
+      retryAuthorizedAt,
+      verificationReference,
+    },
+  }
 }
 
 const safeReleaseLease = async (
@@ -316,38 +445,27 @@ const safeReleaseLease = async (
   }
 }
 
-const classifyExistingReceipt = (
+const createReceiptBlockedResult = (
   receipt:
     ProviderContinuityDurableRecord<DurableProviderExecutionReceiptPayload>,
   lease: ProviderContinuityLease,
   leaseReleased: boolean,
-): DurableProviderExecutionResult<never> => {
-  if (receipt.payload.status === "completed") {
-    return {
-      outcome: "blocked",
-      code:
-        "PROVIDER_OPERATION_ALREADY_COMPLETED",
-      activeContainments: [],
-      activeLease: lease,
-      receipt,
-      leaseReleased,
-      automaticRetryAuthorized: false,
-      manualResolutionRequired: false,
-    }
-  }
-
-  return {
-    outcome: "blocked",
-    code:
-      "PROVIDER_OPERATION_INDETERMINATE",
-    activeContainments: [],
-    activeLease: lease,
-    receipt,
-    leaseReleased,
-    automaticRetryAuthorized: false,
-    manualResolutionRequired: true,
-  }
-}
+  code:
+    | "PROVIDER_OPERATION_ALREADY_COMPLETED"
+    | "PROVIDER_OPERATION_INDETERMINATE"
+    | "PROVIDER_OPERATION_MANUAL_RETRY_AUTHORIZATION_REQUIRED"
+    | "PROVIDER_OPERATION_MANUAL_RETRY_AUTHORIZATION_MISMATCH",
+  manualResolutionRequired: boolean,
+): DurableProviderExecutionResult<never> => ({
+  outcome: "blocked",
+  code,
+  activeContainments: [],
+  activeLease: lease,
+  receipt,
+  leaseReleased,
+  automaticRetryAuthorized: false,
+  manualResolutionRequired,
+})
 
 export class DurableProviderExecutionGuard {
   private readonly now: () => number
@@ -507,14 +625,14 @@ export class DurableProviderExecutionGuard {
       }
 
       const idempotencyKey =
-        createIdempotencyKey(
+        createDurableProviderExecutionIdempotencyKey(
           tenantId,
           input.providerDomain,
           operationId,
         )
 
       const receiptScope =
-        createReceiptScope(
+        createDurableProviderExecutionReceiptScope(
           tenantId,
           input.providerDomain,
           idempotencyKey,
@@ -525,9 +643,12 @@ export class DurableProviderExecutionGuard {
           receiptScope,
         )
 
+      let claimRecord:
+        ProviderContinuityDurableRecord<DurableProviderExecutionReceiptPayload>
+
       if (existingReceipt) {
-        const validatedReceipt =
-          validateReceipt(
+        const receipt =
+          validateDurableProviderExecutionReceipt(
             existingReceipt,
             {
               operationId,
@@ -535,59 +656,10 @@ export class DurableProviderExecutionGuard {
             },
           )
 
-        const leaseReleased =
-          await safeReleaseLease(
-            this.store,
-            lease,
-            this.now,
-          )
-
-        return classifyExistingReceipt(
-          validatedReceipt,
-          lease,
-          leaseReleased,
-        ) as DurableProviderExecutionResult<T>
-      }
-
-      const claimPayload:
-        DurableProviderExecutionReceiptPayload =
-        {
-          status: "in-flight",
-          operationId,
-          ownerId: workerId,
-          reason:
-            "provider-execution-claimed",
-          idempotencyKey,
-          fenceToken:
-            lease.fenceToken,
-          startedAt:
-            executionStartTime,
-          completedAt: null,
-        }
-
-      const claim =
-        await this.store.compareAndSwap({
-          scope: receiptScope,
-          expectedVersion: null,
-          payload: claimPayload,
-          lease,
-          now: this.now(),
-        })
-
-      if (!claim.applied) {
-        const currentReceipt =
-          claim.currentRecord
-            ? validateReceipt(
-                claim.currentRecord as
-                  ProviderContinuityDurableRecord<DurableProviderExecutionReceiptPayload>,
-                {
-                  operationId,
-                  idempotencyKey,
-                },
-              )
-            : null
-
-        if (currentReceipt) {
+        if (
+          receipt.payload.status ===
+          "completed"
+        ) {
           const leaseReleased =
             await safeReleaseLease(
               this.store,
@@ -595,17 +667,219 @@ export class DurableProviderExecutionGuard {
               this.now,
             )
 
-          return classifyExistingReceipt(
-            currentReceipt,
+          return createReceiptBlockedResult(
+            receipt,
             lease,
             leaseReleased,
+            "PROVIDER_OPERATION_ALREADY_COMPLETED",
+            false,
           ) as DurableProviderExecutionResult<T>
         }
 
-        throw new DurableProviderExecutionReceiptError(
-          "EXECUTION_RECEIPT_CLAIM_FAILED",
-          `durable provider execution receipt claim failed: ${claim.code}`,
-        )
+        if (
+          receipt.payload.status ===
+          "in-flight"
+        ) {
+          const leaseReleased =
+            await safeReleaseLease(
+              this.store,
+              lease,
+              this.now,
+            )
+
+          return createReceiptBlockedResult(
+            receipt,
+            lease,
+            leaseReleased,
+            "PROVIDER_OPERATION_INDETERMINATE",
+            true,
+          ) as DurableProviderExecutionResult<T>
+        }
+
+        if (
+          !input.manualRetryAuthorization
+        ) {
+          const leaseReleased =
+            await safeReleaseLease(
+              this.store,
+              lease,
+              this.now,
+            )
+
+          return createReceiptBlockedResult(
+            receipt,
+            lease,
+            leaseReleased,
+            "PROVIDER_OPERATION_MANUAL_RETRY_AUTHORIZATION_REQUIRED",
+            true,
+          ) as DurableProviderExecutionResult<T>
+        }
+
+        const authorizationId =
+          requireValue(
+            input.manualRetryAuthorization
+              .authorizationId,
+            "manualRetryAuthorization.authorizationId",
+          )
+
+        const authorizationOwnerId =
+          requireValue(
+            input.manualRetryAuthorization.ownerId,
+            "manualRetryAuthorization.ownerId",
+          )
+
+        if (
+          receipt.payload
+            .retryAuthorizationId !==
+              authorizationId ||
+          receipt.payload.retryAuthorizedBy !==
+              authorizationOwnerId
+        ) {
+          const leaseReleased =
+            await safeReleaseLease(
+              this.store,
+              lease,
+              this.now,
+            )
+
+          return createReceiptBlockedResult(
+            receipt,
+            lease,
+            leaseReleased,
+            "PROVIDER_OPERATION_MANUAL_RETRY_AUTHORIZATION_MISMATCH",
+            true,
+          ) as DurableProviderExecutionResult<T>
+        }
+
+        const retryClaim =
+          await this.store.compareAndSwap({
+            scope: receiptScope,
+            expectedVersion:
+              receipt.version,
+            payload: {
+              ...receipt.payload,
+              status: "in-flight",
+              ownerId: workerId,
+              reason:
+                "provider-execution-manual-retry-claimed",
+              fenceToken:
+                lease.fenceToken,
+              startedAt:
+                executionStartTime,
+              completedAt: null,
+            },
+            lease,
+            now: this.now(),
+          })
+
+        if (!retryClaim.applied) {
+          if (retryClaim.currentRecord) {
+            const currentReceipt =
+              validateDurableProviderExecutionReceipt(
+                retryClaim.currentRecord as
+                  ProviderContinuityDurableRecord<DurableProviderExecutionReceiptPayload>,
+                {
+                  operationId,
+                  idempotencyKey,
+                },
+              )
+
+            const leaseReleased =
+              await safeReleaseLease(
+                this.store,
+                lease,
+                this.now,
+              )
+
+            return createReceiptBlockedResult(
+              currentReceipt,
+              lease,
+              leaseReleased,
+              currentReceipt.payload.status ===
+                "completed"
+                ? "PROVIDER_OPERATION_ALREADY_COMPLETED"
+                : "PROVIDER_OPERATION_INDETERMINATE",
+              currentReceipt.payload.status !==
+                "completed",
+            ) as DurableProviderExecutionResult<T>
+          }
+
+          throw new DurableProviderExecutionReceiptError(
+            "EXECUTION_RECEIPT_CLAIM_FAILED",
+            `manual retry receipt claim failed: ${retryClaim.code}`,
+          )
+        }
+
+        claimRecord = retryClaim.record
+      } else {
+        const claimPayload:
+          DurableProviderExecutionReceiptPayload =
+          {
+            status: "in-flight",
+            operationId,
+            ownerId: workerId,
+            reason:
+              "provider-execution-claimed",
+            idempotencyKey,
+            fenceToken:
+              lease.fenceToken,
+            startedAt:
+              executionStartTime,
+            completedAt: null,
+            retryAuthorizationId: null,
+            retryAuthorizedBy: null,
+            retryAuthorizedAt: null,
+            verificationReference: null,
+          }
+
+        const claim =
+          await this.store.compareAndSwap({
+            scope: receiptScope,
+            expectedVersion: null,
+            payload: claimPayload,
+            lease,
+            now: this.now(),
+          })
+
+        if (!claim.applied) {
+          if (claim.currentRecord) {
+            const currentReceipt =
+              validateDurableProviderExecutionReceipt(
+                claim.currentRecord as
+                  ProviderContinuityDurableRecord<DurableProviderExecutionReceiptPayload>,
+                {
+                  operationId,
+                  idempotencyKey,
+                },
+              )
+
+            const leaseReleased =
+              await safeReleaseLease(
+                this.store,
+                lease,
+                this.now,
+              )
+
+            return createReceiptBlockedResult(
+              currentReceipt,
+              lease,
+              leaseReleased,
+              currentReceipt.payload.status ===
+                "completed"
+                ? "PROVIDER_OPERATION_ALREADY_COMPLETED"
+                : "PROVIDER_OPERATION_INDETERMINATE",
+              currentReceipt.payload.status !==
+                "completed",
+            ) as DurableProviderExecutionResult<T>
+          }
+
+          throw new DurableProviderExecutionReceiptError(
+            "EXECUTION_RECEIPT_CLAIM_FAILED",
+            `durable provider execution receipt claim failed: ${claim.code}`,
+          )
+        }
+
+        claimRecord = claim.record
       }
 
       const context:
@@ -648,15 +922,13 @@ export class DurableProviderExecutionGuard {
             this.now,
           )
 
-        const timedOut =
-          error instanceof
-          ProviderExecutionTimeoutError
-
         return {
           outcome: "failed",
-          code: timedOut
-            ? "PROVIDER_EXECUTION_TIMEOUT"
-            : "PROVIDER_EXECUTION_FAILED",
+          code:
+            error instanceof
+            ProviderExecutionTimeoutError
+              ? "PROVIDER_EXECUTION_TIMEOUT"
+              : "PROVIDER_EXECUTION_FAILED",
           errorName:
             error instanceof Error
               ? error.name
@@ -665,7 +937,7 @@ export class DurableProviderExecutionGuard {
           fenceToken:
             lease.fenceToken,
           receiptVersion:
-            claim.record.version,
+            claimRecord.version,
           leaseReleased,
           automaticRetryAuthorized: false,
           manualResolutionRequired: true,
@@ -677,7 +949,7 @@ export class DurableProviderExecutionGuard {
       const completedPayload:
         DurableProviderExecutionReceiptPayload =
         {
-          ...claimPayload,
+          ...claimRecord.payload,
           status: "completed",
           reason:
             "provider-execution-completed",
@@ -693,7 +965,7 @@ export class DurableProviderExecutionGuard {
           await this.store.compareAndSwap({
             scope: receiptScope,
             expectedVersion:
-              claim.record.version,
+              claimRecord.version,
             payload: completedPayload,
             lease,
             now: completedAt,
