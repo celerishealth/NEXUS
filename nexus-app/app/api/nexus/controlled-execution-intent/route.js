@@ -1,4 +1,7 @@
 ﻿import {
+  getProtectedApiReplayStore,
+} from "../../../../lib/nexus/protectedApiReplayStore.mjs";
+import {
   inspectProtectedApiSignedEnvelope,
 } from "../../../../lib/nexus/protectedApiSignedEnvelope.mjs";
 import {
@@ -204,6 +207,11 @@ export async function POST(request) {
       {
         requestId:
           requestGuard.requestId,
+        replayMode:
+          process.env
+            .NEXUS_PROTECTED_API_REPLAY_MODE,
+        replayStore:
+          getProtectedApiReplayStore(),
       },
     );
 
@@ -310,5 +318,6 @@ export async function POST(request) {
     },
   );
 }
+
 
 

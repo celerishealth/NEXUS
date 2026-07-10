@@ -14537,3 +14537,41 @@ Visible security posture:
 No provider invocation, database persistence, payment, WhatsApp delivery,
 customer action, live migration, public launch, or uncontrolled AI action
 is authorized.
+
+## Day 670 — Durable PostgreSQL Atomic Replay Ledger Integration v1
+
+Replaced production process-local nonce protection with a real
+PostgreSQL-backed atomic replay-consumption path.
+
+Integrated controls:
+
+- PostgreSQL replay-ledger adapter
+- Tenant, owner, and nonce-hash composite primary key
+- SHA-256 nonce hashing before persistence
+- Atomic `INSERT ... ON CONFLICT DO NOTHING`
+- Duplicate-request rejection across concurrent application instances
+- Replay protection that survives application restarts
+- Request ID, API path, body digest, consumption time, and expiry evidence
+- Database readiness reporting
+- Production fail-closed behavior unless `postgres-atomic-v1` is enabled
+- Every protected POST route connected to the durable replay store
+- Critical Risk Gate verification of replay-store integration
+
+Migration prepared but not executed:
+
+- `db/migrations/0001_nexus_protected_api_nonce.sql`
+
+Required production configuration:
+
+- `DATABASE_URL`
+- `NEXUS_PROTECTED_API_HMAC_SECRET`
+- `NEXUS_PROTECTED_API_REPLAY_MODE=postgres-atomic-v1`
+
+Optional database TLS setting:
+
+- `NEXUS_DATABASE_SSL_MODE=disable` only for a controlled local database
+
+No live migration was run. No customer data, payment, WhatsApp message,
+provider action, or uncontrolled AI action is executed. Production
+protected requests remain blocked until the database is configured and
+the migration is applied through an authorized process.

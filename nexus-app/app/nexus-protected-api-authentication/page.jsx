@@ -2,6 +2,10 @@
   getProtectedApiAuthenticationPosture,
 } from "../../lib/nexus/protectedApiSignedEnvelope.mjs";
 
+import {
+  getProtectedApiReplayStorePosture,
+} from "../../lib/nexus/protectedApiReplayStore.mjs";
+
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
@@ -40,8 +44,11 @@ function ControlCard({ control }) {
 }
 
 export default function ProtectedApiAuthenticationPage() {
-  const posture =
+  const authentication =
     getProtectedApiAuthenticationPosture();
+
+  const replayStore =
+    getProtectedApiReplayStorePosture();
 
   return (
     <main
@@ -69,7 +76,7 @@ export default function ProtectedApiAuthenticationPage() {
             fontSize: 12,
           }}
         >
-          NEXUS DAY 669 · SIGNED API AUTHENTICATION
+          NEXUS DAY 670 · DURABLE REPLAY SECURITY
         </p>
 
         <h1
@@ -81,9 +88,9 @@ export default function ProtectedApiAuthenticationPage() {
             lineHeight: 1,
           }}
         >
-          Protected requests are now signed,
-          tenant-bound, owner-bound, body-bound,
-          and time-bound before evaluation.
+          Signed requests now consume their
+          nonce through one atomic PostgreSQL
+          replay ledger.
         </h1>
 
         <p
@@ -95,11 +102,11 @@ export default function ProtectedApiAuthenticationPage() {
             lineHeight: 1.7,
           }}
         >
-          Every protected POST request must
-          prove its identity and body integrity
-          through an HMAC envelope. Expired,
-          altered, incorrectly routed, unsigned,
-          or replayed requests fail closed.
+          Concurrent servers, restarts, and
+          duplicate requests use the same
+          tenant-bound and owner-bound database
+          uniqueness boundary. A nonce can be
+          inserted only once.
         </p>
 
         <section
@@ -120,11 +127,11 @@ export default function ProtectedApiAuthenticationPage() {
             }}
           >
             <div style={{ color: "#94a3b8" }}>
-              Authentication
+              Durable mode
             </div>
 
-            <strong style={{ fontSize: 26 }}>
-              HMAC-SHA256
+            <strong style={{ fontSize: 23 }}>
+              {replayStore.mode}
             </strong>
           </article>
 
@@ -137,14 +144,11 @@ export default function ProtectedApiAuthenticationPage() {
             }}
           >
             <div style={{ color: "#94a3b8" }}>
-              Freshness window
+              Atomic control
             </div>
 
-            <strong style={{ fontSize: 26 }}>
-              {
-                posture.maximumClockSkewMs /
-                60000
-              } minutes
+            <strong style={{ fontSize: 23 }}>
+              PRIMARY KEY
             </strong>
           </article>
 
@@ -157,11 +161,13 @@ export default function ProtectedApiAuthenticationPage() {
             }}
           >
             <div style={{ color: "#94a3b8" }}>
-              Production default
+              Database configured
             </div>
 
-            <strong style={{ fontSize: 26 }}>
-              FAIL-CLOSED
+            <strong style={{ fontSize: 23 }}>
+              {replayStore.databaseConfigured
+                ? "YES"
+                : "NOT YET"}
             </strong>
           </article>
 
@@ -174,11 +180,11 @@ export default function ProtectedApiAuthenticationPage() {
             }}
           >
             <div style={{ color: "#94a3b8" }}>
-              Real execution
+              Production fallback
             </div>
 
-            <strong style={{ fontSize: 26 }}>
-              LOCKED
+            <strong style={{ fontSize: 23 }}>
+              BLOCKED
             </strong>
           </article>
         </section>
@@ -191,7 +197,7 @@ export default function ProtectedApiAuthenticationPage() {
             gap: 14,
           }}
         >
-          {posture.controls.map(
+          {authentication.controls.map(
             (control) => (
               <ControlCard
                 key={control}
@@ -213,7 +219,7 @@ export default function ProtectedApiAuthenticationPage() {
           }}
         >
           <strong>
-            Durable production replay protection remains mandatory
+            Migration execution remains owner-controlled
           </strong>
 
           <p
@@ -223,13 +229,14 @@ export default function ProtectedApiAuthenticationPage() {
               lineHeight: 1.7,
             }}
           >
-            Process-local nonce protection is
-            active for controlled preview use.
-            Production POST requests remain
-            blocked by default until shared
-            durable nonce persistence is
-            explicitly authorized. No execution
-            authority is granted.
+            The PostgreSQL adapter and migration
+            are ready, but no live migration was
+            executed. Production requests remain
+            blocked until DATABASE_URL is
+            configured, the migration is applied
+            through an authorized process, and
+            replay mode is set to
+            postgres-atomic-v1.
           </p>
         </section>
       </div>

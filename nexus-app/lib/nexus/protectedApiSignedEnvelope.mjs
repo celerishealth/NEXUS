@@ -5,6 +5,10 @@
   timingSafeEqual,
 } from "node:crypto";
 
+import {
+  DURABLE_REPLAY_MODE,
+} from "./protectedApiReplayStore.mjs";
+
 export const PROTECTED_API_ENVELOPE_VERSION =
   "nexus-hmac-sha256-v1";
 
@@ -20,7 +24,8 @@ const NONCE_PATTERN =
 const REQUEST_ID_PATTERN =
   /^[A-Za-z0-9][A-Za-z0-9._:-]{7,127}$/;
 
-const processLocalNonceCache = new Map();
+const processLocalNonceCache =
+  new Map();
 
 function normalizeString(value) {
   return typeof value === "string"
@@ -34,23 +39,40 @@ function sha256(value) {
     .digest("hex");
 }
 
-function safeHexMatch(expected, received) {
+function safeHexMatch(
+  expected,
+  received,
+) {
   const normalizedExpected =
-    normalizeString(expected).toLowerCase();
+    normalizeString(
+      expected,
+    ).toLowerCase();
 
   const normalizedReceived =
-    normalizeString(received).toLowerCase();
+    normalizeString(
+      received,
+    ).toLowerCase();
 
   if (
-    !/^[a-f0-9]{64}$/.test(normalizedExpected) ||
-    !/^[a-f0-9]{64}$/.test(normalizedReceived)
+    !/^[a-f0-9]{64}$/.test(
+      normalizedExpected,
+    ) ||
+    !/^[a-f0-9]{64}$/.test(
+      normalizedReceived,
+    )
   ) {
     return false;
   }
 
   return timingSafeEqual(
-    Buffer.from(normalizedExpected, "utf8"),
-    Buffer.from(normalizedReceived, "utf8"),
+    Buffer.from(
+      normalizedExpected,
+      "utf8",
+    ),
+    Buffer.from(
+      normalizedReceived,
+      "utf8",
+    ),
   );
 }
 
@@ -65,13 +87,16 @@ function canonicalEnvelope({
 }) {
   return [
     PROTECTED_API_ENVELOPE_VERSION,
-    normalizeString(method).toUpperCase(),
+    normalizeString(method)
+      .toUpperCase(),
     normalizeString(pathname),
     normalizeString(tenantId),
     normalizeString(ownerId),
     String(timestamp),
     normalizeString(nonce),
-    normalizeString(bodySha256).toLowerCase(),
+    normalizeString(
+      bodySha256,
+    ).toLowerCase(),
   ].join("\n");
 }
 
@@ -85,7 +110,10 @@ function calculateSignature({
   nonce,
   bodySha256,
 }) {
-  return createHmac("sha256", secret)
+  return createHmac(
+    "sha256",
+    secret,
+  )
     .update(
       canonicalEnvelope({
         method,
@@ -100,26 +128,36 @@ function calculateSignature({
     .digest("hex");
 }
 
-function createRequestId(request, suppliedRequestId) {
+function createRequestId(
+  request,
+  suppliedRequestId,
+) {
   const preferred =
-    normalizeString(suppliedRequestId);
+    normalizeString(
+      suppliedRequestId,
+    );
 
   if (
     preferred &&
-    REQUEST_ID_PATTERN.test(preferred)
+    REQUEST_ID_PATTERN.test(
+      preferred,
+    )
   ) {
     return preferred;
   }
 
-  const headerValue = normalizeString(
-    request?.headers?.get(
-      "x-nexus-request-id",
-    ),
-  );
+  const headerValue =
+    normalizeString(
+      request?.headers?.get(
+        "x-nexus-request-id",
+      ),
+    );
 
   if (
     headerValue &&
-    REQUEST_ID_PATTERN.test(headerValue)
+    REQUEST_ID_PATTERN.test(
+      headerValue,
+    )
   ) {
     return headerValue;
   }
@@ -127,11 +165,16 @@ function createRequestId(request, suppliedRequestId) {
   return `nexus-${randomUUID()}`;
 }
 
-function createResponseHeaders(requestId) {
+function createResponseHeaders(
+  requestId,
+) {
   return Object.freeze({
-    "Cache-Control": "no-store, max-age=0",
-    "X-Content-Type-Options": "nosniff",
-    "X-NEXUS-Request-ID": requestId,
+    "Cache-Control":
+      "no-store, max-age=0",
+    "X-Content-Type-Options":
+      "nosniff",
+    "X-NEXUS-Request-ID":
+      requestId,
     Vary: "Origin",
   });
 }
@@ -147,7 +190,9 @@ function deny({
     status,
     requestId,
     headers:
-      createResponseHeaders(requestId),
+      createResponseHeaders(
+        requestId,
+      ),
     error: Object.freeze({
       accepted: false,
       mode: "FAIL_CLOSED",
@@ -155,20 +200,27 @@ function deny({
       detail,
       requestId,
       executionAuthorized: false,
-      externalExecutionPerformed: false,
-      providerInvocationPerformed: false,
+      externalExecutionPerformed:
+        false,
+      providerInvocationPerformed:
+        false,
       persistencePerformed: false,
     }),
   });
 }
 
-function cleanExpiredNonces(nowMs) {
+function cleanExpiredNonces(
+  nowMs,
+) {
   for (
     const [key, expiresAt]
-    of processLocalNonceCache.entries()
+    of processLocalNonceCache
+      .entries()
   ) {
     if (expiresAt <= nowMs) {
-      processLocalNonceCache.delete(key);
+      processLocalNonceCache.delete(
+        key,
+      );
     }
   }
 }
@@ -186,7 +238,8 @@ export function createProtectedApiEnvelopeHeaders({
   timestamp,
   nonce,
   secret,
-  requestId = "nexus-signed-request",
+  requestId =
+    "nexus-signed-request",
 }) {
   const signingSecret =
     normalizeString(secret);
@@ -197,15 +250,20 @@ export function createProtectedApiEnvelopeHeaders({
     );
   }
 
-  const parsedUrl = new URL(url);
+  const parsedUrl =
+    new URL(url);
+
   const bodySha256 =
-    sha256(String(bodyText ?? ""));
+    sha256(
+      String(bodyText ?? ""),
+    );
 
   const signature =
     calculateSignature({
       secret: signingSecret,
       method,
-      pathname: parsedUrl.pathname,
+      pathname:
+        parsedUrl.pathname,
       tenantId,
       ownerId,
       timestamp,
@@ -214,7 +272,8 @@ export function createProtectedApiEnvelopeHeaders({
     });
 
   return Object.freeze({
-    "content-type": "application/json",
+    "content-type":
+      "application/json",
     "x-nexus-envelope-version":
       PROTECTED_API_ENVELOPE_VERSION,
     "x-nexus-tenant-id":
@@ -247,7 +306,8 @@ export async function inspectProtectedApiSignedEnvelope(
   if (
     !request ||
     !request.headers ||
-    typeof request.clone !== "function"
+    typeof request.clone !==
+      "function"
   ) {
     return deny({
       status: 400,
@@ -277,7 +337,7 @@ export async function inspectProtectedApiSignedEnvelope(
     });
   }
 
-  const productionReplayMode =
+  const replayMode =
     normalizeString(
       options.replayMode ??
         process.env
@@ -287,21 +347,43 @@ export async function inspectProtectedApiSignedEnvelope(
   const isProduction =
     options.isProduction === true ||
     (
-      options.isProduction === undefined &&
-      process.env.NODE_ENV === "production"
+      options.isProduction ===
+        undefined &&
+      process.env.NODE_ENV ===
+        "production"
     );
 
   if (
     isProduction &&
-    productionReplayMode !==
-      "process-local-preview"
+    replayMode !==
+      DURABLE_REPLAY_MODE
   ) {
     return deny({
       status: 503,
       errorCode:
         "DURABLE_REPLAY_PROTECTION_REQUIRED",
       detail:
-        "Production requests remain blocked until durable shared nonce persistence is authorized.",
+        "Production requests require the PostgreSQL atomic replay ledger.",
+      requestId,
+    });
+  }
+
+  if (
+    isProduction &&
+    (
+      !options.replayStore ||
+      typeof options
+        .replayStore
+        .consumeNonce !==
+        "function"
+    )
+  ) {
+    return deny({
+      status: 503,
+      errorCode:
+        "DURABLE_REPLAY_STORE_UNAVAILABLE",
+      detail:
+        "The durable replay store is unavailable.",
       requestId,
     });
   }
@@ -342,8 +424,12 @@ export async function inspectProtectedApiSignedEnvelope(
     );
 
   if (
-    !IDENTITY_PATTERN.test(tenantId) ||
-    !IDENTITY_PATTERN.test(ownerId)
+    !IDENTITY_PATTERN.test(
+      tenantId,
+    ) ||
+    !IDENTITY_PATTERN.test(
+      ownerId,
+    )
   ) {
     return deny({
       status: 401,
@@ -355,18 +441,19 @@ export async function inspectProtectedApiSignedEnvelope(
     });
   }
 
-  const timestampHeader =
-    normalizeString(
-      request.headers.get(
-        "x-nexus-timestamp",
+  const timestamp =
+    Number(
+      normalizeString(
+        request.headers.get(
+          "x-nexus-timestamp",
+        ),
       ),
     );
 
-  const timestamp =
-    Number(timestampHeader);
-
   if (
-    !Number.isSafeInteger(timestamp) ||
+    !Number.isSafeInteger(
+      timestamp,
+    ) ||
     timestamp <= 0
   ) {
     return deny({
@@ -380,7 +467,9 @@ export async function inspectProtectedApiSignedEnvelope(
   }
 
   const nowMs =
-    Number.isSafeInteger(options.nowMs)
+    Number.isSafeInteger(
+      options.nowMs,
+    )
       ? options.nowMs
       : Date.now();
 
@@ -393,15 +482,16 @@ export async function inspectProtectedApiSignedEnvelope(
       : PROTECTED_API_MAXIMUM_CLOCK_SKEW_MS;
 
   if (
-    Math.abs(nowMs - timestamp) >
-    maximumClockSkewMs
+    Math.abs(
+      nowMs - timestamp,
+    ) > maximumClockSkewMs
   ) {
     return deny({
       status: 401,
       errorCode:
         "SIGNED_ENVELOPE_EXPIRED",
       detail:
-        "The signed request timestamp is outside the accepted window.",
+        "The signed timestamp is outside the accepted window.",
       requestId,
     });
   }
@@ -413,13 +503,15 @@ export async function inspectProtectedApiSignedEnvelope(
       ),
     );
 
-  if (!NONCE_PATTERN.test(nonce)) {
+  if (
+    !NONCE_PATTERN.test(nonce)
+  ) {
     return deny({
       status: 401,
       errorCode:
         "SIGNED_ENVELOPE_NONCE_INVALID",
       detail:
-        "A valid unique request nonce is required.",
+        "A valid unique nonce is required.",
       requestId,
     });
   }
@@ -428,7 +520,9 @@ export async function inspectProtectedApiSignedEnvelope(
 
   try {
     bodyText =
-      await request.clone().text();
+      await request
+        .clone()
+        .text();
   } catch {
     return deny({
       status: 400,
@@ -461,20 +555,15 @@ export async function inspectProtectedApiSignedEnvelope(
       errorCode:
         "SIGNED_ENVELOPE_BODY_DIGEST_MISMATCH",
       detail:
-        "The request body does not match its signed digest.",
+        "The body does not match its signed digest.",
       requestId,
     });
   }
 
-  const suppliedSignature =
-    normalizeString(
-      request.headers.get(
-        "x-nexus-signature",
-      ),
-    ).toLowerCase();
-
   const pathname =
-    new URL(request.url).pathname;
+    new URL(
+      request.url,
+    ).pathname;
 
   const expectedSignature =
     calculateSignature({
@@ -488,6 +577,13 @@ export async function inspectProtectedApiSignedEnvelope(
       bodySha256:
         actualBodySha256,
     });
+
+  const suppliedSignature =
+    normalizeString(
+      request.headers.get(
+        "x-nexus-signature",
+      ),
+    ).toLowerCase();
 
   if (
     !safeHexMatch(
@@ -505,66 +601,160 @@ export async function inspectProtectedApiSignedEnvelope(
     });
   }
 
-  cleanExpiredNonces(nowMs);
-
-  const nonceKey =
-    `${tenantId}:${ownerId}:${nonce}`;
+  let durableReplayPersistenceVerified =
+    false;
 
   if (
-    processLocalNonceCache.has(nonceKey)
+    replayMode ===
+    DURABLE_REPLAY_MODE
   ) {
-    return deny({
-      status: 409,
-      errorCode:
-        "SIGNED_ENVELOPE_REPLAY_BLOCKED",
-      detail:
-        "This signed request nonce has already been consumed.",
-      requestId,
-    });
-  }
+    if (
+      !options.replayStore ||
+      typeof options
+        .replayStore
+        .consumeNonce !==
+        "function"
+    ) {
+      return deny({
+        status: 503,
+        errorCode:
+          "DURABLE_REPLAY_STORE_UNAVAILABLE",
+        detail:
+          "The PostgreSQL replay ledger is unavailable.",
+        requestId,
+      });
+    }
 
-  processLocalNonceCache.set(
-    nonceKey,
-    timestamp + maximumClockSkewMs,
-  );
+    const replayResult =
+      await options
+        .replayStore
+        .consumeNonce({
+          tenantId,
+          ownerId,
+          nonce,
+          requestId,
+          pathname,
+          bodySha256:
+            actualBodySha256,
+          nowMs,
+          expiresAtMs:
+            timestamp +
+            maximumClockSkewMs,
+        });
+
+    if (!replayResult.ok) {
+      return deny({
+        status: 503,
+        errorCode:
+          replayResult.errorCode ??
+          "DURABLE_REPLAY_STORE_FAILURE",
+        detail:
+          "The durable replay ledger failed closed.",
+        requestId,
+      });
+    }
+
+    if (
+      replayResult.consumed !==
+      true
+    ) {
+      return deny({
+        status: 409,
+        errorCode:
+          "SIGNED_ENVELOPE_REPLAY_BLOCKED",
+        detail:
+          "This nonce was already consumed.",
+        requestId,
+      });
+    }
+
+    durableReplayPersistenceVerified =
+      true;
+  } else {
+    if (isProduction) {
+      return deny({
+        status: 503,
+        errorCode:
+          "DURABLE_REPLAY_PROTECTION_REQUIRED",
+        detail:
+          "Process-local replay protection is forbidden in production.",
+        requestId,
+      });
+    }
+
+    cleanExpiredNonces(nowMs);
+
+    const nonceKey =
+      `${tenantId}:${ownerId}:${nonce}`;
+
+    if (
+      processLocalNonceCache.has(
+        nonceKey,
+      )
+    ) {
+      return deny({
+        status: 409,
+        errorCode:
+          "SIGNED_ENVELOPE_REPLAY_BLOCKED",
+        detail:
+          "This nonce was already consumed.",
+        requestId,
+      });
+    }
+
+    processLocalNonceCache.set(
+      nonceKey,
+      timestamp +
+        maximumClockSkewMs,
+    );
+  }
 
   return Object.freeze({
     ok: true,
     status: 200,
     requestId,
     headers:
-      createResponseHeaders(requestId),
-    authorizationContext: Object.freeze({
-      schemaVersion:
-        "nexus.protected-api-authorization-context.v1",
-      tenantId,
-      ownerId,
-      timestamp,
-      nonce,
-      bodySha256:
-        actualBodySha256,
-      pathname,
-      envelopeVersion,
-      signatureVerified: true,
-      timestampVerified: true,
-      bodyIntegrityVerified: true,
-      processLocalReplayCheckPassed: true,
-      durableReplayPersistenceVerified: false,
-      executionAuthorized: false,
-      providerInvocationAuthorized: false,
-      persistenceAuthorized: false,
-    }),
+      createResponseHeaders(
+        requestId,
+      ),
+    authorizationContext:
+      Object.freeze({
+        schemaVersion:
+          "nexus.protected-api-authorization-context.v1",
+        tenantId,
+        ownerId,
+        timestamp,
+        nonce,
+        bodySha256:
+          actualBodySha256,
+        pathname,
+        envelopeVersion,
+        signatureVerified: true,
+        timestampVerified: true,
+        bodyIntegrityVerified: true,
+        replayProtectionMode:
+          replayMode ||
+          "process-local-development",
+        durableReplayPersistenceVerified,
+        executionAuthorized: false,
+        providerInvocationAuthorized:
+          false,
+        persistenceAuthorized:
+          false,
+      }),
   });
 }
 
 export function getProtectedApiAuthenticationPosture() {
   return Object.freeze({
     schemaVersion:
-      "nexus.protected-api-authentication-posture.v1",
+      "nexus.protected-api-authentication-posture.v2",
     envelopeVersion:
       PROTECTED_API_ENVELOPE_VERSION,
     maximumClockSkewMs:
       PROTECTED_API_MAXIMUM_CLOCK_SKEW_MS,
+    durableReplayMode:
+      DURABLE_REPLAY_MODE,
     controls: Object.freeze([
       "HMAC_SHA256_REQUEST_AUTHENTICATION",
       "HTTP_METHOD_BINDING",
@@ -575,15 +765,20 @@ export function getProtectedApiAuthenticationPosture() {
       "NONCE_BOUND_SIGNATURE",
       "BODY_SHA256_INTEGRITY",
       "CONSTANT_TIME_SIGNATURE_COMPARISON",
-      "PROCESS_LOCAL_REPLAY_REJECTION",
-      "PRODUCTION_FAIL_CLOSED_WITHOUT_DURABLE_REPLAY_MODE",
+      "POSTGRES_ATOMIC_NONCE_CONSUMPTION",
+      "DISTRIBUTED_REPLAY_REJECTION",
+      "PRODUCTION_FAIL_CLOSED_WITHOUT_POSTGRES_LEDGER",
     ]),
-    processLocalReplayProtection: true,
-    durableSharedReplayProtection: false,
+    developmentProcessLocalProtection:
+      true,
+    durableSharedReplayProtection:
+      true,
     productionDefaultState:
-      "BLOCKED_UNTIL_DURABLE_REPLAY_PROTECTION_OR_EXPLICIT_PREVIEW_MODE",
+      "BLOCKED_UNLESS_POSTGRES_ATOMIC_V1_IS_CONFIGURED",
     realExecutionAuthorized: false,
-    providerInvocationAuthorized: false,
-    persistenceAuthorized: false,
+    providerInvocationAuthorized:
+      false,
+    persistenceAuthorizationLimitedTo:
+      "SECURITY_NONCE_LEDGER_ONLY",
   });
 }

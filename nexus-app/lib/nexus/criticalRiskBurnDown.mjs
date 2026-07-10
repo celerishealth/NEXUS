@@ -236,6 +236,7 @@ function inspectProtectedRoutes(repositoryRoot) {
   const missingSecretGates = [];
   const missingRequestGuards = [];
   const missingSignedEnvelopeGuards = [];
+  const missingDurableReplayStores = [];
 
   const unsafePatterns = [
     {
@@ -312,6 +313,16 @@ function inspectProtectedRoutes(repositoryRoot) {
     ) {
       missingSignedEnvelopeGuards.push(file);
     }
+    if (
+      content.includes(
+        "export async function POST",
+      ) &&
+      !content.includes(
+        "getProtectedApiReplayStore",
+      )
+    ) {
+      missingDurableReplayStores.push(file);
+    }
     for (const pattern of unsafePatterns) {
       if (pattern.expression.test(content)) {
         unsafeIndicators.push({
@@ -328,6 +339,7 @@ function inspectProtectedRoutes(repositoryRoot) {
     missingSecretGates,
     missingRequestGuards,
     missingSignedEnvelopeGuards,
+    missingDurableReplayStores,
   };
 }
 
@@ -734,6 +746,14 @@ export function runCriticalRiskAudit({
         ? "Every protected POST route requires a signed tenant-bound and owner-bound request envelope."
         : protectedRoutes.missingSignedEnvelopeGuards,
     ),
+    createControl(
+      "CRITICAL_PROTECTED_ROUTES_USE_DURABLE_ATOMIC_REPLAY_STORE",
+      "CRITICAL",
+      protectedRoutes.missingDurableReplayStores.length === 0,
+      protectedRoutes.missingDurableReplayStores.length === 0
+        ? "Every protected POST route is connected to the PostgreSQL atomic replay ledger."
+        : protectedRoutes.missingDurableReplayStores,
+    ),
 createControl(
       "CRITICAL_NO_REAL_EXECUTION_IN_PROTECTED_ROUTES",
       "CRITICAL",
@@ -966,6 +986,7 @@ createControl(
     }),
   });
 }
+
 
 
 
