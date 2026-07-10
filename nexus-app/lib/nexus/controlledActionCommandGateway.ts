@@ -58,6 +58,19 @@ export type ControlledActionGatewayCommand =
       now: string;
     }
   | {
+      type: "record_delivery_failure";
+      actionId: string;
+      outboxId: string;
+      workerId: string;
+      leaseFence: number;
+      outcomeToken: string;
+      failureCode: string;
+      retryable: boolean;
+      retryDelayMs: number;
+      auditId: string;
+      now: string;
+    }
+  | {
       type: "finalize_action";
       actionId: string;
       workerId: string;
@@ -276,6 +289,37 @@ export class ControlledActionCommandGateway {
         return createResponse(context, command.type, result);
       }
 
+      case "record_delivery_failure": {
+        requireRole(context, ["worker"]);
+
+        if (
+          requireNonEmpty(
+            command.workerId,
+            "Worker ID",
+          ) !== context.actorId
+        ) {
+          throw new Error(
+            "Worker command actor does not match the authenticated actor.",
+          );
+        }
+
+        const result =
+          await this.engine.recordDeliveryFailure({
+            actionId: command.actionId,
+            outboxId: command.outboxId,
+            tenantId: context.tenantId,
+            workerId: context.actorId,
+            leaseFence: command.leaseFence,
+            outcomeToken: command.outcomeToken,
+            failureCode: command.failureCode,
+            retryable: command.retryable,
+            retryDelayMs: command.retryDelayMs,
+            auditId: command.auditId,
+            now: command.now,
+          });
+
+        return createResponse(context, command.type, result);
+      }
       case "finalize_action": {
         requireRole(context, ["worker"]);
 
@@ -341,3 +385,4 @@ export class ControlledActionCommandGateway {
     }
   }
 }
+

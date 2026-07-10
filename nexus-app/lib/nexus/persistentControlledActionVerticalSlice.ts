@@ -22,6 +22,7 @@ export type IntegratedControlledActionStatus =
 
 export type IntegratedDispatchOutboxStatus =
   | "pending"
+  | "retry_wait"
   | "delivering"
   | "delivered"
   | "dead_letter"
@@ -66,6 +67,9 @@ export interface IntegratedDispatchOutboxRecord {
   leaseFence: number;
   leaseExpiresAt: string | null;
   lastClaimToken: string | null;
+  lastOutcomeToken: string | null;
+  lastFailureCode: string | null;
+  lastFailureAt: string | null;
   createdAt: string;
   updatedAt: string;
   deliveredAt: string | null;
@@ -84,6 +88,8 @@ export interface IntegratedAuditEvent {
     | "CONTROLLED_ACTION_AUTHORIZED"
     | "CONTROLLED_ACTION_DISPATCH_ENQUEUED"
     | "DISPATCH_OUTBOX_CLAIMED"
+    | "DISPATCH_OUTBOX_RETRY_SCHEDULED"
+    | "DISPATCH_OUTBOX_DEAD_LETTERED"
     | "CONTROLLED_ACTION_FINALIZED"
     | "OPERATIONAL_KILL_SWITCH_CHANGED";
   occurredAt: string;
@@ -154,6 +160,26 @@ export interface FinalizeIntegratedActionRequest {
   terminalReasonCode: string | null;
   auditId: string;
   now: string;
+}
+
+export interface RecordIntegratedDeliveryFailureRequest {
+  actionId: string;
+  outboxId: string;
+  tenantId: string;
+  workerId: string;
+  leaseFence: number;
+  outcomeToken: string;
+  failureCode: string;
+  retryable: boolean;
+  retryDelayMs: number;
+  auditId: string;
+  now: string;
+}
+
+export interface IntegratedDeliveryFailureResult {
+  action: IntegratedControlledAction;
+  outbox: IntegratedDispatchOutboxRecord;
+  disposition: "retry_scheduled" | "dead_lettered";
 }
 
 export interface SetIntegratedKillSwitchRequest {
@@ -792,6 +818,9 @@ export class PersistentControlledActionVerticalSlice {
         leaseFence: 0,
         leaseExpiresAt: null,
         lastClaimToken: null,
+        lastOutcomeToken: null,
+        lastFailureCode: null,
+        lastFailureAt: null,
         createdAt: request.now,
         updatedAt: request.now,
         deliveredAt: null,
@@ -994,6 +1023,281 @@ export class PersistentControlledActionVerticalSlice {
     });
   }
 
+  async recordDeliveryFailure(
+    request: RecordIntegratedDeliveryFailureRequest,
+  ): Promise<IntegratedDeliveryFailureResult> {
+    const actionId = requireNonEmpty(
+      request.actionId,
+      "Delivery failure actionId",
+    );
+
+    const outboxId = requireNonEmpty(
+      request.outboxId,
+      "Delivery failure outboxId",
+    );
+
+    const tenantId = requireNonEmpty(
+      request.tenantId,
+      "Delivery failure tenantId",
+    );
+
+    const workerId = requireNonEmpty(
+      request.workerId,
+      "Delivery failure workerId",
+    );
+
+    const outcomeToken = requireNonEmpty(
+      request.outcomeToken,
+      "Delivery failure outcomeToken",
+    );
+
+    const failureCode = requireNonEmpty(
+      request.failureCode,
+      "Delivery failure code",
+    );
+
+    const auditId = requireNonEmpty(
+      request.auditId,
+      "Delivery failure auditId",
+    );
+
+    const now = parseTimestamp(
+      request.now,
+      "Delivery failure now",
+    );
+
+    if (
+      !Number.isSafeInteger(request.leaseFence) ||
+      request.leaseFence < 1
+    ) {
+      throw new Error(
+        "Delivery failure leaseFence must be a positive safe integer.",
+      );
+    }
+
+    if (
+      !Number.isSafeInteger(request.retryDelayMs) ||
+      request.retryDelayMs < 0 ||
+      request.retryDelayMs > 86_400_000
+    ) {
+      throw new Error(
+        "Delivery failure retryDelayMs must be between 0 and 86400000.",
+      );
+    }
+
+    return this.transact((state) => {
+      if (state.killSwitch.engaged) {
+        throw new Error(
+          "Operational kill switch is engaged. Delivery outcome denied.",
+        );
+      }
+
+      const action = state.actions[actionId];
+
+      if (!action) {
+        throw new Error("Controlled action not found.");
+      }
+
+      const outboxRecord = state.outbox[outboxId];
+
+      if (!outboxRecord) {
+        throw new Error("Dispatch outbox record not found.");
+      }
+
+      if (
+        action.tenantId !== tenantId ||
+        outboxRecord.tenantId !== tenantId
+      ) {
+        throw new Error("Delivery failure tenant mismatch.");
+      }
+
+      if (
+        action.outboxId !== outboxId ||
+        outboxRecord.actionId !== actionId
+      ) {
+        throw new Error(
+          "Controlled action and outbox relationship is invalid.",
+        );
+      }
+
+      if (
+        outboxRecord.lastOutcomeToken === outcomeToken &&
+        outboxRecord.lastFailureCode === failureCode
+      ) {
+        if (outboxRecord.status === "retry_wait") {
+          return {
+            changed: false,
+            value: {
+              action,
+              outbox: outboxRecord,
+              disposition: "retry_scheduled" as const,
+            },
+          };
+        }
+
+        if (outboxRecord.status === "dead_letter") {
+          return {
+            changed: false,
+            value: {
+              action,
+              outbox: outboxRecord,
+              disposition: "dead_lettered" as const,
+            },
+          };
+        }
+      }
+
+      if (action.status !== "executing") {
+        throw new Error(
+          "Only an executing controlled action can record delivery failure.",
+        );
+      }
+
+      if (outboxRecord.status !== "delivering") {
+        throw new Error(
+          "Only a delivering outbox record can record delivery failure.",
+        );
+      }
+
+      if (
+        action.leaseOwner !== workerId ||
+        outboxRecord.leaseOwner !== workerId
+      ) {
+        throw new Error(
+          "Delivery failure worker does not own the active lease.",
+        );
+      }
+
+      if (
+        action.leaseFence !== request.leaseFence ||
+        outboxRecord.leaseFence !== request.leaseFence
+      ) {
+        throw new Error("Delivery failure lease fence mismatch.");
+      }
+
+      if (
+        !action.leaseExpiresAt ||
+        !outboxRecord.leaseExpiresAt
+      ) {
+        throw new Error("Delivery failure lease expiry is missing.");
+      }
+
+      if (
+        parseTimestamp(
+          action.leaseExpiresAt,
+          "Action leaseExpiresAt",
+        ) <= now ||
+        parseTimestamp(
+          outboxRecord.leaseExpiresAt,
+          "Outbox leaseExpiresAt",
+        ) <= now
+      ) {
+        throw new Error("Delivery failure lease has expired.");
+      }
+
+      const attemptsExhausted =
+        outboxRecord.deliveryAttemptCount >=
+        outboxRecord.maxDeliveryAttempts;
+
+      const scheduleRetry =
+        request.retryable && !attemptsExhausted;
+
+      outboxRecord.lastOutcomeToken = outcomeToken;
+      outboxRecord.lastFailureCode = failureCode;
+      outboxRecord.lastFailureAt = request.now;
+      outboxRecord.version += 1;
+      outboxRecord.leaseOwner = null;
+      outboxRecord.leaseExpiresAt = null;
+      outboxRecord.updatedAt = request.now;
+
+      action.version += 1;
+      action.leaseOwner = null;
+      action.leaseExpiresAt = null;
+      action.updatedAt = request.now;
+
+      if (scheduleRetry) {
+        const nextAttemptAt = new Date(
+          now + request.retryDelayMs,
+        ).toISOString();
+
+        outboxRecord.status = "retry_wait";
+        outboxRecord.nextAttemptAt = nextAttemptAt;
+
+        action.status = "dispatch_pending";
+
+        appendAudit(state, {
+          auditId,
+          tenantId,
+          actionId,
+          outboxId,
+          eventType: "DISPATCH_OUTBOX_RETRY_SCHEDULED",
+          occurredAt: request.now,
+          details: {
+            workerId,
+            leaseFence: request.leaseFence,
+            outcomeToken,
+            failureCode,
+            deliveryAttemptCount:
+              outboxRecord.deliveryAttemptCount,
+            maxDeliveryAttempts:
+              outboxRecord.maxDeliveryAttempts,
+            nextAttemptAt,
+            actionVersion: action.version,
+            outboxVersion: outboxRecord.version,
+          },
+        });
+
+        return {
+          changed: true,
+          value: {
+            action,
+            outbox: outboxRecord,
+            disposition: "retry_scheduled" as const,
+          },
+        };
+      }
+
+      outboxRecord.status = "dead_letter";
+
+      action.status = "failed";
+      action.terminalCommitToken = outcomeToken;
+      action.resultDigest = null;
+      action.terminalReasonCode = failureCode;
+      action.terminalAt = request.now;
+
+      appendAudit(state, {
+        auditId,
+        tenantId,
+        actionId,
+        outboxId,
+        eventType: "DISPATCH_OUTBOX_DEAD_LETTERED",
+        occurredAt: request.now,
+        details: {
+          workerId,
+          leaseFence: request.leaseFence,
+          outcomeToken,
+          failureCode,
+          retryable: request.retryable,
+          attemptsExhausted,
+          deliveryAttemptCount:
+            outboxRecord.deliveryAttemptCount,
+          maxDeliveryAttempts:
+            outboxRecord.maxDeliveryAttempts,
+          actionVersion: action.version,
+          outboxVersion: outboxRecord.version,
+        },
+      });
+
+      return {
+        changed: true,
+        value: {
+          action,
+          outbox: outboxRecord,
+          disposition: "dead_lettered" as const,
+        },
+      };
+    });
+  }
   async finalizeAction(
     request: FinalizeIntegratedActionRequest,
   ): Promise<IntegratedControlledAction> {
@@ -1434,4 +1738,5 @@ export class PersistentControlledActionVerticalSlice {
     }
   }
 }
+
 
