@@ -14662,3 +14662,39 @@ Required apply authorization:
 This milestone does not execute either live migration. It creates the
 transactional, checksum-verified, rollback-capable mechanism needed for
 authorized database application.
+
+## Day 673 — Real Local PostgreSQL Security Integration Gate v1
+
+Validated the Day 670–672 database security path against a real,
+disposable PostgreSQL 16 database rather than an in-memory simulation.
+
+Real local verification performed:
+
+- Started an isolated PostgreSQL 16 container
+- Applied migrations 0001 and 0002 through the authorized transactional
+  migration runner
+- Verified migration checksums and zero pending migrations
+- Verified the durable replay-ledger table
+- Verified durable tenant, owner, and membership tables
+- Created an isolated temporary tenant and owner
+- Verified active OWNER membership authorization
+- Verified foreign-tenant access denial
+- Verified suspended-tenant access denial
+- Submitted 32 concurrent identical nonce-consumption attempts
+- Verified exactly one atomic success
+- Verified 31 durable replay rejections
+- Verified exactly one replay-ledger database row
+- Removed temporary security records
+- Destroyed the disposable PostgreSQL database and storage
+
+Local integration environment:
+
+- `docker-compose.nexus-postgres.yml`
+
+Real security gate:
+
+- `scripts/nexus-local-postgres-security-gate.mjs`
+
+No production database was connected or modified. No production migration,
+customer data, provider action, payment, WhatsApp delivery, public launch,
+or uncontrolled AI execution was performed.
