@@ -154,6 +154,15 @@ export interface ClaimIntegratedOutboxRequest {
   now: string;
 }
 
+export interface ClaimNextIntegratedOutboxRequest {
+  tenantId: string;
+  workerId: string;
+  claimToken: string;
+  leaseDurationMs: number;
+  auditId: string;
+  now: string;
+}
+
 export interface FinalizeIntegratedActionRequest {
   actionId: string;
   tenantId: string;
@@ -905,6 +914,249 @@ export class PersistentControlledActionVerticalSlice {
     });
   }
 
+  async claimNextDueOutbox(
+    request: ClaimNextIntegratedOutboxRequest,
+  ): Promise<IntegratedDispatchOutboxRecord | null> {
+    const tenantId = requireNonEmpty(
+      request.tenantId,
+      "Claim-next tenantId",
+    );
+
+    const workerId = requireNonEmpty(
+      request.workerId,
+      "Claim-next workerId",
+    );
+
+    const claimToken = requireNonEmpty(
+      request.claimToken,
+      "Claim-next token",
+    );
+
+    const auditId = requireNonEmpty(
+      request.auditId,
+      "Claim-next auditId",
+    );
+
+    const now = parseTimestamp(
+      request.now,
+      "Claim-next now",
+    );
+
+    if (
+      !Number.isSafeInteger(request.leaseDurationMs) ||
+      request.leaseDurationMs < 1 ||
+      request.leaseDurationMs > MAX_LEASE_DURATION_MS
+    ) {
+      throw new Error(
+        `Claim-next leaseDurationMs must be between 1 and ${MAX_LEASE_DURATION_MS}.`,
+      );
+    }
+
+    return this.transact((state) => {
+      if (state.killSwitch.engaged) {
+        throw new Error(
+          "Operational kill switch is engaged. Worker polling denied.",
+        );
+      }
+
+      const tokenMatches = Object.values(state.outbox).filter(
+        (record) => record.lastClaimToken === claimToken,
+      );
+
+      const exactReplay = tokenMatches.find(
+        (record) =>
+          record.tenantId === tenantId &&
+          record.status === "delivering" &&
+          record.leaseOwner === workerId,
+      );
+
+      if (exactReplay) {
+        return {
+          changed: false,
+          value: exactReplay,
+        };
+      }
+
+      if (tokenMatches.length > 0) {
+        throw new Error(
+          "Claim-next token conflicts with an existing durable claim.",
+        );
+      }
+
+      const eligibleRecords = Object.values(state.outbox)
+        .filter((record) => {
+          if (record.tenantId !== tenantId) {
+            return false;
+          }
+
+          if (isTerminalOutboxStatus(record.status)) {
+            return false;
+          }
+
+          if (
+            record.deliveryAttemptCount >=
+            record.maxDeliveryAttempts
+          ) {
+            return false;
+          }
+
+          if (record.status === "delivering") {
+            if (!record.leaseExpiresAt) {
+              throw new Error(
+                "Delivering outbox record is missing lease expiry.",
+              );
+            }
+
+            return (
+              parseTimestamp(
+                record.leaseExpiresAt,
+                "Outbox leaseExpiresAt",
+              ) <= now
+            );
+          }
+
+          if (
+            record.status === "pending" ||
+            record.status === "retry_wait"
+          ) {
+            return (
+              parseTimestamp(
+                record.nextAttemptAt,
+                "Outbox nextAttemptAt",
+              ) <= now
+            );
+          }
+
+          return false;
+        })
+        .sort((left, right) => {
+          const leftDueAt =
+            left.status === "delivering"
+              ? parseTimestamp(
+                  left.leaseExpiresAt as string,
+                  "Left outbox leaseExpiresAt",
+                )
+              : parseTimestamp(
+                  left.nextAttemptAt,
+                  "Left outbox nextAttemptAt",
+                );
+
+          const rightDueAt =
+            right.status === "delivering"
+              ? parseTimestamp(
+                  right.leaseExpiresAt as string,
+                  "Right outbox leaseExpiresAt",
+                )
+              : parseTimestamp(
+                  right.nextAttemptAt,
+                  "Right outbox nextAttemptAt",
+                );
+
+          if (leftDueAt !== rightDueAt) {
+            return leftDueAt - rightDueAt;
+          }
+
+          const createdComparison =
+            parseTimestamp(
+              left.createdAt,
+              "Left outbox createdAt",
+            ) -
+            parseTimestamp(
+              right.createdAt,
+              "Right outbox createdAt",
+            );
+
+          if (createdComparison !== 0) {
+            return createdComparison;
+          }
+
+          return left.outboxId.localeCompare(right.outboxId);
+        });
+
+      const outboxRecord = eligibleRecords[0];
+
+      if (!outboxRecord) {
+        return {
+          changed: false,
+          value: null,
+        };
+      }
+
+      const action = state.actions[outboxRecord.actionId];
+
+      if (!action) {
+        throw new Error(
+          "Selected dispatch outbox references a missing action.",
+        );
+      }
+
+      if (
+        action.tenantId !== tenantId ||
+        action.outboxId !== outboxRecord.outboxId
+      ) {
+        throw new Error(
+          "Selected action and outbox relationship is invalid.",
+        );
+      }
+
+      if (
+        action.status !== "dispatch_pending" &&
+        action.status !== "executing"
+      ) {
+        throw new Error(
+          "Selected controlled action is not claimable.",
+        );
+      }
+
+      const previousStatus = outboxRecord.status;
+      const nextFence = outboxRecord.leaseFence + 1;
+      const leaseExpiresAt = new Date(
+        now + request.leaseDurationMs,
+      ).toISOString();
+
+      outboxRecord.status = "delivering";
+      outboxRecord.version += 1;
+      outboxRecord.deliveryAttemptCount += 1;
+      outboxRecord.leaseOwner = workerId;
+      outboxRecord.leaseFence = nextFence;
+      outboxRecord.leaseExpiresAt = leaseExpiresAt;
+      outboxRecord.lastClaimToken = claimToken;
+      outboxRecord.updatedAt = request.now;
+
+      action.status = "executing";
+      action.version += 1;
+      action.leaseOwner = workerId;
+      action.leaseFence = nextFence;
+      action.leaseExpiresAt = leaseExpiresAt;
+      action.updatedAt = request.now;
+
+      appendAudit(state, {
+        auditId,
+        tenantId,
+        actionId: action.actionId,
+        outboxId: outboxRecord.outboxId,
+        eventType: "DISPATCH_OUTBOX_CLAIMED",
+        occurredAt: request.now,
+        details: {
+          selectionMode: "NEXT_DUE_TENANT_OUTBOX",
+          previousStatus,
+          workerId,
+          claimToken,
+          leaseFence: nextFence,
+          leaseExpiresAt,
+          deliveryAttemptCount:
+            outboxRecord.deliveryAttemptCount,
+          actionVersion: action.version,
+          outboxVersion: outboxRecord.version,
+        },
+      });
+
+      return {
+        changed: true,
+        value: outboxRecord,
+      };
+    });
+  }
   async claimOutbox(
     request: ClaimIntegratedOutboxRequest,
   ): Promise<IntegratedDispatchOutboxRecord> {
@@ -2017,6 +2269,7 @@ export class PersistentControlledActionVerticalSlice {
     }
   }
 }
+
 
 
 

@@ -49,6 +49,14 @@ export type ControlledActionGatewayCommand =
       now: string;
     }
   | {
+      type: "claim_next_outbox";
+      workerId: string;
+      claimToken: string;
+      leaseDurationMs: number;
+      auditId: string;
+      now: string;
+    }
+  | {
       type: "claim_outbox";
       outboxId: string;
       workerId: string;
@@ -278,6 +286,32 @@ export class ControlledActionCommandGateway {
         return createResponse(context, command.type, result);
       }
 
+      case "claim_next_outbox": {
+        requireRole(context, ["worker"]);
+
+        if (
+          requireNonEmpty(
+            command.workerId,
+            "Worker ID",
+          ) !== context.actorId
+        ) {
+          throw new Error(
+            "Worker command actor does not match the authenticated actor.",
+          );
+        }
+
+        const result =
+          await this.engine.claimNextDueOutbox({
+            tenantId: context.tenantId,
+            workerId: context.actorId,
+            claimToken: command.claimToken,
+            leaseDurationMs: command.leaseDurationMs,
+            auditId: command.auditId,
+            now: command.now,
+          });
+
+        return createResponse(context, command.type, result);
+      }
       case "claim_outbox": {
         requireRole(context, ["worker"]);
 
@@ -425,5 +459,6 @@ export class ControlledActionCommandGateway {
     }
   }
 }
+
 
 
