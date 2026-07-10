@@ -5,7 +5,7 @@
 } from "./postgresProviderContinuityStore"
 
 export const PROVIDER_CONTINUITY_SCHEMA_VERSION =
-  "provider-continuity-durable-store-v1"
+  "provider-continuity-durable-store-v2"
 
 export interface ProviderContinuityReadinessChecks {
   tablesPresent: boolean
@@ -231,3 +231,4 @@ export const withReadyProviderContinuityStore =
 
     return operation(bootstrap)
   }
+

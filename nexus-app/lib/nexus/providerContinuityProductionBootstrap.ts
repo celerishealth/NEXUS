@@ -3,6 +3,10 @@
   type ProductionDurableContinuityCoordinator,
 } from "./durableContinuityTransactionCoordinator"
 import {
+  createPostgresDurableProviderContainmentReader,
+  type PostgresDurableProviderContainmentReader,
+} from "./durableProviderContainmentReader"
+import {
   createReadyPostgresProviderContinuityStore,
   type ProviderContinuityProductionReadiness,
 } from "./providerContinuityProductionReadiness"
@@ -53,6 +57,8 @@ export interface ProviderContinuityProductionBootstrap {
   store: PostgresProviderContinuityStore
   coordinator:
     ProductionDurableContinuityCoordinator
+  containmentReader:
+    PostgresDurableProviderContainmentReader
 }
 
 export class ProviderContinuityClientFactoryError
@@ -126,12 +132,18 @@ export const createProviderContinuityProductionBootstrap =
         readyStore.store,
       )
 
+    const containmentReader =
+      createPostgresDurableProviderContainmentReader(
+        client,
+      )
+
     return {
       credentialSummary:
         credentials.getSafeSummary(),
       readiness: readyStore.readiness,
       store: readyStore.store,
       coordinator,
+      containmentReader,
     }
   }
 
