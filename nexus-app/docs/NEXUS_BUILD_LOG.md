@@ -14333,3 +14333,39 @@ Passing this gate requires zero known Critical risks and zero known High
 risks. Public launch, real provider execution, persistence, payments,
 WhatsApp auto-send, live migrations, customer actions, and uncontrolled
 AI actions remain unauthorized.
+
+## Day 665 — Signed Owner Simulation Review and Immutable Resolution Gate v1
+
+Connected the deterministic provider dry-run simulation to a fresh,
+signed owner-review boundary.
+
+Integrated controls:
+
+- Tenant, owner, action, intent, claim, plan, and simulation binding
+- Signed owner simulation-review decisions
+- Maximum fifteen-minute review validity
+- Review identifier replay blocking
+- Review nonce replay blocking
+- Forged owner-signature rejection
+- Foreign-owner review rejection
+- Approval allowed only after successful local simulation
+- Immutable controlled-review dispatch candidate generation
+- Permanent owner rejection and future-execution stop record
+- Owner-required rework resolution
+- Permanent-resolution duplication blocking
+- Fail-closed audit output
+- New protected API route integrated into the Critical Risk Gate
+
+Visible preview:
+
+- `/nexus-owner-simulation-review`
+
+Safe API boundary:
+
+- `GET /api/nexus/owner-simulation-review`
+- `POST /api/nexus/owner-simulation-review`
+
+Owner approval creates only an immutable candidate for another controlled
+review stage. It does not authorize provider invocation, persistence,
+payments, WhatsApp auto-send, customer actions, live migrations, public
+launch, or uncontrolled AI execution.
