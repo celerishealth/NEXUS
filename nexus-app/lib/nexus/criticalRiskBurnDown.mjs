@@ -42,6 +42,7 @@ const PROTECTED_ROUTE_FILES = [
   "app/api/nexus/controlled-execution-intent/route.js",
   "app/api/nexus/dry-run-dispatch-plan/route.js",
   "app/api/nexus/owner-simulation-review/route.js",
+  "app/api/nexus/controlled-action-evidence/route.js",
 ];
 
 const SOURCE_EXTENSIONS = new Set([
@@ -924,4 +925,5 @@ export function runCriticalRiskAudit({
     }),
   });
 }
+
 

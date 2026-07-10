@@ -14369,3 +14369,48 @@ Owner approval creates only an immutable candidate for another controlled
 review stage. It does not authorize provider invocation, persistence,
 payments, WhatsApp auto-send, customer actions, live migrations, public
 launch, or uncontrolled AI execution.
+
+## Day 666 — Tamper-Evident Controlled Action Evidence Bundle v1
+
+Integrated the complete protected owner-controlled pipeline into one
+deterministic and independently verifiable cryptographic evidence chain.
+
+Integrated evidence stages:
+
+- Owner-authorized admission
+- Provider-independent recovery handoff
+- Controlled execution intent
+- Single-owner claim
+- Deterministic dry-run dispatch plan
+- Local provider failover simulation
+- Signed owner simulation resolution
+
+Integrated controls:
+
+- Tenant, action, owner, and pipeline identity binding
+- Deterministic genesis hash
+- Per-stage chained evidence hashes
+- Deterministic bundle root hash
+- Deterministic evidence bundle identity
+- Stage-order verification
+- Broken-chain detection
+- Record modification detection
+- Identity substitution detection
+- Cross-tenant evidence rejection
+- Unsafe execution-flag rejection
+- Approved, rejected, and rework resolution evidence support
+- Independent provider evidence requirement
+- Protected API integration with the Critical Risk Gate
+
+Visible preview:
+
+- `/nexus-controlled-action-evidence`
+
+Safe API boundary:
+
+- `GET /api/nexus/controlled-action-evidence`
+- `POST /api/nexus/controlled-action-evidence`
+
+The milestone creates and verifies local evidence only. It performs no
+database mutation, provider invocation, payment, WhatsApp delivery,
+customer action, live migration, public launch, or uncontrolled AI action.
