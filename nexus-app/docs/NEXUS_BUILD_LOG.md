@@ -14414,3 +14414,51 @@ Safe API boundary:
 The milestone creates and verifies local evidence only. It performs no
 database mutation, provider invocation, payment, WhatsApp delivery,
 customer action, live migration, public launch, or uncontrolled AI action.
+
+## Day 667 — Unified Owner-Controlled Action Review Console v1
+
+Consolidated the complete protected action lifecycle into one
+deterministic orchestration boundary and one visible owner-review console.
+
+Unified pipeline:
+
+- Signed owner-authorized admission
+- Provider-independent recovery handoff
+- Controlled execution intent
+- Single-owner claim
+- Deterministic provider dry-run plan
+- Local provider failover simulation
+- Signed owner approval, rejection, or rework decision
+- Tamper-evident evidence generation and verification
+
+Integrated controls:
+
+- One fail-closed orchestration path
+- Automatic stage-by-stage status reporting
+- Exact blocking-stage identification
+- Deterministic pipeline identity continuity
+- Approved-candidate workflow
+- Permanent owner rejection workflow
+- Owner-required rework workflow
+- Forged admission rejection
+- Cross-tenant rejection
+- Single-provider dependency rejection
+- Foreign-owner claim rejection
+- Failed-simulation approval rejection
+- Forged owner-review rejection
+- Verified evidence requirement before completion
+- Protected API integration with the Critical Risk Gate
+
+Visible console:
+
+- `/nexus-controlled-action-review-console`
+
+Safe API boundary:
+
+- `GET /api/nexus/controlled-action-review-console`
+- `POST /api/nexus/controlled-action-review-console`
+
+The endpoint supports preparation and signed-owner-review phases only.
+No provider invocation, persistence, payment, WhatsApp delivery, customer
+action, live migration, public launch, or uncontrolled AI execution is
+authorized.
