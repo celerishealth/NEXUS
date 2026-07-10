@@ -14698,3 +14698,37 @@ Real security gate:
 No production database was connected or modified. No production migration,
 customer data, provider action, payment, WhatsApp delivery, public launch,
 or uncontrolled AI execution was performed.
+
+## Day 674 — Real PostgreSQL Backup, Restore and Security-State Recovery Gate v1
+
+Executed the first real NEXUS database backup and isolated recovery test
+against a disposable PostgreSQL 16 environment.
+
+Real recovery verification:
+
+- Applied migrations through the transactional checksum runner
+- Created an isolated temporary tenant and owner membership
+- Consumed a real durable replay nonce
+- Produced a PostgreSQL custom-format backup with `pg_dump`
+- Calculated and validated the backup SHA-256 checksum
+- Created a separate isolated restore database
+- Restored the backup with `pg_restore --exit-on-error`
+- Verified the restored migration checksum ledger
+- Verified zero pending migrations and zero checksum drift
+- Verified restored tenant-owner authorization
+- Verified restored authority epoch
+- Verified that the previously consumed nonce remained blocked
+- Verified exact restored tenant, owner, membership, nonce, and migration rows
+- Destroyed both disposable databases and their temporary storage
+
+Reusable local recovery command:
+
+- `powershell -ExecutionPolicy Bypass -File scripts/nexus-local-postgres-backup-restore.ps1`
+
+Recovery verifier:
+
+- `scripts/nexus-local-postgres-backup-restore-gate.mjs`
+
+No production database was connected, backed up, restored, migrated, or
+modified. No customer data, provider execution, payment, WhatsApp action,
+public launch, or uncontrolled AI action was performed.
