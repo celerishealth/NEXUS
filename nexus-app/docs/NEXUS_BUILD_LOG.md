@@ -14223,3 +14223,36 @@ Safe API boundary:
 This milestone prepares preview-only handoff and recovery records.
 It performs no provider invocation, database persistence, payment,
 WhatsApp send, live migration, real execution, or uncontrolled AI action.
+
+## Day 662 — Controlled Execution Intent State Machine and Single-Owner Claim Guard v1
+
+Connected the owner-authorized admission boundary and the
+provider-independent recovery handoff to a controlled execution-intent
+state machine.
+
+Integrated controls:
+
+- Deterministic tenant-bound execution-intent identity
+- Owner, admission-token, action, and handoff binding
+- Recovery-checkpoint verification
+- Two-provider failover verification
+- Preview-only execution-intent creation
+- Trusted-owner-only intent claims
+- Claim lease validation
+- Maximum fifteen-minute claim lease
+- Replayed claim rejection
+- Concurrent active-claim exclusion
+- Fail-closed intent and claim audit records
+
+Visible preview:
+
+- `/nexus-controlled-execution-intent`
+
+Safe API boundary:
+
+- `GET /api/nexus/controlled-execution-intent`
+- `POST /api/nexus/controlled-execution-intent`
+
+This milestone performs no provider invocation, persistence, payment,
+WhatsApp delivery, customer action, live migration, real execution,
+or uncontrolled AI action.
