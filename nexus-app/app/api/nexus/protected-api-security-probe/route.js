@@ -1,4 +1,11 @@
-﻿import { NextResponse } from "next/server";
+﻿import {
+  enforceProtectedApiOperationalControl,
+} from "../../../../lib/nexus/protectedApiOperationalControlGuard.mjs";
+
+import {
+  getProtectedApiOperationalControlStore,
+} from "../../../../lib/nexus/protectedApiOperationalControlStore.mjs";
+import { NextResponse } from "next/server";
 
 import {
   inspectProtectedApiRequest,
@@ -43,6 +50,7 @@ export async function GET() {
       "SIGNED_HMAC_ENVELOPE",
       "DURABLE_POSTGRES_REPLAY_LEDGER",
       "DURABLE_TENANT_OWNER_AUTHORIZATION",
+      "DURABLE_OPERATIONAL_CIRCUIT_BREAKER",
       "DISTRIBUTED_POSTGRES_RATE_LIMIT",
       "DURABLE_SECURITY_EVENT_LEDGER",
     ],
@@ -147,6 +155,33 @@ export async function POST(request) {
       },
     );
   }
+  const operationalControlGuard =
+    await enforceProtectedApiOperationalControl(
+      signedEnvelopeGuard.authorizationContext,
+      tenantAuthorizationGuard
+        .tenantAuthorizationContext,
+      {
+        requestId:
+          requestGuard.requestId,
+        mode:
+          process.env
+            .NEXUS_PROTECTED_API_OPERATIONAL_CONTROL_MODE,
+        store:
+          getProtectedApiOperationalControlStore(),
+      },
+    );
+
+  if (!operationalControlGuard.ok) {
+    return NextResponse.json(
+      operationalControlGuard.error,
+      {
+        status:
+          operationalControlGuard.status,
+        headers:
+          operationalControlGuard.headers,
+      },
+    );
+  }
 
   const rateLimitGuard =
     await enforceProtectedApiRateLimit(
@@ -209,6 +244,14 @@ export async function POST(request) {
         tenantAuthorizationGuard
           .tenantAuthorizationContext
           .durableMembershipVerified,
+      operationalControlVerified:
+        operationalControlGuard
+          .operationalControlContext
+          .durableControlVerified,
+      operationalSecurityEventRecorded:
+        operationalControlGuard
+          .operationalControlContext
+          .durableIncidentEvidenceRecorded,
       durableRateLimitVerified:
         rateLimitGuard
           .rateLimitContext
@@ -232,3 +275,5 @@ export async function POST(request) {
     },
   );
 }
+
+

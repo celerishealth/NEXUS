@@ -1,4 +1,11 @@
 ﻿import {
+  enforceProtectedApiOperationalControl,
+} from "../../../../lib/nexus/protectedApiOperationalControlGuard.mjs";
+
+import {
+  getProtectedApiOperationalControlStore,
+} from "../../../../lib/nexus/protectedApiOperationalControlStore.mjs";
+import {
   enforceProtectedApiRateLimit,
 } from "../../../../lib/nexus/protectedApiRateLimitGuard.mjs";
 
@@ -213,6 +220,33 @@ export async function POST(request) {
       },
     );
   }
+  const operationalControlGuard =
+    await enforceProtectedApiOperationalControl(
+      signedEnvelopeGuard.authorizationContext,
+      tenantAuthorizationGuard
+        .tenantAuthorizationContext,
+      {
+        requestId:
+          requestGuard.requestId,
+        mode:
+          process.env
+            .NEXUS_PROTECTED_API_OPERATIONAL_CONTROL_MODE,
+        store:
+          getProtectedApiOperationalControlStore(),
+      },
+    );
+
+  if (!operationalControlGuard.ok) {
+    return NextResponse.json(
+      operationalControlGuard.error,
+      {
+        status:
+          operationalControlGuard.status,
+        headers:
+          operationalControlGuard.headers,
+      },
+    );
+  }
   const rateLimitGuard =
     await enforceProtectedApiRateLimit(
       signedEnvelopeGuard.authorizationContext,
@@ -308,6 +342,7 @@ export async function POST(request) {
     },
   );
 }
+
 
 
 

@@ -14820,3 +14820,64 @@ Real end-to-end verification:
 No production deployment or production database was modified. No customer
 data, provider execution, payment, WhatsApp delivery, public launch, or
 uncontrolled AI action was authorized.
+
+## Day 677 — Durable Operational Kill Switch and Incident Circuit Breaker v1
+
+Integrated a real PostgreSQL-backed emergency operational control boundary
+across every protected NEXUS POST route.
+
+New migration:
+
+- `db/migrations/0004_nexus_operational_circuit_breaker.sql`
+
+Control scopes:
+
+- Global
+- Tenant
+- Route
+- Tenant plus route
+
+Control modes:
+
+- `OPEN`
+- `BLOCKED`
+- `MAINTENANCE`
+
+Integrated controls:
+
+- Explicit durable global OPEN initialization required
+- Missing global initialization fails closed
+- Global emergency stop
+- Tenant emergency stop
+- Route emergency stop
+- Tenant-route emergency stop
+- Authority-epoch evidence
+- Durable owner-change attribution
+- Durable allowed, blocked, and failed-closed security events
+- HTTP 503 operational blocking
+- `Retry-After` response header
+- Database failure fail-closed behavior
+- Critical Risk Gate verification across every protected POST route
+
+Real HTTP and PostgreSQL verification:
+
+- Applied all four checksum-verified migrations
+- Started a real local Next.js server
+- Created an isolated active tenant and OWNER membership
+- Initialized the global control as OPEN
+- Set the tenant control to BLOCKED and verified HTTP 503
+- Reopened the tenant and verified HTTP 200
+- Set the global control to MAINTENANCE and verified HTTP 503
+- Verified all three signed nonces were durably consumed
+- Verified exactly three operational security events
+- Verified exactly two blocked operational events
+- Verified only the open request reached the rate limiter
+- Destroyed the disposable PostgreSQL database and storage
+
+Required configuration:
+
+- `NEXUS_PROTECTED_API_OPERATIONAL_CONTROL_MODE=postgres-circuit-breaker-v1`
+
+No production database, production deployment, provider action, customer
+action, payment, WhatsApp delivery, public launch, or uncontrolled AI
+execution was authorized.

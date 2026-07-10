@@ -282,7 +282,31 @@ try {
     client.release();
   }
 
-  const firstNonce =
+    await pool.query(
+    `
+      INSERT INTO nexus_protected_api_operational_state (
+        tenant_id,
+        route_key,
+        mode,
+        reason_code,
+        authority_epoch,
+        changed_by_owner_id
+      )
+      VALUES (
+        '*',
+        '*',
+        'OPEN',
+        'HTTP_GATE_GLOBAL_OPEN',
+        $1,
+        $2
+      )
+    `,
+    [
+      authorityEpoch,
+      ownerId,
+    ],
+  );
+const firstNonce =
     `nonce-http-${suffix}-0001`;
 
   const first =
@@ -514,7 +538,7 @@ try {
         "DURABLE_SECURITY_EVENTS_EXACT",
       passed:
         evidence.security_event_count ===
-          4 &&
+          8 &&
         evidence.blocked_event_count ===
           1,
     },
@@ -660,7 +684,14 @@ try {
       ],
     );
 
-    await pool.query(
+        await pool.query(
+      `
+        DELETE FROM nexus_protected_api_operational_state
+        WHERE tenant_id = '*'
+          AND route_key = '*'
+      `,
+    );
+await pool.query(
       `
         DELETE FROM nexus_owner_identity
         WHERE owner_id = $1
@@ -699,3 +730,4 @@ console.log(
 if (failure) {
   process.exit(1);
 }
+

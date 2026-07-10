@@ -240,6 +240,7 @@ function inspectProtectedRoutes(repositoryRoot) {
   const missingDurableReplayStores = [];
   const missingTenantAuthorizationGuards = [];
   const missingRateLimitGuards = [];
+  const missingOperationalControlGuards = [];
 
   const unsafePatterns = [
     {
@@ -356,6 +357,21 @@ function inspectProtectedRoutes(repositoryRoot) {
     ) {
       missingRateLimitGuards.push(file);
     }
+    if (
+      content.includes(
+        "export async function POST",
+      ) &&
+      (
+        !content.includes(
+          "enforceProtectedApiOperationalControl"
+        ) ||
+        !content.includes(
+          "getProtectedApiOperationalControlStore"
+        )
+      )
+    ) {
+      missingOperationalControlGuards.push(file);
+    }
     for (const pattern of unsafePatterns) {
       if (pattern.expression.test(content)) {
         unsafeIndicators.push({
@@ -375,6 +391,7 @@ function inspectProtectedRoutes(repositoryRoot) {
     missingDurableReplayStores,
     missingTenantAuthorizationGuards,
     missingRateLimitGuards,
+    missingOperationalControlGuards,
   };
 }
 
@@ -805,6 +822,14 @@ export function runCriticalRiskAudit({
         ? "Every protected POST route uses durable tenant-owner-route rate limiting."
         : protectedRoutes.missingRateLimitGuards,
     ),
+    createControl(
+      "CRITICAL_PROTECTED_ROUTES_REQUIRE_OPERATIONAL_KILL_SWITCH",
+      "CRITICAL",
+      protectedRoutes.missingOperationalControlGuards.length === 0,
+      protectedRoutes.missingOperationalControlGuards.length === 0
+        ? "Every protected POST route requires the durable emergency operational circuit breaker."
+        : protectedRoutes.missingOperationalControlGuards,
+    ),
 createControl(
       "CRITICAL_NO_REAL_EXECUTION_IN_PROTECTED_ROUTES",
       "CRITICAL",
@@ -1037,6 +1062,7 @@ createControl(
     }),
   });
 }
+
 
 
 
