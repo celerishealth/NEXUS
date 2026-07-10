@@ -65,7 +65,7 @@ if (missingFiles.length === 0) {
     "RESTORED_NONCE_REPLAY_BLOCKED",
     "RESTORED_TENANT_OWNER_AUTHORIZED",
     "replayAttempt.consumed ===",
-    "migration_count === 4",
+    "migration_count === 5",
     "productionDatabaseModified:",
     "executionAuthorized:",
   ];
@@ -147,5 +147,6 @@ console.log(
 if (!passed) {
   process.exit(1);
 }
+
 
 

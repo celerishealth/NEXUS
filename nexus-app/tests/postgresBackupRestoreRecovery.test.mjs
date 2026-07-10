@@ -97,7 +97,7 @@ test(
 
     assert.match(
       content,
-      /migration_count === 4/,
+      /migration_count === 5/,
     );
 
     assert.match(
@@ -111,5 +111,6 @@ test(
     );
   },
 );
+
 
 

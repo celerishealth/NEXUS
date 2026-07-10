@@ -137,7 +137,7 @@ test(
 
     assert.equal(
       migrations.length,
-      4,
+      5,
     );
 
     assert.deepEqual(
@@ -150,6 +150,7 @@ test(
         "0002_nexus_tenant_owner_membership",
         "0003_nexus_rate_limit_security_event",
         "0004_nexus_operational_circuit_breaker",
+        "0005_nexus_controlled_action_state",
       ],
     );
 
@@ -178,7 +179,7 @@ test(
 
     assert.equal(
       plan.migrationCount,
-      4,
+      5,
     );
 
     assert.equal(
@@ -237,7 +238,7 @@ test(
 
     assert.equal(
       result.appliedMigrationCount,
-      4,
+      5,
     );
 
     assert.equal(
@@ -273,7 +274,7 @@ test(
 
     assert.equal(
       client.ledger.size,
-      4,
+      5,
     );
   },
 );
@@ -318,7 +319,7 @@ test(
 
     assert.equal(
       result.previouslyAppliedCount,
-      4,
+      5,
     );
   },
 );
@@ -406,7 +407,7 @@ test(
 
     assert.equal(
       status.pendingMigrationCount,
-      4,
+      5,
     );
 
     assert.equal(
@@ -420,5 +421,6 @@ test(
     );
   },
 );
+
 
 

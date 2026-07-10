@@ -13,6 +13,7 @@ const requiredFiles = [
   "db/migrations/0002_nexus_tenant_owner_membership.sql",
   "db/migrations/0003_nexus_rate_limit_security_event.sql",
   "db/migrations/0004_nexus_operational_circuit_breaker.sql",
+  "db/migrations/0005_nexus_controlled_action_state.sql",
   "lib/nexus/postgresMigrationRunner.mjs",
   "scripts/nexus-postgres-migrate.mjs",
 ];
@@ -115,7 +116,7 @@ if (missingFiles.length === 0) {
 const passed =
   missingFiles.length === 0 &&
   unsafeFindings.length === 0 &&
-  plan?.migrationCount === 4;
+  plan?.migrationCount === 5;
 
 const report = {
   schemaVersion:
@@ -139,5 +140,6 @@ console.log(
 if (!passed) {
   process.exit(1);
 }
+
 
 

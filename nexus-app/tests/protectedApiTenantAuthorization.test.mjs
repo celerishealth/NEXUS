@@ -24,6 +24,7 @@ const ROUTES = [
   "app/api/nexus/controlled-action-evidence/route.js",
   "app/api/nexus/controlled-action-review-console/route.js",
   "app/api/nexus/protected-api-security-probe/route.js",
+  "app/api/nexus/controlled-action-state/route.js",
 ];
 
 function createAuthorizationContext(
@@ -519,4 +520,5 @@ test(
     );
   },
 );
+
 

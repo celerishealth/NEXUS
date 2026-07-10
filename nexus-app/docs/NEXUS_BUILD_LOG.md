@@ -14881,3 +14881,59 @@ Required configuration:
 No production database, production deployment, provider action, customer
 action, payment, WhatsApp delivery, public launch, or uncontrolled AI
 execution was authorized.
+
+## Day 678 — Durable Controlled Action State and Audit Ledger v1
+
+Added the first durable tenant-isolated business-action state foundation.
+
+New database migration:
+
+- `db/migrations/0005_nexus_controlled_action_state.sql`
+
+New protected API:
+
+- `GET /api/nexus/controlled-action-state`
+- `POST /api/nexus/controlled-action-state`
+
+Supported operations:
+
+- `CREATE`
+- `TRANSITION`
+
+Durable controls:
+
+- Tenant-isolated action identity
+- Owner-bound action authority
+- Tenant-scoped idempotency keys
+- Deterministic payload SHA-256
+- Atomic idempotent creation
+- Different-content idempotency conflict rejection
+- Optimistic version concurrency control
+- PostgreSQL row locking
+- Exactly-once state transitions
+- Explicit transition allowlist
+- Append-only action-event ledger
+- Hash-linked evidence chain
+- Authority-epoch evidence
+- Request-ID evidence
+- No `EXECUTED` database state
+- No provider invocation or external action
+
+Real disposable PostgreSQL verification:
+
+- Applied all five checksum-verified migrations
+- Created one controlled action
+- Repeated creation with reordered equivalent JSON
+- Verified the original action was returned idempotently
+- Reused the idempotency key with different content and verified rejection
+- Submitted 16 concurrent transitions with version 1
+- Verified exactly one transition succeeded
+- Verified exactly 15 version conflicts
+- Advanced through owner review, dry-run approval, simulation, and controlled-execution review
+- Verified an `EXECUTED` transition was impossible
+- Verified exactly five append-only evidence events
+- Verified zero broken evidence-hash links
+- Destroyed the disposable PostgreSQL database afterward
+
+No production migration, customer action, provider invocation, payment,
+WhatsApp delivery, public launch, or external execution was authorized.

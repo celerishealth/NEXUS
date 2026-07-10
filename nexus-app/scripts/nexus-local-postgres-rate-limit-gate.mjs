@@ -289,7 +289,7 @@ try {
           "MIGRATIONS_CURRENT" &&
         migrationStatus
           .totalMigrationCount ===
-          4 &&
+          5 &&
         migrationStatus
           .pendingMigrationCount ===
           0 &&
@@ -488,4 +488,5 @@ console.log(
 if (failure) {
   process.exit(1);
 }
+
 
