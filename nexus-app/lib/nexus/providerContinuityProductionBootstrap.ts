@@ -7,6 +7,10 @@ import {
   type PostgresDurableProviderContainmentReader,
 } from "./durableProviderContainmentReader"
 import {
+  createDurableProviderExecutionGuard,
+  type DurableProviderExecutionGuard,
+} from "./durableProviderExecutionGuard"
+import {
   createReadyPostgresProviderContinuityStore,
   type ProviderContinuityProductionReadiness,
 } from "./providerContinuityProductionReadiness"
@@ -47,6 +51,7 @@ export interface CreateProviderContinuityProductionBootstrapInput {
     ProviderContinuityServerCredentialInput
   clientFactory:
     ProviderContinuitySupabaseServerClientFactory
+  now?: () => number
 }
 
 export interface ProviderContinuityProductionBootstrap {
@@ -59,6 +64,8 @@ export interface ProviderContinuityProductionBootstrap {
     ProductionDurableContinuityCoordinator
   containmentReader:
     PostgresDurableProviderContainmentReader
+  executionGuard:
+    DurableProviderExecutionGuard
 }
 
 export class ProviderContinuityClientFactoryError
@@ -137,6 +144,13 @@ export const createProviderContinuityProductionBootstrap =
         client,
       )
 
+    const executionGuard =
+      createDurableProviderExecutionGuard({
+        store: readyStore.store,
+        containmentReader,
+        now: input.now,
+      })
+
     return {
       credentialSummary:
         credentials.getSafeSummary(),
@@ -144,6 +158,7 @@ export const createProviderContinuityProductionBootstrap =
       store: readyStore.store,
       coordinator,
       containmentReader,
+      executionGuard,
     }
   }
 
