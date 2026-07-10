@@ -46,6 +46,17 @@ export interface SQLiteControlledActionProjectionSnapshot {
   audit: Array<Record<string, unknown>>;
 }
 
+export interface SQLiteProjectionIntegrityResult {
+  valid: boolean;
+  authoritativeRevision: number;
+  projectionRevision: number | null;
+  issues: string[];
+}
+
+export interface SQLiteProjectionRepositoryOptions {
+  allowProjectionRecovery?: boolean;
+}
+
 function requireNonEmpty(
   value: string,
   fieldName: string,
@@ -224,13 +235,140 @@ function parseProjectionJson(
   );
 }
 
+function canonicalize(value: unknown): unknown {
+  if (Array.isArray(value)) {
+    return value.map(canonicalize);
+  }
+
+  if (
+    typeof value === "object" &&
+    value !== null
+  ) {
+    const record =
+      value as Record<string, unknown>;
+
+    return Object.fromEntries(
+      Object.keys(record)
+        .sort()
+        .map((key) => [
+          key,
+          canonicalize(record[key]),
+        ]),
+    );
+  }
+
+  return value;
+}
+
+function canonicalJson(value: unknown): string {
+  return JSON.stringify(
+    canonicalize(value),
+  );
+}
+
+function buildExpectedProjection(
+  state: PersistentControlledActionState,
+): SQLiteControlledActionProjectionSnapshot {
+  const actions = Object.values(
+    state.actions,
+  )
+    .map((value) =>
+      asRecord(
+        value,
+        "Expected controlled-action projection",
+      ),
+    )
+    .sort((left, right) => {
+      const tenantComparison =
+        readRecordString(
+          left,
+          "tenantId",
+        ).localeCompare(
+          readRecordString(
+            right,
+            "tenantId",
+          ),
+        );
+
+      if (tenantComparison !== 0) {
+        return tenantComparison;
+      }
+
+      return readRecordString(
+        left,
+        "actionId",
+      ).localeCompare(
+        readRecordString(
+          right,
+          "actionId",
+        ),
+      );
+    });
+
+  const outbox = Object.values(
+    state.outbox,
+  )
+    .map((value) =>
+      asRecord(
+        value,
+        "Expected dispatch-outbox projection",
+      ),
+    )
+    .sort((left, right) => {
+      const tenantComparison =
+        readRecordString(
+          left,
+          "tenantId",
+        ).localeCompare(
+          readRecordString(
+            right,
+            "tenantId",
+          ),
+        );
+
+      if (tenantComparison !== 0) {
+        return tenantComparison;
+      }
+
+      return readRecordString(
+        left,
+        "outboxId",
+      ).localeCompare(
+        readRecordString(
+          right,
+          "outboxId",
+        ),
+      );
+    });
+
+  return {
+    revision: state.revision,
+    killSwitch: asRecord(
+      state.killSwitch,
+      "Expected kill-switch projection",
+    ),
+    actions,
+    outbox,
+    audit: state.audit.map((value) =>
+      asRecord(
+        value,
+        "Expected audit projection",
+      ),
+    ),
+  };
+}
+
 export class SQLiteControlledActionStateRepository
   implements ControlledActionStateRepository
 {
   private readonly database: SQLiteDatabase;
   private closed = false;
 
-  constructor(private readonly databasePath: string) {
+  constructor(
+    private readonly databasePath: string,
+    private readonly options:
+      SQLiteProjectionRepositoryOptions = {},
+  ) {
     const normalizedPath = requireNonEmpty(
       databasePath,
       "SQLite controlled-action database path",
@@ -380,6 +518,15 @@ export class SQLiteControlledActionStateRepository
           CHECK (engaged IN (0, 1)),
         record_json TEXT NOT NULL
       );
+
+      CREATE TABLE IF NOT EXISTS nexus_projection_rebuild_log (
+        rebuild_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        reason TEXT NOT NULL
+          CHECK (length(reason) > 0),
+        authoritative_revision INTEGER NOT NULL
+          CHECK (authoritative_revision >= 0),
+        rebuilt_at TEXT NOT NULL
+      );
     `);
 
     const migrationInsert = this.database.prepare(`
@@ -400,6 +547,12 @@ export class SQLiteControlledActionStateRepository
     migrationInsert.run(
       3,
       "controlled_action_normalized_projections_v1",
+      new Date().toISOString(),
+    );
+
+    migrationInsert.run(
+      4,
+      "controlled_action_projection_integrity_gate_v1",
       new Date().toISOString(),
     );
 
@@ -463,7 +616,7 @@ export class SQLiteControlledActionStateRepository
       }
     }
 
-    this.synchronizeProjectionFromStoredState();
+    this.initializeOrVerifyProjectionState();
   }
 
   async readSnapshot(): Promise<PersistentControlledActionState> {
@@ -699,6 +852,205 @@ export class SQLiteControlledActionStateRepository
     };
   }
 
+  verifyProjectionIntegrity(): SQLiteProjectionIntegrityResult {
+    this.ensureOpen();
+
+    const authoritative =
+      this.readAuthoritativeState();
+
+    const metadataRow = this.database
+      .prepare(`
+        SELECT source_revision
+        FROM nexus_projection_metadata
+        WHERE singleton_id = 1
+      `)
+      .get();
+
+    if (!metadataRow) {
+      return {
+        valid: false,
+        authoritativeRevision:
+          authoritative.revision,
+        projectionRevision: null,
+        issues: [
+          "Projection metadata is missing.",
+        ],
+      };
+    }
+
+    const projectionRevision =
+      readInteger(
+        metadataRow,
+        "source_revision",
+      );
+
+    const issues: string[] = [];
+
+    if (
+      projectionRevision !==
+      authoritative.revision
+    ) {
+      issues.push(
+        `Projection revision ${projectionRevision} does not match authoritative revision ${authoritative.revision}.`,
+      );
+    }
+
+    const projection =
+      this.readProjectionSnapshot();
+
+    const expected =
+      buildExpectedProjection(
+        authoritative,
+      );
+
+    if (
+      canonicalJson(
+        projection.killSwitch,
+      ) !==
+      canonicalJson(
+        expected.killSwitch,
+      )
+    ) {
+      issues.push(
+        "Kill-switch projection does not match authoritative state.",
+      );
+    }
+
+    if (
+      canonicalJson(
+        projection.actions,
+      ) !==
+      canonicalJson(
+        expected.actions,
+      )
+    ) {
+      issues.push(
+        "Controlled-action projection does not match authoritative state.",
+      );
+    }
+
+    if (
+      canonicalJson(
+        projection.outbox,
+      ) !==
+      canonicalJson(
+        expected.outbox,
+      )
+    ) {
+      issues.push(
+        "Dispatch-outbox projection does not match authoritative state.",
+      );
+    }
+
+    if (
+      canonicalJson(
+        projection.audit,
+      ) !==
+      canonicalJson(
+        expected.audit,
+      )
+    ) {
+      issues.push(
+        "Audit projection does not match authoritative state.",
+      );
+    }
+
+    this.verifyRelationalColumns(
+      issues,
+    );
+
+    return {
+      valid: issues.length === 0,
+      authoritativeRevision:
+        authoritative.revision,
+      projectionRevision,
+      issues,
+    };
+  }
+
+  rebuildProjectionsFromAuthoritativeState(
+    reason: string,
+    rebuiltAt: string,
+  ): SQLiteProjectionIntegrityResult {
+    this.ensureOpen();
+
+    if (
+      !this.options
+        .allowProjectionRecovery
+    ) {
+      throw new Error(
+        "Projection rebuild is disabled. Reopen the repository with explicit recovery authorization.",
+      );
+    }
+
+    const normalizedReason =
+      requireNonEmpty(
+        reason,
+        "Projection rebuild reason",
+      );
+
+    if (
+      !Number.isFinite(
+        Date.parse(rebuiltAt),
+      )
+    ) {
+      throw new Error(
+        "Projection rebuiltAt must be a valid timestamp.",
+      );
+    }
+
+    this.database.exec(
+      "BEGIN IMMEDIATE",
+    );
+
+    try {
+      const authoritative =
+        this.readAuthoritativeState();
+
+      this.syncProjections(
+        authoritative,
+      );
+
+      this.database
+        .prepare(`
+          INSERT INTO nexus_projection_rebuild_log (
+            reason,
+            authoritative_revision,
+            rebuilt_at
+          )
+          VALUES (?, ?, ?)
+        `)
+        .run(
+          normalizedReason,
+          authoritative.revision,
+          rebuiltAt,
+        );
+
+      this.database.exec("COMMIT");
+    } catch (error) {
+      try {
+        this.database.exec(
+          "ROLLBACK",
+        );
+      } catch {
+        // Original rebuild error remains authoritative.
+      }
+
+      throw error;
+    }
+
+    const verification =
+      this.verifyProjectionIntegrity();
+
+    if (!verification.valid) {
+      throw new Error(
+        `Projection rebuild verification failed: ${verification.issues.join(" ")}`,
+      );
+    }
+
+    return verification;
+  }
+
   close(): void {
     if (this.closed) {
       return;
@@ -708,49 +1060,316 @@ export class SQLiteControlledActionStateRepository
     this.closed = true;
   }
 
-  private synchronizeProjectionFromStoredState(): void {
-    this.database.exec("BEGIN IMMEDIATE");
+  private initializeOrVerifyProjectionState(): void {
+    const metadataRow = this.database
+      .prepare(`
+        SELECT source_revision
+        FROM nexus_projection_metadata
+        WHERE singleton_id = 1
+      `)
+      .get();
 
-    try {
-      const row = this.database
+    const actionCount = readInteger(
+      this.database
         .prepare(`
-          SELECT revision, state_json
-          FROM nexus_controlled_action_state
-          WHERE singleton_id = 1
+          SELECT COUNT(*) AS count
+          FROM nexus_controlled_actions_projection
         `)
-        .get();
+        .get(),
+      "count",
+    );
 
-      if (!row) {
-        throw new Error(
-          "SQLite controlled-action state row is missing.",
-        );
-      }
+    const outboxCount = readInteger(
+      this.database
+        .prepare(`
+          SELECT COUNT(*) AS count
+          FROM nexus_dispatch_outbox_projection
+        `)
+        .get(),
+      "count",
+    );
 
-      const state = parseState(
-        readString(row, "state_json"),
+    const auditCount = readInteger(
+      this.database
+        .prepare(`
+          SELECT COUNT(*) AS count
+          FROM nexus_audit_projection
+        `)
+        .get(),
+      "count",
+    );
+
+    const killSwitchCount =
+      readInteger(
+        this.database
+          .prepare(`
+            SELECT COUNT(*) AS count
+            FROM nexus_kill_switch_projection
+          `)
+          .get(),
+        "count",
       );
 
-      const storedRevision = readInteger(
+    const projectionIsEmpty =
+      actionCount === 0 &&
+      outboxCount === 0 &&
+      auditCount === 0 &&
+      killSwitchCount === 0;
+
+    if (
+      !metadataRow &&
+      projectionIsEmpty
+    ) {
+      this.database.exec(
+        "BEGIN IMMEDIATE",
+      );
+
+      try {
+        this.syncProjections(
+          this.readAuthoritativeState(),
+        );
+
+        this.database.exec("COMMIT");
+        return;
+      } catch (error) {
+        try {
+          this.database.exec(
+            "ROLLBACK",
+          );
+        } catch {
+          // Original initialization error remains authoritative.
+        }
+
+        throw error;
+      }
+    }
+
+    const verification =
+      this.verifyProjectionIntegrity();
+
+    if (
+      !verification.valid &&
+      !this.options
+        .allowProjectionRecovery
+    ) {
+      throw new Error(
+        `SQLite projection integrity verification failed: ${verification.issues.join(" ")}`,
+      );
+    }
+  }
+
+  private readAuthoritativeState(): PersistentControlledActionState {
+    const row = this.database
+      .prepare(`
+        SELECT revision, state_json
+        FROM nexus_controlled_action_state
+        WHERE singleton_id = 1
+      `)
+      .get();
+
+    if (!row) {
+      throw new Error(
+        "SQLite controlled-action state row is missing.",
+      );
+    }
+
+    const state = parseState(
+      readString(
+        row,
+        "state_json",
+      ),
+    );
+
+    const storedRevision =
+      readInteger(
         row,
         "revision",
       );
 
-      if (state.revision !== storedRevision) {
-        throw new Error(
-          "SQLite controlled-action revision mismatch.",
+    if (
+      state.revision !==
+      storedRevision
+    ) {
+      throw new Error(
+        "SQLite controlled-action revision mismatch.",
+      );
+    }
+
+    return state;
+  }
+
+  private verifyRelationalColumns(
+    issues: string[],
+  ): void {
+    const actionRows = this.database
+      .prepare(`
+        SELECT *
+        FROM nexus_controlled_actions_projection
+        ORDER BY tenant_id, action_id
+      `)
+      .all();
+
+    for (const row of actionRows) {
+      const record =
+        parseProjectionJson(row);
+
+      if (
+        readString(row, "action_id") !==
+          readRecordString(
+            record,
+            "actionId",
+          ) ||
+        readString(row, "tenant_id") !==
+          readRecordString(
+            record,
+            "tenantId",
+          ) ||
+        readString(row, "status") !==
+          readRecordString(
+            record,
+            "status",
+          ) ||
+        readInteger(row, "version") !==
+          readRecordInteger(
+            record,
+            "version",
+          )
+      ) {
+        issues.push(
+          `Controlled-action relational columns are inconsistent for ${readString(row, "action_id")}.`,
         );
       }
+    }
 
-      this.syncProjections(state);
-      this.database.exec("COMMIT");
-    } catch (error) {
-      try {
-        this.database.exec("ROLLBACK");
-      } catch {
-        // Original synchronization error remains authoritative.
+    const outboxRows = this.database
+      .prepare(`
+        SELECT *
+        FROM nexus_dispatch_outbox_projection
+        ORDER BY tenant_id, outbox_id
+      `)
+      .all();
+
+    for (const row of outboxRows) {
+      const record =
+        parseProjectionJson(row);
+
+      if (
+        readString(row, "outbox_id") !==
+          readRecordString(
+            record,
+            "outboxId",
+          ) ||
+        readString(row, "action_id") !==
+          readRecordString(
+            record,
+            "actionId",
+          ) ||
+        readString(row, "tenant_id") !==
+          readRecordString(
+            record,
+            "tenantId",
+          ) ||
+        readString(row, "status") !==
+          readRecordString(
+            record,
+            "status",
+          ) ||
+        readInteger(
+          row,
+          "delivery_attempt_count",
+        ) !==
+          readRecordInteger(
+            record,
+            "deliveryAttemptCount",
+          )
+      ) {
+        issues.push(
+          `Dispatch-outbox relational columns are inconsistent for ${readString(row, "outbox_id")}.`,
+        );
       }
+    }
 
-      throw error;
+    const auditRows = this.database
+      .prepare(`
+        SELECT *
+        FROM nexus_audit_projection
+        ORDER BY ordinal
+      `)
+      .all();
+
+    auditRows.forEach(
+      (row, index) => {
+        const record =
+          parseProjectionJson(row);
+
+        if (
+          readInteger(
+            row,
+            "ordinal",
+          ) !==
+            index + 1 ||
+          readString(
+            row,
+            "audit_id",
+          ) !==
+            readRecordString(
+              record,
+              "auditId",
+            ) ||
+          readString(
+            row,
+            "event_type",
+          ) !==
+            readRecordString(
+              record,
+              "eventType",
+            )
+        ) {
+          issues.push(
+            `Audit relational columns are inconsistent at ordinal ${index + 1}.`,
+          );
+        }
+      },
+    );
+
+    const killSwitchRow =
+      this.database
+        .prepare(`
+          SELECT engaged, record_json
+          FROM nexus_kill_switch_projection
+          WHERE singleton_id = 1
+        `)
+        .get();
+
+    if (!killSwitchRow) {
+      issues.push(
+        "Kill-switch relational row is missing.",
+      );
+
+      return;
+    }
+
+    const killSwitch =
+      parseProjectionJson(
+        killSwitchRow,
+      );
+
+    const relationalEngaged =
+      readInteger(
+        killSwitchRow,
+        "engaged",
+      ) === 1;
+
+    if (
+      relationalEngaged !==
+      readRecordBoolean(
+        killSwitch,
+        "engaged",
+      )
+    ) {
+      issues.push(
+        "Kill-switch relational columns are inconsistent.",
+      );
     }
   }
 
@@ -1018,4 +1637,5 @@ export class SQLiteControlledActionStateRepository
     }
   }
 }
+
 
