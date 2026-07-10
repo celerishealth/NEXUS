@@ -528,6 +528,12 @@ export class PersistentControlledActionVerticalSlice {
     parseTimestamp(request.now, "Action now");
 
     return this.transact((state) => {
+      if (state.killSwitch.engaged) {
+        throw new Error(
+          "Operational kill switch is engaged. Action creation denied.",
+        );
+      }
+
       const existingById = state.actions[actionId];
 
       const existingByIdempotency = Object.values(state.actions).find(
@@ -1428,3 +1434,4 @@ export class PersistentControlledActionVerticalSlice {
     }
   }
 }
+
