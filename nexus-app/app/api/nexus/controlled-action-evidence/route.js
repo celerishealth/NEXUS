@@ -1,4 +1,7 @@
 ﻿import {
+  inspectProtectedApiSignedEnvelope,
+} from "../../../../lib/nexus/protectedApiSignedEnvelope.mjs";
+import {
   inspectProtectedApiRequest,
 } from "../../../../lib/nexus/protectedApiRequestGuard.mjs";
 import { NextResponse } from "next/server";
@@ -67,6 +70,26 @@ export async function POST(request) {
           requestGuard.status,
         headers:
           requestGuard.headers,
+      },
+    );
+  }
+  const signedEnvelopeGuard =
+    await inspectProtectedApiSignedEnvelope(
+      request,
+      {
+        requestId:
+          requestGuard.requestId,
+      },
+    );
+
+  if (!signedEnvelopeGuard.ok) {
+    return NextResponse.json(
+      signedEnvelopeGuard.error,
+      {
+        status:
+          signedEnvelopeGuard.status,
+        headers:
+          signedEnvelopeGuard.headers,
       },
     );
   }
@@ -165,4 +188,5 @@ export async function POST(request) {
     },
   );
 }
+
 

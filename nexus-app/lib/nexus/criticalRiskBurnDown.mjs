@@ -235,6 +235,7 @@ function inspectProtectedRoutes(repositoryRoot) {
   const unsafeIndicators = [];
   const missingSecretGates = [];
   const missingRequestGuards = [];
+  const missingSignedEnvelopeGuards = [];
 
   const unsafePatterns = [
     {
@@ -301,6 +302,16 @@ function inspectProtectedRoutes(repositoryRoot) {
     ) {
       missingRequestGuards.push(file);
     }
+    if (
+      content.includes(
+        "export async function POST",
+      ) &&
+      !content.includes(
+        "inspectProtectedApiSignedEnvelope",
+      )
+    ) {
+      missingSignedEnvelopeGuards.push(file);
+    }
     for (const pattern of unsafePatterns) {
       if (pattern.expression.test(content)) {
         unsafeIndicators.push({
@@ -316,6 +327,7 @@ function inspectProtectedRoutes(repositoryRoot) {
     unsafeIndicators,
     missingSecretGates,
     missingRequestGuards,
+    missingSignedEnvelopeGuards,
   };
 }
 
@@ -714,6 +726,14 @@ export function runCriticalRiskAudit({
         ? "Every protected POST route uses the shared request-security guard."
         : protectedRoutes.missingRequestGuards,
     ),
+    createControl(
+      "CRITICAL_PROTECTED_POST_ROUTES_SIGNED_AND_TENANT_BOUND",
+      "CRITICAL",
+      protectedRoutes.missingSignedEnvelopeGuards.length === 0,
+      protectedRoutes.missingSignedEnvelopeGuards.length === 0
+        ? "Every protected POST route requires a signed tenant-bound and owner-bound request envelope."
+        : protectedRoutes.missingSignedEnvelopeGuards,
+    ),
 createControl(
       "CRITICAL_NO_REAL_EXECUTION_IN_PROTECTED_ROUTES",
       "CRITICAL",
@@ -946,6 +966,7 @@ createControl(
     }),
   });
 }
+
 
 
 

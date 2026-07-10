@@ -14493,3 +14493,47 @@ Passing this guard only permits further owner-controlled validation.
 It does not authorize provider invocation, persistence, payments,
 WhatsApp delivery, customer actions, live migrations, public launch,
 or uncontrolled AI execution.
+
+## Day 669 — Signed Protected API Envelope and Fail-Closed Replay Guard v1
+
+Integrated HMAC-authenticated request envelopes across every protected
+NEXUS action POST route.
+
+Integrated controls:
+
+- HMAC-SHA256 request authentication
+- HTTP method and API path signature binding
+- Tenant identity binding
+- Owner identity binding
+- Millisecond timestamp freshness validation
+- Maximum five-minute signed-request window
+- Unique nonce requirement
+- SHA-256 request-body integrity verification
+- Constant-time body-digest and signature comparison
+- Process-local consumed-nonce replay rejection
+- Missing signing-authority fail-closed behavior
+- Production fail-closed behavior when durable shared nonce persistence
+  is unavailable
+- Explicit preview-only process-local replay mode
+- Critical Risk Gate enforcement across every protected POST route
+
+Required protected API secret:
+
+- `NEXUS_PROTECTED_API_HMAC_SECRET`
+
+Optional preview-only production override:
+
+- `NEXUS_PROTECTED_API_REPLAY_MODE=process-local-preview`
+
+The override does not provide durable distributed replay protection and
+does not authorize execution. Without that explicit preview setting,
+production POST requests remain blocked until durable shared nonce
+persistence is authorized.
+
+Visible security posture:
+
+- `/nexus-protected-api-authentication`
+
+No provider invocation, database persistence, payment, WhatsApp delivery,
+customer action, live migration, public launch, or uncontrolled AI action
+is authorized.

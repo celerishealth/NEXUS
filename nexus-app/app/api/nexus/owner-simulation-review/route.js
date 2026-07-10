@@ -1,4 +1,7 @@
 ﻿import {
+  inspectProtectedApiSignedEnvelope,
+} from "../../../../lib/nexus/protectedApiSignedEnvelope.mjs";
+import {
   inspectProtectedApiRequest,
 } from "../../../../lib/nexus/protectedApiRequestGuard.mjs";
 import { NextResponse } from "next/server";
@@ -361,6 +364,26 @@ export async function POST(request) {
       },
     );
   }
+  const signedEnvelopeGuard =
+    await inspectProtectedApiSignedEnvelope(
+      request,
+      {
+        requestId:
+          requestGuard.requestId,
+      },
+    );
+
+  if (!signedEnvelopeGuard.ok) {
+    return NextResponse.json(
+      signedEnvelopeGuard.error,
+      {
+        status:
+          signedEnvelopeGuard.status,
+        headers:
+          signedEnvelopeGuard.headers,
+      },
+    );
+  }
   const signingSecret =
     process.env
       .NEXUS_OWNER_RESOLUTION_SIGNING_SECRET
@@ -494,4 +517,5 @@ export async function POST(request) {
     },
   );
 }
+
 
