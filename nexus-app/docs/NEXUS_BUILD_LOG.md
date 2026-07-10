@@ -14621,3 +14621,44 @@ Visible posture:
 No live migration, tenant creation, owner creation, customer data write,
 provider invocation, payment, WhatsApp delivery, public launch, or
 uncontrolled AI action was performed.
+
+## Day 672 — Transactional PostgreSQL Migration Runner and Checksum Ledger v1
+
+Added the controlled mechanism required to safely apply the real
+PostgreSQL security migrations introduced on Days 670 and 671.
+
+Integrated controls:
+
+- Deterministic ordered migration discovery
+- SHA-256 checksum calculation for every SQL migration
+- Durable `nexus_schema_migration` checksum ledger
+- PostgreSQL transaction wrapping
+- PostgreSQL advisory transaction lock
+- Explicit `--apply` requirement
+- Explicit migration authorization phrase
+- Checksum-drift rejection
+- Duplicate migration sequence rejection
+- Automatic rollback after failure
+- Idempotent handling of already-applied migrations
+- Offline migration planning without database mutation
+- Online status inspection
+- Separate migration-integrity gate
+
+Commands:
+
+- Plan only:
+  `node scripts/nexus-postgres-migrate.mjs --plan`
+
+- Check configured database status:
+  `node scripts/nexus-postgres-migrate.mjs --status`
+
+- Apply only after explicit owner authorization:
+  `node scripts/nexus-postgres-migrate.mjs --apply`
+
+Required apply authorization:
+
+- `NEXUS_MIGRATION_AUTHORIZATION=APPLY_NEXUS_SECURITY_MIGRATIONS`
+
+This milestone does not execute either live migration. It creates the
+transactional, checksum-verified, rollback-capable mechanism needed for
+authorized database application.
