@@ -4,6 +4,9 @@ import {
   ControlledActionCommandGateway,
 } from "@/lib/nexus/controlledActionCommandGateway";
 import {
+  ControlledActionCommandReadinessGate,
+} from "@/lib/nexus/controlledActionCommandReadinessGate";
+import {
   DurableSignedGatewayOutcomeJournal,
   type GatewayJournalJsonValue,
 } from "@/lib/nexus/durableSignedGatewayOutcomeJournal";
@@ -96,6 +99,92 @@ const outcomeJournal =
     outcomeJournalPath,
   );
 
+function readBooleanEnvironment(
+  value: string | undefined,
+  defaultValue: boolean,
+  fieldName: string,
+): boolean {
+  if (value === undefined) {
+    return defaultValue;
+  }
+
+  if (value === "true") {
+    return true;
+  }
+
+  if (value === "false") {
+    return false;
+  }
+
+  throw new Error(
+    `${fieldName} must be true or false.`,
+  );
+}
+
+function readBackupAgeMs(): number {
+  const rawValue =
+    process.env
+      .NEXUS_CONTROLLED_ACTION_MAX_BACKUP_AGE_MS ??
+    "604800000";
+
+  const parsedValue =
+    Number(rawValue);
+
+  if (
+    !Number.isSafeInteger(parsedValue) ||
+    parsedValue < 60_000 ||
+    parsedValue >
+      31 * 24 * 60 * 60 * 1000
+  ) {
+    throw new Error(
+      "NEXUS_CONTROLLED_ACTION_MAX_BACKUP_AGE_MS must be between 60000 and 2678400000.",
+    );
+  }
+
+  return parsedValue;
+}
+
+function createCommandReadinessGate():
+  ControlledActionCommandReadinessGate {
+  const backupDatabasePath =
+    process.env
+      .NEXUS_CONTROLLED_ACTION_BACKUP_SQLITE_PATH
+      ? resolve(
+          process.cwd(),
+          process.env
+            .NEXUS_CONTROLLED_ACTION_BACKUP_SQLITE_PATH,
+        )
+      : undefined;
+
+  const backupManifestPath =
+    process.env
+      .NEXUS_CONTROLLED_ACTION_BACKUP_MANIFEST_PATH
+      ? resolve(
+          process.cwd(),
+          process.env
+            .NEXUS_CONTROLLED_ACTION_BACKUP_MANIFEST_PATH,
+        )
+      : undefined;
+
+  return new ControlledActionCommandReadinessGate({
+    storageMode:
+      controlledActionStorageMode,
+    databasePath:
+      sqliteDatabasePath,
+    requireVerifiedBackup:
+      readBooleanEnvironment(
+        process.env
+          .NEXUS_CONTROLLED_ACTION_REQUIRE_VERIFIED_BACKUP,
+        true,
+        "NEXUS_CONTROLLED_ACTION_REQUIRE_VERIFIED_BACKUP",
+      ),
+    backupDatabasePath,
+    backupManifestPath,
+    maxBackupAgeMs:
+      readBackupAgeMs(),
+  });
+}
+
 function readClockSkewMs(): number {
   const rawValue =
     process.env.NEXUS_GATEWAY_MAX_CLOCK_SKEW_MS ??
@@ -117,6 +206,17 @@ function readClockSkewMs(): number {
 }
 
 function errorStatus(message: string): number {
+  if (
+    message.includes(
+      "operational readiness gate is closed",
+    ) ||
+    message.includes(
+      "unsafe provider-execution boundary",
+    )
+  ) {
+    return 503;
+  }
+
   if (
     message.includes("signature") ||
     message.includes("key is unknown") ||
@@ -212,6 +312,23 @@ export async function POST(request: NextRequest) {
           maxClockSkewMs,
         },
       );
+
+    const enforceReadiness =
+      readBooleanEnvironment(
+        process.env
+          .NEXUS_CONTROLLED_ACTION_ENFORCE_READINESS,
+        true,
+        "NEXUS_CONTROLLED_ACTION_ENFORCE_READINESS",
+      );
+
+    if (enforceReadiness) {
+      const readinessGate =
+        createCommandReadinessGate();
+
+      await readinessGate.assertOpen({
+        now,
+      });
+    }
 
     const replayExpiresAt =
       calculateGatewayReplayExpiry(
@@ -355,5 +472,6 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
 
 
