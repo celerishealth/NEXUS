@@ -1,40 +1,77 @@
-﻿import { timingSafeEqual } from "node:crypto";
-import { resolve } from "node:path";
+﻿import { resolve } from "node:path";
 import { NextRequest, NextResponse } from "next/server";
 import {
   ControlledActionCommandGateway,
-  type ControlledActionGatewayCommand,
-  isControlledActionGatewayRole,
 } from "@/lib/nexus/controlledActionCommandGateway";
 import {
   PersistentControlledActionVerticalSlice,
 } from "@/lib/nexus/persistentControlledActionVerticalSlice";
+import {
+  calculateGatewayReplayExpiry,
+  PersistentControlledActionGatewayReplayGuard,
+  verifySignedControlledActionGatewayEnvelope,
+} from "@/lib/nexus/signedControlledActionGatewayEnvelope";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const statePath = resolve(
+const actionStatePath = resolve(
   process.cwd(),
   process.env.NEXUS_CONTROLLED_ACTION_STATE_PATH ??
     ".nexus-runtime/controlled-action-state.json",
 );
 
-const gateway = new ControlledActionCommandGateway(
-  new PersistentControlledActionVerticalSlice(statePath),
+const replayStatePath = resolve(
+  process.cwd(),
+  process.env.NEXUS_GATEWAY_REPLAY_STATE_PATH ??
+    ".nexus-runtime/controlled-action-gateway-replay.json",
 );
 
-function secureEquals(actual: string, expected: string): boolean {
-  const actualBuffer = Buffer.from(actual, "utf8");
-  const expectedBuffer = Buffer.from(expected, "utf8");
+const gateway = new ControlledActionCommandGateway(
+  new PersistentControlledActionVerticalSlice(
+    actionStatePath,
+  ),
+);
 
-  if (actualBuffer.length !== expectedBuffer.length) {
-    return false;
+const replayGuard =
+  new PersistentControlledActionGatewayReplayGuard(
+    replayStatePath,
+  );
+
+function readClockSkewMs(): number {
+  const rawValue =
+    process.env.NEXUS_GATEWAY_MAX_CLOCK_SKEW_MS ??
+    "300000";
+
+  const parsedValue = Number(rawValue);
+
+  if (
+    !Number.isSafeInteger(parsedValue) ||
+    parsedValue < 1 ||
+    parsedValue > 900_000
+  ) {
+    throw new Error(
+      "NEXUS_GATEWAY_MAX_CLOCK_SKEW_MS must be between 1 and 900000.",
+    );
   }
 
-  return timingSafeEqual(actualBuffer, expectedBuffer);
+  return parsedValue;
 }
 
 function errorStatus(message: string): number {
+  if (
+    message.includes("signature") ||
+    message.includes("key is unknown") ||
+    message.includes("envelope is stale") ||
+    message.includes("issued too far")
+  ) {
+    return 401;
+  }
+
+  if (message.includes("replay")) {
+    return 409;
+  }
+
   if (
     message.includes("not permitted") ||
     message.includes("tenant mismatch") ||
@@ -49,7 +86,9 @@ function errorStatus(message: string): number {
 
 export async function POST(request: NextRequest) {
   if (
-    process.env.NEXUS_CONTROLLED_ACTION_GATEWAY_ENABLED !== "true"
+    process.env
+      .NEXUS_CONTROLLED_ACTION_GATEWAY_ENABLED !==
+    "true"
   ) {
     return NextResponse.json(
       {
@@ -63,13 +102,20 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const configuredSecret =
-    process.env.NEXUS_INTERNAL_GATEWAY_SECRET?.trim() ?? "";
+  const keyId =
+    process.env.NEXUS_INTERNAL_GATEWAY_KEY_ID?.trim() ??
+    "primary";
 
-  if (!configuredSecret) {
+  const signingSecret =
+    process.env
+      .NEXUS_INTERNAL_GATEWAY_SIGNING_SECRET?.trim() ??
+    "";
+
+  if (!signingSecret) {
     return NextResponse.json(
       {
-        error: "Internal gateway secret is not configured.",
+        error:
+          "Internal gateway signing secret is not configured.",
         liveProviderExecutionAuthorized: false,
       },
       {
@@ -78,54 +124,56 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const suppliedSecret =
-    request.headers.get("x-nexus-gateway-secret") ?? "";
-
-  if (!secureEquals(suppliedSecret, configuredSecret)) {
-    return NextResponse.json(
-      {
-        error: "Unauthorized internal gateway request.",
-        liveProviderExecutionAuthorized: false,
-      },
-      {
-        status: 401,
-      },
-    );
-  }
-
-  const tenantId =
-    request.headers.get("x-nexus-tenant-id")?.trim() ?? "";
-  const actorId =
-    request.headers.get("x-nexus-actor-id")?.trim() ?? "";
-  const requestId =
-    request.headers.get("x-nexus-request-id")?.trim() ?? "";
-  const roleHeader =
-    request.headers.get("x-nexus-role")?.trim() ?? "";
-
-  if (!isControlledActionGatewayRole(roleHeader)) {
-    return NextResponse.json(
-      {
-        error: "Invalid or missing internal gateway role.",
-        liveProviderExecutionAuthorized: false,
-      },
-      {
-        status: 403,
-      },
-    );
-  }
-
   try {
-    const command =
-      (await request.json()) as ControlledActionGatewayCommand;
+    const maxClockSkewMs = readClockSkewMs();
+    const now = new Date().toISOString();
+    const rawEnvelope: unknown =
+      await request.json();
+
+    const envelope =
+      verifySignedControlledActionGatewayEnvelope(
+        rawEnvelope,
+        {
+          [keyId]: signingSecret,
+        },
+        {
+          now,
+          maxClockSkewMs,
+        },
+      );
+
+    const replayExpiresAt =
+      calculateGatewayReplayExpiry(
+        envelope.issuedAt,
+        maxClockSkewMs,
+      );
+
+    const reserved = await replayGuard.reserve(
+      envelope.keyId,
+      envelope.nonce,
+      now,
+      replayExpiresAt,
+    );
+
+    if (!reserved) {
+      return NextResponse.json(
+        {
+          error:
+            "Signed gateway request replay detected.",
+          liveProviderExecutionAuthorized: false,
+        },
+        {
+          status: 409,
+          headers: {
+            "cache-control": "no-store",
+          },
+        },
+      );
+    }
 
     const response = await gateway.execute(
-      {
-        tenantId,
-        actorId,
-        requestId,
-        role: roleHeader,
-      },
-      command,
+      envelope.context,
+      envelope.command,
     );
 
     return NextResponse.json(response, {
@@ -138,7 +186,7 @@ export async function POST(request: NextRequest) {
     const message =
       error instanceof Error
         ? error.message
-        : "Unknown controlled-action gateway failure.";
+        : "Unknown signed gateway failure.";
 
     return NextResponse.json(
       {
