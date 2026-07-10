@@ -20,6 +20,11 @@ import {
   SQLiteSignedGatewayRequestStore,
 } from "@/lib/nexus/sqliteSignedGatewayRequestStore";
 import {
+  assertAuthenticatedSessionMatchesGatewayContext,
+  SQLiteAuthenticatedTenantSessionStore,
+  verifyAuthenticatedTenantSessionToken,
+} from "@/lib/nexus/sqliteAuthenticatedTenantSessionStore";
+import {
   calculateGatewayReplayExpiry,
   PersistentControlledActionGatewayReplayGuard,
   verifySignedControlledActionGatewayEnvelope,
@@ -208,6 +213,43 @@ function readClockSkewMs(): number {
 function errorStatus(message: string): number {
   if (
     message.includes(
+      "Authenticated session token",
+    ) ||
+    message.includes(
+      "Authenticated session signing key",
+    ) ||
+    message.includes(
+      "Authenticated session was not found",
+    ) ||
+    message.includes(
+      "Authenticated session has been revoked",
+    ) ||
+    message.includes(
+      "Authenticated session has expired",
+    )
+  ) {
+    return 401;
+  }
+
+  if (
+    message.includes(
+      "Authenticated session tenant does not match",
+    ) ||
+    message.includes(
+      "Authenticated session actor does not match",
+    ) ||
+    message.includes(
+      "Authenticated session role does not match",
+    ) ||
+    message.includes(
+      "system tenant context",
+    )
+  ) {
+    return 403;
+  }
+
+  if (
+    message.includes(
       "operational readiness gate is closed",
     ) ||
     message.includes(
@@ -282,11 +324,50 @@ export async function POST(request: NextRequest) {
       .NEXUS_INTERNAL_GATEWAY_SIGNING_SECRET?.trim() ??
     "";
 
+  const sessionKeyId =
+    process.env
+      .NEXUS_AUTH_SESSION_KEY_ID?.trim() ??
+    "primary";
+
+  const sessionSigningSecret =
+    process.env
+      .NEXUS_AUTH_SESSION_SIGNING_SECRET?.trim() ??
+    "";
+
   if (!signingSecret) {
     return NextResponse.json(
       {
         error:
           "Internal gateway signing secret is not configured.",
+        liveProviderExecutionAuthorized: false,
+      },
+      {
+        status: 503,
+      },
+    );
+  }
+
+  if (!sessionSigningSecret) {
+    return NextResponse.json(
+      {
+        error:
+          "Authenticated session signing secret is not configured.",
+        liveProviderExecutionAuthorized: false,
+      },
+      {
+        status: 503,
+      },
+    );
+  }
+
+  if (
+    controlledActionStorageMode !==
+    "sqlite"
+  ) {
+    return NextResponse.json(
+      {
+        error:
+          "Authenticated command gateway requires SQLite storage mode.",
         liveProviderExecutionAuthorized: false,
       },
       {
@@ -312,6 +393,52 @@ export async function POST(request: NextRequest) {
           maxClockSkewMs,
         },
       );
+
+    const authorization =
+      request.headers.get(
+        "authorization",
+      ) ?? "";
+
+    const sessionToken =
+      authorization.startsWith(
+        "Bearer ",
+      )
+        ? authorization
+            .slice(7)
+            .trim()
+        : "";
+
+    const sessionClaims =
+      verifyAuthenticatedTenantSessionToken(
+        sessionToken,
+        {
+          [sessionKeyId]:
+            sessionSigningSecret,
+        },
+        {
+          now,
+          maxClockSkewMs,
+        },
+      );
+
+    const sessionStore =
+      new SQLiteAuthenticatedTenantSessionStore(
+        sqliteDatabasePath,
+      );
+
+    try {
+      await sessionStore.assertActiveSession(
+        sessionClaims,
+        now,
+      );
+    } finally {
+      sessionStore.close();
+    }
+
+    assertAuthenticatedSessionMatchesGatewayContext(
+      sessionClaims,
+      envelope.context,
+    );
 
     const enforceReadiness =
       readBooleanEnvironment(
@@ -472,6 +599,7 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
 
 
 
