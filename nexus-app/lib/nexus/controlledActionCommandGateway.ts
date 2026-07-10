@@ -49,6 +49,20 @@ export type ControlledActionGatewayCommand =
       now: string;
     }
   | {
+      type: "requeue_dead_letter";
+      actionId: string;
+      outboxId: string;
+      newOwnerAuthorizationId: string;
+      recoveryToken: string;
+      replacementDispatchToken: string;
+      expectedFailureCode: string;
+      recoveryReasonCode: string;
+      retryDelayMs: number;
+      maxRecoveryCount: number;
+      auditId: string;
+      now: string;
+    }
+  | {
       type: "claim_next_outbox";
       workerId: string;
       claimToken: string;
@@ -286,6 +300,31 @@ export class ControlledActionCommandGateway {
         return createResponse(context, command.type, result);
       }
 
+      case "requeue_dead_letter": {
+        requireRole(context, ["owner"]);
+
+        const result =
+          await this.engine.requeueDeadLetter({
+            actionId: command.actionId,
+            outboxId: command.outboxId,
+            tenantId: context.tenantId,
+            newOwnerAuthorizationId:
+              command.newOwnerAuthorizationId,
+            recoveryToken: command.recoveryToken,
+            replacementDispatchToken:
+              command.replacementDispatchToken,
+            expectedFailureCode:
+              command.expectedFailureCode,
+            recoveryReasonCode:
+              command.recoveryReasonCode,
+            retryDelayMs: command.retryDelayMs,
+            maxRecoveryCount: command.maxRecoveryCount,
+            auditId: command.auditId,
+            now: command.now,
+          });
+
+        return createResponse(context, command.type, result);
+      }
       case "claim_next_outbox": {
         requireRole(context, ["worker"]);
 
@@ -459,6 +498,7 @@ export class ControlledActionCommandGateway {
     }
   }
 }
+
 
 
 

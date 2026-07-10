@@ -45,6 +45,9 @@ export interface IntegratedControlledAction {
   terminalCommitToken: string | null;
   resultDigest: string | null;
   terminalReasonCode: string | null;
+  recoveryCount: number;
+  lastRecoveryToken: string | null;
+  lastRecoveredAt: string | null;
   createdAt: string;
   updatedAt: string;
   terminalAt: string | null;
@@ -74,6 +77,9 @@ export interface IntegratedDispatchOutboxRecord {
   lastOutcomeToken: string | null;
   lastFailureCode: string | null;
   lastFailureAt: string | null;
+  recoveryCount: number;
+  lastRecoveryToken: string | null;
+  lastRecoveredAt: string | null;
   createdAt: string;
   updatedAt: string;
   deliveredAt: string | null;
@@ -95,6 +101,7 @@ export interface IntegratedAuditEvent {
     | "DISPATCH_OUTBOX_LEASE_RENEWED"
     | "DISPATCH_OUTBOX_RETRY_SCHEDULED"
     | "DISPATCH_OUTBOX_DEAD_LETTERED"
+    | "CONTROLLED_ACTION_DEAD_LETTER_REQUEUED"
     | "CONTROLLED_ACTION_FINALIZED"
     | "OPERATIONAL_KILL_SWITCH_CHANGED";
   occurredAt: string;
@@ -152,6 +159,27 @@ export interface ClaimIntegratedOutboxRequest {
   leaseDurationMs: number;
   auditId: string;
   now: string;
+}
+
+export interface RequeueIntegratedDeadLetterRequest {
+  actionId: string;
+  outboxId: string;
+  tenantId: string;
+  newOwnerAuthorizationId: string;
+  recoveryToken: string;
+  replacementDispatchToken: string;
+  expectedFailureCode: string;
+  recoveryReasonCode: string;
+  retryDelayMs: number;
+  maxRecoveryCount: number;
+  auditId: string;
+  now: string;
+}
+
+export interface IntegratedDeadLetterRecoveryResult {
+  action: IntegratedControlledAction;
+  outbox: IntegratedDispatchOutboxRecord;
+  disposition: "requeued" | "replay_accepted";
 }
 
 export interface ClaimNextIntegratedOutboxRequest {
@@ -392,6 +420,20 @@ function validateState(state: PersistentControlledActionState): void {
       throw new Error("Stored action lease fence is invalid.");
     }
 
+    if (
+      !Number.isSafeInteger(action.recoveryCount) ||
+      action.recoveryCount < 0
+    ) {
+      throw new Error("Stored action recovery count is invalid.");
+    }
+
+    if (action.lastRecoveredAt) {
+      parseTimestamp(
+        action.lastRecoveredAt,
+        "Stored action lastRecoveredAt",
+      );
+    }
+
     parseTimestamp(action.createdAt, "Stored action createdAt");
     parseTimestamp(action.updatedAt, "Stored action updatedAt");
 
@@ -470,6 +512,20 @@ function validateState(state: PersistentControlledActionState): void {
       outboxRecord.leaseFence < 0
     ) {
       throw new Error("Stored outbox lease fence is invalid.");
+    }
+
+    if (
+      !Number.isSafeInteger(outboxRecord.recoveryCount) ||
+      outboxRecord.recoveryCount < 0
+    ) {
+      throw new Error("Stored outbox recovery count is invalid.");
+    }
+
+    if (outboxRecord.lastRecoveredAt) {
+      parseTimestamp(
+        outboxRecord.lastRecoveredAt,
+        "Stored outbox lastRecoveredAt",
+      );
     }
 
     parseTimestamp(
@@ -660,6 +716,9 @@ export class PersistentControlledActionVerticalSlice {
         terminalCommitToken: null,
         resultDigest: null,
         terminalReasonCode: null,
+        recoveryCount: 0,
+        lastRecoveryToken: null,
+        lastRecoveredAt: null,
         createdAt: request.now,
         updatedAt: request.now,
         terminalAt: null,
@@ -879,6 +938,9 @@ export class PersistentControlledActionVerticalSlice {
         lastOutcomeToken: null,
         lastFailureCode: null,
         lastFailureAt: null,
+        recoveryCount: 0,
+        lastRecoveryToken: null,
+        lastRecoveredAt: null,
         createdAt: request.now,
         updatedAt: request.now,
         deliveredAt: null,
@@ -914,6 +976,286 @@ export class PersistentControlledActionVerticalSlice {
     });
   }
 
+  async requeueDeadLetter(
+    request: RequeueIntegratedDeadLetterRequest,
+  ): Promise<IntegratedDeadLetterRecoveryResult> {
+    const actionId = requireNonEmpty(
+      request.actionId,
+      "Dead-letter recovery actionId",
+    );
+
+    const outboxId = requireNonEmpty(
+      request.outboxId,
+      "Dead-letter recovery outboxId",
+    );
+
+    const tenantId = requireNonEmpty(
+      request.tenantId,
+      "Dead-letter recovery tenantId",
+    );
+
+    const newOwnerAuthorizationId = requireNonEmpty(
+      request.newOwnerAuthorizationId,
+      "Dead-letter recovery owner authorization ID",
+    );
+
+    const recoveryToken = requireNonEmpty(
+      request.recoveryToken,
+      "Dead-letter recovery token",
+    );
+
+    const replacementDispatchToken = requireNonEmpty(
+      request.replacementDispatchToken,
+      "Dead-letter recovery replacement dispatch token",
+    );
+
+    const expectedFailureCode = requireNonEmpty(
+      request.expectedFailureCode,
+      "Dead-letter recovery expected failure code",
+    );
+
+    const recoveryReasonCode = requireNonEmpty(
+      request.recoveryReasonCode,
+      "Dead-letter recovery reason code",
+    );
+
+    const auditId = requireNonEmpty(
+      request.auditId,
+      "Dead-letter recovery auditId",
+    );
+
+    const now = parseTimestamp(
+      request.now,
+      "Dead-letter recovery now",
+    );
+
+    if (
+      !Number.isSafeInteger(request.retryDelayMs) ||
+      request.retryDelayMs < 0 ||
+      request.retryDelayMs > 86_400_000
+    ) {
+      throw new Error(
+        "Dead-letter recovery retryDelayMs must be between 0 and 86400000.",
+      );
+    }
+
+    if (
+      !Number.isSafeInteger(request.maxRecoveryCount) ||
+      request.maxRecoveryCount < 1 ||
+      request.maxRecoveryCount > 10
+    ) {
+      throw new Error(
+        "Dead-letter recovery maxRecoveryCount must be between 1 and 10.",
+      );
+    }
+
+    return this.transact((state) => {
+      if (state.killSwitch.engaged) {
+        throw new Error(
+          "Operational kill switch is engaged. Dead-letter recovery denied.",
+        );
+      }
+
+      const action = state.actions[actionId];
+
+      if (!action) {
+        throw new Error("Controlled action not found.");
+      }
+
+      const outboxRecord = state.outbox[outboxId];
+
+      if (!outboxRecord) {
+        throw new Error("Dispatch outbox record not found.");
+      }
+
+      if (
+        action.tenantId !== tenantId ||
+        outboxRecord.tenantId !== tenantId
+      ) {
+        throw new Error("Dead-letter recovery tenant mismatch.");
+      }
+
+      if (
+        action.outboxId !== outboxId ||
+        outboxRecord.actionId !== actionId
+      ) {
+        throw new Error(
+          "Controlled action and outbox relationship is invalid.",
+        );
+      }
+
+      if (
+        action.lastRecoveryToken === recoveryToken &&
+        outboxRecord.lastRecoveryToken === recoveryToken &&
+        action.status === "dispatch_pending" &&
+        outboxRecord.status === "retry_wait" &&
+        action.ownerAuthorizationId ===
+          newOwnerAuthorizationId &&
+        action.dispatchToken === replacementDispatchToken &&
+        outboxRecord.dispatchToken === replacementDispatchToken
+      ) {
+        return {
+          changed: false,
+          value: {
+            action,
+            outbox: outboxRecord,
+            disposition: "replay_accepted" as const,
+          },
+        };
+      }
+
+      const recoveryTokenConflict = Object.values(
+        state.actions,
+      ).some(
+        (candidate) =>
+          candidate.actionId !== actionId &&
+          candidate.lastRecoveryToken === recoveryToken,
+      );
+
+      if (recoveryTokenConflict) {
+        throw new Error(
+          "Dead-letter recovery token conflicts with another action.",
+        );
+      }
+
+      if (
+        action.status !== "failed" ||
+        outboxRecord.status !== "dead_letter"
+      ) {
+        throw new Error(
+          "Only a failed action with a dead-letter outbox can be requeued.",
+        );
+      }
+
+      if (
+        action.terminalReasonCode !== expectedFailureCode ||
+        outboxRecord.lastFailureCode !== expectedFailureCode
+      ) {
+        throw new Error(
+          "Dead-letter recovery failure code does not match durable state.",
+        );
+      }
+
+      if (
+        action.recoveryCount !== outboxRecord.recoveryCount
+      ) {
+        throw new Error(
+          "Action and outbox recovery counters are inconsistent.",
+        );
+      }
+
+      if (
+        action.recoveryCount >= request.maxRecoveryCount
+      ) {
+        throw new Error(
+          "Dead-letter recovery limit has been exhausted.",
+        );
+      }
+
+      if (
+        replacementDispatchToken === action.dispatchToken ||
+        replacementDispatchToken ===
+          outboxRecord.dispatchToken
+      ) {
+        throw new Error(
+          "Dead-letter recovery requires a new dispatch token.",
+        );
+      }
+
+      const dispatchTokenConflict = Object.values(
+        state.outbox,
+      ).some(
+        (candidate) =>
+          candidate.outboxId !== outboxId &&
+          candidate.tenantId === tenantId &&
+          candidate.dispatchToken ===
+            replacementDispatchToken,
+      );
+
+      if (dispatchTokenConflict) {
+        throw new Error(
+          "Replacement dispatch token already exists for this tenant.",
+        );
+      }
+
+      if (
+        action.leaseOwner ||
+        action.leaseExpiresAt ||
+        outboxRecord.leaseOwner ||
+        outboxRecord.leaseExpiresAt
+      ) {
+        throw new Error(
+          "Dead-letter recovery cannot proceed with an active lease.",
+        );
+      }
+
+      const nextRecoveryCount = action.recoveryCount + 1;
+      const nextAttemptAt = new Date(
+        now + request.retryDelayMs,
+      ).toISOString();
+
+      action.status = "dispatch_pending";
+      action.version += 1;
+      action.ownerAuthorizationId =
+        newOwnerAuthorizationId;
+      action.dispatchToken = replacementDispatchToken;
+      action.terminalCommitToken = null;
+      action.resultDigest = null;
+      action.terminalReasonCode = null;
+      action.terminalAt = null;
+      action.recoveryCount = nextRecoveryCount;
+      action.lastRecoveryToken = recoveryToken;
+      action.lastRecoveredAt = request.now;
+      action.updatedAt = request.now;
+
+      outboxRecord.status = "retry_wait";
+      outboxRecord.version += 1;
+      outboxRecord.dispatchToken =
+        replacementDispatchToken;
+      outboxRecord.deliveryAttemptCount = 0;
+      outboxRecord.nextAttemptAt = nextAttemptAt;
+      outboxRecord.leaseOwner = null;
+      outboxRecord.leaseExpiresAt = null;
+      outboxRecord.lastOutcomeToken = null;
+      outboxRecord.deliveredAt = null;
+      outboxRecord.recoveryCount = nextRecoveryCount;
+      outboxRecord.lastRecoveryToken = recoveryToken;
+      outboxRecord.lastRecoveredAt = request.now;
+      outboxRecord.updatedAt = request.now;
+
+      appendAudit(state, {
+        auditId,
+        tenantId,
+        actionId,
+        outboxId,
+        eventType:
+          "CONTROLLED_ACTION_DEAD_LETTER_REQUEUED",
+        occurredAt: request.now,
+        details: {
+          recoveryToken,
+          recoveryReasonCode,
+          previousFailureCode: expectedFailureCode,
+          newOwnerAuthorizationId,
+          replacementDispatchToken,
+          recoveryCount: nextRecoveryCount,
+          maxRecoveryCount: request.maxRecoveryCount,
+          nextAttemptAt,
+          deliveryAttemptCountReset: true,
+          actionVersion: action.version,
+          outboxVersion: outboxRecord.version,
+        },
+      });
+
+      return {
+        changed: true,
+        value: {
+          action,
+          outbox: outboxRecord,
+          disposition: "requeued" as const,
+        },
+      };
+    });
+  }
   async claimNextDueOutbox(
     request: ClaimNextIntegratedOutboxRequest,
   ): Promise<IntegratedDispatchOutboxRecord | null> {
@@ -2269,6 +2611,7 @@ export class PersistentControlledActionVerticalSlice {
     }
   }
 }
+
 
 
 
