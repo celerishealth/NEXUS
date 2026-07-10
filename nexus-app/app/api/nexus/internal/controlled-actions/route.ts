@@ -4,6 +4,10 @@ import {
   ControlledActionCommandGateway,
 } from "@/lib/nexus/controlledActionCommandGateway";
 import {
+  DurableSignedGatewayOutcomeJournal,
+  type GatewayJournalJsonValue,
+} from "@/lib/nexus/durableSignedGatewayOutcomeJournal";
+import {
   PersistentControlledActionVerticalSlice,
 } from "@/lib/nexus/persistentControlledActionVerticalSlice";
 import {
@@ -27,6 +31,12 @@ const replayStatePath = resolve(
     ".nexus-runtime/controlled-action-gateway-replay.json",
 );
 
+const outcomeJournalPath = resolve(
+  process.cwd(),
+  process.env.NEXUS_GATEWAY_OUTCOME_JOURNAL_PATH ??
+    ".nexus-runtime/controlled-action-gateway-outcomes.json",
+);
+
 const gateway = new ControlledActionCommandGateway(
   new PersistentControlledActionVerticalSlice(
     actionStatePath,
@@ -36,6 +46,11 @@ const gateway = new ControlledActionCommandGateway(
 const replayGuard =
   new PersistentControlledActionGatewayReplayGuard(
     replayStatePath,
+  );
+
+const outcomeJournal =
+  new DurableSignedGatewayOutcomeJournal(
+    outcomeJournalPath,
   );
 
 function readClockSkewMs(): number {
@@ -68,7 +83,11 @@ function errorStatus(message: string): number {
     return 401;
   }
 
-  if (message.includes("replay")) {
+  if (
+    message.includes("replay") ||
+    message.includes("nonce conflicts") ||
+    message.includes("in progress")
+  ) {
     return 409;
   }
 
@@ -82,6 +101,15 @@ function errorStatus(message: string): number {
   }
 
   return 400;
+}
+
+function errorBody(
+  message: string,
+): GatewayJournalJsonValue {
+  return {
+    error: message,
+    liveProviderExecutionAuthorized: false,
+  };
 }
 
 export async function POST(request: NextRequest) {
@@ -148,18 +176,33 @@ export async function POST(request: NextRequest) {
         maxClockSkewMs,
       );
 
-    const reserved = await replayGuard.reserve(
-      envelope.keyId,
-      envelope.nonce,
+    const journalResult = await outcomeJournal.begin(
+      envelope,
       now,
       replayExpiresAt,
     );
 
-    if (!reserved) {
+    if (journalResult.disposition === "replay") {
+      return NextResponse.json(
+        journalResult.entry.responseBody,
+        {
+          status:
+            journalResult.entry.httpStatus ?? 500,
+          headers: {
+            "cache-control": "no-store",
+            "x-nexus-replayed-response": "true",
+          },
+        },
+      );
+    }
+
+    if (
+      journalResult.disposition === "in_progress"
+    ) {
       return NextResponse.json(
         {
           error:
-            "Signed gateway request replay detected.",
+            "Signed gateway request is already in progress.",
           liveProviderExecutionAuthorized: false,
         },
         {
@@ -171,17 +214,84 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const response = await gateway.execute(
-      envelope.context,
-      envelope.command,
+    const reserved = await replayGuard.reserve(
+      envelope.keyId,
+      envelope.nonce,
+      now,
+      replayExpiresAt,
     );
 
-    return NextResponse.json(response, {
-      status: 200,
-      headers: {
-        "cache-control": "no-store",
-      },
-    });
+    if (!reserved) {
+      const body = errorBody(
+        "Signed gateway request replay detected.",
+      );
+
+      await outcomeJournal.finish(
+        envelope.keyId,
+        envelope.nonce,
+        envelope.signature,
+        "failed",
+        new Date().toISOString(),
+        409,
+        body,
+      );
+
+      return NextResponse.json(body, {
+        status: 409,
+        headers: {
+          "cache-control": "no-store",
+        },
+      });
+    }
+
+    try {
+      const response = await gateway.execute(
+        envelope.context,
+        envelope.command,
+      );
+
+      await outcomeJournal.finish(
+        envelope.keyId,
+        envelope.nonce,
+        envelope.signature,
+        "completed",
+        new Date().toISOString(),
+        200,
+        response,
+      );
+
+      return NextResponse.json(response, {
+        status: 200,
+        headers: {
+          "cache-control": "no-store",
+        },
+      });
+    } catch (commandError) {
+      const message =
+        commandError instanceof Error
+          ? commandError.message
+          : "Unknown controlled-action command failure.";
+
+      const status = errorStatus(message);
+      const body = errorBody(message);
+
+      await outcomeJournal.finish(
+        envelope.keyId,
+        envelope.nonce,
+        envelope.signature,
+        "failed",
+        new Date().toISOString(),
+        status,
+        body,
+      );
+
+      return NextResponse.json(body, {
+        status,
+        headers: {
+          "cache-control": "no-store",
+        },
+      });
+    }
   } catch (error) {
     const message =
       error instanceof Error
