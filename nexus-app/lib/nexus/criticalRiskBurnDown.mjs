@@ -234,6 +234,7 @@ function inspectProtectedRoutes(repositoryRoot) {
   const missingFiles = [];
   const unsafeIndicators = [];
   const missingSecretGates = [];
+  const missingRequestGuards = [];
 
   const unsafePatterns = [
     {
@@ -290,6 +291,16 @@ function inspectProtectedRoutes(repositoryRoot) {
       missingSecretGates.push(file);
     }
 
+    if (
+      content.includes(
+        "export async function POST",
+      ) &&
+      !content.includes(
+        "inspectProtectedApiRequest",
+      )
+    ) {
+      missingRequestGuards.push(file);
+    }
     for (const pattern of unsafePatterns) {
       if (pattern.expression.test(content)) {
         unsafeIndicators.push({
@@ -304,6 +315,7 @@ function inspectProtectedRoutes(repositoryRoot) {
     missingFiles,
     unsafeIndicators,
     missingSecretGates,
+    missingRequestGuards,
   };
 }
 
@@ -694,7 +706,15 @@ export function runCriticalRiskAudit({
         : protectedRoutes.missingSecretGates,
     ),
 
-    createControl(
+        createControl(
+      "CRITICAL_PROTECTED_POST_ROUTES_REQUEST_GUARDED",
+      "CRITICAL",
+      protectedRoutes.missingRequestGuards.length === 0,
+      protectedRoutes.missingRequestGuards.length === 0
+        ? "Every protected POST route uses the shared request-security guard."
+        : protectedRoutes.missingRequestGuards,
+    ),
+createControl(
       "CRITICAL_NO_REAL_EXECUTION_IN_PROTECTED_ROUTES",
       "CRITICAL",
       protectedRoutes.unsafeIndicators.length === 0,
@@ -926,6 +946,7 @@ export function runCriticalRiskAudit({
     }),
   });
 }
+
 
 
 

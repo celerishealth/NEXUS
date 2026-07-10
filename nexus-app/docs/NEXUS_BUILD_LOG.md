@@ -14462,3 +14462,34 @@ The endpoint supports preparation and signed-owner-review phases only.
 No provider invocation, persistence, payment, WhatsApp delivery, customer
 action, live migration, public launch, or uncontrolled AI execution is
 authorized.
+
+## Day 668 — Shared Protected API Request Security and Abuse Guard v1
+
+Integrated one shared fail-closed request-security boundary across every
+protected NEXUS action POST route.
+
+Protected controls:
+
+- POST-only enforcement
+- `application/json` enforcement
+- Declared `Content-Length` validation
+- Actual UTF-8 body-size validation
+- Maximum 64 KB protected request body
+- Empty-body rejection
+- Malformed JSON rejection
+- Top-level JSON-object requirement
+- Cross-site browser request rejection
+- Same-origin or explicit origin-allowlist enforcement
+- Validated or generated NEXUS request identifiers
+- No-store and no-sniff guarded error responses
+- Permanently locked execution, provider, and persistence flags
+- Machine-enforced Critical Risk Gate verification for every protected route
+
+Visible security posture:
+
+- `/nexus-protected-api-security`
+
+Passing this guard only permits further owner-controlled validation.
+It does not authorize provider invocation, persistence, payments,
+WhatsApp delivery, customer actions, live migrations, public launch,
+or uncontrolled AI execution.

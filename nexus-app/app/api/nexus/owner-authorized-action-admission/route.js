@@ -1,4 +1,7 @@
-﻿import { NextResponse } from "next/server";
+﻿import {
+  inspectProtectedApiRequest,
+} from "../../../../lib/nexus/protectedApiRequestGuard.mjs";
+import { NextResponse } from "next/server";
 import {
   createSignedOwnerResolution,
   evaluateOwnerAuthorizedActionAdmission,
@@ -86,6 +89,22 @@ export async function GET() {
 }
 
 export async function POST(request) {
+  const requestGuard =
+    await inspectProtectedApiRequest(
+      request,
+    );
+
+  if (!requestGuard.ok) {
+    return NextResponse.json(
+      requestGuard.error,
+      {
+        status:
+          requestGuard.status,
+        headers:
+          requestGuard.headers,
+      },
+    );
+  }
   const signingSecret =
     process.env.NEXUS_OWNER_RESOLUTION_SIGNING_SECRET?.trim();
 
@@ -132,3 +151,4 @@ export async function POST(request) {
     status: result.admitted ? 200 : 403,
   });
 }
+
