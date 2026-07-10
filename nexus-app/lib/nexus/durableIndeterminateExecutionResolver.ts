@@ -58,6 +58,7 @@ export type ResolveIndeterminateExecutionResult =
         | "EXECUTION_RECEIPT_NOT_FOUND"
         | "COMPLETED_RECEIPT_RETRY_BLOCKED"
         | "RECEIPT_ALREADY_RETRY_AUTHORIZED"
+        | "SINGLE_RETRY_ALREADY_CONSUMED"
         | "RESOLUTION_VERSION_CONFLICT"
         | "RESOLUTION_LEASE_INVALID"
         | "RESOLUTION_STALE_FENCE_TOKEN"
@@ -279,6 +280,29 @@ export class DurableIndeterminateExecutionResolver {
 
       if (
         receipt.payload.status ===
+          "in-flight" &&
+        receipt.payload
+          .retryAuthorizationId !== null &&
+        input.decision ===
+          "authorize-single-retry"
+      ) {
+        const leaseReleased =
+          await safeReleaseLease(
+            this.store,
+            acquired.lease,
+            this.now,
+          )
+
+        return {
+          outcome: "blocked",
+          code:
+            "SINGLE_RETRY_ALREADY_CONSUMED",
+          receipt,
+          leaseReleased,
+        }
+      }
+      if (
+        receipt.payload.status ===
           "retry-authorized" &&
         input.decision ===
           "authorize-single-retry"
@@ -433,3 +457,4 @@ export const createDurableIndeterminateExecutionResolver =
       ownerAuthority,
       now,
     )
+
