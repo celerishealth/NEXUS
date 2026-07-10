@@ -11,6 +11,9 @@ import {
   PersistentControlledActionVerticalSlice,
 } from "@/lib/nexus/persistentControlledActionVerticalSlice";
 import {
+  SQLiteControlledActionStateRepository,
+} from "@/lib/nexus/sqliteControlledActionStateRepository";
+import {
   calculateGatewayReplayExpiry,
   PersistentControlledActionGatewayReplayGuard,
   verifySignedControlledActionGatewayEnvelope,
@@ -25,6 +28,36 @@ const actionStatePath = resolve(
     ".nexus-runtime/controlled-action-state.json",
 );
 
+const sqliteDatabasePath = resolve(
+  process.cwd(),
+  process.env.NEXUS_CONTROLLED_ACTION_SQLITE_PATH ??
+    ".nexus-runtime/controlled-action-state.sqlite",
+);
+
+function createControlledActionEngine() {
+  const storageMode =
+    process.env.NEXUS_CONTROLLED_ACTION_STORAGE?.trim() ??
+    "file";
+
+  if (storageMode === "sqlite") {
+    return new PersistentControlledActionVerticalSlice(
+      new SQLiteControlledActionStateRepository(
+        sqliteDatabasePath,
+      ),
+    );
+  }
+
+  if (storageMode === "file") {
+    return new PersistentControlledActionVerticalSlice(
+      actionStatePath,
+    );
+  }
+
+  throw new Error(
+    "NEXUS_CONTROLLED_ACTION_STORAGE must be file or sqlite.",
+  );
+}
+
 const replayStatePath = resolve(
   process.cwd(),
   process.env.NEXUS_GATEWAY_REPLAY_STATE_PATH ??
@@ -38,9 +71,7 @@ const outcomeJournalPath = resolve(
 );
 
 const gateway = new ControlledActionCommandGateway(
-  new PersistentControlledActionVerticalSlice(
-    actionStatePath,
-  ),
+  createControlledActionEngine(),
 );
 
 const replayGuard =
@@ -312,3 +343,4 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+

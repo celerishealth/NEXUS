@@ -252,9 +252,19 @@ export interface SetIntegratedKillSwitchRequest {
   now: string;
 }
 
-interface TransactionResult<T> {
+export interface TransactionResult<T> {
   changed: boolean;
   value: T;
+}
+
+export interface ControlledActionStateRepository {
+  readSnapshot(): Promise<PersistentControlledActionState>;
+
+  transact<T>(
+    mutator: (
+      state: PersistentControlledActionState,
+    ) => TransactionResult<T>,
+  ): Promise<T>;
 }
 
 const MAX_LEASE_DURATION_MS = 300_000;
@@ -285,7 +295,7 @@ function clone<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T;
 }
 
-function createInitialState(): PersistentControlledActionState {
+export function createInitialState(): PersistentControlledActionState {
   return {
     schemaVersion: 1,
     revision: 0,
@@ -358,7 +368,7 @@ function isTerminalOutboxStatus(
   );
 }
 
-function validateState(state: PersistentControlledActionState): void {
+export function validateState(state: PersistentControlledActionState): void {
   if (state.schemaVersion !== 1) {
     throw new Error("Unsupported persistent state schema version.");
   }
@@ -627,16 +637,41 @@ async function sleep(milliseconds: number): Promise<void> {
 }
 
 export class PersistentControlledActionVerticalSlice {
+  private readonly statePath: string;
   private readonly backupPath: string;
   private readonly lockPath: string;
+  private readonly repository: ControlledActionStateRepository | null;
 
-  constructor(private readonly statePath: string) {
-    requireNonEmpty(statePath, "Persistent state path");
-    this.backupPath = `${statePath}.bak`;
-    this.lockPath = `${statePath}.lock`;
+  constructor(
+    statePathOrRepository:
+      | string
+      | ControlledActionStateRepository,
+  ) {
+    if (typeof statePathOrRepository === "string") {
+      this.statePath = requireNonEmpty(
+        statePathOrRepository,
+        "Persistent state path",
+      );
+
+      this.repository = null;
+      this.backupPath = `${this.statePath}.bak`;
+      this.lockPath = `${this.statePath}.lock`;
+      return;
+    }
+
+    this.statePath = "";
+    this.backupPath = "";
+    this.lockPath = "";
+    this.repository = statePathOrRepository;
   }
 
   async readSnapshot(): Promise<PersistentControlledActionState> {
+    if (this.repository) {
+      const state = await this.repository.readSnapshot();
+      validateState(state);
+      return clone(state);
+    }
+
     const state = await this.readStateInternal();
     validateState(state);
     return clone(state);
@@ -2464,6 +2499,10 @@ export class PersistentControlledActionVerticalSlice {
       state: PersistentControlledActionState,
     ) => TransactionResult<T>,
   ): Promise<T> {
+    if (this.repository) {
+      return this.repository.transact(mutator);
+    }
+
     const releaseLock = await this.acquireLock();
 
     try {
@@ -2611,6 +2650,7 @@ export class PersistentControlledActionVerticalSlice {
     }
   }
 }
+
 
 
 
