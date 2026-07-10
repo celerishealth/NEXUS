@@ -2,16 +2,31 @@
   DurableActiveProviderContainment,
   DurableProviderContainmentReader,
 } from "./durableProviderContainmentReader"
-import type {
-  ProviderContinuityDurableStore,
-  ProviderContinuityLease,
-} from "./providerContinuityDurableStore"
 import {
   assertLeaseSafeContinuityStore,
+  type CompareAndSwapProviderContinuityInput,
+  type CompareAndSwapProviderContinuityResult,
+  type ProviderContinuityDurableRecord,
+  type ProviderContinuityDurableStore,
+  type ProviderContinuityJsonValue,
+  type ProviderContinuityLease,
+  type ProviderContinuityRecordScope,
 } from "./providerContinuityDurableStore"
 import type {
   ProviderDomain,
 } from "./providerRecoveryQueue"
+
+export type DurableProviderExecutionReceiptPayload = {
+  status: "in-flight" | "completed"
+  operationId: string
+  ownerId: string
+  reason: string
+  idempotencyKey: string
+  fenceToken: number
+  startedAt: number
+  completedAt: number | null
+  [key: string]: ProviderContinuityJsonValue
+}
 
 export interface DurableProviderExecutionInput {
   tenantId: string
@@ -45,6 +60,7 @@ export type DurableProviderExecutionResult<T> =
         DurableProviderExecutionContext,
         "signal"
       >
+      receiptVersion: number
       leaseReleased: boolean
     }
   | {
@@ -53,10 +69,17 @@ export type DurableProviderExecutionResult<T> =
         | "CONTINUITY_LEASE_ALREADY_HELD"
         | "DURABLE_PROVIDER_DOMAIN_CONTAINED"
         | "LEASE_SAFETY_WINDOW_EXHAUSTED"
+        | "PROVIDER_OPERATION_ALREADY_COMPLETED"
+        | "PROVIDER_OPERATION_INDETERMINATE"
       activeContainments:
         DurableActiveProviderContainment[]
       activeLease: ProviderContinuityLease | null
+      receipt:
+        | ProviderContinuityDurableRecord<DurableProviderExecutionReceiptPayload>
+        | null
       leaseReleased: boolean | null
+      automaticRetryAuthorized: false
+      manualResolutionRequired: boolean
     }
   | {
       outcome: "failed"
@@ -66,8 +89,25 @@ export type DurableProviderExecutionResult<T> =
       errorName: string
       idempotencyKey: string
       fenceToken: number
+      receiptVersion: number
       leaseReleased: boolean
       automaticRetryAuthorized: false
+      manualResolutionRequired: true
+    }
+  | {
+      outcome: "indeterminate"
+      code:
+        "PROVIDER_EXECUTION_SUCCEEDED_RECEIPT_NOT_COMMITTED"
+      receiptCommitCode:
+        | "VERSION_CONFLICT"
+        | "LEASE_INVALID"
+        | "STALE_FENCE_TOKEN"
+        | "RECEIPT_COMMIT_ERROR"
+      idempotencyKey: string
+      fenceToken: number
+      leaseReleased: boolean
+      automaticRetryAuthorized: false
+      manualResolutionRequired: true
     }
 
 export interface DurableProviderExecutionGuardOptions {
@@ -75,6 +115,25 @@ export interface DurableProviderExecutionGuardOptions {
   containmentReader:
     DurableProviderContainmentReader
   now?: () => number
+}
+
+export type DurableProviderExecutionReceiptErrorCode =
+  | "MALFORMED_EXECUTION_RECEIPT"
+  | "EXECUTION_RECEIPT_SCOPE_MISMATCH"
+  | "EXECUTION_RECEIPT_CLAIM_FAILED"
+
+export class DurableProviderExecutionReceiptError
+  extends Error
+{
+  constructor(
+    readonly code:
+      DurableProviderExecutionReceiptErrorCode,
+    message: string,
+  ) {
+    super(message)
+    this.name =
+      "DurableProviderExecutionReceiptError"
+  }
 }
 
 class ProviderExecutionTimeoutError
@@ -145,6 +204,17 @@ const createIdempotencyKey = (
     )
     .join("|")
 
+const createReceiptScope = (
+  tenantId: string,
+  providerDomain: ProviderDomain,
+  idempotencyKey: string,
+): ProviderContinuityRecordScope => ({
+  tenantId,
+  providerDomain,
+  kind: "replay-idempotency",
+  recordId: idempotencyKey,
+})
+
 const runAbortableOperation = async <T>(
   timeoutMs: number,
   operation: (
@@ -181,6 +251,101 @@ const runAbortableOperation = async <T>(
     if (timeoutHandle) {
       clearTimeout(timeoutHandle)
     }
+  }
+}
+
+const validateReceipt = (
+  record:
+    ProviderContinuityDurableRecord<DurableProviderExecutionReceiptPayload>,
+  expected: {
+    operationId: string
+    idempotencyKey: string
+  },
+): ProviderContinuityDurableRecord<DurableProviderExecutionReceiptPayload> => {
+  const payload = record.payload
+
+  if (
+    (
+      payload.status !== "in-flight" &&
+      payload.status !== "completed"
+    ) ||
+    typeof payload.operationId !== "string" ||
+    typeof payload.ownerId !== "string" ||
+    typeof payload.reason !== "string" ||
+    typeof payload.idempotencyKey !== "string" ||
+    typeof payload.fenceToken !== "number" ||
+    typeof payload.startedAt !== "number" ||
+    (
+      payload.completedAt !== null &&
+      typeof payload.completedAt !== "number"
+    )
+  ) {
+    throw new DurableProviderExecutionReceiptError(
+      "MALFORMED_EXECUTION_RECEIPT",
+      "durable provider execution receipt is malformed",
+    )
+  }
+
+  if (
+    payload.operationId !==
+      expected.operationId ||
+    payload.idempotencyKey !==
+      expected.idempotencyKey
+  ) {
+    throw new DurableProviderExecutionReceiptError(
+      "EXECUTION_RECEIPT_SCOPE_MISMATCH",
+      "durable provider execution receipt does not match the requested operation",
+    )
+  }
+
+  return record
+}
+
+const safeReleaseLease = async (
+  store: ProviderContinuityDurableStore,
+  lease: ProviderContinuityLease,
+  now: () => number,
+): Promise<boolean> => {
+  try {
+    return await store.releaseLease({
+      lease,
+      now: now(),
+    })
+  } catch {
+    return false
+  }
+}
+
+const classifyExistingReceipt = (
+  receipt:
+    ProviderContinuityDurableRecord<DurableProviderExecutionReceiptPayload>,
+  lease: ProviderContinuityLease,
+  leaseReleased: boolean,
+): DurableProviderExecutionResult<never> => {
+  if (receipt.payload.status === "completed") {
+    return {
+      outcome: "blocked",
+      code:
+        "PROVIDER_OPERATION_ALREADY_COMPLETED",
+      activeContainments: [],
+      activeLease: lease,
+      receipt,
+      leaseReleased,
+      automaticRetryAuthorized: false,
+      manualResolutionRequired: false,
+    }
+  }
+
+  return {
+    outcome: "blocked",
+    code:
+      "PROVIDER_OPERATION_INDETERMINATE",
+    activeContainments: [],
+    activeLease: lease,
+    receipt,
+    leaseReleased,
+    automaticRetryAuthorized: false,
+    manualResolutionRequired: true,
   }
 }
 
@@ -271,11 +436,15 @@ export class DurableProviderExecutionGuard {
         activeContainments: [],
         activeLease:
           acquired.activeLease,
+        receipt: null,
         leaseReleased: null,
+        automaticRetryAuthorized: false,
+        manualResolutionRequired: false,
       }
     }
 
-    let leaseReleased = false
+    const lease = acquired.lease
+    let callbackStarted = false
 
     try {
       const activeContainments =
@@ -285,19 +454,23 @@ export class DurableProviderExecutionGuard {
         )
 
       if (activeContainments.length > 0) {
-        leaseReleased =
-          await this.store.releaseLease({
-            lease: acquired.lease,
-            now: this.now(),
-          })
+        const leaseReleased =
+          await safeReleaseLease(
+            this.store,
+            lease,
+            this.now,
+          )
 
         return {
           outcome: "blocked",
           code:
             "DURABLE_PROVIDER_DOMAIN_CONTAINED",
           activeContainments,
-          activeLease: acquired.lease,
+          activeLease: lease,
+          receipt: null,
           leaseReleased,
+          automaticRetryAuthorized: false,
+          manualResolutionRequired: true,
         }
       }
 
@@ -305,7 +478,7 @@ export class DurableProviderExecutionGuard {
         this.now()
 
       const remainingLeaseMs =
-        acquired.lease.expiresAt -
+        lease.expiresAt -
         executionStartTime
 
       if (
@@ -313,19 +486,23 @@ export class DurableProviderExecutionGuard {
         executionTimeoutMs +
           safetyMarginMs
       ) {
-        leaseReleased =
-          await this.store.releaseLease({
-            lease: acquired.lease,
-            now: this.now(),
-          })
+        const leaseReleased =
+          await safeReleaseLease(
+            this.store,
+            lease,
+            this.now,
+          )
 
         return {
           outcome: "blocked",
           code:
             "LEASE_SAFETY_WINDOW_EXHAUSTED",
           activeContainments: [],
-          activeLease: acquired.lease,
+          activeLease: lease,
+          receipt: null,
           leaseReleased,
+          automaticRetryAuthorized: false,
+          manualResolutionRequired: false,
         }
       }
 
@@ -336,27 +513,125 @@ export class DurableProviderExecutionGuard {
           operationId,
         )
 
+      const receiptScope =
+        createReceiptScope(
+          tenantId,
+          input.providerDomain,
+          idempotencyKey,
+        )
+
+      const existingReceipt =
+        await this.store.read<DurableProviderExecutionReceiptPayload>(
+          receiptScope,
+        )
+
+      if (existingReceipt) {
+        const validatedReceipt =
+          validateReceipt(
+            existingReceipt,
+            {
+              operationId,
+              idempotencyKey,
+            },
+          )
+
+        const leaseReleased =
+          await safeReleaseLease(
+            this.store,
+            lease,
+            this.now,
+          )
+
+        return classifyExistingReceipt(
+          validatedReceipt,
+          lease,
+          leaseReleased,
+        ) as DurableProviderExecutionResult<T>
+      }
+
+      const claimPayload:
+        DurableProviderExecutionReceiptPayload =
+        {
+          status: "in-flight",
+          operationId,
+          ownerId: workerId,
+          reason:
+            "provider-execution-claimed",
+          idempotencyKey,
+          fenceToken:
+            lease.fenceToken,
+          startedAt:
+            executionStartTime,
+          completedAt: null,
+        }
+
+      const claim =
+        await this.store.compareAndSwap({
+          scope: receiptScope,
+          expectedVersion: null,
+          payload: claimPayload,
+          lease,
+          now: this.now(),
+        })
+
+      if (!claim.applied) {
+        const currentReceipt =
+          claim.currentRecord
+            ? validateReceipt(
+                claim.currentRecord as
+                  ProviderContinuityDurableRecord<DurableProviderExecutionReceiptPayload>,
+                {
+                  operationId,
+                  idempotencyKey,
+                },
+              )
+            : null
+
+        if (currentReceipt) {
+          const leaseReleased =
+            await safeReleaseLease(
+              this.store,
+              lease,
+              this.now,
+            )
+
+          return classifyExistingReceipt(
+            currentReceipt,
+            lease,
+            leaseReleased,
+          ) as DurableProviderExecutionResult<T>
+        }
+
+        throw new DurableProviderExecutionReceiptError(
+          "EXECUTION_RECEIPT_CLAIM_FAILED",
+          `durable provider execution receipt claim failed: ${claim.code}`,
+        )
+      }
+
       const context:
-        DurableProviderExecutionContext = {
+        Omit<
+          DurableProviderExecutionContext,
+          "signal"
+        > = {
         tenantId,
         providerDomain:
           input.providerDomain,
         operationId,
         idempotencyKey,
-        leaseId:
-          acquired.lease.leaseId,
-        workerId:
-          acquired.lease.ownerId,
+        leaseId: lease.leaseId,
+        workerId: lease.ownerId,
         fenceToken:
-          acquired.lease.fenceToken,
+          lease.fenceToken,
         leaseExpiresAt:
-          acquired.lease.expiresAt,
-        signal:
-          new AbortController().signal,
+          lease.expiresAt,
       }
 
+      let value: T
+
       try {
-        const value =
+        callbackStarted = true
+
+        value =
           await runAbortableOperation(
             executionTimeoutMs,
             (signal) =>
@@ -365,44 +640,13 @@ export class DurableProviderExecutionGuard {
                 signal,
               }),
           )
-
-        leaseReleased =
-          await this.store.releaseLease({
-            lease: acquired.lease,
-            now: this.now(),
-          })
-
-        return {
-          outcome: "executed",
-          code:
-            "DURABLE_PROVIDER_EXECUTION_SUCCEEDED",
-          value,
-          context: {
-            tenantId:
-              context.tenantId,
-            providerDomain:
-              context.providerDomain,
-            operationId:
-              context.operationId,
-            idempotencyKey:
-              context.idempotencyKey,
-            leaseId:
-              context.leaseId,
-            workerId:
-              context.workerId,
-            fenceToken:
-              context.fenceToken,
-            leaseExpiresAt:
-              context.leaseExpiresAt,
-          },
-          leaseReleased,
-        }
       } catch (error: unknown) {
-        leaseReleased =
-          await this.store.releaseLease({
-            lease: acquired.lease,
-            now: this.now(),
-          })
+        const leaseReleased =
+          await safeReleaseLease(
+            this.store,
+            lease,
+            this.now,
+          )
 
         const timedOut =
           error instanceof
@@ -419,17 +663,111 @@ export class DurableProviderExecutionGuard {
               : "UnknownProviderExecutionError",
           idempotencyKey,
           fenceToken:
-            acquired.lease.fenceToken,
+            lease.fenceToken,
+          receiptVersion:
+            claim.record.version,
           leaseReleased,
           automaticRetryAuthorized: false,
+          manualResolutionRequired: true,
         }
       }
+
+      const completedAt = this.now()
+
+      const completedPayload:
+        DurableProviderExecutionReceiptPayload =
+        {
+          ...claimPayload,
+          status: "completed",
+          reason:
+            "provider-execution-completed",
+          completedAt,
+        }
+
+      let completion:
+        | CompareAndSwapProviderContinuityResult<DurableProviderExecutionReceiptPayload>
+        | null = null
+
+      try {
+        completion =
+          await this.store.compareAndSwap({
+            scope: receiptScope,
+            expectedVersion:
+              claim.record.version,
+            payload: completedPayload,
+            lease,
+            now: completedAt,
+          })
+      } catch {
+        const leaseReleased =
+          await safeReleaseLease(
+            this.store,
+            lease,
+            this.now,
+          )
+
+        return {
+          outcome: "indeterminate",
+          code:
+            "PROVIDER_EXECUTION_SUCCEEDED_RECEIPT_NOT_COMMITTED",
+          receiptCommitCode:
+            "RECEIPT_COMMIT_ERROR",
+          idempotencyKey,
+          fenceToken:
+            lease.fenceToken,
+          leaseReleased,
+          automaticRetryAuthorized: false,
+          manualResolutionRequired: true,
+        }
+      }
+
+      if (!completion.applied) {
+        const leaseReleased =
+          await safeReleaseLease(
+            this.store,
+            lease,
+            this.now,
+          )
+
+        return {
+          outcome: "indeterminate",
+          code:
+            "PROVIDER_EXECUTION_SUCCEEDED_RECEIPT_NOT_COMMITTED",
+          receiptCommitCode:
+            completion.code,
+          idempotencyKey,
+          fenceToken:
+            lease.fenceToken,
+          leaseReleased,
+          automaticRetryAuthorized: false,
+          manualResolutionRequired: true,
+        }
+      }
+
+      const leaseReleased =
+        await safeReleaseLease(
+          this.store,
+          lease,
+          this.now,
+        )
+
+      return {
+        outcome: "executed",
+        code:
+          "DURABLE_PROVIDER_EXECUTION_SUCCEEDED",
+        value,
+        context,
+        receiptVersion:
+          completion.record.version,
+        leaseReleased,
+      }
     } catch (error: unknown) {
-      if (!leaseReleased) {
-        await this.store.releaseLease({
-          lease: acquired.lease,
-          now: this.now(),
-        })
+      if (!callbackStarted) {
+        await safeReleaseLease(
+          this.store,
+          lease,
+          this.now,
+        )
       }
 
       throw error
