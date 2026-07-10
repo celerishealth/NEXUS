@@ -14732,3 +14732,53 @@ Recovery verifier:
 No production database was connected, backed up, restored, migrated, or
 modified. No customer data, provider execution, payment, WhatsApp action,
 public launch, or uncontrolled AI action was performed.
+
+## Day 675 — Distributed Rate Limiting and Durable Security Event Ledger v1
+
+Integrated real PostgreSQL-backed abuse protection across every protected
+NEXUS POST route.
+
+Database migration:
+
+- `db/migrations/0003_nexus_rate_limit_security_event.sql`
+
+Integrated controls:
+
+- Tenant-bound rate-limit buckets
+- Owner-bound rate-limit buckets
+- Route-specific rate-limit buckets
+- Atomic PostgreSQL counter increments
+- Distributed consistency across application instances
+- HTTP 429 fail-closed blocking
+- `RateLimit-Limit`, `RateLimit-Remaining`, and `RateLimit-Reset` headers
+- `Retry-After` response header
+- Durable allowed-request security events
+- Durable blocked-request security events
+- Signed-context and durable-membership binding
+- Database failure fail-closed behavior
+- Critical Risk Gate enforcement across every protected POST route
+
+Real disposable PostgreSQL verification:
+
+- Applied all three migrations
+- Submitted eight concurrent requests to a five-request limit
+- Verified exactly five allowed decisions
+- Verified exactly three blocked decisions
+- Verified an atomic database count of eight
+- Verified nine durable security events across two isolated tenant buckets
+- Verified three exact blocked security events
+- Verified second-tenant bucket isolation
+- Destroyed the disposable PostgreSQL environment after verification
+
+Required configuration:
+
+- `NEXUS_PROTECTED_API_RATE_LIMIT_MODE=postgres-rate-limit-v1`
+
+Optional limits:
+
+- `NEXUS_PROTECTED_API_RATE_LIMIT_WINDOW_MS`
+- `NEXUS_PROTECTED_API_RATE_LIMIT_MAX_REQUESTS`
+
+No production database was migrated or modified. No provider execution,
+customer action, payment, WhatsApp delivery, public launch, or
+uncontrolled AI action was authorized.

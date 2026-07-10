@@ -11,6 +11,7 @@ import {
 const requiredFiles = [
   "db/migrations/0001_nexus_protected_api_nonce.sql",
   "db/migrations/0002_nexus_tenant_owner_membership.sql",
+  "db/migrations/0003_nexus_rate_limit_security_event.sql",
   "lib/nexus/postgresMigrationRunner.mjs",
   "scripts/nexus-postgres-migrate.mjs",
 ];
@@ -113,7 +114,7 @@ if (missingFiles.length === 0) {
 const passed =
   missingFiles.length === 0 &&
   unsafeFindings.length === 0 &&
-  plan?.migrationCount === 2;
+  plan?.migrationCount === 3;
 
 const report = {
   schemaVersion:
@@ -137,3 +138,4 @@ console.log(
 if (!passed) {
   process.exit(1);
 }
+

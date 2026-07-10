@@ -420,7 +420,7 @@ try {
         id:
           "RESTORED_MIGRATION_ROWS_EXACT",
         passed:
-          counts.migration_count === 2,
+          counts.migration_count === 3,
       },
     ];
 
@@ -501,3 +501,4 @@ console.log(
 );
 
 process.exit(exitCode);
+

@@ -137,7 +137,7 @@ test(
 
     assert.equal(
       migrations.length,
-      2,
+      3,
     );
 
     assert.deepEqual(
@@ -148,6 +148,7 @@ test(
       [
         "0001_nexus_protected_api_nonce",
         "0002_nexus_tenant_owner_membership",
+        "0003_nexus_rate_limit_security_event",
       ],
     );
 
@@ -176,7 +177,7 @@ test(
 
     assert.equal(
       plan.migrationCount,
-      2,
+      3,
     );
 
     assert.equal(
@@ -235,7 +236,7 @@ test(
 
     assert.equal(
       result.appliedMigrationCount,
-      2,
+      3,
     );
 
     assert.equal(
@@ -271,7 +272,7 @@ test(
 
     assert.equal(
       client.ledger.size,
-      2,
+      3,
     );
   },
 );
@@ -316,7 +317,7 @@ test(
 
     assert.equal(
       result.previouslyAppliedCount,
-      2,
+      3,
     );
   },
 );
@@ -404,7 +405,7 @@ test(
 
     assert.equal(
       status.pendingMigrationCount,
-      2,
+      3,
     );
 
     assert.equal(
@@ -418,3 +419,4 @@ test(
     );
   },
 );
+

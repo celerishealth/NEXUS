@@ -1,4 +1,11 @@
 ﻿import {
+  enforceProtectedApiRateLimit,
+} from "../../../../lib/nexus/protectedApiRateLimitGuard.mjs";
+
+import {
+  getProtectedApiRateLimitStore,
+} from "../../../../lib/nexus/protectedApiRateLimitStore.mjs";
+import {
   authorizeProtectedApiTenantOwnerContext,
 } from "../../../../lib/nexus/protectedApiTenantAuthorizationGuard.mjs";
 
@@ -168,6 +175,35 @@ export async function POST(request) {
       },
     );
   }
+  const rateLimitGuard =
+    await enforceProtectedApiRateLimit(
+      signedEnvelopeGuard.authorizationContext,
+      tenantAuthorizationGuard
+        .tenantAuthorizationContext,
+      {
+        requestId:
+          requestGuard.requestId,
+        mode:
+          process.env
+            .NEXUS_PROTECTED_API_RATE_LIMIT_MODE,
+        store:
+          getProtectedApiRateLimitStore(),
+        nowMs:
+          Date.now(),
+      },
+    );
+
+  if (!rateLimitGuard.ok) {
+    return NextResponse.json(
+      rateLimitGuard.error,
+      {
+        status:
+          rateLimitGuard.status,
+        headers:
+          rateLimitGuard.headers,
+      },
+    );
+  }
   const signingSecret =
     process.env.NEXUS_OWNER_RESOLUTION_SIGNING_SECRET?.trim();
 
@@ -214,6 +250,7 @@ export async function POST(request) {
     status: result.admitted ? 200 : 403,
   });
 }
+
 
 
 

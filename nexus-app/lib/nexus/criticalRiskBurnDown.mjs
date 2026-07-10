@@ -238,6 +238,7 @@ function inspectProtectedRoutes(repositoryRoot) {
   const missingSignedEnvelopeGuards = [];
   const missingDurableReplayStores = [];
   const missingTenantAuthorizationGuards = [];
+  const missingRateLimitGuards = [];
 
   const unsafePatterns = [
     {
@@ -339,6 +340,21 @@ function inspectProtectedRoutes(repositoryRoot) {
     ) {
       missingTenantAuthorizationGuards.push(file);
     }
+    if (
+      content.includes(
+        "export async function POST",
+      ) &&
+      (
+        !content.includes(
+          "enforceProtectedApiRateLimit"
+        ) ||
+        !content.includes(
+          "getProtectedApiRateLimitStore"
+        )
+      )
+    ) {
+      missingRateLimitGuards.push(file);
+    }
     for (const pattern of unsafePatterns) {
       if (pattern.expression.test(content)) {
         unsafeIndicators.push({
@@ -357,6 +373,7 @@ function inspectProtectedRoutes(repositoryRoot) {
     missingSignedEnvelopeGuards,
     missingDurableReplayStores,
     missingTenantAuthorizationGuards,
+    missingRateLimitGuards,
   };
 }
 
@@ -779,6 +796,14 @@ export function runCriticalRiskAudit({
         ? "Every protected POST route requires durable PostgreSQL tenant-owner membership authorization."
         : protectedRoutes.missingTenantAuthorizationGuards,
     ),
+    createControl(
+      "HIGH_PROTECTED_ROUTES_REQUIRE_DISTRIBUTED_RATE_LIMITING",
+      "HIGH",
+      protectedRoutes.missingRateLimitGuards.length === 0,
+      protectedRoutes.missingRateLimitGuards.length === 0
+        ? "Every protected POST route uses durable tenant-owner-route rate limiting."
+        : protectedRoutes.missingRateLimitGuards,
+    ),
 createControl(
       "CRITICAL_NO_REAL_EXECUTION_IN_PROTECTED_ROUTES",
       "CRITICAL",
@@ -1011,6 +1036,7 @@ createControl(
     }),
   });
 }
+
 
 
 
