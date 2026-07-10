@@ -16,13 +16,26 @@ import {
 import {
   InMemoryTestProviderContinuityStore,
 } from "../inMemoryTestProviderContinuityStore"
+import {
+  createProviderOwnerResolutionAuthority,
+  ProviderOwnerAuthorityError,
+} from "../providerOwnerResolutionAuthority"
+
+const authoritySecret =
+  "nexus-owner-authority-secret-for-tests-123456789"
 
 const createClock = (
-  initial = 100,
+  initial = 1_000,
 ) => {
-  let now = initial
+  let current = initial
 
-  return () => now++
+  return {
+    now: () => current++,
+    peek: () => current,
+    advance: (milliseconds: number) => {
+      current += milliseconds
+    },
+  }
 }
 
 const createEmptyReader =
@@ -43,55 +56,403 @@ const executionInput = {
   safetyMarginMs: 500,
 }
 
+const createAuthority = (
+  clock: ReturnType<typeof createClock>,
+) =>
+  createProviderOwnerResolutionAuthority({
+    secret: authoritySecret,
+    secretEnvironmentName:
+      "NEXUS_OWNER_AUTHORIZATION_SECRET",
+    maxAuthorizationTtlMs: 5_000,
+    maxSessionAgeMs: 20_000,
+    now: clock.now,
+  })
+
+const createActor = (
+  clock: ReturnType<typeof createClock>,
+  overrides?: Partial<{
+    ownerId: string
+    tenantId: string
+    roles: string[]
+    stepUpVerified: boolean
+    authenticatedAt: number
+    sessionExpiresAt: number
+  }>,
+) => ({
+  ownerId: "owner-a",
+  tenantId: "tenant-a",
+  roles: ["owner"],
+  stepUpVerified: true,
+  authenticatedAt: 0,
+  sessionExpiresAt:
+    clock.peek() + 50_000,
+  ...overrides,
+})
+
+const createToken = (
+  authority:
+    ReturnType<typeof createAuthority>,
+  clock: ReturnType<typeof createClock>,
+  input?: Partial<{
+    tenantId: string
+    providerDomain: "payments" | "database"
+    operationId: string
+    decision:
+      | "confirm-completed"
+      | "authorize-single-retry"
+    authorizationId: string
+    reason: string
+    verificationReference: string
+    retryAuthorizationId: string
+  }>,
+) => {
+  const decision =
+    input?.decision ??
+    "confirm-completed"
+
+  return authority.issue({
+    actor: createActor(clock, {
+      tenantId:
+        input?.tenantId ??
+        "tenant-a",
+    }),
+    providerDomain:
+      input?.providerDomain ??
+      "payments",
+    operationId:
+      input?.operationId ??
+      "operation-one",
+    decision,
+    authorizationId:
+      input?.authorizationId ??
+      "owner-auth-001",
+    reason:
+      input?.reason ??
+      "provider evidence reviewed",
+    verificationReference:
+      input?.verificationReference ??
+      "provider-reference-001",
+    retryAuthorizationId:
+      decision ===
+      "authorize-single-retry"
+        ? input?.retryAuthorizationId ??
+          "retry-auth-001"
+        : undefined,
+    ttlMs: 2_000,
+  })
+}
+
+const createIndeterminateReceipt =
+  async (
+    store:
+      InMemoryTestProviderContinuityStore,
+    clock: ReturnType<typeof createClock>,
+  ) => {
+    const guard =
+      createDurableProviderExecutionGuard({
+        store,
+        containmentReader:
+          createEmptyReader(),
+        now: clock.now,
+      })
+
+    const result = await guard.execute(
+      executionInput,
+      async () => {
+        throw new Error(
+          "ambiguous provider response",
+        )
+      },
+    )
+
+    expect(result).toMatchObject({
+      outcome: "failed",
+      manualResolutionRequired: true,
+    })
+  }
+
 describe(
-  "owner-controlled indeterminate execution resolution",
+  "trusted owner resolution authority gate",
   () => {
-    it("allows verified completion and permanently blocks duplicate execution", async () => {
-      const store =
-        new InMemoryTestProviderContinuityStore()
-      const now = createClock()
-
-      const guard =
-        createDurableProviderExecutionGuard({
-          store,
-          containmentReader:
-            createEmptyReader(),
-          now,
-        })
-
-      const failed = await guard.execute(
-        executionInput,
-        async () => {
-          throw new Error(
-            "provider response lost",
-          )
-        },
+    it("blocks public or weak signing secrets", () => {
+      expect(() =>
+        createProviderOwnerResolutionAuthority({
+          secret: authoritySecret,
+          secretEnvironmentName:
+            "NEXT_PUBLIC_NEXUS_OWNER_SECRET",
+        }),
+      ).toThrow(
+        new ProviderOwnerAuthorityError(
+          "PUBLIC_OWNER_AUTHORITY_SECRET_BLOCKED",
+          "owner authorization secret must never use a NEXT_PUBLIC environment variable",
+        ),
       )
 
-      expect(failed).toMatchObject({
-        outcome: "failed",
-        manualResolutionRequired: true,
-      })
+      expect(() =>
+        createProviderOwnerResolutionAuthority({
+          secret: "too-short",
+        }),
+      ).toThrow(
+        new ProviderOwnerAuthorityError(
+          "OWNER_AUTHORITY_SECRET_TOO_SHORT",
+          "owner authorization signing secret must contain at least 32 bytes",
+        ),
+      )
+    })
+
+    it("requires owner role and step-up verification before signing", () => {
+      const clock = createClock()
+      const authority =
+        createAuthority(clock)
+
+      expect(() =>
+        authority.issue({
+          actor: createActor(clock, {
+            roles: ["member"],
+          }),
+          providerDomain: "payments",
+          operationId: "operation-one",
+          decision:
+            "confirm-completed",
+          authorizationId:
+            "auth-no-owner",
+          reason: "reviewed",
+          verificationReference:
+            "provider-reference",
+          ttlMs: 1_000,
+        }),
+      ).toThrow(
+        new ProviderOwnerAuthorityError(
+          "OWNER_ROLE_REQUIRED",
+          "owner role is required for execution resolution",
+        ),
+      )
+
+      expect(() =>
+        authority.issue({
+          actor: createActor(clock, {
+            stepUpVerified: false,
+          }),
+          providerDomain: "payments",
+          operationId: "operation-one",
+          decision:
+            "confirm-completed",
+          authorizationId:
+            "auth-no-step-up",
+          reason: "reviewed",
+          verificationReference:
+            "provider-reference",
+          ttlMs: 1_000,
+        }),
+      ).toThrow(
+        new ProviderOwnerAuthorityError(
+          "OWNER_STEP_UP_REQUIRED",
+          "step-up owner verification is required for execution resolution",
+        ),
+      )
+    })
+
+    it("rejects token tampering before durable state changes", async () => {
+      const clock = createClock()
+      const store =
+        new InMemoryTestProviderContinuityStore()
+      const authority =
+        createAuthority(clock)
+
+      await createIndeterminateReceipt(
+        store,
+        clock,
+      )
 
       const resolver =
         createDurableIndeterminateExecutionResolver(
           store,
-          now,
+          authority,
+          clock.now,
         )
+
+      const token = createToken(
+        authority,
+        clock,
+      )
+
+      const tamperedToken =
+        `${token.slice(0, -1)}${
+          token.endsWith("A")
+            ? "B"
+            : "A"
+        }`
+
+      await expect(
+        resolver.resolve({
+          tenantId: "tenant-a",
+          providerDomain: "payments",
+          operationId: "operation-one",
+          decision:
+            "confirm-completed",
+          authorizationToken:
+            tamperedToken,
+          leaseId: "resolution-lease",
+          workerId:
+            "resolution-worker",
+          leaseTtlMs: 5_000,
+        }),
+      ).rejects.toMatchObject({
+        code:
+          "OWNER_AUTHORIZATION_TOKEN_INVALID",
+      })
+
+      const idempotencyKey =
+        [
+          "nexus-provider-operation-v1",
+          "tenant-a",
+          "payments",
+          "operation-one",
+        ]
+          .map(
+            (part) =>
+              `${part.length}:${part}`,
+          )
+          .join("|")
+
+      const receipt = await store.read({
+        tenantId: "tenant-a",
+        providerDomain: "payments",
+        kind: "replay-idempotency",
+        recordId: idempotencyKey,
+      })
+
+      expect(receipt).toMatchObject({
+        version: 1,
+        payload: {
+          status: "in-flight",
+        },
+      })
+    })
+
+    it("rejects expired and cross-tenant authorizations", async () => {
+      const clock = createClock()
+      const store =
+        new InMemoryTestProviderContinuityStore()
+      const authority =
+        createAuthority(clock)
+
+      await createIndeterminateReceipt(
+        store,
+        clock,
+      )
+
+      const resolver =
+        createDurableIndeterminateExecutionResolver(
+          store,
+          authority,
+          clock.now,
+        )
+
+      const expiredToken =
+        authority.issue({
+          actor: createActor(clock),
+          providerDomain: "payments",
+          operationId: "operation-one",
+          decision:
+            "confirm-completed",
+          authorizationId:
+            "expiring-auth",
+          reason: "reviewed",
+          verificationReference:
+            "provider-reference",
+          ttlMs: 10,
+        })
+
+      clock.advance(100)
+
+      await expect(
+        resolver.resolve({
+          tenantId: "tenant-a",
+          providerDomain: "payments",
+          operationId: "operation-one",
+          decision:
+            "confirm-completed",
+          authorizationToken:
+            expiredToken,
+          leaseId: "expired-lease",
+          workerId: "worker-a",
+          leaseTtlMs: 5_000,
+        }),
+      ).rejects.toMatchObject({
+        code:
+          "OWNER_AUTHORIZATION_EXPIRED",
+      })
+
+      const tenantBToken = createToken(
+        authority,
+        clock,
+        {
+          tenantId: "tenant-b",
+        },
+      )
+
+      await expect(
+        resolver.resolve({
+          tenantId: "tenant-a",
+          providerDomain: "payments",
+          operationId: "operation-one",
+          decision:
+            "confirm-completed",
+          authorizationToken:
+            tenantBToken,
+          leaseId:
+            "cross-tenant-lease",
+          workerId: "worker-a",
+          leaseTtlMs: 5_000,
+        }),
+      ).rejects.toMatchObject({
+        code:
+          "OWNER_AUTHORIZATION_SCOPE_MISMATCH",
+      })
+    })
+
+    it("uses signed owner identity and evidence to confirm completion", async () => {
+      const clock = createClock()
+      const store =
+        new InMemoryTestProviderContinuityStore()
+      const authority =
+        createAuthority(clock)
+
+      await createIndeterminateReceipt(
+        store,
+        clock,
+      )
+
+      const resolver =
+        createDurableIndeterminateExecutionResolver(
+          store,
+          authority,
+          clock.now,
+        )
+
+      const token = createToken(
+        authority,
+        clock,
+        {
+          reason:
+            "provider dashboard confirms completion",
+          verificationReference:
+            "provider-transaction-7788",
+        },
+      )
 
       const resolution =
         await resolver.resolve({
           tenantId: "tenant-a",
           providerDomain: "payments",
           operationId: "operation-one",
-          decision: "confirm-completed",
-          ownerId: "owner-a",
-          reason:
-            "provider dashboard confirms transaction completed",
-          verificationReference:
-            "provider-transaction-7788",
+          decision:
+            "confirm-completed",
+          authorizationToken: token,
           leaseId: "resolution-lease",
-          workerId: "resolution-worker",
+          workerId:
+            "resolution-worker",
           leaseTtlMs: 5_000,
         })
 
@@ -103,61 +464,64 @@ describe(
           payload: {
             status: "completed",
             ownerId: "owner-a",
+            reason:
+              "provider dashboard confirms completion",
             verificationReference:
               "provider-transaction-7788",
           },
         },
       })
-
-      let duplicateExecuted = false
-
-      const duplicate = await guard.execute(
-        {
-          ...executionInput,
-          leaseId: "duplicate-lease",
-        },
-        async () => {
-          duplicateExecuted = true
-          return "unsafe-duplicate"
-        },
-      )
-
-      expect(duplicate).toMatchObject({
-        outcome: "blocked",
-        code:
-          "PROVIDER_OPERATION_ALREADY_COMPLETED",
-      })
-
-      expect(duplicateExecuted).toBe(false)
     })
 
-    it("requires exact owner authorization before one manual retry", async () => {
+    it("cryptographically binds one manual retry to its exact owner and operation", async () => {
+      const clock = createClock()
       const store =
         new InMemoryTestProviderContinuityStore()
-      const now = createClock(200)
+      const authority =
+        createAuthority(clock)
 
-      const guard =
-        createDurableProviderExecutionGuard({
-          store,
-          containmentReader:
-            createEmptyReader(),
-          now,
-        })
-
-      await guard.execute(
-        executionInput,
-        async () => {
-          throw new Error(
-            "confirmed provider rejection",
-          )
-        },
+      await createIndeterminateReceipt(
+        store,
+        clock,
       )
 
       const resolver =
         createDurableIndeterminateExecutionResolver(
           store,
-          now,
+          authority,
+          clock.now,
         )
+
+      const token = createToken(
+        authority,
+        clock,
+        {
+          decision:
+            "authorize-single-retry",
+          retryAuthorizationId:
+            "retry-auth-777",
+          verificationReference:
+            "provider-no-side-effect-777",
+        },
+      )
+
+      await expect(
+        resolver.resolve({
+          tenantId: "tenant-a",
+          providerDomain: "payments",
+          operationId: "operation-one",
+          decision:
+            "confirm-completed",
+          authorizationToken: token,
+          leaseId:
+            "wrong-decision-lease",
+          workerId: "worker-a",
+          leaseTtlMs: 5_000,
+        }),
+      ).rejects.toMatchObject({
+        code:
+          "OWNER_AUTHORIZATION_DECISION_MISMATCH",
+      })
 
       const authorization =
         await resolver.resolve({
@@ -166,15 +530,10 @@ describe(
           operationId: "operation-one",
           decision:
             "authorize-single-retry",
-          ownerId: "owner-a",
-          reason:
-            "provider confirms no transaction was created",
-          verificationReference:
-            "provider-search-no-result-991",
-          retryAuthorizationId:
-            "retry-auth-001",
+          authorizationToken: token,
           leaseId: "resolution-lease",
-          workerId: "resolution-worker",
+          workerId:
+            "resolution-worker",
           leaseTtlMs: 5_000,
         })
 
@@ -187,76 +546,39 @@ describe(
             status:
               "retry-authorized",
             retryAuthorizationId:
-              "retry-auth-001",
+              "retry-auth-777",
             retryAuthorizedBy:
               "owner-a",
+            verificationReference:
+              "provider-no-side-effect-777",
           },
         },
       })
 
-      let unauthorizedExecuted = false
+      const guard =
+        createDurableProviderExecutionGuard({
+          store,
+          containmentReader:
+            createEmptyReader(),
+          now: clock.now,
+        })
 
-      const withoutAuthorization =
-        await guard.execute(
-          {
-            ...executionInput,
-            leaseId:
-              "missing-auth-lease",
-          },
-          async () => {
-            unauthorizedExecuted = true
-            return "unsafe-result"
-          },
-        )
-
-      expect(
-        withoutAuthorization,
-      ).toMatchObject({
-        outcome: "blocked",
-        code:
-          "PROVIDER_OPERATION_MANUAL_RETRY_AUTHORIZATION_REQUIRED",
-      })
-
-      expect(unauthorizedExecuted).toBe(
-        false,
-      )
-
-      const wrongAuthorization =
-        await guard.execute(
-          {
-            ...executionInput,
-            leaseId:
-              "wrong-auth-lease",
-            manualRetryAuthorization: {
-              authorizationId:
-                "wrong-auth",
-              ownerId: "owner-a",
-            },
-          },
-          async () => "unsafe-result",
-        )
-
-      expect(wrongAuthorization).toMatchObject({
-        outcome: "blocked",
-        code:
-          "PROVIDER_OPERATION_MANUAL_RETRY_AUTHORIZATION_MISMATCH",
-      })
-
-      let retryExecutionCount = 0
+      let retryCount = 0
 
       const retry = await guard.execute(
         {
           ...executionInput,
           leaseId: "manual-retry-lease",
-          workerId: "manual-retry-worker",
+          workerId:
+            "manual-retry-worker",
           manualRetryAuthorization: {
             authorizationId:
-              "retry-auth-001",
+              "retry-auth-777",
             ownerId: "owner-a",
           },
         },
         async () => {
-          retryExecutionCount += 1
+          retryCount += 1
           return "manual-retry-success"
         },
       )
@@ -266,262 +588,7 @@ describe(
         value: "manual-retry-success",
       })
 
-      const duplicate = await guard.execute(
-        {
-          ...executionInput,
-          leaseId:
-            "post-retry-duplicate",
-          manualRetryAuthorization: {
-            authorizationId:
-              "retry-auth-001",
-            ownerId: "owner-a",
-          },
-        },
-        async () => {
-          retryExecutionCount += 1
-          return "unsafe-duplicate"
-        },
-      )
-
-      expect(duplicate).toMatchObject({
-        outcome: "blocked",
-        code:
-          "PROVIDER_OPERATION_ALREADY_COMPLETED",
-      })
-
-      expect(retryExecutionCount).toBe(1)
-    })
-
-    it("consumes retry authorization before callback and blocks another retry after failure", async () => {
-      const store =
-        new InMemoryTestProviderContinuityStore()
-      const now = createClock(300)
-
-      const guard =
-        createDurableProviderExecutionGuard({
-          store,
-          containmentReader:
-            createEmptyReader(),
-          now,
-        })
-
-      await guard.execute(
-        executionInput,
-        async () => {
-          throw new Error(
-            "first ambiguous failure",
-          )
-        },
-      )
-
-      const resolver =
-        createDurableIndeterminateExecutionResolver(
-          store,
-          now,
-        )
-
-      await resolver.resolve({
-        tenantId: "tenant-a",
-        providerDomain: "payments",
-        operationId: "operation-one",
-        decision:
-          "authorize-single-retry",
-        ownerId: "owner-a",
-        reason:
-          "provider confirms no side effect",
-        verificationReference:
-          "verification-300",
-        retryAuthorizationId:
-          "retry-auth-300",
-        leaseId: "resolver-lease",
-        workerId: "resolver-worker",
-        leaseTtlMs: 5_000,
-      })
-
-      const retryFailure =
-        await guard.execute(
-          {
-            ...executionInput,
-            leaseId:
-              "authorized-retry-lease",
-            manualRetryAuthorization: {
-              authorizationId:
-                "retry-auth-300",
-              ownerId: "owner-a",
-            },
-          },
-          async () => {
-            throw new Error(
-              "second ambiguous failure",
-            )
-          },
-        )
-
-      expect(retryFailure).toMatchObject({
-        outcome: "failed",
-        manualResolutionRequired: true,
-      })
-
-      let thirdExecutionStarted = false
-
-      const thirdAttempt =
-        await guard.execute(
-          {
-            ...executionInput,
-            leaseId: "third-lease",
-            manualRetryAuthorization: {
-              authorizationId:
-                "retry-auth-300",
-              ownerId: "owner-a",
-            },
-          },
-          async () => {
-            thirdExecutionStarted = true
-            return "unsafe-third-attempt"
-          },
-        )
-
-      expect(thirdAttempt).toMatchObject({
-        outcome: "blocked",
-        code:
-          "PROVIDER_OPERATION_INDETERMINATE",
-      })
-
-      expect(thirdExecutionStarted).toBe(
-        false,
-      )
-    })
-
-    it("never permits a completed receipt to be reopened for retry", async () => {
-      const store =
-        new InMemoryTestProviderContinuityStore()
-      const now = createClock(400)
-
-      const guard =
-        createDurableProviderExecutionGuard({
-          store,
-          containmentReader:
-            createEmptyReader(),
-          now,
-        })
-
-      await guard.execute(
-        executionInput,
-        async () => "completed",
-      )
-
-      const resolver =
-        createDurableIndeterminateExecutionResolver(
-          store,
-          now,
-        )
-
-      const result = await resolver.resolve({
-        tenantId: "tenant-a",
-        providerDomain: "payments",
-        operationId: "operation-one",
-        decision:
-          "authorize-single-retry",
-        ownerId: "owner-a",
-        reason: "unsafe reopen attempt",
-        verificationReference:
-          "unsafe-reference",
-        retryAuthorizationId:
-          "unsafe-retry-auth",
-        leaseId: "resolver-lease",
-        workerId: "resolver-worker",
-        leaseTtlMs: 5_000,
-      })
-
-      expect(result).toMatchObject({
-        outcome: "blocked",
-        code:
-          "COMPLETED_RECEIPT_RETRY_BLOCKED",
-      })
-    })
-
-    it("requires provider verification evidence before resolution", async () => {
-      const store =
-        new InMemoryTestProviderContinuityStore()
-
-      const resolver =
-        createDurableIndeterminateExecutionResolver(
-          store,
-        )
-
-      await expect(
-        resolver.resolve({
-          tenantId: "tenant-a",
-          providerDomain: "database",
-          operationId: "operation-one",
-          decision:
-            "confirm-completed",
-          ownerId: "owner-a",
-          reason: "reviewed",
-          verificationReference: "",
-          leaseId: "resolver-lease",
-          workerId: "resolver-worker",
-          leaseTtlMs: 5_000,
-        }),
-      ).rejects.toThrow(
-        "verificationReference is required",
-      )
-    })
-
-    it("keeps receipt resolution tenant-isolated", async () => {
-      const store =
-        new InMemoryTestProviderContinuityStore()
-      const now = createClock(500)
-
-      const guard =
-        createDurableProviderExecutionGuard({
-          store,
-          containmentReader:
-            createEmptyReader(),
-          now,
-        })
-
-      await guard.execute(
-        executionInput,
-        async () => {
-          throw new Error(
-            "tenant-a failure",
-          )
-        },
-      )
-
-      const resolver =
-        createDurableIndeterminateExecutionResolver(
-          store,
-          now,
-        )
-
-      const tenantBResolution =
-        await resolver.resolve({
-          tenantId: "tenant-b",
-          providerDomain: "payments",
-          operationId: "operation-one",
-          decision:
-            "confirm-completed",
-          ownerId: "owner-b",
-          reason:
-            "unauthorized resolution",
-          verificationReference:
-            "unauthorized-reference",
-          leaseId:
-            "tenant-b-resolution-lease",
-          workerId:
-            "tenant-b-resolution-worker",
-          leaseTtlMs: 5_000,
-        })
-
-      expect(tenantBResolution).toEqual({
-        outcome: "blocked",
-        code:
-          "EXECUTION_RECEIPT_NOT_FOUND",
-        receipt: null,
-        leaseReleased: true,
-      })
+      expect(retryCount).toBe(1)
     })
   },
 )

@@ -9,13 +9,16 @@ import {
   validateDurableProviderExecutionReceipt,
   type DurableProviderExecutionReceiptPayload,
 } from "./durableProviderExecutionGuard"
+import {
+  type ProviderOwnerResolutionAuthority,
+  type ProviderOwnerResolutionDecision,
+} from "./providerOwnerResolutionAuthority"
 import type {
   ProviderDomain,
 } from "./providerRecoveryQueue"
 
 export type IndeterminateExecutionResolutionDecision =
-  | "confirm-completed"
-  | "authorize-single-retry"
+  ProviderOwnerResolutionDecision
 
 export interface ResolveIndeterminateExecutionInput {
   tenantId: string
@@ -23,10 +26,7 @@ export interface ResolveIndeterminateExecutionInput {
   operationId: string
   decision:
     IndeterminateExecutionResolutionDecision
-  ownerId: string
-  reason: string
-  verificationReference: string
-  retryAuthorizationId?: string
+  authorizationToken: string
   leaseId: string
   workerId: string
   leaseTtlMs: number
@@ -71,7 +71,8 @@ const requireValue = (
   value: string | undefined,
   fieldName: string,
 ): string => {
-  const normalizedValue = value?.trim() ?? ""
+  const normalizedValue =
+    value?.trim() ?? ""
 
   if (!normalizedValue) {
     throw new Error(`${fieldName} is required`)
@@ -122,6 +123,8 @@ export class DurableIndeterminateExecutionResolver {
   constructor(
     private readonly store:
       ProviderContinuityDurableStore,
+    private readonly ownerAuthority:
+      ProviderOwnerResolutionAuthority,
     now: () => number = Date.now,
   ) {
     assertLeaseSafeContinuityStore(store)
@@ -141,19 +144,6 @@ export class DurableIndeterminateExecutionResolver {
       input.operationId,
       "operationId",
     )
-    const ownerId = requireValue(
-      input.ownerId,
-      "ownerId",
-    )
-    const reason = requireValue(
-      input.reason,
-      "reason",
-    )
-    const verificationReference =
-      requireValue(
-        input.verificationReference,
-        "verificationReference",
-      )
     const leaseId = requireValue(
       input.leaseId,
       "leaseId",
@@ -168,14 +158,24 @@ export class DurableIndeterminateExecutionResolver {
         "leaseTtlMs",
       )
 
+    const authorization =
+      this.ownerAuthority.verify({
+        token: input.authorizationToken,
+        tenantId,
+        providerDomain:
+          input.providerDomain,
+        operationId,
+        decision: input.decision,
+      })
+
+    const ownerId =
+      authorization.ownerId
+    const reason =
+      authorization.reason
+    const verificationReference =
+      authorization.verificationReference
     const retryAuthorizationId =
-      input.decision ===
-      "authorize-single-retry"
-        ? requireValue(
-            input.retryAuthorizationId,
-            "retryAuthorizationId",
-          )
-        : null
+      authorization.retryAuthorizationId
 
     const acquired =
       await this.store.acquireLease({
@@ -279,7 +279,7 @@ export class DurableIndeterminateExecutionResolver {
 
       if (
         receipt.payload.status ===
-        "retry-authorized" &&
+          "retry-authorized" &&
         input.decision ===
           "authorize-single-retry"
       ) {
@@ -294,7 +294,8 @@ export class DurableIndeterminateExecutionResolver {
           receipt.payload
             .retryAuthorizationId ===
               retryAuthorizationId &&
-          receipt.payload.retryAuthorizedBy ===
+          receipt.payload
+            .retryAuthorizedBy ===
               ownerId &&
           receipt.payload
             .verificationReference ===
@@ -341,7 +342,8 @@ export class DurableIndeterminateExecutionResolver {
               reason,
               completedAt: null,
               retryAuthorizationId,
-              retryAuthorizedBy: ownerId,
+              retryAuthorizedBy:
+                ownerId,
               retryAuthorizedAt:
                 resolutionTime,
               verificationReference,
@@ -422,9 +424,12 @@ export class DurableIndeterminateExecutionResolver {
 export const createDurableIndeterminateExecutionResolver =
   (
     store: ProviderContinuityDurableStore,
+    ownerAuthority:
+      ProviderOwnerResolutionAuthority,
     now?: () => number,
   ): DurableIndeterminateExecutionResolver =>
     new DurableIndeterminateExecutionResolver(
       store,
+      ownerAuthority,
       now,
     )
