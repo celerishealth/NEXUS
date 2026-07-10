@@ -14288,3 +14288,48 @@ Safe API boundary:
 No provider endpoint, database, payment system, WhatsApp channel,
 customer workflow, live migration, or AI execution is contacted.
 All dispatch results are local deterministic simulations only.
+
+## Day 664 — Critical Risk Burn-Down and End-to-End Integration Gate v1
+
+Feature expansion was stopped and replaced with a machine-enforced
+Critical and High risk gate across the complete protected pipeline.
+
+Integrated controls:
+
+- Repository inspection availability
+- Tracked environment-secret file rejection
+- Recognized exposed provider-secret scanning
+- Protected API route presence checks
+- Missing signing-secret fail-closed checks
+- Real network/provider/payment/message invocation rejection
+- Full admission-to-local-simulation integration verification
+- Permanent execution and persistence lock verification
+- Forged owner-signature rejection
+- Cross-tenant authority rejection
+- Resolution replay rejection
+- Permanent-outcome re-entry rejection
+- Single-provider dependency rejection
+- Foreign-owner claim rejection
+- Concurrent claim rejection
+- Claim replay rejection
+- Missing adapter-manifest rejection
+- Missing simulation-outcome rejection
+- Independent provider-set verification
+- Deterministic pipeline identity verification
+
+Machine gate:
+
+- `node scripts/nexus-critical-risk-gate.mjs`
+
+Visible audit:
+
+- `/nexus-risk-burn-down`
+
+Machine-readable API:
+
+- `GET /api/nexus/critical-risk-audit`
+
+Passing this gate requires zero known Critical risks and zero known High
+risks. Public launch, real provider execution, persistence, payments,
+WhatsApp auto-send, live migrations, customer actions, and uncontrolled
+AI actions remain unauthorized.
