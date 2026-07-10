@@ -14192,3 +14192,34 @@ Safe API boundary:
 The integration performs admission evaluation only. It does not execute
 actions, persist records, run live migrations, process payments, send
 WhatsApp messages, or authorize uncontrolled AI behavior.
+
+## Day 661 — Provider-Independent Recovery Handoff Integration v1
+
+Connected the Day 660 owner-authorized durable action admission
+boundary to a deterministic provider-independent recovery handoff.
+
+Integrated controls:
+
+- Owner-authorized admission binding
+- Tenant and action identity binding
+- Admission-token integrity validation
+- Healthy capability-aware adapter filtering
+- Deterministic primary and fallback adapter ordering
+- Minimum two-provider failover readiness
+- Single-retry recovery enforcement
+- Permanent-outcome blocking
+- Durable recovery-checkpoint generation
+- Fail-closed audit output
+
+Visible preview:
+
+- `/nexus-recovery-handoff`
+
+Safe API boundary:
+
+- `GET /api/nexus/provider-independent-recovery-handoff`
+- `POST /api/nexus/provider-independent-recovery-handoff`
+
+This milestone prepares preview-only handoff and recovery records.
+It performs no provider invocation, database persistence, payment,
+WhatsApp send, live migration, real execution, or uncontrolled AI action.
