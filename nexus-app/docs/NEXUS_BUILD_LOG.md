@@ -14782,3 +14782,41 @@ Optional limits:
 No production database was migrated or modified. No provider execution,
 customer action, payment, WhatsApp delivery, public launch, or
 uncontrolled AI action was authorized.
+
+## Day 676 — Real Protected API End-to-End HTTP Security Gate v1
+
+Verified the complete protected API security stack through real HTTP
+requests against a running local Next.js server and a disposable
+PostgreSQL 16 database.
+
+New protected probe:
+
+- `GET /api/nexus/protected-api-security-probe`
+- `POST /api/nexus/protected-api-security-probe`
+
+Real end-to-end verification:
+
+- Started disposable PostgreSQL 16
+- Applied all three checksum-verified migrations
+- Started the real local Next.js server
+- Created an isolated active tenant and OWNER membership
+- Sent a correctly signed real HTTP request
+- Verified request-security guard acceptance
+- Verified HMAC signature and body integrity
+- Verified durable PostgreSQL nonce consumption
+- Verified durable tenant-owner authorization
+- Verified distributed PostgreSQL rate limiting
+- Verified durable security-event creation
+- Replayed the same signed nonce and received HTTP 409
+- Signed for a different path and received HTTP 401
+- Modified the body after signing and received HTTP 401
+- Used an unauthorized tenant and received HTTP 403
+- Sent four valid requests against a three-request limit
+- Verified the fourth request received HTTP 429 and `Retry-After`
+- Verified exact nonce, counter, and security-event database evidence
+- Stopped the local Next.js server
+- Destroyed the disposable PostgreSQL database and storage
+
+No production deployment or production database was modified. No customer
+data, provider execution, payment, WhatsApp delivery, public launch, or
+uncontrolled AI action was authorized.

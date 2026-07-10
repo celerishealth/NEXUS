@@ -44,6 +44,7 @@ const PROTECTED_ROUTE_FILES = [
   "app/api/nexus/owner-simulation-review/route.js",
   "app/api/nexus/controlled-action-evidence/route.js",
   "app/api/nexus/controlled-action-review-console/route.js",
+  "app/api/nexus/protected-api-security-probe/route.js",
 ];
 
 const SOURCE_EXTENSIONS = new Set([
@@ -1036,6 +1037,7 @@ createControl(
     }),
   });
 }
+
 
 
 
