@@ -14175,3 +14175,20 @@ Day 583 added the 3-5 Minute Main Demo Film Script v1.
     - ERPs manage.
     - NEXUS operates.
 - Status: internal preview-only original sonic identity validator route.
+## Day 660 — Owner-Authorized Durable Action Admission Integration v1
+
+Integrated trusted owner authority, signed owner resolution verification,
+tenant isolation, authority-epoch binding, single-retry enforcement,
+permanent-outcome blocking, nonce and resolution replay protection, and
+fail-closed admission auditing into one server-side action-admission boundary.
+
+Visible preview:
+- `/nexus-owner-action-admission`
+
+Safe API boundary:
+- `GET /api/nexus/owner-authorized-action-admission`
+- `POST /api/nexus/owner-authorized-action-admission`
+
+The integration performs admission evaluation only. It does not execute
+actions, persist records, run live migrations, process payments, send
+WhatsApp messages, or authorize uncontrolled AI behavior.
