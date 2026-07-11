@@ -15034,3 +15034,16 @@ WhatsApp delivery, public launch, or external execution was authorized.
 - Added fail-closed rejection of AI-generated tool calls, delivery fields, payment fields or execution-authority fields.
 - Owner approval remains mandatory for every AI recommendation.
 - No AI provider invocation, live provider execution, external delivery, WhatsApp/email auto-send, payment execution or public launch authorization was added.
+
+## Day 759 — Sandbox AI Recommendation Worker Integration v1
+
+- Added the concrete strict-worker handler for the allowlisted sandbox AI recommendation action.
+- Restricted the AI client contract to explicit `sandbox_simulated` execution mode.
+- Blocked AI-client network and tool access at handler construction.
+- Added an exact claimed-payload contract for result identity, customer message and business context.
+- Integrated Day 758 trusted-policy and untrusted-data separation directly into Day 757 worker execution.
+- Added strict validation of all simulated AI output before durable result creation.
+- Added safe retryable classification for simulated-client failures without exposing raw exception details.
+- Added deterministic SHA-256 request and output digests for durable evidence and replay comparison.
+- Preserved mandatory owner approval and all live-provider, external-delivery and payment blocks.
+- No live AI provider invocation, external delivery, WhatsApp/email auto-send, payment execution or public launch authorization was added.
