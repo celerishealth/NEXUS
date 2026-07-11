@@ -15047,3 +15047,17 @@ WhatsApp delivery, public launch, or external execution was authorized.
 - Added deterministic SHA-256 request and output digests for durable evidence and replay comparison.
 - Preserved mandatory owner approval and all live-provider, external-delivery and payment blocks.
 - No live AI provider invocation, external delivery, WhatsApp/email auto-send, payment execution or public launch authorization was added.
+
+## Day 760 — Tenant-Isolated Sandbox Worker Cycle Orchestration v1
+
+- Added one bounded tenant-isolated sandbox worker-cycle orchestration boundary.
+- Added expired-lease recovery and pending-work claiming inside one committed PostgreSQL transaction.
+- Added strict verification of tenant, lease-owner, lease-token and duplicate-claim boundaries.
+- Added sequential execution of claimed work through the strict Day 757 handler registry.
+- Integrated Day 756 atomic durable-result recording and lease completion.
+- Integrated Day 754 bounded retry scheduling and terminal failure transitions.
+- Added safe handling for retryable, non-retryable, exhausted-attempt and unexpected worker failures.
+- Added fail-loud infrastructure boundaries when claim preparation or failure persistence cannot be trusted.
+- Added exact per-cycle completed, retry-scheduled and terminal-failure evidence without raw error leakage.
+- Preserved mandatory owner approval and all live-provider, external-delivery, payment and public-launch blocks.
+- No live provider invocation, WhatsApp/email auto-send, payment execution or public launch authorization was added.
