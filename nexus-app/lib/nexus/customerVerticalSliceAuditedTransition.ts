@@ -244,6 +244,7 @@ export async function applyAuditedCustomerVerticalSliceTransition(input: {
         event,
         auditEntry: auditResult.entry,
         requireStateVersionMatch: transitionResult.applied,
+        requireStateVersionMatch: transitionResult.applied,
       });
 
       return {
@@ -259,8 +260,10 @@ export async function applyAuditedCustomerVerticalSliceTransition(input: {
         event,
         auditEntry: auditResult.entry,
         requireStateVersionMatch: transitionResult.applied,
+        requireStateVersionMatch: transitionResult.applied,
       };
     },
   );
 }
+
 
