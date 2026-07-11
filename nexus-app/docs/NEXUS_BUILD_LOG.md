@@ -14971,3 +14971,14 @@ WhatsApp delivery, public launch, or external execution was authorized.
 - Added expired-processing-lease recovery that returns abandoned work to pending state.
 - Added stale lease identity clearing before abandoned work can be reclaimed.
 - No automatic execution retry, live provider execution, external delivery, WhatsApp/email auto-send, payment execution or public launch authorization was added.
+
+## Day 754 — Fenced Sandbox Outbox Completion and Retry v1
+
+- Added durable terminal failure timestamps and database state consistency constraints.
+- Added lease-token-fenced sandbox completion.
+- Added stale, expired, recovered and reassigned worker rejection.
+- Added bounded retry scheduling using current attempt count and explicit maximum attempts.
+- Added terminal failure transition for non-retryable or exhausted work.
+- Added tenant and outbox result-boundary verification.
+- Added lease identity clearing during completion, retry and terminal failure transitions.
+- No live provider execution, external delivery, WhatsApp/email auto-send, payment execution or public launch authorization was added.
