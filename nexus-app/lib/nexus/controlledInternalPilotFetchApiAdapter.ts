@@ -1,4 +1,4 @@
-﻿import {
+import {
   TextDecoder,
 } from "node:util";
 
@@ -197,15 +197,21 @@ function safeErrorResponse(
 function validateRuntime(
   runtime: unknown,
 ): asserts runtime is ControlledInternalPilotFetchApiAdapterRuntime {
+  if (!isPlainRecord(runtime)) {
+    throw adapterError(
+      "INVALID_CONFIGURATION",
+      "The controlled internal pilot Fetch API adapter configuration is invalid.",
+    );
+  }
+
   if (
-    !isPlainRecord(runtime) ||
     typeof runtime.router !== "function" ||
     !Array.isArray(runtime.allowedHosts) ||
     runtime.allowedHosts.length < 1 ||
     (
-      runtime.maxRequestBodyBytes !==
-        undefined &&
+      runtime.maxRequestBodyBytes != null &&
       (
+        typeof runtime.maxRequestBodyBytes !== "number" ||
         !Number.isInteger(
           runtime.maxRequestBodyBytes,
         ) ||
@@ -215,9 +221,9 @@ function validateRuntime(
       )
     ) ||
     (
-      runtime.maxResponseBodyBytes !==
-        undefined &&
+      runtime.maxResponseBodyBytes != null &&
       (
+        typeof runtime.maxResponseBodyBytes !== "number" ||
         !Number.isInteger(
           runtime.maxResponseBodyBytes,
         ) ||
@@ -534,6 +540,7 @@ function validateRouterResponse(
 ): response is ControlledInternalPilotApiResponse {
   if (
     !isPlainRecord(response) ||
+    typeof response.status !== "number" ||
     !Number.isInteger(response.status) ||
     response.status < 200 ||
     response.status > 599 ||

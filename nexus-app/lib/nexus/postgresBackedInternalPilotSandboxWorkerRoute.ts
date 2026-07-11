@@ -110,9 +110,8 @@ function validateRuntime(
     (
       runtime.maxCookieHeaderBytes !== undefined &&
       (
-        !Number.isInteger(
-          runtime.maxCookieHeaderBytes,
-        ) ||
+        typeof runtime.maxCookieHeaderBytes !== "number" ||
+        !Number.isInteger(runtime.maxCookieHeaderBytes) ||
         runtime.maxCookieHeaderBytes < 512 ||
         runtime.maxCookieHeaderBytes > 16_384
       )
@@ -120,6 +119,7 @@ function validateRuntime(
     (
       runtime.maxBodyBytes !== undefined &&
       (
+        typeof runtime.maxBodyBytes !== "number" ||
         !Number.isInteger(runtime.maxBodyBytes) ||
         runtime.maxBodyBytes < 1_024 ||
         runtime.maxBodyBytes > 65_536

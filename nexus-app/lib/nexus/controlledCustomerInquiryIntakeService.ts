@@ -1,4 +1,4 @@
-﻿import {
+import {
   randomUUID,
 } from "node:crypto";
 
@@ -346,22 +346,32 @@ export async function intakeControlledCustomerInquiry(
     );
   }
 
-  return {
-    accepted: true,
-    code:
-      storeResult.status === "created"
-        ? "CUSTOMER_INQUIRY_CREATED"
-        : "CUSTOMER_INQUIRY_ALREADY_CREATED",
-    inquiryId: storeResult.inquiryId,
-    tenantId: identity.tenantId,
-    customerRef,
-    channel: input.channel,
-    status: "received",
-    receivedAt: storeResult.receivedAt,
-    aiRecommendationAuthorized: false,
-    ownerApprovalRequired: true,
-    sandboxExecutionAuthorized: false,
-    liveProviderExecutionAuthorized: false,
-    publicLaunchAuthorized: false,
-  };
+  if (
+    storeResult.status === "created" ||
+    storeResult.status === "already-created"
+  ) {
+    return {
+      accepted: true,
+      code:
+        storeResult.status === "created"
+          ? "CUSTOMER_INQUIRY_CREATED"
+          : "CUSTOMER_INQUIRY_ALREADY_CREATED",
+      inquiryId: storeResult.inquiryId,
+      tenantId: identity.tenantId,
+      customerRef,
+      channel: input.channel,
+      status: "received",
+      receivedAt: storeResult.receivedAt,
+      aiRecommendationAuthorized: false,
+      ownerApprovalRequired: true,
+      sandboxExecutionAuthorized: false,
+      liveProviderExecutionAuthorized: false,
+      publicLaunchAuthorized: false,
+    };
+  }
+
+  return reject(
+    "INQUIRY_STORE_UNAVAILABLE",
+    "Customer inquiry persistence returned an unsupported result.",
+  );
 }

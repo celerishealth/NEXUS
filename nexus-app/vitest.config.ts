@@ -5,5 +5,6 @@ export default defineConfig({
     environment: "node",
     globals: false,
     clearMocks: true,
+    include: ["lib/nexus/**/*.test.ts"],
   },
 });

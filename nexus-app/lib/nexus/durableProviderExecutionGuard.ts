@@ -752,7 +752,9 @@ export class DurableProviderExecutionGuard {
         }
 
         const retryClaim =
-          await this.store.compareAndSwap({
+          await this.store.compareAndSwap<
+            DurableProviderExecutionReceiptPayload
+          >({
             scope: receiptScope,
             expectedVersion:
               receipt.version,
@@ -776,8 +778,7 @@ export class DurableProviderExecutionGuard {
           if (retryClaim.currentRecord) {
             const currentReceipt =
               validateDurableProviderExecutionReceipt(
-                retryClaim.currentRecord as
-                  ProviderContinuityDurableRecord<DurableProviderExecutionReceiptPayload>,
+                retryClaim.currentRecord,
                 {
                   operationId,
                   idempotencyKey,
@@ -810,7 +811,8 @@ export class DurableProviderExecutionGuard {
           )
         }
 
-        claimRecord = retryClaim.record
+        claimRecord = retryClaim.record as
+          ProviderContinuityDurableRecord<DurableProviderExecutionReceiptPayload>
       } else {
         const claimPayload:
           DurableProviderExecutionReceiptPayload =

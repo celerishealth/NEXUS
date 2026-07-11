@@ -26,7 +26,21 @@ export type InternalPilotRouteErrorCode =
   | "CSRF_TOKEN_REQUIRED"
   | "CSRF_TOKEN_INVALID"
   | "ENDPOINT_RESPONSE_INVALID"
-  | "INTERNAL_ERROR";
+  | "INTERNAL_ERROR"
+  | "UNSUPPORTED_MEDIA_TYPE"
+  | "INVALID_JSON"
+  | "INVALID_REQUEST"
+  | "IDEMPOTENCY_HEADER_REQUIRED"
+  | "IDEMPOTENCY_BINDING_MISMATCH"
+  | "IDEMPOTENCY_CONFLICT"
+  | "REQUEST_IN_PROGRESS"
+  | "REQUEST_EXPIRED"
+  | "REQUEST_FROM_FUTURE"
+  | "BATCH_LIMIT_EXCEEDED"
+  | "AUDIT_UNAVAILABLE"
+  | "RECEIPT_UNAVAILABLE"
+  | "CYCLE_EXECUTION_FAILED"
+  | "CYCLE_RESULT_INVALID";
 
 export interface TrustedInternalPilotRouteSession {
   sessionId: string;
@@ -385,6 +399,7 @@ function validateEndpointResponse(
 ): value is InternalPilotHttpResponse {
   if (
     !isPlainRecord(value) ||
+    typeof value.status !== "number" ||
     !Number.isInteger(value.status) ||
     value.status < 200 ||
     value.status > 599 ||

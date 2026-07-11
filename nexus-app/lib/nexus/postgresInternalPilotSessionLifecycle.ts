@@ -1,4 +1,4 @@
-﻿import {
+import {
   randomBytes as nodeRandomBytes,
 } from "node:crypto";
 
@@ -384,6 +384,7 @@ function assertIssueInput(
 
   if (
     !isIdentifier(input.actorId, 3) ||
+    typeof input.ttlSeconds !== "number" ||
     !Number.isInteger(input.ttlSeconds) ||
     input.ttlSeconds < 300 ||
     input.ttlSeconds > 86_400

@@ -1,4 +1,4 @@
-﻿import {
+import {
   INTERNAL_PILOT_SESSION_ROUTE_PATH,
   INTERNAL_PILOT_WORKER_ROUTE_PATH,
 } from "./controlledInternalPilotProductionApiRouter";
@@ -446,6 +446,7 @@ function validateRuntime(
     (
       runtime.maxBatchSize !== undefined &&
       (
+        typeof runtime.maxBatchSize !== "number" ||
         !Number.isInteger(
           runtime.maxBatchSize,
         ) ||
@@ -457,6 +458,7 @@ function validateRuntime(
       runtime.maxResponseBodyBytes !==
         undefined &&
       (
+        typeof runtime.maxResponseBodyBytes !== "number" ||
         !Number.isInteger(
           runtime.maxResponseBodyBytes,
         ) ||
@@ -484,6 +486,7 @@ function validateIssueInput(
   );
 
   if (
+    typeof input.ttlSeconds !== "number" ||
     !Number.isInteger(input.ttlSeconds) ||
     input.ttlSeconds < 300 ||
     input.ttlSeconds > 86_400
@@ -507,6 +510,7 @@ function validateRunInput(
   );
 
   if (
+    typeof input.batchSize !== "number" ||
     !Number.isInteger(input.batchSize) ||
     input.batchSize < 1 ||
     input.batchSize > maxBatchSize
@@ -1057,9 +1061,11 @@ export function createControlledInternalPilotOwnerConsole(
     command: StoredSandboxCommand,
     expectedReplay: boolean,
   ): Promise<ControlledInternalPilotOwnerConsoleSnapshot> {
+    const session = activeSession;
+
     if (
       lifecycleClosed ||
-      activeSession === null
+      session === null
     ) {
       throw consoleError(
         lifecycleClosed
@@ -1078,8 +1084,15 @@ export function createControlledInternalPilotOwnerConsole(
           await requestJson(
             runtime,
             INTERNAL_PILOT_WORKER_ROUTE_PATH,
-            activeSession.csrfToken,
-            command,
+            session.csrfToken,
+            {
+              tenantId: command.tenantId,
+              requestId: command.requestId,
+              idempotencyKey: command.idempotencyKey,
+              batchSize: command.batchSize,
+              requestedAt: command.requestedAt,
+              executionMode: command.executionMode,
+            },
             {
               "x-nexus-idempotency-key":
                 command.idempotencyKey,

@@ -98,6 +98,7 @@ function assertRuntime(
     (
       runtime.maxBodyBytes !== undefined &&
       (
+        typeof runtime.maxBodyBytes !== "number" ||
         !Number.isInteger(runtime.maxBodyBytes) ||
         runtime.maxBodyBytes < 1_024 ||
         runtime.maxBodyBytes > 65_536

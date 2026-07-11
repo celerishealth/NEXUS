@@ -25,15 +25,19 @@ export type DurableContinuityStatePayload = {
   [key: string]: ProviderContinuityJsonValue
 }
 
-export interface DurableContinuityTransitionValidation {
-  allowed: boolean
-  code:
-    | "STATE_TRANSITION_ALLOWED"
-    | "STATE_ALREADY_APPLIED"
-    | "INVALID_INITIAL_STATE"
-    | "INVALID_STATE_TRANSITION"
-    | "TERMINAL_STATE_REOPEN_BLOCKED"
-}
+export type DurableContinuityTransitionValidation =
+  | {
+      allowed: true
+      code: "STATE_TRANSITION_ALLOWED" | "STATE_ALREADY_APPLIED"
+    }
+  | {
+      allowed: false
+      code:
+        | "INVALID_INITIAL_STATE"
+        | "INVALID_STATE_TRANSITION"
+        | "TERMINAL_STATE_REOPEN_BLOCKED"
+    }
+
 
 const initialStates: Record<
   ProviderContinuityRecordKind,

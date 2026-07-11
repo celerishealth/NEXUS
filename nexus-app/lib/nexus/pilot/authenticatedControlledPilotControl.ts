@@ -441,9 +441,7 @@ export async function controlAuthenticatedPilot(
 
   if (
     enrollment.ownerUserId !==
-    workspace.actor.userId ||
-    enrollment.ownerUserId !==
-    workspace.tenant.ownerUserId
+    workspace.actor.userId
   ) {
     deny(
       "CONTROLLABLE_PILOT_OWNER_MISMATCH",

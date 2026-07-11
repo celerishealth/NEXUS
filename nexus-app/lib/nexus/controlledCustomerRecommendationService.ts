@@ -528,6 +528,16 @@ export async function createControlledCustomerRecommendation(
     );
   }
 
+  if (
+    storeResult.status !== "created" &&
+    storeResult.status !== "already-created"
+  ) {
+    return reject(
+      "RECOMMENDATION_STORE_UNAVAILABLE",
+      "Sandbox recommendation persistence was not confirmed.",
+    );
+  }
+
   return {
     created: true,
     code:

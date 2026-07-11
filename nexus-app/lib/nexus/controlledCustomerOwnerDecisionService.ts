@@ -1,4 +1,4 @@
-﻿import {
+import {
   createHash,
   randomUUID,
 } from "node:crypto";
@@ -559,6 +559,16 @@ export async function decideControlledCustomerRecommendation(
     return reject(
       "OWNER_DECISION_STORE_UNAVAILABLE",
       "Owner decision persistence was not confirmed.",
+    );
+  }
+
+  if (
+    storeResult.status !== "decided" &&
+    storeResult.status !== "already-decided"
+  ) {
+    return reject(
+      "OWNER_DECISION_STORE_UNAVAILABLE",
+      "Owner decision persistence returned an unsupported result.",
     );
   }
 

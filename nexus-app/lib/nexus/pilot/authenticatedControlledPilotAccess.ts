@@ -317,11 +317,11 @@ export async function enforceAuthenticatedControlledPilotAccess(
 
   if (
     enrollment.ownerUserId !==
-    workspace.tenant.ownerUserId
+    workspace.actor.userId
   ) {
     deny(
       "PILOT_ENROLLMENT_OWNER_MISMATCH",
-      "The controlled-pilot enrollment owner does not match the tenant workspace owner.",
+      "The controlled-pilot enrollment owner does not match the authenticated owner.",
     );
   }
 

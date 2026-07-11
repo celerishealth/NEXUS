@@ -1,4 +1,4 @@
-﻿import {
+import {
   applyCustomerVerticalSliceTransition,
   type AuthenticatedVerticalSliceActor,
   type CustomerVerticalSliceStateRecord,
@@ -244,9 +244,6 @@ export async function applyAuditedCustomerVerticalSliceTransition(input: {
         event,
         auditEntry: auditResult.entry,
         requireStateVersionMatch: transitionResult.applied,
-        requireStateVersionMatch: transitionResult.applied,
-        requireStateVersionMatch: transitionResult.applied,
-        requireStateVersionMatch: transitionResult.applied,
       });
 
       return {
@@ -261,9 +258,6 @@ export async function applyAuditedCustomerVerticalSliceTransition(input: {
         state: transitionResult.state,
         event,
         auditEntry: auditResult.entry,
-        requireStateVersionMatch: transitionResult.applied,
-        requireStateVersionMatch: transitionResult.applied,
-        requireStateVersionMatch: transitionResult.applied,
         requireStateVersionMatch: transitionResult.applied,
       };
     },

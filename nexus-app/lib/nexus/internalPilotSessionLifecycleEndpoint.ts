@@ -191,6 +191,7 @@ function validateRuntime(
     (
       runtime.maxBodyBytes !== undefined &&
       (
+        typeof runtime.maxBodyBytes !== "number" ||
         !Number.isInteger(runtime.maxBodyBytes) ||
         runtime.maxBodyBytes < 1_024 ||
         runtime.maxBodyBytes > 32_768
@@ -384,6 +385,7 @@ function parseRequestBody(
       ) ||
       parsed.tenantId !== tenantId ||
       parsed.ownerApprovalGranted !== true ||
+      typeof parsed.ttlSeconds !== "number" ||
       !Number.isInteger(parsed.ttlSeconds) ||
       parsed.ttlSeconds < 300 ||
       parsed.ttlSeconds > 86_400

@@ -671,6 +671,16 @@ export async function executeApprovedCustomerRecommendationInSandbox(
     );
   }
 
+  if (
+    storeResult.status !== "executed" &&
+    storeResult.status !== "already-executed"
+  ) {
+    return reject(
+      "SANDBOX_EXECUTION_STORE_UNAVAILABLE",
+      "Sandbox execution persistence was not confirmed.",
+    );
+  }
+
   return {
     completed: true,
     code:

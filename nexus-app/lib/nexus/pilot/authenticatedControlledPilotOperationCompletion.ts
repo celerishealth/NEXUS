@@ -686,11 +686,11 @@ export async function completeAuthenticatedPilotOperation(
 
   if (
     enrollment.ownerUserId !==
-    workspace.tenant.ownerUserId
+    workspace.actor.userId
   ) {
     deny(
       "PILOT_COMPLETION_ENROLLMENT_OWNER_MISMATCH",
-      "The controlled-pilot enrollment owner is invalid.",
+      "The authenticated owner does not own this pilot enrollment.",
     );
   }
 

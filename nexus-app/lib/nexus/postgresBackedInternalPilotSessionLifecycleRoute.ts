@@ -1,4 +1,4 @@
-﻿import type {
+import type {
   InternalPilotHttpRequest,
 } from "./internalPilotSandboxWorkerEndpoint";
 
@@ -210,6 +210,7 @@ function validateRuntime(
     (
       runtime.maxCookieHeaderBytes !== undefined &&
       (
+        typeof runtime.maxCookieHeaderBytes !== "number" ||
         !Number.isInteger(runtime.maxCookieHeaderBytes) ||
         runtime.maxCookieHeaderBytes < 512 ||
         runtime.maxCookieHeaderBytes > 16_384
@@ -218,6 +219,7 @@ function validateRuntime(
     (
       runtime.maxBodyBytes !== undefined &&
       (
+        typeof runtime.maxBodyBytes !== "number" ||
         !Number.isInteger(runtime.maxBodyBytes) ||
         runtime.maxBodyBytes < 1_024 ||
         runtime.maxBodyBytes > 32_768
@@ -297,6 +299,7 @@ function validateEndpointResponse(
 ): response is InternalPilotLifecycleHttpResponse {
   if (
     !isPlainRecord(response) ||
+    typeof response.status !== "number" ||
     !Number.isInteger(response.status) ||
     response.status < 200 ||
     response.status > 599 ||

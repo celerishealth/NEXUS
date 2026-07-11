@@ -1,4 +1,4 @@
-﻿import type {
+import type {
   SandboxWorkerCycleCommandResult,
 } from "./sandboxWorkerCycleCommand";
 
@@ -395,7 +395,11 @@ function assertCompleteInput(
   );
   assertDigest(input.requestDigest);
   assertTimestamp(input.occurredAt);
-  assertProtectedResult(input.result, input);
+  assertProtectedResult(input.result, {
+    tenantId: input.tenantId,
+    requestId: input.requestId,
+    requestDigest: input.requestDigest,
+  });
 }
 
 function assertFailureInput(

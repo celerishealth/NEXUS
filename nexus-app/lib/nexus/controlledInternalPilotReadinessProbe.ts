@@ -1,4 +1,4 @@
-﻿import {
+import {
   createHash,
 } from "node:crypto";
 
@@ -380,9 +380,11 @@ function validateInput(
       (key, index) =>
         key !== expected[index],
     ) ||
+    typeof input.ttlSeconds !== "number" ||
     !Number.isInteger(input.ttlSeconds) ||
     input.ttlSeconds < 300 ||
     input.ttlSeconds > 86_400 ||
+    typeof input.batchSize !== "number" ||
     !Number.isInteger(input.batchSize) ||
     input.batchSize < 1 ||
     input.batchSize > 100
@@ -446,10 +448,12 @@ function validateWorkflowSnapshot(
       value.statusMessage,
     ) ||
     typeof value.busy !== "boolean" ||
+    typeof value.recoveryAttempt !== "number" ||
     !Number.isInteger(
       value.recoveryAttempt,
     ) ||
     value.recoveryAttempt < 0 ||
+    typeof value.maxRecoveryAttempts !== "number" ||
     !Number.isInteger(
       value.maxRecoveryAttempts,
     ) ||

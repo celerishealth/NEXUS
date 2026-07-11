@@ -308,12 +308,10 @@ function validateRuntime(
     typeof runtime.ownerConsole.revokeSession !==
       "function" ||
     (
-      runtime.maxRecoveryAttempts !==
-        undefined &&
+      runtime.maxRecoveryAttempts !== undefined &&
       (
-        !Number.isInteger(
-          runtime.maxRecoveryAttempts,
-        ) ||
+        typeof runtime.maxRecoveryAttempts !== "number" ||
+        !Number.isInteger(runtime.maxRecoveryAttempts) ||
         runtime.maxRecoveryAttempts < 1 ||
         runtime.maxRecoveryAttempts > 5
       )
@@ -348,6 +346,7 @@ function validateRunInput(
       (key, index) =>
         key !== expected[index],
     ) ||
+    typeof input.batchSize !== "number" ||
     !Number.isInteger(input.batchSize) ||
     input.batchSize < 1 ||
     input.batchSize > 100

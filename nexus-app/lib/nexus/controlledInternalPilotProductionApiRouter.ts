@@ -1,4 +1,4 @@
-﻿import type {
+import type {
   InternalPilotHttpRequest,
 } from "./internalPilotSandboxWorkerEndpoint";
 
@@ -202,6 +202,7 @@ function validateRuntime(
       runtime.maxResponseBodyBytes !==
         undefined &&
       (
+        typeof runtime.maxResponseBodyBytes !== "number" ||
         !Number.isInteger(
           runtime.maxResponseBodyBytes,
         ) ||
@@ -476,6 +477,7 @@ function validateRouteResponse(
 ): response is ControlledInternalPilotApiResponse {
   if (
     !isPlainRecord(response) ||
+    typeof response.status !== "number" ||
     !Number.isInteger(response.status) ||
     response.status < 200 ||
     response.status > 599 ||

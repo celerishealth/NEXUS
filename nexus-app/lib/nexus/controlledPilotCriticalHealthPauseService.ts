@@ -1,4 +1,4 @@
-﻿import type {
+import type {
   ControlledPilotAtomicHealthPauseStore,
 } from "./supabaseControlledPilotAtomicHealthPauseStore";
 
@@ -217,11 +217,17 @@ export async function pauseControlledPilotForCriticalHealth(
 
   const details = {
     currentOperationStatus:
-      result.currentOperationStatus,
+      "currentOperationStatus" in result
+        ? result.currentOperationStatus
+        : undefined,
     currentBlockingSignalId:
-      result.currentBlockingSignalId,
+      "currentBlockingSignalId" in result
+        ? result.currentBlockingSignalId
+        : undefined,
     currentStateVersion:
-      result.currentStateVersion,
+      "currentStateVersion" in result
+        ? result.currentStateVersion
+        : undefined,
   };
 
   if (result.status === "state-unavailable") {

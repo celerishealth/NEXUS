@@ -1,4 +1,4 @@
-﻿import { createHash } from "node:crypto";
+import { createHash } from "node:crypto";
 
 import type {
   InternalPilotHttpRequest,
@@ -329,6 +329,7 @@ function validateRuntime(
     (
       runtime.maxCookieHeaderBytes !== undefined &&
       (
+        typeof runtime.maxCookieHeaderBytes !== "number" ||
         !Number.isInteger(runtime.maxCookieHeaderBytes) ||
         runtime.maxCookieHeaderBytes < 512 ||
         runtime.maxCookieHeaderBytes > 16_384

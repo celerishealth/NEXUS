@@ -517,6 +517,7 @@ describe(
         SupabaseRpcClientLike = {
           async rpc<T = unknown>(
             functionName: string,
+            parameters?: Record<string, unknown>,
           ) {
             if (
               functionName ===
@@ -583,6 +584,78 @@ describe(
             ) {
               return {
                 data: true as T,
+                error: null,
+              }
+            }
+
+            if (
+              functionName ===
+              "nexus_compare_and_swap_provider_continuity_record"
+            ) {
+              if (
+                !parameters ||
+                Array.isArray(parameters)
+              ) {
+                return {
+                  data: null as T | null,
+                  error: null,
+                }
+              }
+
+              const params =
+                parameters as Record<string, unknown>
+
+              if (
+                typeof params.p_tenant_id !==
+                  "string" ||
+                typeof params.p_provider_domain !==
+                  "string" ||
+                typeof params.p_record_kind !==
+                  "string" ||
+                typeof params.p_record_id !==
+                  "string" ||
+                typeof params.p_lease_id !==
+                  "string" ||
+                typeof params.p_owner_id !==
+                  "string" ||
+                typeof params.p_fence_token !==
+                  "number" ||
+                typeof params.p_now !== "string" ||
+                !(
+                  typeof params.p_expected_version ===
+                    "number" ||
+                  params.p_expected_version === null
+                )
+              ) {
+                return {
+                  data: null as T | null,
+                  error: null,
+                }
+              }
+
+              const recordVersion =
+                params.p_expected_version === null
+                  ? 1
+                  : params.p_expected_version + 1
+
+              return {
+                data: {
+                  applied: true,
+                  record: {
+                    tenantId: params.p_tenant_id,
+                    providerDomain:
+                      params.p_provider_domain,
+                    kind: params.p_record_kind,
+                    recordId: params.p_record_id,
+                    version: recordVersion,
+                    payload: params.p_payload,
+                    updatedAt: Date.parse(
+                      params.p_now,
+                    ),
+                    lastFenceToken:
+                      params.p_fence_token,
+                  },
+                } as T,
                 error: null,
               }
             }

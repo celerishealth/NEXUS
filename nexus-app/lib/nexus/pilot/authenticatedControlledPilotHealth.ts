@@ -565,9 +565,7 @@ export async function observeAuthenticatedControlledPilotHealth(
 
   if (
     enrollment.ownerUserId !==
-      workspace.actor.userId ||
-    enrollment.ownerUserId !==
-      workspace.tenant.ownerUserId
+      workspace.actor.userId
   ) {
     deny(
       "PILOT_HEALTH_ENROLLMENT_OWNER_MISMATCH",

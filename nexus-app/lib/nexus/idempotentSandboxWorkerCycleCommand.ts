@@ -317,6 +317,7 @@ function assertReceiptClaim(
   }
 
   if (
+    typeof value.attempt !== "number" ||
     !Number.isInteger(value.attempt) ||
     value.attempt < 1 ||
     value.attempt > 100

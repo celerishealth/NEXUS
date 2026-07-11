@@ -1084,12 +1084,13 @@ export class PersistentControlledActionVerticalSlice {
       );
     }
 
-    return this.transact((state) => {
-      if (state.killSwitch.engaged) {
-        throw new Error(
-          "Operational kill switch is engaged. Dead-letter recovery denied.",
-        );
-      }
+    return this.transact<IntegratedDeadLetterRecoveryResult>(
+      (state): TransactionResult<IntegratedDeadLetterRecoveryResult> => {
+        if (state.killSwitch.engaged) {
+          throw new Error(
+            "Operational kill switch is engaged. Dead-letter recovery denied.",
+          );
+        }
 
       const action = state.actions[actionId];
 
@@ -1758,11 +1759,12 @@ export class PersistentControlledActionVerticalSlice {
       );
     }
 
-    return this.transact((state) => {
-      if (state.killSwitch.engaged) {
-        throw new Error(
-          "Operational kill switch is engaged. Lease heartbeat denied.",
-        );
+    return this.transact<IntegratedDeliveryLeaseHeartbeatResult>(
+      (state): TransactionResult<IntegratedDeliveryLeaseHeartbeatResult> => {
+        if (state.killSwitch.engaged) {
+          throw new Error(
+            "Operational kill switch is engaged. Lease heartbeat denied.",
+          );
       }
 
       const action = state.actions[actionId];
@@ -1993,11 +1995,12 @@ export class PersistentControlledActionVerticalSlice {
       );
     }
 
-    return this.transact((state) => {
-      if (state.killSwitch.engaged) {
-        throw new Error(
-          "Operational kill switch is engaged. Delivery outcome denied.",
-        );
+    return this.transact<IntegratedDeliveryFailureResult>(
+      (state): TransactionResult<IntegratedDeliveryFailureResult> => {
+        if (state.killSwitch.engaged) {
+          throw new Error(
+            "Operational kill switch is engaged. Delivery outcome denied.",
+          );
       }
 
       const action = state.actions[actionId];

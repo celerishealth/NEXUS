@@ -1,4 +1,4 @@
-﻿import { createHash } from "node:crypto";
+import { createHash } from "node:crypto";
 
 import type {
   SandboxWorkerCycleCommandAuditRecord,
@@ -369,6 +369,11 @@ function parseLatestRow(
     );
   }
 
+  const failureCode: string | null =
+    isFailureCode(value.failure_code)
+      ? value.failure_code
+      : null;
+
   return {
     tenantId: value.tenant_id,
     requestId: value.request_id,
@@ -376,7 +381,7 @@ function parseLatestRow(
     actorId: value.actor_id,
     requestDigest: value.request_digest,
     stage: value.stage,
-    failureCode: value.failure_code,
+    failureCode,
     recordHash: value.record_hash,
   };
 }

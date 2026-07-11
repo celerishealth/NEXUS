@@ -1,4 +1,4 @@
-﻿import { createHash } from "node:crypto";
+import { createHash } from "node:crypto";
 
 export const FINAL_COMPLETION_CHECKPOINT_VERSION =
   "nexus-final-completion-checkpoint-v1" as const;
@@ -277,6 +277,12 @@ export function createFinalCompletionCheckpoint(
     evidence: frozenEvidence,
   });
 
+  const finalStatement:
+    FinalCompletionCheckpointReport["finalStatement"] =
+    completionCheckpointSatisfied
+      ? "NEXUS_DAY_781_TARGET_COMPLETE_PUBLIC_LAUNCH_BLOCKED"
+      : "NEXUS_DAY_781_NOT_COMPLETE_RESOLVE_FAILED_GATES";
+
   const reportCore = {
     version: FINAL_COMPLETION_CHECKPOINT_VERSION,
     checkpointId: "day-781" as const,
@@ -297,15 +303,7 @@ export function createFinalCompletionCheckpoint(
       paymentExecutionAuthorized: false,
       publicLaunchAuthorized: false,
     } as const,
-    finalStatement: completionCheckpointSatisfied
-      ? (
-          "NEXUS_DAY_781_TARGET_COMPLETE_PUBLIC_LAUNCH_BLOCKED"
-          as const
-        )
-      : (
-          "NEXUS_DAY_781_NOT_COMPLETE_RESOLVE_FAILED_GATES"
-          as const
-        ),
+    finalStatement,
   };
 
   const report: FinalCompletionCheckpointReport = {

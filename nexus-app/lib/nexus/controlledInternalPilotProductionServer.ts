@@ -1,4 +1,4 @@
-﻿import type {
+import type {
   SandboxWorkerCycleCommandRuntime,
 } from "./sandboxWorkerCycleCommand";
 
@@ -147,6 +147,7 @@ function validateRuntime(
       runtime.maxCookieHeaderBytes !==
         undefined &&
       (
+        typeof runtime.maxCookieHeaderBytes !== "number" ||
         !Number.isInteger(
           runtime.maxCookieHeaderBytes,
         ) ||
@@ -159,6 +160,7 @@ function validateRuntime(
       runtime.maxRouteBodyBytes !==
         undefined &&
       (
+        typeof runtime.maxRouteBodyBytes !== "number" ||
         !Number.isInteger(
           runtime.maxRouteBodyBytes,
         ) ||
@@ -171,6 +173,7 @@ function validateRuntime(
       runtime.maxRequestBodyBytes !==
         undefined &&
       (
+        typeof runtime.maxRequestBodyBytes !== "number" ||
         !Number.isInteger(
           runtime.maxRequestBodyBytes,
         ) ||
@@ -183,6 +186,7 @@ function validateRuntime(
       runtime.maxResponseBodyBytes !==
         undefined &&
       (
+        typeof runtime.maxResponseBodyBytes !== "number" ||
         !Number.isInteger(
           runtime.maxResponseBodyBytes,
         ) ||
@@ -256,7 +260,7 @@ export function createControlledInternalPilotProductionServer(
           runtime.withReceiptTransaction,
         withAuditTransaction:
           runtime.withAuditTransaction,
-        cookieName:
+        sessionCookieName:
           runtime.cookieName,
         maxCookieHeaderBytes:
           runtime.maxCookieHeaderBytes,
