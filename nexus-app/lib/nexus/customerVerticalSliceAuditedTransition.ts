@@ -136,8 +136,15 @@ function assertCoordinatedResult(input: {
   state: CustomerVerticalSliceStateRecord;
   event: CustomerVerticalSliceTransitionEvent;
   auditEntry: CustomerVerticalSliceAuditEntry;
+  requireStateVersionMatch: boolean;
 }): void {
-  const { tenantId, state, event, auditEntry } = input;
+  const {
+    tenantId,
+    state,
+    event,
+    auditEntry,
+    requireStateVersionMatch,
+  } = input;
 
   const coordinated =
     state.tenantId === tenantId &&
@@ -149,7 +156,9 @@ function assertCoordinatedResult(input: {
     state.customerId === auditEntry.customerId &&
     state.ownerId === event.ownerId &&
     state.ownerId === auditEntry.ownerId &&
-    state.version === event.nextVersion &&
+    (!requireStateVersionMatch ||
+      (state.version === event.nextVersion &&
+        state.status === event.toStatus)) &&
     state.version === auditEntry.nextVersion &&
     event.eventId === auditEntry.sourceEventId &&
     event.idempotencyKey ===
@@ -234,6 +243,7 @@ export async function applyAuditedCustomerVerticalSliceTransition(input: {
         state: transitionResult.state,
         event,
         auditEntry: auditResult.entry,
+        requireStateVersionMatch: transitionResult.applied,
       });
 
       return {
@@ -248,7 +258,9 @@ export async function applyAuditedCustomerVerticalSliceTransition(input: {
         state: transitionResult.state,
         event,
         auditEntry: auditResult.entry,
+        requireStateVersionMatch: transitionResult.applied,
       };
     },
   );
 }
+
