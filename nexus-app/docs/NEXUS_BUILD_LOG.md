@@ -14982,3 +14982,15 @@ WhatsApp delivery, public launch, or external execution was authorized.
 - Added tenant and outbox result-boundary verification.
 - Added lease identity clearing during completion, retry and terminal failure transitions.
 - No live provider execution, external delivery, WhatsApp/email auto-send, payment execution or public launch authorization was added.
+
+## Day 755 — Atomic Owner Decision and Sandbox Outbox Commit v1
+
+- Added one PostgreSQL transaction boundary for approved owner-decision persistence and sandbox outbox creation.
+- Bound authenticated transaction actor identity to the approving owner.
+- Required exact optimistic version advancement before execution intent creation.
+- Required a durable audit-record identity from owner-decision persistence.
+- Bound sandbox outbox payload to the exact decision, audit record and decision version.
+- Added complete rollback when decision persistence, audit verification, outbox persistence or idempotency verification fails.
+- Added identical outbox-intent replay reuse without creating duplicate execution intent.
+- Restricted execution intent creation to explicit `sandbox.*` action kinds.
+- No live provider execution, external delivery, WhatsApp/email auto-send, payment execution or public launch authorization was added.
