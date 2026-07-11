@@ -14948,3 +14948,15 @@ WhatsApp delivery, public launch, or external execution was authorized.
 - Successful work commits once; failed work rolls back; pooled connections always release.
 - Automatic transaction retry is intentionally disabled to prevent uncontrolled duplicate effects.
 - No live provider execution, external delivery, WhatsApp/email auto-send, payments or public launch authorization was added.
+
+## Day 752 — Transactional PostgreSQL Sandbox Outbox v1
+
+- Added a tenant-isolated PostgreSQL sandbox outbox schema.
+- Added forced database row-level security using transaction-local tenant context.
+- Added tenant-scoped idempotency constraints.
+- Added immutable outbox intent identity protection.
+- Added physical delete rejection to preserve operational evidence.
+- Added deterministic payload canonicalization and idempotency conflict detection.
+- Added repository enqueue behavior that runs inside the verified Day 751 tenant transaction.
+- Database state and sandbox execution intent can now be persisted atomically by the caller.
+- No worker, provider execution, external delivery, WhatsApp/email auto-send, payment execution or public launch authorization was added.
