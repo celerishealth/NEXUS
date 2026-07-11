@@ -15007,3 +15007,16 @@ WhatsApp delivery, public launch, or external execution was authorized.
 - Added fail-closed conflict handling for changed result identity, action or payload.
 - Added complete transaction rollback when result persistence or completion fencing fails.
 - No live provider execution, external delivery, WhatsApp/email auto-send, payment execution or public launch authorization was added.
+
+## Day 757 — Strict Sandbox Worker Execution Boundary v1
+
+- Added an explicit exact-match registry for sandbox action handlers.
+- Restricted registration and execution to validated `sandbox.*` action identifiers.
+- Blocked dynamic action-name-derived execution, dynamic imports and fallback handlers.
+- Added defensive cloning and deep freezing for untrusted claimed payloads.
+- Added prototype-pollution key, circular-reference, unsupported-value, depth, node-count and payload-size protection.
+- Added bounded handler execution with an AbortSignal and strict timeout limits.
+- Added an exact structured handler-result contract with UUID result identity.
+- Added deterministic result canonicalization for durable replay comparison.
+- Added safe retryable and terminal error classification without exposing raw exception details.
+- No live provider execution, external delivery, WhatsApp/email auto-send, payment execution or public launch authorization was added.
