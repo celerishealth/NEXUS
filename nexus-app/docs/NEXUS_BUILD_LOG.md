@@ -14960,3 +14960,14 @@ WhatsApp delivery, public launch, or external execution was authorized.
 - Added repository enqueue behavior that runs inside the verified Day 751 tenant transaction.
 - Database state and sandbox execution intent can now be persisted atomically by the caller.
 - No worker, provider execution, external delivery, WhatsApp/email auto-send, payment execution or public launch authorization was added.
+
+## Day 753 — Tenant-Isolated Sandbox Outbox Lease and Recovery v1
+
+- Added durable worker lease identity, expiry and completion-state database fields.
+- Added database constraints that reject invalid processing and completed states.
+- Added atomic tenant-isolated pending-work claims using `FOR UPDATE SKIP LOCKED`.
+- Added bounded batch size and lease-duration validation.
+- Added claim result verification against the verified tenant and requested lease identity.
+- Added expired-processing-lease recovery that returns abandoned work to pending state.
+- Added stale lease identity clearing before abandoned work can be reclaimed.
+- No automatic execution retry, live provider execution, external delivery, WhatsApp/email auto-send, payment execution or public launch authorization was added.
