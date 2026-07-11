@@ -14994,3 +14994,16 @@ WhatsApp delivery, public launch, or external execution was authorized.
 - Added identical outbox-intent replay reuse without creating duplicate execution intent.
 - Restricted execution intent creation to explicit `sandbox.*` action kinds.
 - No live provider execution, external delivery, WhatsApp/email auto-send, payment execution or public launch authorization was added.
+
+## Day 756 — Atomic Sandbox Result Recording and Lease Completion v1
+
+- Added a durable tenant-isolated PostgreSQL sandbox-result table.
+- Added forced database row-level security using transaction-local tenant context.
+- Added one-result-per-tenant-outbox uniqueness and tenant-scoped foreign-key integrity.
+- Added append-only update and delete protection for sandbox-result evidence.
+- Added atomic result persistence and lease-token-fenced outbox completion in one transaction.
+- Added database-clock lease-expiry verification before result persistence.
+- Added identical completed-result replay without duplicate result creation.
+- Added fail-closed conflict handling for changed result identity, action or payload.
+- Added complete transaction rollback when result persistence or completion fencing fails.
+- No live provider execution, external delivery, WhatsApp/email auto-send, payment execution or public launch authorization was added.
