@@ -15020,3 +15020,17 @@ WhatsApp delivery, public launch, or external execution was authorized.
 - Added deterministic result canonicalization for durable replay comparison.
 - Added safe retryable and terminal error classification without exposing raw exception details.
 - No live provider execution, external delivery, WhatsApp/email auto-send, payment execution or public launch authorization was added.
+
+## Day 758 — Sandbox AI Recommendation Safety Boundary v1
+
+- Added strict structural separation between trusted NEXUS policy and untrusted customer/business data.
+- Added one exact allowlisted sandbox AI recommendation action.
+- Added defensive JSON cloning, freezing, canonicalization, size limits, depth limits, node limits and prototype-pollution defence.
+- Added prompt-injection, role-impersonation, secret-exfiltration, tool-execution, external-delivery and payment-attempt risk signaling.
+- Risk signals remain evidence only and never become execution authority.
+- Added a fixed no-tool, no-network, no-delivery and no-payment system instruction boundary.
+- Added an exact no-additional-properties AI result contract.
+- Added strict AI output validation for recommendation, rationale, confidence, missing information and safe risk flags.
+- Added fail-closed rejection of AI-generated tool calls, delivery fields, payment fields or execution-authority fields.
+- Owner approval remains mandatory for every AI recommendation.
+- No AI provider invocation, live provider execution, external delivery, WhatsApp/email auto-send, payment execution or public launch authorization was added.
