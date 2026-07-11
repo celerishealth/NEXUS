@@ -246,6 +246,7 @@ export async function applyAuditedCustomerVerticalSliceTransition(input: {
         requireStateVersionMatch: transitionResult.applied,
         requireStateVersionMatch: transitionResult.applied,
         requireStateVersionMatch: transitionResult.applied,
+        requireStateVersionMatch: transitionResult.applied,
       });
 
       return {
@@ -263,10 +264,12 @@ export async function applyAuditedCustomerVerticalSliceTransition(input: {
         requireStateVersionMatch: transitionResult.applied,
         requireStateVersionMatch: transitionResult.applied,
         requireStateVersionMatch: transitionResult.applied,
+        requireStateVersionMatch: transitionResult.applied,
       };
     },
   );
 }
+
 
 
 
