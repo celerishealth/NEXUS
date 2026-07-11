@@ -25,7 +25,10 @@ export interface CustomerVerticalSliceHttpRouteDependencies {
     rawBody: string;
   }): Promise<boolean>;
 
-  auditContext: AuthenticatedAuditWriterContext;
+  loadAuditContext(
+    session: CustomerVerticalSliceSession,
+  ): Promise<AuthenticatedAuditWriterContext>;
+
   rateLimiter: CustomerVerticalSliceRateLimiter;
   repository: CustomerVerticalSliceTransactionalRepository;
   nowIso?: string;
@@ -51,7 +54,7 @@ function createCorrelationId(source: string): string {
     .slice(0, 20)}`;
 }
 
-function jsonResponse(input: {
+function errorResponse(input: {
   status: number;
   correlationId: string;
   code: string;
@@ -80,12 +83,8 @@ function jsonResponse(input: {
   );
 }
 
-function readContentLength(
-  request: Request,
-): number | null {
-  const value = request.headers.get(
-    "content-length",
-  );
+function readContentLength(request: Request): number | null {
+  const value = request.headers.get("content-length");
 
   if (value === null) {
     return null;
@@ -102,37 +101,29 @@ function readContentLength(
     : Number.NaN;
 }
 
-function isJsonContentType(
-  request: Request,
-): boolean {
-  const contentType = request.headers
+function isJsonContentType(request: Request): boolean {
+  const value = request.headers
     .get("content-type")
     ?.toLowerCase()
     .trim();
 
-  if (!contentType) {
+  if (!value) {
     return false;
   }
 
-  const mediaType = contentType
-    .split(";", 1)[0]
-    .trim();
-
-  return mediaType === "application/json";
+  return value.split(";", 1)[0].trim() === "application/json";
 }
 
-function hasUnsupportedEncoding(
-  request: Request,
-): boolean {
-  const encoding = request.headers
+function hasUnsupportedEncoding(request: Request): boolean {
+  const value = request.headers
     .get("content-encoding")
     ?.trim()
     .toLowerCase();
 
   return (
-    encoding !== undefined &&
-    encoding !== "" &&
-    encoding !== "identity"
+    value !== undefined &&
+    value !== "" &&
+    value !== "identity"
   );
 }
 
@@ -149,7 +140,7 @@ export async function handleCustomerVerticalSliceHttpRequest(
   );
 
   if (request.method.toUpperCase() !== "POST") {
-    return jsonResponse({
+    return errorResponse({
       status: 405,
       correlationId: routeCorrelationId,
       code: "METHOD_NOT_ALLOWED",
@@ -162,7 +153,7 @@ export async function handleCustomerVerticalSliceHttpRequest(
   }
 
   if (!isJsonContentType(request)) {
-    return jsonResponse({
+    return errorResponse({
       status: 415,
       correlationId: routeCorrelationId,
       code: "UNSUPPORTED_MEDIA_TYPE",
@@ -173,7 +164,7 @@ export async function handleCustomerVerticalSliceHttpRequest(
   }
 
   if (hasUnsupportedEncoding(request)) {
-    return jsonResponse({
+    return errorResponse({
       status: 415,
       correlationId: routeCorrelationId,
       code: "UNSUPPORTED_CONTENT_ENCODING",
@@ -192,7 +183,7 @@ export async function handleCustomerVerticalSliceHttpRequest(
       declaredLength > MAX_HTTP_BODY_BYTES
     )
   ) {
-    return jsonResponse({
+    return errorResponse({
       status: 413,
       correlationId: routeCorrelationId,
       code: "REQUEST_TOO_LARGE",
@@ -206,12 +197,11 @@ export async function handleCustomerVerticalSliceHttpRequest(
   try {
     rawBody = await request.text();
   } catch {
-    return jsonResponse({
+    return errorResponse({
       status: 422,
       correlationId: routeCorrelationId,
       code: "INVALID_REQUEST_BODY",
-      message:
-        "The request body could not be read.",
+      message: "The request body could not be read.",
       retryable: false,
     });
   }
@@ -220,7 +210,7 @@ export async function handleCustomerVerticalSliceHttpRequest(
     Buffer.byteLength(rawBody, "utf8") >
     MAX_HTTP_BODY_BYTES
   ) {
-    return jsonResponse({
+    return errorResponse({
       status: 413,
       correlationId: routeCorrelationId,
       code: "REQUEST_TOO_LARGE",
@@ -234,12 +224,11 @@ export async function handleCustomerVerticalSliceHttpRequest(
   try {
     parsedBody = JSON.parse(rawBody);
   } catch {
-    return jsonResponse({
+    return errorResponse({
       status: 422,
       correlationId: routeCorrelationId,
       code: "INVALID_JSON",
-      message:
-        "The request body must contain valid JSON.",
+      message: "The request body must contain valid JSON.",
       retryable: false,
     });
   }
@@ -247,10 +236,9 @@ export async function handleCustomerVerticalSliceHttpRequest(
   let session: CustomerVerticalSliceSession;
 
   try {
-    session =
-      await dependencies.loadSession(request);
+    session = await dependencies.loadSession(request);
   } catch {
-    return jsonResponse({
+    return errorResponse({
       status: 503,
       correlationId: routeCorrelationId,
       code: "IDENTITY_SERVICE_UNAVAILABLE",
@@ -259,6 +247,13 @@ export async function handleCustomerVerticalSliceHttpRequest(
       retryable: true,
     });
   }
+
+  let auditContext: AuthenticatedAuditWriterContext = {
+    authenticated: false,
+    tenantId: null,
+    serviceId: null,
+    role: "service",
+  };
 
   if (
     session.authenticated === true &&
@@ -275,7 +270,7 @@ export async function handleCustomerVerticalSliceHttpRequest(
           rawBody,
         });
     } catch {
-      return jsonResponse({
+      return errorResponse({
         status: 503,
         correlationId: routeCorrelationId,
         code: "INTEGRITY_SERVICE_UNAVAILABLE",
@@ -286,13 +281,42 @@ export async function handleCustomerVerticalSliceHttpRequest(
     }
 
     if (integrityVerified !== true) {
-      return jsonResponse({
+      return errorResponse({
         status: 403,
         correlationId: routeCorrelationId,
         code: "REQUEST_INTEGRITY_FAILED",
-        message:
-          "The request could not be verified.",
+        message: "The request could not be verified.",
         retryable: false,
+      });
+    }
+
+    try {
+      auditContext =
+        await dependencies.loadAuditContext(session);
+    } catch {
+      return errorResponse({
+        status: 503,
+        correlationId: routeCorrelationId,
+        code: "AUDIT_CONTEXT_UNAVAILABLE",
+        message:
+          "The audit service is temporarily unavailable.",
+        retryable: true,
+      });
+    }
+
+    if (
+      auditContext.authenticated !== true ||
+      auditContext.role !== "service" ||
+      auditContext.tenantId !== session.tenantId.trim() ||
+      !auditContext.serviceId?.trim()
+    ) {
+      return errorResponse({
+        status: 503,
+        correlationId: routeCorrelationId,
+        code: "AUDIT_CONTEXT_UNAVAILABLE",
+        message:
+          "The audit service is temporarily unavailable.",
+        retryable: true,
       });
     }
   }
@@ -301,14 +325,10 @@ export async function handleCustomerVerticalSliceHttpRequest(
     await handleCustomerVerticalSliceCommand({
       session,
       rawBody: parsedBody,
-      auditContext:
-        dependencies.auditContext,
-      rateLimiter:
-        dependencies.rateLimiter,
-      repository:
-        dependencies.repository,
-      nowIso:
-        dependencies.nowIso,
+      auditContext,
+      rateLimiter: dependencies.rateLimiter,
+      repository: dependencies.repository,
+      nowIso: dependencies.nowIso,
     });
 
   return new Response(

@@ -5,14 +5,18 @@ import {
 } from "../../../../../lib/nexus/customerVerticalSliceHttpRoute";
 
 import {
+  ensureCustomerVerticalSliceLocalSandboxRuntimeConfigured,
+} from "../../../../../lib/nexus/customerVerticalSliceLocalSandboxRuntime";
+
+import {
   requireCustomerVerticalSliceRouteDependencies,
 } from "../../../../../lib/nexus/customerVerticalSliceRouteDependencies";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-function createRouteCorrelationId(request: Request): string {
-  const digest = createHash("sha256")
+function correlationId(request: Request): string {
+  return `vsnr_${createHash("sha256")
     .update(
       [
         request.method,
@@ -22,21 +26,18 @@ function createRouteCorrelationId(request: Request): string {
       "utf8",
     )
     .digest("hex")
-    .slice(0, 20);
-
-  return `vsnr_${digest}`;
+    .slice(0, 20)}`;
 }
 
 function unavailableResponse(
   request: Request,
 ): Response {
-  const correlationId =
-    createRouteCorrelationId(request);
+  const id = correlationId(request);
 
   return new Response(
     JSON.stringify({
       ok: false,
-      correlationId,
+      correlationId: id,
       error: {
         code: "SERVICE_UNAVAILABLE",
         message:
@@ -52,7 +53,7 @@ function unavailableResponse(
         "cache-control": "no-store, max-age=0",
         "x-content-type-options": "nosniff",
         "referrer-policy": "no-referrer",
-        "x-correlation-id": correlationId,
+        "x-correlation-id": id,
       },
     },
   );
@@ -62,6 +63,13 @@ export async function POST(
   request: Request,
 ): Promise<Response> {
   try {
+    const configured =
+      await ensureCustomerVerticalSliceLocalSandboxRuntimeConfigured();
+
+    if (!configured) {
+      return unavailableResponse(request);
+    }
+
     const dependencies =
       requireCustomerVerticalSliceRouteDependencies();
 

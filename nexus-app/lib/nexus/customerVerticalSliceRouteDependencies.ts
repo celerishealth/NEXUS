@@ -12,10 +12,12 @@ export class CustomerVerticalSliceRouteDependencyError extends Error {
 
   constructor(
     code: CustomerVerticalSliceRouteDependencyErrorCode,
-    message = "Customer vertical slice route dependencies are unavailable.",
+    message =
+      "Customer vertical slice route dependencies are unavailable.",
   ) {
     super(message);
-    this.name = "CustomerVerticalSliceRouteDependencyError";
+    this.name =
+      "CustomerVerticalSliceRouteDependencyError";
     this.code = code;
   }
 }
@@ -28,21 +30,9 @@ function validateDependencies(
     typeof dependencies !== "object" ||
     typeof dependencies.loadSession !== "function" ||
     typeof dependencies.verifyRequestIntegrity !== "function" ||
-    !dependencies.auditContext ||
-    typeof dependencies.auditContext !== "object" ||
+    typeof dependencies.loadAuditContext !== "function" ||
     typeof dependencies.rateLimiter?.consume !== "function" ||
     typeof dependencies.repository?.runInTransaction !== "function"
-  ) {
-    throw new CustomerVerticalSliceRouteDependencyError(
-      "INVALID_ROUTE_DEPENDENCIES",
-    );
-  }
-
-  if (
-    dependencies.auditContext.authenticated !== true ||
-    dependencies.auditContext.role !== "service" ||
-    !dependencies.auditContext.tenantId?.trim() ||
-    !dependencies.auditContext.serviceId?.trim()
   ) {
     throw new CustomerVerticalSliceRouteDependencyError(
       "INVALID_ROUTE_DEPENDENCIES",
