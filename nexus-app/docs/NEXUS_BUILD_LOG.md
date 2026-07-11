@@ -14937,3 +14937,14 @@ Real disposable PostgreSQL verification:
 
 No production migration, customer action, provider invocation, payment,
 WhatsApp delivery, public launch, or external execution was authorized.
+
+## Day 751 — Transaction-Scoped PostgreSQL Tenant Context Guard v1
+
+- Added a production runtime boundary for transaction-local PostgreSQL tenant, actor and request context.
+- Tenant context is validated before pooled connection acquisition.
+- PostgreSQL context uses transaction-local set_config(..., true) values to prevent pooled connection leakage.
+- Context is read back and verified before tenant-scoped customer work can execute.
+- Context mismatch fails closed and rolls back.
+- Successful work commits once; failed work rolls back; pooled connections always release.
+- Automatic transaction retry is intentionally disabled to prevent uncontrolled duplicate effects.
+- No live provider execution, external delivery, WhatsApp/email auto-send, payments or public launch authorization was added.
