@@ -31,8 +31,31 @@ jobs:
       - name: Verify local migration history
         run: supabase migration list --local
 
-      - name: Lint local database
-        run: supabase db lint --local --level error --fail-on error
+      - name: Collect full local database lint report
+        id: database_lint
+        shell: bash
+        run: |
+          set +e
+          supabase db lint --local --level error --fail-on error 2>&1 | tee supabase-lint-report.txt
+          lint_exit_code=${PIPESTATUS[0]}
+
+          {
+            echo "## Supabase local database lint report"
+            echo
+            echo '```text'
+            cat supabase-lint-report.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          echo "exit_code=${lint_exit_code}" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Enforce local database lint result
+        if: steps.database_lint.outputs.exit_code != '0'
+        shell: bash
+        run: |
+          echo "Supabase database lint reported errors. Review the complete report above."
+          exit 1
 
       - name: Clean up isolated database
         if: always()
