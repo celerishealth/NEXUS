@@ -1,0 +1,40 @@
+name: Supabase Migration Dry Run
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nexus-supabase-migration-dry-run
+  cancel-in-progress: false
+
+jobs:
+  dry-run:
+    name: Verify pending migrations only
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    defaults:
+      run:
+        working-directory: nexus-app
+
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: 2.109.1
+
+      - name: Link NEXUS Supabase project
+        run: supabase link --project-ref cvtjcysatndfzkszufen
+
+      - name: Dry-run pending migrations
+        run: supabase db push --dry-run --linked
