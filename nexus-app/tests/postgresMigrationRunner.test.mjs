@@ -1,4 +1,4 @@
-﻿import assert from "node:assert/strict";
+import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
@@ -130,14 +130,14 @@ function createFakeClient({
 }
 
 test(
-  "discovers the two security migrations in deterministic order",
+  "discovers all tracked security migrations in deterministic order",
   () => {
     const migrations =
       discoverPostgresMigrations();
 
     assert.equal(
       migrations.length,
-      5,
+      13,
     );
 
     assert.deepEqual(
@@ -151,6 +151,14 @@ test(
         "0003_nexus_rate_limit_security_event",
         "0004_nexus_operational_circuit_breaker",
         "0005_nexus_controlled_action_state",
+        "0750_customer_vertical_slice_postgres",
+        "0752_transactional_sandbox_outbox",
+        "0753_sandbox_outbox_lease_recovery",
+        "0754_sandbox_outbox_fenced_finalization",
+        "0756_sandbox_outbox_results",
+        "0763_sandbox_worker_command_receipts",
+        "0768_internal_pilot_owner_sessions",
+        "0770_internal_pilot_command_audit",
       ],
     );
 
@@ -179,7 +187,7 @@ test(
 
     assert.equal(
       plan.migrationCount,
-      5,
+      13,
     );
 
     assert.equal(
@@ -238,7 +246,7 @@ test(
 
     assert.equal(
       result.appliedMigrationCount,
-      5,
+      13,
     );
 
     assert.equal(
@@ -274,7 +282,7 @@ test(
 
     assert.equal(
       client.ledger.size,
-      5,
+      13,
     );
   },
 );
@@ -319,7 +327,7 @@ test(
 
     assert.equal(
       result.previouslyAppliedCount,
-      5,
+      13,
     );
   },
 );
@@ -407,7 +415,7 @@ test(
 
     assert.equal(
       status.pendingMigrationCount,
-      5,
+      13,
     );
 
     assert.equal(

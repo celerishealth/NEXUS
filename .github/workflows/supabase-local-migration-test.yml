@@ -20,6 +20,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Enforce Supabase migration security contract
+        run: |
+          node --check scripts/nexus-supabase-migration-security-gate.mjs
+          node --check tests/supabaseMigrationSecurityGate.test.mjs
+          node --test tests/supabaseMigrationSecurityGate.test.mjs
+          node scripts/nexus-supabase-migration-security-gate.mjs
+
       - name: Install Supabase CLI
         uses: supabase/setup-cli@v1
         with:
