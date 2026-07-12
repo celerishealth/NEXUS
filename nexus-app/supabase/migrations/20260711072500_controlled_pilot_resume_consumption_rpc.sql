@@ -1,4 +1,4 @@
-﻿begin;
+begin;
 
 create or replace function public.nexus_consume_controlled_pilot_resume_proof(
     p_token_id uuid,

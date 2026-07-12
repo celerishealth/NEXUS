@@ -1,4 +1,4 @@
-﻿begin;
+begin;
 
 create table if not exists
     public.nexus_controlled_pilot_resume_audit_events (

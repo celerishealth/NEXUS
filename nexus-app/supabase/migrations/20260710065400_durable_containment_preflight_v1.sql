@@ -1,4 +1,4 @@
-﻿begin;
+begin;
 
 create or replace function
   public.nexus_list_active_provider_containments(

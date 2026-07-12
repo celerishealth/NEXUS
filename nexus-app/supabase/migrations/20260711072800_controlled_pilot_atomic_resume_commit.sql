@@ -1,4 +1,4 @@
-﻿begin;
+begin;
 
 create or replace function
     public.nexus_commit_controlled_pilot_resume(

@@ -1,4 +1,4 @@
-﻿begin;
+begin;
 
 create or replace function
     public.nexus_read_controlled_pilot_operation_state(

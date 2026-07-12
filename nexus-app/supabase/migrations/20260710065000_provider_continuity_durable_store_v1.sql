@@ -1,4 +1,4 @@
-﻿begin;
+begin;
 
 create table if not exists public.nexus_provider_continuity_scope_counters (
   tenant_id text not null,

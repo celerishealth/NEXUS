@@ -1,4 +1,4 @@
-﻿begin;
+begin;
 
 create or replace function
   public.nexus_get_provider_continuity_store_readiness()
