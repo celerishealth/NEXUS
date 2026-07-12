@@ -534,12 +534,12 @@ begin
     end if;
 
     update
-        public.nexus_controlled_customer_inquiries
+        public.nexus_controlled_customer_inquiries as inquiry
     set
         status = 'sandbox-executed'
-    where inquiry_id = p_inquiry_id
-        and tenant_id = trim(p_tenant_id)
-        and status = 'approved';
+    where inquiry.inquiry_id = p_inquiry_id
+        and inquiry.tenant_id = trim(p_tenant_id)
+        and inquiry.status = 'approved';
 
     get diagnostics updated_count = row_count;
 
