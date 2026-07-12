@@ -319,12 +319,12 @@ begin
 
     if inserted_count = 1 then
         update
-            public.nexus_controlled_customer_inquiries
+            public.nexus_controlled_customer_inquiries as inquiry
         set
             status = 'owner-review'
-        where inquiry_id = p_inquiry_id
-            and tenant_id = trim(p_tenant_id)
-            and status in (
+        where inquiry.inquiry_id = p_inquiry_id
+            and inquiry.tenant_id = trim(p_tenant_id)
+            and inquiry.status in (
                 'received',
                 'recommendation-pending',
                 'owner-review'
@@ -389,12 +389,12 @@ begin
 
     if inquiry_record.status <> 'owner-review' then
         update
-            public.nexus_controlled_customer_inquiries
+            public.nexus_controlled_customer_inquiries as inquiry
         set
             status = 'owner-review'
-        where inquiry_id = p_inquiry_id
-            and tenant_id = trim(p_tenant_id)
-            and status in (
+        where inquiry.inquiry_id = p_inquiry_id
+            and inquiry.tenant_id = trim(p_tenant_id)
+            and inquiry.status in (
                 'received',
                 'recommendation-pending'
             );

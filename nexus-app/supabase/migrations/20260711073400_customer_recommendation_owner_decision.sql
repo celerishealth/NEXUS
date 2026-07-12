@@ -439,14 +439,14 @@ begin
     end if;
 
     update
-        public.nexus_controlled_customer_recommendations
+        public.nexus_controlled_customer_recommendations as recommendation
     set
         status = target_status
-    where recommendation_id =
+    where recommendation.recommendation_id =
             p_recommendation_id
-        and tenant_id =
+        and recommendation.tenant_id =
             trim(p_tenant_id)
-        and status = 'owner-review';
+        and recommendation.status = 'owner-review';
 
     get diagnostics updated_count = row_count;
 
@@ -456,14 +456,14 @@ begin
     end if;
 
     update
-        public.nexus_controlled_customer_inquiries
+        public.nexus_controlled_customer_inquiries as inquiry
     set
         status = target_status
-    where inquiry_id =
+    where inquiry.inquiry_id =
             p_inquiry_id
-        and tenant_id =
+        and inquiry.tenant_id =
             trim(p_tenant_id)
-        and status = 'owner-review';
+        and inquiry.status = 'owner-review';
 
     get diagnostics updated_count = row_count;
 
