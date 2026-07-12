@@ -26,7 +26,7 @@ BEGIN
      END IF;
   END LOOP;
 END;
-$function$
+$function$;
 
 
 DROP EVENT TRIGGER IF EXISTS ensure_rls;

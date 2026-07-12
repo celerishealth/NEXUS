@@ -31,9 +31,9 @@ jobs:
           fixture_source="supabase/test-fixtures/remote_rls_guard_compatibility.sql"
           fixture_target="supabase/migrations/0000_remote_rls_guard_fixture.sql"
 
-          echo "f37874f3a1c80c9299b73076d4706670007055b4b58385d17c4f8ee01ea2c25d  $fixture_source" | sha256sum --check -
+          echo "1c32e8c8c0214961f000f3db7e3bea7bc214b2f2b0a7d349079232c8e7d4942f  $fixture_source" | sha256sum --check -
           cp "$fixture_source" "$fixture_target"
-          echo "f37874f3a1c80c9299b73076d4706670007055b4b58385d17c4f8ee01ea2c25d  $fixture_target" | sha256sum --check -
+          echo "1c32e8c8c0214961f000f3db7e3bea7bc214b2f2b0a7d349079232c8e7d4942f  $fixture_target" | sha256sum --check -
 
       - name: Start isolated local database
         run: supabase db start
