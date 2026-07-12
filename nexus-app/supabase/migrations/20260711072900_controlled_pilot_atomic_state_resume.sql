@@ -348,7 +348,7 @@ begin
         pilot_state.state_version + 1;
 
     update
-        public.nexus_controlled_pilot_operation_states
+        public.nexus_controlled_pilot_operation_states as operation_state
     set
         operation_status = 'active',
         blocking_signal_id = null,
@@ -357,10 +357,10 @@ begin
         last_owner_id = trim(p_owner_id),
         last_resume_token_id = p_token_id,
         updated_at = timezone('utc', now())
-    where tenant_id = trim(p_tenant_id)
-        and state_version = p_expected_state_version
-        and operation_status = 'paused'
-        and blocking_signal_id = trim(p_signal_id);
+    where operation_state.tenant_id = trim(p_tenant_id)
+        and operation_state.state_version = p_expected_state_version
+        and operation_state.operation_status = 'paused'
+        and operation_state.blocking_signal_id = trim(p_signal_id);
 
     get diagnostics inserted_count = row_count;
 
