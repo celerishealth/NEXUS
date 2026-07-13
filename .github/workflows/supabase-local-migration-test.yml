@@ -54,6 +54,8 @@ jobs:
         run: supabase migration list --local
 
       - name: Verify applied catalog security contract
+        env:
+          PGOPTIONS: "-c default_transaction_read_only=on"
         run: supabase db query --local --file supabase/tests/applied_catalog_security_gate.sql
 
       - name: Collect full local database lint report

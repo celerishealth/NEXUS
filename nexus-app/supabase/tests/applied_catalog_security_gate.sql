@@ -1,7 +1,3 @@
-begin;
-
-set transaction read only;
-
 do $catalog_gate$
 declare
   expected_tables constant text[] := array[
@@ -39,6 +35,10 @@ declare
 
   finding_count integer;
 begin
+  if current_setting('transaction_read_only') <> 'on' then
+    raise exception 'Applied catalog security gate requires a read-only transaction.';
+  end if;
+
   select count(*)
   into finding_count
   from pg_catalog.pg_class c
@@ -264,5 +264,3 @@ begin
   raise notice 'UNSAFE APPLIED GRANTS: 0';
 end;
 $catalog_gate$;
-
-commit;
