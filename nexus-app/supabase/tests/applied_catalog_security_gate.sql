@@ -1,3 +1,5 @@
+START TRANSACTION READ ONLY;
+
 do $catalog_gate$
 declare
   expected_tables constant text[] := array[
@@ -342,3 +344,5 @@ begin
   raise notice 'UNSAFE APPLIED GRANTS: 0';
 end;
 $catalog_gate$;
+
+ROLLBACK;
