@@ -1,0 +1,99 @@
+name: Supabase Schema Backup
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nexus-supabase-schema-backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    name: Create schema-only backup
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    defaults:
+      run:
+        working-directory: nexus-app
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: 2.109.1
+
+      - name: Reinforce secret masking
+        shell: bash
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        run: |
+          set +x
+          echo "::add-mask::${SUPABASE_ACCESS_TOKEN}"
+          echo "::add-mask::${SUPABASE_DB_PASSWORD}"
+
+      - name: Link NEXUS Supabase project
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        run: supabase link --project-ref cvtjcysatndfzkszufen
+
+      - name: Create public schema backup
+        id: schema_backup
+        shell: bash
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        run: |
+          set -euo pipefail
+          set +x
+          umask 077
+
+          backup_directory="backup-artifacts/supabase"
+          backup_file="${backup_directory}/nexus-public-schema-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.sql"
+
+          mkdir -p "${backup_directory}"
+
+          supabase db dump \
+            --linked \
+            --schema public \
+            --file "${backup_file}"
+
+          test -s "${backup_file}"
+
+          if grep -Eiq \
+            'PGPASSWORD|SUPABASE_DB_PASSWORD|SUPABASE_ACCESS_TOKEN|postgres(ql)?://[^[:space:]]+@|eyJ[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}' \
+            "${backup_file}"; then
+            echo "::error::Potential secret material detected in schema backup."
+            exit 1
+          fi
+
+          sha256sum "${backup_file}" > "${backup_file}.sha256"
+
+          echo "backup_file=${backup_file}" >> "${GITHUB_OUTPUT}"
+          echo "SCHEMA BACKUP CREATED: YES"
+          echo "BUSINESS DATA INCLUDED: NO"
+          echo "POTENTIAL SECRET FINDINGS: 0"
+
+      - name: Upload schema backup artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nexus-supabase-schema-backup-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            nexus-app/${{ steps.schema_backup.outputs.backup_file }}
+            nexus-app/${{ steps.schema_backup.outputs.backup_file }}.sha256
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 9
+
+      - name: Remove temporary backup from runner
+        if: always()
+        shell: bash
+        run: rm -rf backup-artifacts
