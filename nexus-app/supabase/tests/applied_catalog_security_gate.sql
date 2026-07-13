@@ -35,6 +35,7 @@ declare
 
   finding_count integer;
   direct_service_role_details text;
+  default_table_acl_details text;
 begin
   if current_setting('transaction_read_only') <> 'on' then
     raise exception 'Applied catalog security gate requires a read-only transaction.';
@@ -289,11 +290,49 @@ begin
       (c.relacl is null)
   ) detail;
 
+  select coalesce(
+    string_agg(
+      format(
+        'owner=%s;schema=%s;object_type=%s;grantee=%s;privilege=%s',
+        default_owner.rolname,
+        coalesce(default_namespace.nspname, '<global>'),
+        default_acl.defaclobjtype,
+        grantee_role.rolname,
+        exploded_acl.privilege_type
+      ),
+      ', '
+      order by
+        default_owner.rolname,
+        coalesce(default_namespace.nspname, '<global>'),
+        exploded_acl.privilege_type
+    ),
+    '<none>'
+  )
+  into default_table_acl_details
+  from pg_catalog.pg_default_acl default_acl
+  join pg_catalog.pg_roles default_owner
+    on default_owner.oid = default_acl.defaclrole
+  left join pg_catalog.pg_namespace default_namespace
+    on default_namespace.oid = default_acl.defaclnamespace
+  cross join lateral pg_catalog.aclexplode(
+    default_acl.defaclacl
+  ) exploded_acl
+  join pg_catalog.pg_roles grantee_role
+    on grantee_role.oid = exploded_acl.grantee
+  where default_acl.defaclobjtype = 'r'
+    and default_owner.rolname = 'postgres'
+    and (
+      default_acl.defaclnamespace = 0
+      or default_namespace.nspname = 'public'
+    )
+    and grantee_role.rolname = 'service_role';
+
   if finding_count <> 7 then
     raise exception
-      'Expected direct service_role access on 7 tables, found %. Details: %.',
+      'Expected direct service_role access on 7 tables, found %. Details: %. Default table ACLs: %.',
       finding_count,
-      direct_service_role_details;
+      direct_service_role_details,
+      default_table_acl_details;
   end if;
 
   raise notice 'APPLIED CATALOG SECURITY GATE: PASS';
