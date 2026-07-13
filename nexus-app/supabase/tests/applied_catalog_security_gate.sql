@@ -34,6 +34,7 @@ declare
   ];
 
   finding_count integer;
+  direct_service_role_details text;
 begin
   if current_setting('transaction_read_only') <> 'on' then
     raise exception 'Applied catalog security gate requires a read-only transaction.';
@@ -231,30 +232,68 @@ begin
       finding_count;
   end if;
 
-  select count(distinct c.oid)
-  into finding_count
-  from pg_catalog.pg_class c
-  join pg_catalog.pg_namespace n
-    on n.oid = c.relnamespace
-  cross join lateral pg_catalog.aclexplode(
+  select
+    count(*),
     coalesce(
-      c.relacl,
-      pg_catalog.acldefault(
-        'r',
-        c.relowner
-      )
+      string_agg(
+        format(
+          '%s(owner=%s;acl=%s;privileges=%s)',
+          detail.relname,
+          detail.owner_name,
+          detail.acl_source,
+          detail.privileges
+        ),
+        ', '
+        order by detail.relname
+      ),
+      '<none>'
     )
-  ) acl
-  join pg_catalog.pg_roles role
-    on role.oid = acl.grantee
-  where n.nspname = 'public'
-    and c.relname = any(expected_tables)
-    and role.rolname = 'service_role';
+  into
+    finding_count,
+    direct_service_role_details
+  from (
+    select
+      c.relname,
+      owner_role.rolname as owner_name,
+      case
+        when c.relacl is null then 'default'
+        else 'stored'
+      end as acl_source,
+      string_agg(
+        distinct acl.privilege_type,
+        ','
+        order by acl.privilege_type
+      ) as privileges
+    from pg_catalog.pg_class c
+    join pg_catalog.pg_namespace n
+      on n.oid = c.relnamespace
+    join pg_catalog.pg_roles owner_role
+      on owner_role.oid = c.relowner
+    cross join lateral pg_catalog.aclexplode(
+      coalesce(
+        c.relacl,
+        pg_catalog.acldefault(
+          'r',
+          c.relowner
+        )
+      )
+    ) acl
+    join pg_catalog.pg_roles role
+      on role.oid = acl.grantee
+    where n.nspname = 'public'
+      and c.relname = any(expected_tables)
+      and role.rolname = 'service_role'
+    group by
+      c.relname,
+      owner_role.rolname,
+      (c.relacl is null)
+  ) detail;
 
   if finding_count <> 7 then
     raise exception
-      'Expected direct service_role access on 7 tables, found %.',
-      finding_count;
+      'Expected direct service_role access on 7 tables, found %. Details: %.',
+      finding_count,
+      direct_service_role_details;
   end if;
 
   raise notice 'APPLIED CATALOG SECURITY GATE: PASS';
