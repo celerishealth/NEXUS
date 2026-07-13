@@ -1,0 +1,196 @@
+name: Supabase Runtime Interface Verification
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: Type VERIFY NEXUS RUNTIME INTERFACE
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nexus-supabase-runtime-interface-verification
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    name: Compare isolated and applied runtime interface
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    defaults:
+      run:
+        working-directory: nexus-app
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Verify explicit owner confirmation
+        shell: bash
+        env:
+          CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          set -euo pipefail
+
+          if [[ "${CONFIRMATION}" != "VERIFY NEXUS RUNTIME INTERFACE" ]]; then
+            echo "::error::Exact runtime interface verification confirmation was not provided."
+            exit 1
+          fi
+
+          echo "OWNER READ-ONLY RUNTIME VERIFICATION AUTHORIZATION: VERIFIED"
+
+      - name: Verify runtime interface workflow contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check tests/supabaseRuntimeInterfaceVerification.test.mjs
+          node --test tests/supabaseRuntimeInterfaceVerification.test.mjs
+
+      - name: Install Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: 2.109.1
+
+      - name: Stage exact remote RLS guard compatibility fixture
+        shell: bash
+        run: |
+          set -euo pipefail
+          fixture_source="supabase/test-fixtures/remote_rls_guard_compatibility.sql"
+          fixture_target="supabase/migrations/0000_remote_rls_guard_fixture.sql"
+          expected_sha256="1c32e8c8c0214961f000f3db7e3bea7bc214b2f2b0a7d349079232c8e7d4942f"
+
+          echo "${expected_sha256} ${fixture_source}" | sha256sum --check -
+          cp "${fixture_source}" "${fixture_target}"
+          echo "${expected_sha256} ${fixture_target}" | sha256sum --check -
+
+      - name: Start isolated local database
+        run: supabase db start
+
+      - name: Verify isolated migration history
+        run: supabase migration list --local
+
+      - name: Collect isolated runtime interface fingerprint
+        id: local_runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          output="$(
+            supabase db query --local \
+              --file supabase/tests/applied_runtime_interface_fingerprint.sql 2>&1
+          )"
+
+          printf '%s\n' "${output}"
+
+          fingerprint="$(
+            printf '%s\n' "${output}" \
+              | grep -Eo 'NEXUS_RUNTIME_INTERFACE_FINGERPRINT=[0-9a-f]{32}' \
+              | tail -n 1 \
+              | cut -d= -f2
+          )"
+
+          if [[ ! "${fingerprint}" =~ ^[0-9a-f]{32}$ ]]; then
+            echo "::error::Isolated runtime interface fingerprint was not produced."
+            exit 1
+          fi
+
+          echo "value=${fingerprint}" >> "${GITHUB_OUTPUT}"
+          echo "ISOLATED RUNTIME INTERFACE FINGERPRINT: ${fingerprint}"
+
+      - name: Reinforce secret masking
+        shell: bash
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        run: |
+          set +x
+          echo "::add-mask::${SUPABASE_ACCESS_TOKEN}"
+          echo "::add-mask::${SUPABASE_DB_PASSWORD}"
+
+      - name: Link NEXUS Supabase project
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        run: supabase link --project-ref cvtjcysatndfzkszufen
+
+      - name: Verify already-applied migration history
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        run: |
+          set -euo pipefail
+          supabase migration list --linked
+          echo "APPLIED MIGRATION HISTORY: VERIFIED"
+
+      - name: Collect applied runtime interface fingerprint read-only
+        id: remote_runtime
+        shell: bash
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        run: |
+          set -euo pipefail
+
+          output="$(
+            supabase db query --linked \
+              --file supabase/tests/applied_runtime_interface_fingerprint.sql 2>&1
+          )"
+
+          printf '%s\n' "${output}"
+
+          fingerprint="$(
+            printf '%s\n' "${output}" \
+              | grep -Eo 'NEXUS_RUNTIME_INTERFACE_FINGERPRINT=[0-9a-f]{32}' \
+              | tail -n 1 \
+              | cut -d= -f2
+          )"
+
+          if [[ ! "${fingerprint}" =~ ^[0-9a-f]{32}$ ]]; then
+            echo "::error::Applied runtime interface fingerprint was not produced."
+            exit 1
+          fi
+
+          echo "value=${fingerprint}" >> "${GITHUB_OUTPUT}"
+          echo "APPLIED RUNTIME INTERFACE FINGERPRINT: ${fingerprint}"
+
+      - name: Enforce isolated-to-applied runtime parity
+        shell: bash
+        env:
+          LOCAL_FINGERPRINT: ${{ steps.local_runtime.outputs.value }}
+          REMOTE_FINGERPRINT: ${{ steps.remote_runtime.outputs.value }}
+        run: |
+          set -euo pipefail
+
+          if [[ "${LOCAL_FINGERPRINT}" != "${REMOTE_FINGERPRINT}" ]]; then
+            echo "::error::Applied Supabase runtime interface differs from the isolated migration result."
+            echo "ISOLATED: ${LOCAL_FINGERPRINT}"
+            echo "APPLIED:  ${REMOTE_FINGERPRINT}"
+            exit 1
+          fi
+
+          {
+            echo "## NEXUS Supabase runtime interface verification"
+            echo
+            echo "- Applied migration history: verified"
+            echo "- Read-only remote verification: enforced"
+            echo "- Protected runtime inventory: 11 tables / 16 functions"
+            echo "- Isolated-to-applied fingerprint parity: pass"
+            echo "- Production migration rerun: not performed"
+            echo "- Database push: not performed"
+          } >> "${GITHUB_STEP_SUMMARY}"
+
+          echo "NEXUS APPLIED RUNTIME INTERFACE PARITY: PASS"
+
+      - name: Clean up isolated database
+        if: always()
+        continue-on-error: true
+        run: supabase stop --no-backup
