@@ -23,7 +23,7 @@ test(
 
     assert.equal(
       report.permanentMigrationCount,
-      15,
+      16,
     );
 
     assert.equal(

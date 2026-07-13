@@ -12,7 +12,7 @@ import {
   fileURLToPath,
 } from "node:url";
 
-const EXPECTED_MIGRATION_COUNT = 15;
+const EXPECTED_MIGRATION_COUNT = 16;
 const EXPECTED_TABLE_COUNT = 11;
 const EXPECTED_SECURITY_DEFINER_COUNT = 17;
 
