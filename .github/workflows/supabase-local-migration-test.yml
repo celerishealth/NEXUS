@@ -53,6 +53,9 @@ jobs:
       - name: Verify local migration history
         run: supabase migration list --local
 
+      - name: Verify applied catalog security contract
+        run: supabase db query --local --file supabase/tests/applied_catalog_security_gate.sql
+
       - name: Collect full local database lint report
         id: database_lint
         shell: bash
