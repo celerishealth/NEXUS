@@ -30,6 +30,7 @@ import {
   SQLiteAuthenticatedPrincipalStore,
 } from "../lib/nexus/sqliteAuthenticatedPrincipalStore";
 import {
+  signAuthenticatedTenantSessionToken,
   SQLiteAuthenticatedTenantSessionStore,
 } from "../lib/nexus/sqliteAuthenticatedTenantSessionStore";
 import {
@@ -658,6 +659,12 @@ const principalId =
 const actorId =
   `owner-day805-${suffix}`;
 
+const unauthorizedActorId =
+  `owner-day806-unauthorized-${suffix}`;
+
+const unauthorizedSessionId =
+  `session-day806-unauthorized-${suffix}`;
+
 const ownerEmail =
   `day805-${suffix}@example.test`;
 
@@ -774,6 +781,41 @@ try {
     bootstrapStore.close();
   }
 
+  const unauthorizedClaims = {
+    version: 1 as const,
+    keyId,
+    sessionId:
+      unauthorizedSessionId,
+    tenantId,
+    actorId:
+      unauthorizedActorId,
+    role: "owner",
+    issuedAt:
+      createdAt,
+    expiresAt,
+  };
+
+  const unauthorizedSessionStore =
+    new SQLiteAuthenticatedTenantSessionStore(
+      sqlitePath,
+    );
+
+  try {
+    await unauthorizedSessionStore
+      .createSession({
+        ...unauthorizedClaims,
+        createdAt,
+      });
+  } finally {
+    unauthorizedSessionStore.close();
+  }
+
+  const unauthorizedAccessToken =
+    signAuthenticatedTenantSessionToken(
+      unauthorizedClaims,
+      signingSecret,
+    );
+
   supabaseStub =
     await createLocalSupabaseStub(
       tenantId,
@@ -829,6 +871,8 @@ try {
         NODE_ENV:
           "production",
         NEXUS_AUTH_SESSION_ISSUANCE_ENABLED:
+          "true",
+        NEXUS_AUTH_SESSION_REVOCATION_ENABLED:
           "true",
         NEXUS_CONTROLLED_ACTION_STORAGE:
           "sqlite",
@@ -913,6 +957,44 @@ try {
     unauthenticated.body
       .resumeAuthorized,
     false,
+  );
+
+  const rpcCountBeforeUnauthorized =
+    supabaseStub.requests.length;
+
+  const unauthorizedOwnerStatus =
+    await requestJson(
+      `${nextBaseUrl}/api/nexus/founder-emergency`,
+      {
+        method: "GET",
+        headers: {
+          authorization:
+            `Bearer ${unauthorizedAccessToken}`,
+        },
+      },
+    );
+
+  assert.equal(
+    unauthorizedOwnerStatus.status,
+    403,
+  );
+  assert.equal(
+    unauthorizedOwnerStatus.body.error,
+    "Owner authority is required.",
+  );
+  assert.equal(
+    unauthorizedOwnerStatus.body
+      .liveProviderExecutionAuthorized,
+    false,
+  );
+  assert.equal(
+    unauthorizedOwnerStatus.body
+      .resumeAuthorized,
+    false,
+  );
+  assert.equal(
+    supabaseStub.requests.length,
+    rpcCountBeforeUnauthorized,
   );
 
   const login =
@@ -1165,6 +1247,260 @@ try {
     404,
   );
 
+  const revocationLogin =
+    await requestJson(
+      `${nextBaseUrl}/api/nexus/auth/session`,
+      {
+        method: "POST",
+        headers: {
+          "content-type":
+            "application/json",
+        },
+        body: JSON.stringify({
+          tenantId,
+          email: ownerEmail,
+          password:
+            ownerPassword,
+        }),
+      },
+    );
+
+  assert.equal(
+    revocationLogin.status,
+    200,
+  );
+
+  const revocationAccessToken =
+    requireString(
+      revocationLogin.body.accessToken,
+      "Revocation access token",
+    );
+
+  const revocationLoginSession =
+    requireRecord(
+      revocationLogin.body.session,
+      "Revocation login session",
+    );
+
+  const revocationSessionId =
+    requireString(
+      revocationLoginSession.sessionId,
+      "Revocation session ID",
+    );
+
+  const revocationAuthorization =
+    `Bearer ${revocationAccessToken}`;
+
+  const authorizedBeforeRevocation =
+    await requestJson(
+      `${nextBaseUrl}/api/nexus/founder-emergency`,
+      {
+        method: "GET",
+        headers: {
+          authorization:
+            revocationAuthorization,
+        },
+      },
+    );
+
+  assert.equal(
+    authorizedBeforeRevocation.status,
+    200,
+  );
+  assert.equal(
+    authorizedBeforeRevocation.body
+      .tenantId,
+    tenantId,
+  );
+  assert.equal(
+    authorizedBeforeRevocation.body
+      .ownerActorId,
+    actorId,
+  );
+  assert.equal(
+    authorizedBeforeRevocation.body
+      .operationStatus,
+    "paused",
+  );
+
+  const revocation =
+    await requestJson(
+      `${nextBaseUrl}/api/nexus/auth/session/revoke`,
+      {
+        method: "POST",
+        headers: {
+          authorization:
+            revocationAuthorization,
+        },
+      },
+    );
+
+  assert.equal(
+    revocation.status,
+    200,
+  );
+  assert.equal(
+    revocation.body.revoked,
+    true,
+  );
+  assert.equal(
+    revocation.body
+      .liveProviderExecutionAuthorized,
+    false,
+  );
+
+  const revokedAt =
+    requireString(
+      revocation.body.revokedAt,
+      "Revocation timestamp",
+    );
+
+  const durableRevocationStore =
+    new SQLiteAuthenticatedTenantSessionStore(
+      sqlitePath,
+    );
+
+  let durableRevocationRecord:
+    Awaited<
+      ReturnType<
+        SQLiteAuthenticatedTenantSessionStore["readSnapshot"]
+      >
+    >[number] | undefined;
+
+  try {
+    const snapshot =
+      await durableRevocationStore
+        .readSnapshot();
+
+    durableRevocationRecord =
+      snapshot.find(
+        (session) =>
+          session.sessionId ===
+          revocationSessionId,
+      );
+  } finally {
+    durableRevocationStore.close();
+  }
+
+  assert.ok(
+    durableRevocationRecord,
+    "Revoked durable session record must exist.",
+  );
+  assert.equal(
+    durableRevocationRecord.revokedAt,
+    revokedAt,
+  );
+  assert.equal(
+    durableRevocationRecord.revocationReason,
+    "SELF_LOGOUT",
+  );
+
+  const rpcCountAfterRevocation =
+    supabaseStub.requests.length;
+
+  const revokedStatus =
+    await requestJson(
+      `${nextBaseUrl}/api/nexus/founder-emergency`,
+      {
+        method: "GET",
+        headers: {
+          authorization:
+            revocationAuthorization,
+        },
+      },
+    );
+
+  assert.equal(
+    revokedStatus.status,
+    401,
+  );
+  assert.equal(
+    revokedStatus.body.error,
+    "Authentication failed.",
+  );
+  assert.equal(
+    revokedStatus.body
+      .liveProviderExecutionAuthorized,
+    false,
+  );
+  assert.equal(
+    revokedStatus.body
+      .resumeAuthorized,
+    false,
+  );
+
+  const revokedPause =
+    await requestJson(
+      `${nextBaseUrl}/api/nexus/founder-emergency`,
+      {
+        method: "POST",
+        headers: {
+          authorization:
+            revocationAuthorization,
+          "content-type":
+            "application/json",
+        },
+        body: JSON.stringify({
+          tenantId:
+            "attacker-tenant-after-revocation",
+          ownerActorId:
+            "attacker-owner-after-revocation",
+          resumeAuthorized:
+            true,
+        }),
+      },
+    );
+
+  assert.equal(
+    revokedPause.status,
+    401,
+  );
+  assert.equal(
+    revokedPause.body.error,
+    "Authentication failed.",
+  );
+  assert.equal(
+    revokedPause.body
+      .liveProviderExecutionAuthorized,
+    false,
+  );
+  assert.equal(
+    revokedPause.body
+      .resumeAuthorized,
+    false,
+  );
+
+  const revocationReplay =
+    await requestJson(
+      `${nextBaseUrl}/api/nexus/auth/session/revoke`,
+      {
+        method: "POST",
+        headers: {
+          authorization:
+            revocationAuthorization,
+        },
+      },
+    );
+
+  assert.equal(
+    revocationReplay.status,
+    401,
+  );
+  assert.equal(
+    revocationReplay.body.error,
+    "Authentication failed.",
+  );
+  assert.equal(
+    revocationReplay.body
+      .liveProviderExecutionAuthorized,
+    false,
+  );
+
+  assert.equal(
+    supabaseStub.requests.length,
+    rpcCountAfterRevocation,
+  );
+
   const stubState =
     supabaseStub.getState();
 
@@ -1284,6 +1620,75 @@ try {
     },
     {
       id:
+        "UNAUTHORIZED_DURABLE_OWNER_BLOCKED",
+      passed:
+        unauthorizedOwnerStatus.status ===
+          403 &&
+        unauthorizedOwnerStatus.body.error ===
+          "Owner authority is required.",
+    },
+    {
+      id:
+        "UNAUTHORIZED_OWNER_NO_RPC_ACCESS",
+      passed:
+        rpcCountBeforeUnauthorized ===
+        0,
+    },
+    {
+      id:
+        "AUTHORIZED_SESSION_WORKS_BEFORE_REVOCATION",
+      passed:
+        authorizedBeforeRevocation.status ===
+          200,
+    },
+    {
+      id:
+        "SESSION_REVOCATION_HTTP_VERIFIED",
+      passed:
+        revocation.status ===
+          200 &&
+        revocation.body.revoked ===
+          true,
+    },
+    {
+      id:
+        "DURABLE_REVOCATION_EVIDENCE_VERIFIED",
+      passed:
+        durableRevocationRecord.revokedAt ===
+          revokedAt &&
+        durableRevocationRecord.revocationReason ===
+          "SELF_LOGOUT",
+    },
+    {
+      id:
+        "REVOKED_STATUS_ACCESS_BLOCKED",
+      passed:
+        revokedStatus.status ===
+          401,
+    },
+    {
+      id:
+        "REVOKED_PAUSE_ACCESS_BLOCKED",
+      passed:
+        revokedPause.status ===
+          401,
+    },
+    {
+      id:
+        "REVOKED_REQUESTS_NO_RPC_ACCESS",
+      passed:
+        supabaseStub.requests.length ===
+          rpcCountAfterRevocation,
+    },
+    {
+      id:
+        "REVOCATION_REPLAY_BLOCKED",
+      passed:
+        revocationReplay.status ===
+          401,
+    },
+    {
+      id:
         "LIVE_EXECUTION_LOCKED",
       passed:
         pause.body
@@ -1308,7 +1713,7 @@ try {
 
   report = {
     schemaVersion:
-      "nexus.founder-emergency-real-http-integration.v1",
+      "nexus.founder-emergency-real-http-integration.v2",
     passed,
     statuses: {
       unauthenticated:
@@ -1325,6 +1730,18 @@ try {
         replay.status,
       resumeAttempt:
         resumeAttempt.status,
+      unauthorizedOwner:
+        unauthorizedOwnerStatus.status,
+      authorizedBeforeRevocation:
+        authorizedBeforeRevocation.status,
+      revocation:
+        revocation.status,
+      revokedStatus:
+        revokedStatus.status,
+      revokedPause:
+        revokedPause.status,
+      revocationReplay:
+        revocationReplay.status,
     },
     controls,
     rpcRequestCount:
@@ -1362,7 +1779,7 @@ try {
 
   report = {
     schemaVersion:
-      "nexus.founder-emergency-real-http-integration.v1",
+      "nexus.founder-emergency-real-http-integration.v2",
     passed: false,
     error:
       failure.message,
