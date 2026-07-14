@@ -120,7 +120,7 @@ runtime_lines(line) AS (
     attribute.attnotnull,
     attribute.attidentity,
     attribute.attgenerated,
-    COALESCE(collation.collname, ''),
+    COALESCE(collation_object.collname, ''),
     COALESCE(pg_get_expr(attribute_default.adbin, attribute_default.adrelid, false), '')
   )
   FROM table_objects AS table_object
@@ -131,8 +131,8 @@ runtime_lines(line) AS (
   LEFT JOIN pg_attrdef AS attribute_default
     ON attribute_default.adrelid = attribute.attrelid
    AND attribute_default.adnum = attribute.attnum
-  LEFT JOIN pg_collation AS collation
-    ON collation.oid = attribute.attcollation
+  LEFT JOIN pg_collation AS collation_object
+    ON collation_object.oid = attribute.attcollation
    AND attribute.attcollation <> 0
 
   UNION ALL

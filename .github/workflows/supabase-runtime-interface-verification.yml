@@ -19,7 +19,7 @@ jobs:
   verify:
     name: Compare isolated and applied runtime interface
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
 
     defaults:
       run:
@@ -42,7 +42,7 @@ jobs:
           set -euo pipefail
 
           if [[ "${CONFIRMATION}" != "VERIFY NEXUS RUNTIME INTERFACE" ]]; then
-            echo "::error::Exact runtime interface verification confirmation was not provided."
+            echo "::error::Exact runtime-interface verification confirmation was not provided."
             exit 1
           fi
 
@@ -60,22 +60,33 @@ jobs:
         with:
           version: 2.109.1
 
+      - name: Install PostgreSQL client
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install --yes postgresql-client
+          psql --version
+
       - name: Stage exact remote RLS guard compatibility fixture
         shell: bash
         run: |
           set -euo pipefail
+
           fixture_source="supabase/test-fixtures/remote_rls_guard_compatibility.sql"
           fixture_target="supabase/migrations/0000_remote_rls_guard_fixture.sql"
-          expected_sha256="1c32e8c8c0214961f000f3db7e3bea7bc214b2f2b0a7d349079232c8e7d4942f"
+          expected_sha256="1c32e8c8c0214961f000f3db7e3bea7bc214b2fb0a7d349079232c8e7d4942f"
 
           echo "${expected_sha256} ${fixture_source}" | sha256sum --check -
           cp "${fixture_source}" "${fixture_target}"
           echo "${expected_sha256} ${fixture_target}" | sha256sum --check -
 
       - name: Start isolated local database
+        shell: bash
         run: supabase db start
 
       - name: Verify isolated migration history
+        shell: bash
         run: supabase migration list --local
 
       - name: Collect isolated runtime interface fingerprint
@@ -84,22 +95,48 @@ jobs:
         run: |
           set -euo pipefail
 
-          output="$(
-            supabase db query --local \
-              --file supabase/tests/applied_runtime_interface_fingerprint.sql 2>&1
+          db_container="$(
+            docker ps --format '{{.Names}}' |
+              grep -E '^supabase_db_' |
+              head -n 1
           )"
+
+          if [[ -z "${db_container}" ]]; then
+            echo "::error::Local Supabase database container was not found."
+            exit 1
+          fi
+
+          if ! output="$(
+            docker exec -i "${db_container}" \
+              psql -X -A -t -U postgres -d postgres -v ON_ERROR_STOP=1 \
+              < supabase/tests/applied_runtime_interface_fingerprint.sql 2>&1
+          )"; then
+            printf '%s\n' "${output}"
+            exit 1
+          fi
 
           printf '%s\n' "${output}"
 
           fingerprint="$(
-            printf '%s\n' "${output}" \
-              | grep -Eo 'NEXUS_RUNTIME_INTERFACE_FINGERPRINT=[0-9a-f]{32}' \
-              | tail -n 1 \
-              | cut -d= -f2
+            printf '%s\n' "${output}" |
+              grep -Eo 'NEXUS_RUNTIME_INTERFACE_FINGERPRINT=[0-9a-f]{32}' |
+              tail -n 1 |
+              cut -d= -f2
+          )"
+
+          inventory="$(
+            printf '%s\n' "${output}" |
+              grep -Eo 'NEXUS_RUNTIME_INTERFACE_INVENTORY=11_TABLES/16_FUNCTIONS' |
+              tail -n 1
           )"
 
           if [[ ! "${fingerprint}" =~ ^[0-9a-f]{32}$ ]]; then
-            echo "::error::Isolated runtime interface fingerprint was not produced."
+            echo "::error::Isolated runtime-interface fingerprint was not produced."
+            exit 1
+          fi
+
+          if [[ "${inventory}" != "NEXUS_RUNTIME_INTERFACE_INVENTORY=11_TABLES/16_FUNCTIONS" ]]; then
+            echo "::error::Isolated protected runtime inventory was not verified."
             exit 1
           fi
 
@@ -117,12 +154,14 @@ jobs:
           echo "::add-mask::${SUPABASE_DB_PASSWORD}"
 
       - name: Link NEXUS Supabase project
+        shell: bash
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
         run: supabase link --project-ref cvtjcysatndfzkszufen
 
       - name: Verify already-applied migration history
+        shell: bash
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
@@ -131,31 +170,91 @@ jobs:
           supabase migration list --linked
           echo "APPLIED MIGRATION HISTORY: VERIFIED"
 
+      - name: Resolve linked session parameters without exposing password
+        id: linked_db
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          from urllib.parse import urlparse
+
+          pooler_path = Path("supabase/.temp/pooler-url")
+          if not pooler_path.is_file():
+              raise SystemExit("Linked pooler URL file was not created.")
+
+          raw = pooler_path.read_text(encoding="utf-8").strip()
+          parsed = urlparse(raw.replace("[YOUR-PASSWORD]", "placeholder"))
+
+          host = parsed.hostname
+          port = parsed.port
+          user = parsed.username
+          database = parsed.path.lstrip("/") or "postgres"
+
+          if not host or not port or not user:
+              raise SystemExit("Linked pooler URL did not contain complete connection parameters.")
+
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              output.write(f"host={host}\n")
+              output.write(f"port={port}\n")
+              output.write(f"user={user}\n")
+              output.write(f"database={database}\n")
+          PY
+
+          echo "LINKED DATABASE SESSION PARAMETERS: RESOLVED"
+
       - name: Collect applied runtime interface fingerprint read-only
         id: remote_runtime
         shell: bash
         env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          DB_HOST: ${{ steps.linked_db.outputs.host }}
+          DB_PORT: ${{ steps.linked_db.outputs.port }}
+          DB_USER: ${{ steps.linked_db.outputs.user }}
+          DB_NAME: ${{ steps.linked_db.outputs.database }}
           SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
         run: |
           set -euo pipefail
+          set +x
 
-          output="$(
-            supabase db query --linked \
+          if ! output="$(
+            PGPASSWORD="${SUPABASE_DB_PASSWORD}" \
+            PGSSLMODE=require \
+            PGCONNECT_TIMEOUT=20 \
+            psql -X -A -t -v ON_ERROR_STOP=1 \
+              --host "${DB_HOST}" \
+              --port "${DB_PORT}" \
+              --username "${DB_USER}" \
+              --dbname "${DB_NAME}" \
               --file supabase/tests/applied_runtime_interface_fingerprint.sql 2>&1
-          )"
+          )"; then
+            printf '%s\n' "${output}"
+            exit 1
+          fi
 
           printf '%s\n' "${output}"
 
           fingerprint="$(
-            printf '%s\n' "${output}" \
-              | grep -Eo 'NEXUS_RUNTIME_INTERFACE_FINGERPRINT=[0-9a-f]{32}' \
-              | tail -n 1 \
-              | cut -d= -f2
+            printf '%s\n' "${output}" |
+              grep -Eo 'NEXUS_RUNTIME_INTERFACE_FINGERPRINT=[0-9a-f]{32}' |
+              tail -n 1 |
+              cut -d= -f2
+          )"
+
+          inventory="$(
+            printf '%s\n' "${output}" |
+              grep -Eo 'NEXUS_RUNTIME_INTERFACE_INVENTORY=11_TABLES/16_FUNCTIONS' |
+              tail -n 1
           )"
 
           if [[ ! "${fingerprint}" =~ ^[0-9a-f]{32}$ ]]; then
-            echo "::error::Applied runtime interface fingerprint was not produced."
+            echo "::error::Applied runtime-interface fingerprint was not produced."
+            exit 1
+          fi
+
+          if [[ "${inventory}" != "NEXUS_RUNTIME_INTERFACE_INVENTORY=11_TABLES/16_FUNCTIONS" ]]; then
+            echo "::error::Applied protected runtime inventory was not verified."
             exit 1
           fi
 
@@ -181,16 +280,17 @@ jobs:
             echo "## NEXUS Supabase runtime interface verification"
             echo
             echo "- Applied migration history: verified"
-            echo "- Read-only remote verification: enforced"
+            echo "- Read-only remote transaction: enforced"
             echo "- Protected runtime inventory: 11 tables / 16 functions"
             echo "- Isolated-to-applied fingerprint parity: pass"
-            echo "- Production migration rerun: not performed"
+            echo "- Production migration workflow rerun: not performed"
             echo "- Database push: not performed"
           } >> "${GITHUB_STEP_SUMMARY}"
 
           echo "NEXUS APPLIED RUNTIME INTERFACE PARITY: PASS"
 
-      - name: Clean up isolated database
+      - name: Clean up isolated local database
         if: always()
         continue-on-error: true
+        shell: bash
         run: supabase stop --no-backup
