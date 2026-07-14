@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "test:founder-emergency-http": "tsx scripts/nexus-founder-emergency-http-integration.ts"
+    "test:founder-emergency-http": "tsx scripts/nexus-founder-emergency-http-integration.ts",
+    "test:final-release-freeze": "tsx scripts/nexus-final-release-freeze.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",
