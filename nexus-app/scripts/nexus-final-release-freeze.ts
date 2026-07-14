@@ -16,10 +16,7 @@ import {
   type FinalReleaseFreezeEvidence,
 } from "../lib/nexus/finalReleaseFreeze";
 
-const npmExecutable =
-  process.platform === "win32"
-    ? "npm.cmd"
-    : "npm";
+const npmExecutable = "npm";
 
 const blockedEnvironmentVariables = [
   "DATABASE_URL",
@@ -93,11 +90,33 @@ function runCommand(
   const capture =
     options.capture === true;
 
+  const windowsNpmInvocation =
+    process.platform === "win32" &&
+    command === npmExecutable;
+
+  const resolvedCommand =
+    windowsNpmInvocation
+      ? process.env.ComSpec ?? "cmd.exe"
+      : command;
+
+  const resolvedArgs =
+    windowsNpmInvocation
+      ? [
+          "/d",
+          "/s",
+          "/c",
+          [
+            "npm",
+            ...args,
+          ].join(" "),
+        ]
+      : [...args];
+
   const result:
     SpawnSyncReturns<string> =
       spawnSync(
-        command,
-        [...args],
+        resolvedCommand,
+        resolvedArgs,
         {
           cwd: process.cwd(),
           env:
