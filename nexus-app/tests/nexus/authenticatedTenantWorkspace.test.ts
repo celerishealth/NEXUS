@@ -84,6 +84,7 @@ test("builds an immutable authenticated owner workspace", async () => {
   assert.deepEqual(workspace, {
     tenant: {
       id: "tenant-1",
+      ownerUserId: "owner-user-1",
       businessName: "NEXUS Test Business",
       businessSlug: "nexus-test-business",
       timezone: "Europe/Amsterdam",

@@ -56,7 +56,7 @@ type MembershipRole =
   | "VIEWER";
 
 type CodedErrorConstructor = new (
-  ...args: any[]
+  ...args: never[]
 ) => Error & {
   readonly code: string;
 };

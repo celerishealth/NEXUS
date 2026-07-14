@@ -43,6 +43,7 @@ export type BuildAuthenticatedTenantWorkspaceInput = Readonly<{
 export type AuthenticatedTenantWorkspace = Readonly<{
   tenant: Readonly<{
     id: string;
+    ownerUserId: string;
     businessName: string;
     businessSlug: string;
     timezone: string;
@@ -267,6 +268,7 @@ export async function buildAuthenticatedTenantWorkspace(
   return freezeWorkspace({
     tenant: {
       id: context.tenantId,
+      ownerUserId,
       businessName,
       businessSlug,
       timezone,

@@ -605,6 +605,57 @@ test("another actor cannot complete the admitted operation", async () => {
       },
     },
 
+    workspaceRepository: {
+      async findWorkspaceByTenantId(
+        tenantId,
+      ) {
+        return {
+          tenantId,
+          ownerUserId: "owner-user-2",
+          businessName:
+            "NEXUS Pilot Business",
+          businessSlug:
+            "nexus-pilot-business",
+          status: "ACTIVE",
+          onboardingStatus:
+            "COMPLETE",
+          timezone:
+            "Europe/Amsterdam",
+          locale:
+            "en-NL",
+        };
+      },
+    },
+
+    pilotAccessRepository: {
+      async findEnrollmentByTenantId(
+        tenantId,
+      ) {
+        return {
+          id: "pilot-enrollment-1",
+          tenantId,
+          invitationId:
+            "pilot-invitation-1",
+          ownerUserId:
+            "owner-user-2",
+          enrollmentStatus:
+            "ACTIVE",
+          accessMode:
+            "CONTROLLED_PILOT",
+          executionMode:
+            "SANDBOX_ONLY",
+          publicSignupAuthorized:
+            false,
+          liveProviderExecutionAuthorized:
+            false,
+          enrolledAt:
+            "2026-07-10T17:00:00.000Z",
+          createdAt:
+            "2026-07-10T17:00:01.000Z",
+        };
+      },
+    },
+
     completionRepository: {
       async completeOperationAtomically() {
         completionWrites += 1;
