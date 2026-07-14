@@ -141,7 +141,7 @@ describe(
       "keeps execution deployment production data and resume authority locked",
       () => {
         expect(source).toMatch(
-          /nexus\.founder-emergency-real-http-integration\.v2/,
+          /nexus\.founder-emergency-real-http-integration\.v3/,
         );
         expect(source).toMatch(
           /productionDatabaseModified:\s*false/,

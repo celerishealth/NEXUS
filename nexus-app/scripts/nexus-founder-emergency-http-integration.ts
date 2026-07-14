@@ -27,6 +27,11 @@ import {
 } from "node:path";
 
 import {
+  chromium,
+  type Browser,
+} from "playwright-core";
+
+import {
   SQLiteAuthenticatedPrincipalStore,
 } from "../lib/nexus/sqliteAuthenticatedPrincipalStore";
 import {
@@ -67,6 +72,7 @@ interface LocalStub {
   requests: StubRequest[];
   getCommitCount(): number;
   getState(): StubState;
+  resetState(): void;
 }
 
 function isRecord(
@@ -502,6 +508,16 @@ async function createLocalSupabaseStub(
         ...state,
       };
     },
+    resetState() {
+      state.operationStatus =
+        "active";
+      state.blockingSignalId =
+        null;
+      state.stateVersion = 1;
+      state.lastTransitionAt =
+        Date.now();
+      commitCount = 0;
+    },
   };
 }
 
@@ -700,6 +716,9 @@ let supabaseStub:
 let nextChild:
   ReturnType<typeof spawn> | null =
     null;
+
+let browser:
+  Browser | null = null;
 
 let failure:
   Error | null = null;
@@ -1501,6 +1520,10 @@ try {
     rpcCountAfterRevocation,
   );
 
+  const revokedRequestsNoRpcAccess =
+    supabaseStub.requests.length ===
+    rpcCountAfterRevocation;
+
   const stubState =
     supabaseStub.getState();
 
@@ -1534,6 +1557,353 @@ try {
     ),
   );
 
+  const browserExecutablePath =
+    process.env
+      .NEXUS_LOCAL_BROWSER_EXECUTABLE
+      ?.trim();
+
+  assert.ok(
+    browserExecutablePath,
+    "NEXUS_LOCAL_BROWSER_EXECUTABLE is required for Day 808.",
+  );
+
+  supabaseStub.resetState();
+
+  const rpcCountBeforeBrowser =
+    supabaseStub.requests.length;
+
+  browser =
+    await chromium.launch({
+      executablePath:
+        browserExecutablePath,
+      headless: true,
+      args: [
+        "--disable-background-networking",
+        "--disable-component-update",
+        "--disable-default-apps",
+        "--disable-extensions",
+        "--disable-sync",
+        "--no-first-run",
+      ],
+    });
+
+  const browserContext =
+    await browser.newContext({
+      baseURL:
+        nextBaseUrl,
+      viewport: {
+        width: 1440,
+        height: 1200,
+      },
+    });
+
+  const browserPage =
+    await browserContext.newPage();
+
+  const browserConsoleErrors:
+    string[] = [];
+
+  browserPage.on(
+    "console",
+    (message) => {
+      if (
+        message.type() ===
+        "error"
+      ) {
+        browserConsoleErrors.push(
+          message.text(),
+        );
+      }
+    },
+  );
+
+  await browserPage.goto(
+    "/",
+    {
+      waitUntil:
+        "domcontentloaded",
+      timeout:
+        60_000,
+    },
+  );
+
+  await browserPage
+    .getByRole(
+      "button",
+      {
+        name:
+          "Launch NEXUS",
+        exact:
+          true,
+      },
+    )
+    .click();
+
+  await browserPage
+    .getByRole(
+      "heading",
+      {
+        name:
+          "Founder Emergency Pause",
+        exact:
+          true,
+      },
+    )
+    .waitFor({
+      state:
+        "visible",
+      timeout:
+        30_000,
+    });
+
+  const founderControl =
+    browserPage
+      .locator("section")
+      .filter({
+        hasText:
+          "Founder Emergency Pause",
+      })
+      .first();
+
+  await founderControl
+    .getByLabel(
+      "Workspace ID",
+    )
+    .fill(
+      tenantId,
+    );
+
+  await founderControl
+    .getByLabel(
+      "Owner email",
+    )
+    .fill(
+      ownerEmail,
+    );
+
+  await founderControl
+    .getByLabel(
+      "Password",
+    )
+    .fill(
+      ownerPassword,
+    );
+
+  await founderControl
+    .getByRole(
+      "button",
+      {
+        name:
+          "Authenticate and verify status",
+      },
+    )
+    .click();
+
+  await founderControl
+    .getByText(
+      "Authenticated founder emergency status verified.",
+      {
+        exact: true,
+      },
+    )
+    .waitFor({
+      state:
+        "visible",
+      timeout:
+        30_000,
+    });
+
+  await founderControl
+    .getByText(
+      "ACTIVE",
+      {
+        exact: true,
+      },
+    )
+    .waitFor({
+      state:
+        "visible",
+    });
+
+  await founderControl
+    .getByRole(
+      "button",
+      {
+        name:
+          "Open emergency-pause confirmation",
+      },
+    )
+    .click();
+
+  await founderControl
+    .getByText(
+      "Confirm the founder emergency pause?",
+      {
+        exact: true,
+      },
+    )
+    .waitFor({
+      state:
+        "visible",
+    });
+
+  await founderControl
+    .getByRole(
+      "button",
+      {
+        name:
+          "Confirm emergency pause",
+      },
+    )
+    .click();
+
+  await founderControl
+    .getByText(
+      "Emergency pause verified. Controlled operations are paused.",
+      {
+        exact: true,
+      },
+    )
+    .waitFor({
+      state:
+        "visible",
+      timeout:
+        30_000,
+    });
+
+  await founderControl
+    .getByText(
+      "PAUSED",
+      {
+        exact: true,
+      },
+    )
+    .waitFor({
+      state:
+        "visible",
+    });
+
+  const browserCommitCount =
+    supabaseStub.getCommitCount();
+
+  assert.equal(
+    browserCommitCount,
+    1,
+  );
+
+  await founderControl
+    .getByRole(
+      "button",
+      {
+        name:
+          "Log out and revoke session",
+      },
+    )
+    .click();
+
+  await founderControl
+    .getByText(
+      "Authenticated logout verified. Browser-held access token cleared. No resume action was performed.",
+      {
+        exact: true,
+      },
+    )
+    .waitFor({
+      state:
+        "visible",
+      timeout:
+        30_000,
+    });
+
+  await founderControl
+    .getByRole(
+      "button",
+      {
+        name:
+          "Authenticate and verify status",
+      },
+    )
+    .waitFor({
+      state:
+        "visible",
+    });
+
+  const postLogoutRefreshCount =
+    await founderControl
+      .getByRole(
+        "button",
+        {
+          name:
+            "Refresh status",
+        },
+      )
+      .count();
+
+  const postLogoutPauseCount =
+    await founderControl
+      .getByRole(
+        "button",
+        {
+          name:
+            /emergency-pause confirmation/i,
+        },
+      )
+      .count();
+
+  const resumeControlCount =
+    await founderControl
+      .getByRole(
+        "button",
+        {
+          name:
+            /resume/i,
+        },
+      )
+      .count();
+
+  assert.equal(
+    postLogoutRefreshCount,
+    0,
+  );
+  assert.equal(
+    postLogoutPauseCount,
+    0,
+  );
+  assert.equal(
+    resumeControlCount,
+    0,
+  );
+
+  const browserRpcRequests =
+    supabaseStub.requests.slice(
+      rpcCountBeforeBrowser,
+    );
+
+  assert.ok(
+    browserRpcRequests.length >=
+      3,
+  );
+
+  assert.ok(
+    browserRpcRequests.every(
+      (request) =>
+        request.tenantId ===
+          tenantId &&
+        request.authorizationVerified,
+    ),
+  );
+
+  const browserStubState =
+    supabaseStub.getState();
+
+  assert.equal(
+    browserStubState.operationStatus,
+    "paused",
+  );
+
+  await browserContext.close();
+  await browser.close();
+  browser = null;
   const controls = [
     {
       id:
@@ -1677,8 +2047,7 @@ try {
       id:
         "REVOKED_REQUESTS_NO_RPC_ACCESS",
       passed:
-        supabaseStub.requests.length ===
-          rpcCountAfterRevocation,
+        revokedRequestsNoRpcAccess,
     },
     {
       id:
@@ -1686,6 +2055,75 @@ try {
       passed:
         revocationReplay.status ===
           401,
+    },
+    {
+      id:
+        "REAL_BROWSER_RENDERED_PAGE",
+      passed:
+        true,
+    },
+    {
+      id:
+        "REAL_BROWSER_OWNER_LOGIN",
+      passed:
+        browserRpcRequests.length >=
+          3,
+    },
+    {
+      id:
+        "REAL_BROWSER_ACTIVE_STATUS",
+      passed:
+        browserRpcRequests.some(
+          (request) =>
+            request.pathname ===
+              "/rest/v1/rpc/nexus_read_controlled_pilot_operation_state",
+        ),
+    },
+    {
+      id:
+        "REAL_BROWSER_EXPLICIT_CONFIRMATION",
+      passed:
+        browserCommitCount ===
+          1,
+    },
+    {
+      id:
+        "REAL_BROWSER_ATOMIC_PAUSE",
+      passed:
+        browserStubState.operationStatus ===
+          "paused",
+    },
+    {
+      id:
+        "REAL_BROWSER_AUTHENTICATED_LOGOUT",
+      passed:
+        postLogoutRefreshCount ===
+          0,
+    },
+    {
+      id:
+        "REAL_BROWSER_POST_LOGOUT_LOCK",
+      passed:
+        postLogoutPauseCount ===
+          0,
+    },
+    {
+      id:
+        "REAL_BROWSER_RESUME_CONTROL_ABSENT",
+      passed:
+        resumeControlCount ===
+          0,
+    },
+    {
+      id:
+        "REAL_BROWSER_RPC_IDENTITY_AUTHENTICATED",
+      passed:
+        browserRpcRequests.every(
+          (request) =>
+            request.tenantId ===
+              tenantId &&
+            request.authorizationVerified,
+        ),
     },
     {
       id:
@@ -1713,7 +2151,7 @@ try {
 
   report = {
     schemaVersion:
-      "nexus.founder-emergency-real-http-integration.v2",
+      "nexus.founder-emergency-real-http-integration.v3",
     passed,
     statuses: {
       unauthenticated:
@@ -1748,6 +2186,12 @@ try {
       supabaseStub.requests.length,
     atomicCommitCount:
       supabaseStub.getCommitCount(),
+    browserRpcRequestCount:
+      browserRpcRequests.length,
+    browserConsoleErrorCount:
+      browserConsoleErrors.length,
+    realBrowserVerified:
+      true,
     realNextServerVerified:
       true,
     localSQLiteVerified:
@@ -1779,7 +2223,7 @@ try {
 
   report = {
     schemaVersion:
-      "nexus.founder-emergency-real-http-integration.v2",
+      "nexus.founder-emergency-real-http-integration.v3",
     passed: false,
     error:
       failure.message,
@@ -1793,6 +2237,10 @@ try {
       false,
   };
 } finally {
+  if (browser) {
+    await browser.close();
+  }
+
   await stopChild(
     nextChild,
   );
