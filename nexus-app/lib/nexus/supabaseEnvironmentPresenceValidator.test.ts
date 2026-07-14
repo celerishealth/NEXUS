@@ -1,9 +1,9 @@
-﻿import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { validateSupabaseEnvironmentPresence } from "./supabaseEnvironmentPresenceValidator";
 
 describe("validateSupabaseEnvironmentPresence", () => {
   it("blocks when required public configuration is missing", () => {
-    const result = validateSupabaseEnvironmentPresence({});
+    const result = validateSupabaseEnvironmentPresence({ NODE_ENV: "test" });
 
     expect(result.status).toBe("blocked");
     expect(result.readyForBaseClient).toBe(false);
@@ -17,6 +17,7 @@ describe("validateSupabaseEnvironmentPresence", () => {
 
   it("becomes ready when both required public values exist", () => {
     const result = validateSupabaseEnvironmentPresence({
+      NODE_ENV: "test",
       NEXT_PUBLIC_SUPABASE_URL: "https://example.supabase.co",
       NEXT_PUBLIC_SUPABASE_ANON_KEY: "public-anon-key",
     });
@@ -28,6 +29,7 @@ describe("validateSupabaseEnvironmentPresence", () => {
 
   it("treats whitespace-only values as missing", () => {
     const result = validateSupabaseEnvironmentPresence({
+      NODE_ENV: "test",
       NEXT_PUBLIC_SUPABASE_URL: "   ",
       NEXT_PUBLIC_SUPABASE_ANON_KEY: "",
     });
@@ -38,6 +40,7 @@ describe("validateSupabaseEnvironmentPresence", () => {
 
   it("does not require privileged credentials for the base client", () => {
     const result = validateSupabaseEnvironmentPresence({
+      NODE_ENV: "test",
       NEXT_PUBLIC_SUPABASE_URL: "https://example.supabase.co",
       NEXT_PUBLIC_SUPABASE_ANON_KEY: "public-anon-key",
     });

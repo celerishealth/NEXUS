@@ -1,9 +1,9 @@
-﻿import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { validateSupabaseIntegrationReadiness } from "./supabaseIntegrationReadiness";
 
 describe("validateSupabaseIntegrationReadiness", () => {
   it("fails closed when required configuration is absent", () => {
-    const result = validateSupabaseIntegrationReadiness({});
+    const result = validateSupabaseIntegrationReadiness({ NODE_ENV: "test" });
 
     expect(result.status).toBe("blocked");
     expect(result.ready).toBe(false);
@@ -15,6 +15,7 @@ describe("validateSupabaseIntegrationReadiness", () => {
 
   it("allows controlled connection readiness with public configuration", () => {
     const result = validateSupabaseIntegrationReadiness({
+      NODE_ENV: "test",
       NEXT_PUBLIC_SUPABASE_URL: "https://example.supabase.co",
       NEXT_PUBLIC_SUPABASE_ANON_KEY: "public-anon-key",
     });
@@ -26,6 +27,7 @@ describe("validateSupabaseIntegrationReadiness", () => {
 
   it("keeps privileged keys server-only", () => {
     const result = validateSupabaseIntegrationReadiness({
+      NODE_ENV: "test",
       NEXT_PUBLIC_SUPABASE_URL: "https://example.supabase.co",
       NEXT_PUBLIC_SUPABASE_ANON_KEY: "public-anon-key",
       SUPABASE_SERVICE_ROLE_KEY: "service-role-secret",
@@ -44,6 +46,7 @@ describe("validateSupabaseIntegrationReadiness", () => {
 
   it("preserves locked execution boundaries", () => {
     const result = validateSupabaseIntegrationReadiness({
+      NODE_ENV: "test",
       NEXT_PUBLIC_SUPABASE_URL: "https://example.supabase.co",
       NEXT_PUBLIC_SUPABASE_ANON_KEY: "public-anon-key",
     });

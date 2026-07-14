@@ -1,4 +1,4 @@
-﻿import {
+import {
   describe,
   expect,
   it,
@@ -80,7 +80,7 @@ describe(
                   context.idempotencyKey,
               })
 
-            inFlightSeen =
+            inFlightSeen = Boolean(
               receipt?.payload &&
               typeof receipt.payload ===
                 "object" &&
@@ -88,7 +88,8 @@ describe(
                 receipt.payload,
               ) &&
               receipt.payload.status ===
-                "in-flight"
+                "in-flight",
+            )
 
             return "payment-success"
           },
