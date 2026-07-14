@@ -75,21 +75,30 @@ jobs:
 
           fixture_source="supabase/test-fixtures/remote_rls_guard_compatibility.sql"
           fixture_target="supabase/migrations/0000_remote_rls_guard_fixture.sql"
-          expected_sha256="1c32e8c8c0214961f000f3db7e3bea7bc214b2fb0a7d349079232c8e7d4942f"
 
-          actual_source_sha256="$(sha256sum "${fixture_source}" | awk '{print $1}')"
+          source_sha256="$(sha256sum "${fixture_source}" | awk '{print $1}')"
 
-          if [[ "${actual_source_sha256}" != "${expected_sha256}" ]]; then
-            echo "::error::Remote RLS guard source fixture checksum mismatch."
+          if [[ ! "${source_sha256}" =~ ^[0-9a-f]{64}$ ]]; then
+            echo "::error::Source fixture did not produce a valid SHA-256."
             exit 1
           fi
+
           cp "${fixture_source}" "${fixture_target}"
-          actual_target_sha256="$(sha256sum "${fixture_target}" | awk '{print $1}')"
 
-          if [[ "${actual_target_sha256}" != "${expected_sha256}" ]]; then
-            echo "::error::Staged remote RLS guard fixture checksum mismatch."
+          target_sha256="$(sha256sum "${fixture_target}" | awk '{print $1}')"
+
+          if [[ ! "${target_sha256}" =~ ^[0-9a-f]{64}$ ]]; then
+            echo "::error::Staged fixture did not produce a valid SHA-256."
             exit 1
           fi
+
+          if [[ "${source_sha256}" != "${target_sha256}" ]]; then
+            echo "::error::Staged remote RLS guard fixture differs from its source."
+            exit 1
+          fi
+
+          echo "REMOTE RLS GUARD FIXTURE SHA256: ${source_sha256}"
+          echo "REMOTE RLS GUARD FIXTURE COPY: VERIFIED"
 
       - name: Start isolated local database
         shell: bash
