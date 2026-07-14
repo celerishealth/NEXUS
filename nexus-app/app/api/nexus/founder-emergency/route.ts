@@ -251,7 +251,7 @@ async function authenticateFounder(
     sessionStore =
       new SQLiteAuthenticatedTenantSessionStore(
         resolve(
-          process.cwd(),
+          /* turbopackIgnore: true */ process.cwd(),
           process.env
             .NEXUS_CONTROLLED_ACTION_SQLITE_PATH ??
             ".nexus-runtime/controlled-action-state.sqlite",
