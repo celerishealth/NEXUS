@@ -9,7 +9,8 @@
     "lint": "eslint",
     "test": "vitest run",
     "test:founder-emergency-http": "tsx scripts/nexus-founder-emergency-http-integration.ts",
-    "test:final-release-freeze": "tsx scripts/nexus-final-release-freeze.ts"
+    "test:final-release-freeze": "tsx scripts/nexus-final-release-freeze.ts",
+    "test:final-market-decision": "tsx scripts/nexus-final-market-launch-decision.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",
