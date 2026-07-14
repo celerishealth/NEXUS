@@ -164,7 +164,7 @@ async function authenticateFounder(
 
   if (
     process.env
-      .NEXUS_CONTROLLED_ACTION_STORAGE_MODE
+      .NEXUS_CONTROLLED_ACTION_STORAGE
       ?.trim()
       .toLowerCase() !== "sqlite"
   ) {
