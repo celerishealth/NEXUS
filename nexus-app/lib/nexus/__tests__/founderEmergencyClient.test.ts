@@ -10,6 +10,7 @@ import {
   issueFounderEmergencySession,
   pauseFounderEmergency,
   readFounderEmergencyStatus,
+  revokeFounderEmergencySession,
 } from "../founderEmergencyClient";
 
 function jsonResponse(
@@ -77,6 +78,14 @@ const pauseSuccess = {
   liveProviderExecutionAuthorized:
     false,
   resumeAuthorized: false,
+};
+
+const logoutSuccess = {
+  revoked: true,
+  revokedAt:
+    "2026-07-14T12:30:00.000Z",
+  liveProviderExecutionAuthorized:
+    false,
 };
 
 describe(
@@ -379,5 +388,109 @@ describe(
         });
       },
     );
-  },
+    it(
+      "revokes the authenticated browser session with bearer authentication and no body",
+      async () => {
+        const fetchMock =
+          vi.fn().mockResolvedValue(
+            jsonResponse(
+              logoutSuccess,
+            ),
+          );
+
+        await expect(
+          revokeFounderEmergencySession(
+            "authenticated-session-token",
+            fetchMock,
+          ),
+        ).resolves.toEqual({
+          revoked: true,
+          revokedAt:
+            "2026-07-14T12:30:00.000Z",
+          liveProviderExecutionAuthorized:
+            false,
+          resumeAuthorized: false,
+        });
+
+        const [
+          url,
+          init,
+        ] =
+          fetchMock.mock.calls[0] as [
+            string,
+            RequestInit,
+          ];
+
+        expect(url).toBe(
+          "/api/nexus/auth/session/revoke",
+        );
+        expect(init.method)
+          .toBe("POST");
+        expect(init.body)
+          .toBeUndefined();
+        expect(init.headers)
+          .toMatchObject({
+            authorization:
+              "Bearer authenticated-session-token",
+            "cache-control":
+              "no-store",
+          });
+        expect(init.cache)
+          .toBe("no-store");
+      },
+    );
+
+    it(
+      "maps an invalid or revoked logout token to the safe authentication message",
+      async () => {
+        const fetchMock =
+          vi.fn().mockResolvedValue(
+            jsonResponse(
+              {
+                error:
+                  "raw revoked-session detail",
+              },
+              401,
+            ),
+          );
+
+        await expect(
+          revokeFounderEmergencySession(
+            "revoked-session-token",
+            fetchMock,
+          ),
+        ).rejects.toMatchObject({
+          name:
+            "FounderEmergencyClientError",
+          status: 401,
+          message:
+            "Authentication failed or the session expired.",
+        });
+      },
+    );
+
+    it(
+      "fails closed when a successful logout response weakens the safety boundary",
+      async () => {
+        const fetchMock =
+          vi.fn().mockResolvedValue(
+            jsonResponse({
+              ...logoutSuccess,
+              resumeAuthorized:
+                true,
+            }),
+          );
+
+        await expect(
+          revokeFounderEmergencySession(
+            "authenticated-session-token",
+            fetchMock,
+          ),
+        ).rejects.toMatchObject({
+          status: 502,
+          message:
+            "Authenticated logout response could not be safely verified.",
+        });
+      },
+    );  },
 );

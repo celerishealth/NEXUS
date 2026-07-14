@@ -44,6 +44,13 @@ export interface FounderEmergencyPauseResult
     | "already-paused";
 }
 
+export interface FounderEmergencyLogoutResult {
+  revoked: true;
+  revokedAt: string;
+  liveProviderExecutionAuthorized: false;
+  resumeAuthorized: false;
+}
+
 export class FounderEmergencyClientError
   extends Error {
   readonly status: number;
@@ -516,5 +523,77 @@ export async function pauseFounderEmergency(
     ...snapshot,
     pauseStatus:
       body.pauseStatus,
+  };
+}
+export async function revokeFounderEmergencySession(
+  accessToken: string,
+  fetchImpl: FounderEmergencyFetch =
+    fetch,
+): Promise<FounderEmergencyLogoutResult> {
+  const token =
+    readRequiredString(accessToken);
+
+  if (!token) {
+    throw new FounderEmergencyClientError(
+      401,
+      "Authentication failed or the session expired.",
+    );
+  }
+
+  const response =
+    await performRequest(
+      fetchImpl,
+      "/api/nexus/auth/session/revoke",
+      {
+        method: "POST",
+        headers: {
+          authorization:
+            `Bearer ${token}`,
+          "cache-control":
+            "no-store",
+        },
+        cache: "no-store",
+      },
+    );
+
+  if (!response.ok) {
+    throw new FounderEmergencyClientError(
+      response.status,
+      safeMessageForStatus(
+        response.status,
+      ),
+    );
+  }
+
+  const body =
+    await readJsonRecord(response);
+
+  const revokedAt =
+    readRequiredString(
+      body.revokedAt,
+    );
+
+  if (
+    body.revoked !== true ||
+    !revokedAt ||
+    body.liveProviderExecutionAuthorized !==
+      false ||
+    (
+      body.resumeAuthorized !== undefined &&
+      body.resumeAuthorized !== false
+    )
+  ) {
+    throw new FounderEmergencyClientError(
+      502,
+      "Authenticated logout response could not be safely verified.",
+    );
+  }
+
+  return {
+    revoked: true,
+    revokedAt,
+    liveProviderExecutionAuthorized:
+      false,
+    resumeAuthorized: false,
   };
 }

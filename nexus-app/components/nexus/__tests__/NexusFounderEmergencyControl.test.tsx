@@ -25,6 +25,7 @@ const doubles = vi.hoisted(
     issueSession: vi.fn(),
     readStatus: vi.fn(),
     pause: vi.fn(),
+    revokeSession: vi.fn(),
   }),
 );
 
@@ -46,6 +47,8 @@ vi.mock(
         doubles.readStatus,
       pauseFounderEmergency:
         doubles.pause,
+      revokeFounderEmergencySession:
+        doubles.revokeSession,
     };
   },
 );
@@ -179,6 +182,17 @@ describe(
         .mockResolvedValue(
           pauseResult,
         );
+
+      doubles.revokeSession
+        .mockResolvedValue({
+          revoked: true,
+          revokedAt:
+            "2026-07-14T12:30:00.000Z",
+          liveProviderExecutionAuthorized:
+            false,
+          resumeAuthorized:
+            false,
+        });
     });
 
     afterEach(() => {
@@ -554,7 +568,7 @@ describe(
     );
 
     it(
-      "never persists the token and clearing it returns to the locked login state",
+      "revokes the authenticated session and clears the in-memory token without storage persistence",
       async () => {
         const storageWrite =
           vi.spyOn(
@@ -574,9 +588,23 @@ describe(
             "button",
             {
               name:
-                "Clear browser token",
+                "Log out and revoke session",
             },
           ),
+        );
+
+        await screen.findByText(
+          "Authenticated logout verified. Browser-held access token cleared. No resume action was performed.",
+        );
+
+        expect(
+          doubles.revokeSession,
+        ).toHaveBeenCalledTimes(1);
+
+        expect(
+          doubles.revokeSession,
+        ).toHaveBeenCalledWith(
+          "authenticated-session-token",
         );
 
         expect(
@@ -607,7 +635,8 @@ describe(
           screen.queryByRole(
             "button",
             {
-              name: /resume/i,
+              name:
+                /emergency-pause confirmation/i,
             },
           ),
         ).toBeNull();
@@ -615,13 +644,130 @@ describe(
         expect(
           doubles.pause,
         ).not.toHaveBeenCalled();
-
-        expect(
-          screen.getByText(
-            "Browser-held access token cleared. No resume action was performed.",
-          ),
-        ).toBeTruthy();
       },
     );
-  },
+
+    it(
+      "clears the browser token fail-closed when logout reports an invalid or revoked session",
+      async () => {
+        doubles.revokeSession
+          .mockRejectedValueOnce(
+            new FounderEmergencyClientError(
+              401,
+              "Authentication failed or the session expired.",
+            ),
+          );
+
+        render(
+          <NexusFounderEmergencyControl />,
+        );
+
+        const user =
+          await authenticateControl();
+
+        await user.click(
+          screen.getByRole(
+            "button",
+            {
+              name:
+                "Log out and revoke session",
+            },
+          ),
+        );
+
+        await screen.findByText(
+          "Session was already invalid or revoked. Browser-held access token cleared safely.",
+        );
+
+        expect(
+          screen.getByRole(
+            "button",
+            {
+              name:
+                "Authenticate and verify status",
+            },
+          ),
+        ).toBeTruthy();
+
+        expect(
+          screen.queryByRole(
+            "button",
+            {
+              name:
+                "Refresh status",
+            },
+          ),
+        ).toBeNull();
+
+        expect(
+          doubles.pause,
+        ).not.toHaveBeenCalled();
+      },
+    );
+
+    it(
+      "retains the in-memory session for logout retry but locks emergency actions on an unverified failure",
+      async () => {
+        doubles.revokeSession
+          .mockRejectedValueOnce(
+            new Error(
+              "raw revocation infrastructure detail",
+            ),
+          );
+
+        render(
+          <NexusFounderEmergencyControl />,
+        );
+
+        const user =
+          await authenticateControl();
+
+        await user.click(
+          screen.getByRole(
+            "button",
+            {
+              name:
+                "Log out and revoke session",
+            },
+          ),
+        );
+
+        await screen.findByText(
+          "Founder emergency control failed safely. No action was taken.",
+        );
+
+        expect(
+          document.body.textContent,
+        ).not.toContain(
+          "raw revocation infrastructure detail",
+        );
+
+        expect(
+          screen.getByRole(
+            "button",
+            {
+              name:
+                "Log out and revoke session",
+            },
+          ),
+        ).toBeTruthy();
+
+        const pauseButton =
+          screen.getByRole(
+            "button",
+            {
+              name:
+                "Open emergency-pause confirmation",
+            },
+          ) as HTMLButtonElement;
+
+        expect(
+          pauseButton.disabled,
+        ).toBe(true);
+
+        expect(
+          doubles.pause,
+        ).not.toHaveBeenCalled();
+      },
+    );  },
 );

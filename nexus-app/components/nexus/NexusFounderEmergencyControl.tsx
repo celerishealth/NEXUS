@@ -12,12 +12,14 @@ import {
   issueFounderEmergencySession,
   pauseFounderEmergency,
   readFounderEmergencyStatus,
+  revokeFounderEmergencySession,
 } from "@/lib/nexus/founderEmergencyClient";
 
 type BusyAction =
   | "login"
   | "status"
   | "pause"
+  | "logout"
   | null;
 
 function safeMessage(
@@ -202,19 +204,67 @@ export default function NexusFounderEmergencyControl() {
     }
   }
 
-  function clearBrowserSession() {
+  function lockBrowserSession(
+    nextMessage: string,
+  ) {
     setSession(null);
     setSnapshot(null);
     setPassword("");
-    setMessage(
-      "Browser-held access token cleared. No resume action was performed.",
-    );
+    setMessage(nextMessage);
     setEmergencyPauseAvailable(
       false,
     );
     setPauseConfirmationOpen(
       false,
     );
+  }
+
+  async function logoutFounderSession() {
+    if (!session) {
+      setMessage(
+        "Authenticate before requesting an authenticated logout.",
+      );
+      return;
+    }
+
+    const accessToken =
+      session.accessToken;
+
+    setBusy("logout");
+    setMessage("");
+    setPauseConfirmationOpen(
+      false,
+    );
+
+    try {
+      await revokeFounderEmergencySession(
+        accessToken,
+      );
+
+      lockBrowserSession(
+        "Authenticated logout verified. Browser-held access token cleared. No resume action was performed.",
+      );
+    } catch (error) {
+      if (
+        error instanceof
+          FounderEmergencyClientError &&
+        error.status === 401
+      ) {
+        lockBrowserSession(
+          "Session was already invalid or revoked. Browser-held access token cleared safely.",
+        );
+      } else {
+        setSnapshot(null);
+        setEmergencyPauseAvailable(
+          false,
+        );
+        setMessage(
+          safeMessage(error),
+        );
+      }
+    } finally {
+      setBusy(null);
+    }
   }
 
   const isPaused =
@@ -353,10 +403,12 @@ export default function NexusFounderEmergencyControl() {
                 <button
                   className="rounded-xl border border-slate-500 px-4 py-2 font-semibold text-slate-200 disabled:opacity-50"
                   type="button"
-                  onClick={clearBrowserSession}
+                  onClick={logoutFounderSession}
                   disabled={busy !== null}
                 >
-                  Clear browser token
+                  {busy === "logout"
+                    ? "Revoking session..."
+                    : "Log out and revoke session"}
                 </button>
               </div>
             </div>
