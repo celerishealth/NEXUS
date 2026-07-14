@@ -77,9 +77,19 @@ jobs:
           fixture_target="supabase/migrations/0000_remote_rls_guard_fixture.sql"
           expected_sha256="1c32e8c8c0214961f000f3db7e3bea7bc214b2fb0a7d349079232c8e7d4942f"
 
-          echo "${expected_sha256}  ${fixture_source}" | sha256sum --check -
+          actual_source_sha256="$(sha256sum "${fixture_source}" | awk '{print $1}')"
+
+          if [[ "${actual_source_sha256}" != "${expected_sha256}" ]]; then
+            echo "::error::Remote RLS guard source fixture checksum mismatch."
+            exit 1
+          fi
           cp "${fixture_source}" "${fixture_target}"
-          echo "${expected_sha256}  ${fixture_target}" | sha256sum --check -
+          actual_target_sha256="$(sha256sum "${fixture_target}" | awk '{print $1}')"
+
+          if [[ "${actual_target_sha256}" != "${expected_sha256}" ]]; then
+            echo "::error::Staged remote RLS guard fixture checksum mismatch."
+            exit 1
+          fi
 
       - name: Start isolated local database
         shell: bash
