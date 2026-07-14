@@ -1,6 +1,7 @@
 ﻿"use client";
 
 
+import NexusFounderEmergencyControl from "@/components/nexus/NexusFounderEmergencyControl";
 import NexusControlledPaidPilotRegistry from "@/components/nexus/NexusControlledPaidPilotRegistry";
 import { useState } from "react";
 
@@ -6563,6 +6564,7 @@ ${aiInput}`,
 
 
 
+<NexusFounderEmergencyControl />
 <NexusControlledPaidPilotRegistry />
 </main>
   );
