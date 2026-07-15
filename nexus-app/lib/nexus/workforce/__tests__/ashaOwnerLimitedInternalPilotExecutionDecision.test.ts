@@ -1,4 +1,7 @@
 import {
+  createAshaOwnerLimitedInternalPilotExecutionDecision,
+} from "../ashaOwnerLimitedInternalPilotExecutionDecision";
+import {
   createAshaLimitedInternalPilotPreparation,
 } from "../ashaLimitedInternalPilotPreparation";
 import {
@@ -656,26 +659,178 @@ async function day26PreparationInput(
   };
 }
 
+type Day27DecisionInput =
+  Parameters<
+    typeof createAshaOwnerLimitedInternalPilotExecutionDecision
+  >[0];
+
+type Day27Preparation =
+  Day27DecisionInput[
+    "limitedInternalPilotPreparation"
+  ];
+
+async function approvedPilotPreparation():
+  Promise<Day27Preparation> {
+  return createAshaLimitedInternalPilotPreparation(
+    await day26PreparationInput(),
+  );
+}
+
+async function day27DecisionInput(
+  overrides:
+    Partial<Day27DecisionInput> = {},
+): Promise<Day27DecisionInput> {
+  const preparation =
+    await approvedPilotPreparation();
+
+  return {
+    limitedInternalPilotPreparation:
+      preparation,
+
+    decisionId:
+      "decision-asha-limited-internal-pilot-execution-001",
+
+    ownerId:
+      preparation.ownerId,
+
+    decision:
+      "APPROVE_LIMITED_INTERNAL_PILOT_EXECUTION",
+
+    reason:
+      "Approved for the strictly bounded synthetic internal pilot execution.",
+
+    decidedAt:
+      new Date(
+        Date.parse(preparation.preparedAt) +
+          1_000,
+      ).toISOString(),
+
+    ...overrides,
+  };
+}
+
 describe(
-  "Asha limited internal pilot preparation",
+  "Asha owner limited internal pilot execution decision",
   () => {
     it(
-      "prepares a tightly bounded synthetic internal pilot without executing it",
+      "records owner approval without performing pilot execution",
       async () => {
         const result =
-          createAshaLimitedInternalPilotPreparation(
-            await day26PreparationInput(),
+          createAshaOwnerLimitedInternalPilotExecutionDecision(
+            await day27DecisionInput(),
           );
 
         expect(result.version).toBe(
-          "nexus-asha-limited-internal-pilot-preparation-v1",
+          "nexus-asha-owner-limited-internal-pilot-execution-decision-v1",
         );
 
-        expect(result.preparationState).toBe(
-          "LIMITED_INTERNAL_PILOT_PREPARED",
+        expect(result.decisionState).toBe(
+          "OWNER_LIMITED_INTERNAL_PILOT_EXECUTION_DECISION_RECORDED",
         );
 
-        expect(result.pilotScope).toEqual({
+        expect(result.decision).toBe(
+          "APPROVE_LIMITED_INTERNAL_PILOT_EXECUTION",
+        );
+
+        expect(
+          result.approvedForLimitedInternalPilotExecution,
+        ).toBe(true);
+
+        expect(result.nextStep).toBe(
+          "EXECUTE_LIMITED_INTERNAL_PILOT",
+        );
+
+        expect(
+          result.authorityBoundary
+            .limitedInternalPilotExecutionPerformed,
+        ).toBe(false);
+
+        expect(
+          result.authorityBoundary
+            .syntheticInquiryExecutionPerformed,
+        ).toBe(false);
+      },
+    );
+
+    it(
+      "binds the exact Day 26 preparation employee tenant and owner",
+      async () => {
+        const input =
+          await day27DecisionInput();
+
+        const preparation =
+          input.limitedInternalPilotPreparation;
+
+        const result =
+          createAshaOwnerLimitedInternalPilotExecutionDecision(
+            input,
+          );
+
+        expect(result.preparationId).toBe(
+          preparation.preparationId,
+        );
+
+        expect(result.preparationDigest).toBe(
+          preparation.preparationDigest,
+        );
+
+        expect(result.sourceReviewDecisionId).toBe(
+          preparation.sourceReviewDecisionId,
+        );
+
+        expect(result.sourceReviewDecisionDigest).toBe(
+          preparation.sourceReviewDecisionDigest,
+        );
+
+        expect(result.employeeId).toBe(
+          "employee-asha-inquiry-intake-v1",
+        );
+
+        expect(result.templateId).toBe(
+          "template-asha-inquiry-intake-v1",
+        );
+
+        expect(result.employeeCode).toBe(
+          "nx-sales-003",
+        );
+
+        expect(result.displayName).toBe(
+          "Asha",
+        );
+
+        expect(result.officialRole).toBe(
+          "AI Inquiry Intake Executive",
+        );
+
+        expect(result.department).toBe(
+          "SALES",
+        );
+
+        expect(result.autonomyLevel).toBe(
+          "DRAFTING_ASSISTANT",
+        );
+
+        expect(result.tenantId).toBe(
+          preparation.tenantId,
+        );
+
+        expect(result.ownerId).toBe(
+          preparation.ownerId,
+        );
+      },
+    );
+
+    it(
+      "preserves the exact synthetic pilot scope and human-like standard evidence",
+      async () => {
+        const result =
+          createAshaOwnerLimitedInternalPilotExecutionDecision(
+            await day27DecisionInput(),
+          );
+
+        expect(
+          result.reviewedPilotPreparation,
+        ).toEqual({
           pilotClass:
             "LIMITED_INTERNAL_SYNTHETIC_PILOT",
 
@@ -706,204 +861,36 @@ describe(
           ownerReviewFrequency:
             "AFTER_EVERY_INQUIRY",
 
-          externalDeliveryMode:
-            "DISABLED",
+          scenarioCount:
+            3,
 
-          productionMutationMode:
-            "DISABLED",
-
-          scenarios: [
-            "INCOMPLETE_REQUIREMENT_CLARIFICATION",
-            "VERIFIED_URGENCY_WITHOUT_EXAGGERATION",
-            "SAFE_CUSTOMER_CONTEXT_CONTINUITY",
-          ],
-        });
-
-        expect(result.nextStep).toBe(
-          "AWAIT_OWNER_LIMITED_INTERNAL_PILOT_EXECUTION_DECISION",
-        );
-      },
-    );
-
-    it(
-      "binds exact Day 25 decision employee tenant and owner evidence",
-      async () => {
-        const input =
-          await day26PreparationInput();
-
-        const source =
-          input
-            .ownerControlledShadowOperationReviewDecision;
-
-        const result =
-          createAshaLimitedInternalPilotPreparation(
-            input,
-          );
-
-        expect(result.sourceReviewDecisionId).toBe(
-          source.decisionId,
-        );
-
-        expect(result.sourceReviewDecisionDigest).toBe(
-          source.decisionDigest,
-        );
-
-        expect(result.employeeId).toBe(
-          "employee-asha-inquiry-intake-v1",
-        );
-
-        expect(result.templateId).toBe(
-          "template-asha-inquiry-intake-v1",
-        );
-
-        expect(result.employeeCode).toBe(
-          "nx-sales-003",
-        );
-
-        expect(result.displayName).toBe(
-          "Asha",
-        );
-
-        expect(result.role).toBe(
-          "AI Inquiry Intake Executive",
-        );
-
-        expect(result.department).toBe(
-          "SALES",
-        );
-
-        expect(result.autonomyLevel).toBe(
-          "DRAFTING_ASSISTANT",
-        );
-
-        expect(result.tenantId).toBe(
-          source.tenantId,
-        );
-
-        expect(result.ownerId).toBe(
-          source.ownerId,
-        );
-      },
-    );
-
-    it(
-      "locks the transparent natural and non-robotic human-like employee standard",
-      async () => {
-        const result =
-          createAshaLimitedInternalPilotPreparation(
-            await day26PreparationInput(),
-          );
-
-        expect(
-          result.humanLikeEmployeeStandard,
-        ).toEqual({
-          aiIdentityTransparent:
+          humanLikeEmployeeStandardBound:
             true,
 
-          naturalProfessionalConversationRequired:
-            true,
-
-          customerContextContinuityRequired:
-            true,
-
-          repeatedQuestionAvoidanceRequired:
-            true,
-
-          clarificationBeforeGuessingRequired:
-            true,
-
-          urgencyAndEmotionAwarenessRequired:
-            true,
-
-          promiseAndFollowUpTrackingRequired:
-            true,
-
-          uncertaintyEscalatesToOwner:
-            true,
-
-          nonRoboticCommunicationRequired:
+          transparentAIIdentityRequired:
             true,
 
           humanImpersonationAuthorized:
             false,
+
+          existingPilotArchitectureBound:
+            true,
         });
       },
     );
 
     it(
-      "bridges to the existing pilot architecture without invoking any pilot function",
+      "authorizes only the future bounded pilot while blocking every real-world action",
       async () => {
         const result =
-          createAshaLimitedInternalPilotPreparation(
-            await day26PreparationInput(),
-          );
-
-        expect(
-          result.existingPilotArchitectureBridge,
-        ).toEqual({
-          duplicatePilotEngineCreated:
-            false,
-
-          enrollmentModule:
-            "lib/nexus/pilot/authenticatedControlledPilotEnrollment",
-
-          enrollmentFunction:
-            "enrollAuthenticatedControlledPilot",
-
-          accessModule:
-            "lib/nexus/pilot/authenticatedControlledPilotAccess",
-
-          accessFunction:
-            "enforceAuthenticatedControlledPilotAccess",
-
-          controlModule:
-            "lib/nexus/pilot/authenticatedControlledPilotControl",
-
-          controlFunction:
-            "controlAuthenticatedPilot",
-
-          healthModule:
-            "lib/nexus/pilot/authenticatedControlledPilotHealth",
-
-          healthFunction:
-            "observeAuthenticatedControlledPilotHealth",
-
-          operationAdmissionModule:
-            "lib/nexus/pilot/authenticatedControlledPilotOperationAdmission",
-
-          operationAdmissionFunction:
-            "admitAuthenticatedPilotOperation",
-
-          enrollmentInvoked:
-            false,
-
-          accessGranted:
-            false,
-
-          pilotControlInvoked:
-            false,
-
-          healthObservationInvoked:
-            false,
-
-          operationAdmissionClaimed:
-            false,
-        });
-      },
-    );
-
-    it(
-      "requires monitoring and owner review while blocking every execution authority",
-      async () => {
-        const result =
-          createAshaLimitedInternalPilotPreparation(
-            await day26PreparationInput(),
+          createAshaOwnerLimitedInternalPilotExecutionDecision(
+            await day27DecisionInput(),
           );
 
         expect(
           result.authorityBoundary,
         ).toEqual({
-          sourceDecisionIntegrityVerified:
+          sourcePreparationIntegrityVerified:
             true,
 
           exactEmployeeIdentityBound:
@@ -915,7 +902,7 @@ describe(
           exactOwnerBound:
             true,
 
-          ownerPilotPreparationApprovalBound:
+          ownerExecutionDecisionRecorded:
             true,
 
           approvalBypassAllowed:
@@ -925,9 +912,12 @@ describe(
             true,
 
           limitedInternalPilotExecutionAuthorized:
+            true,
+
+          limitedInternalPilotExecutionPerformed:
             false,
 
-          syntheticInquiryExecutionAuthorized:
+          syntheticInquiryExecutionPerformed:
             false,
 
           realCustomerInquiryAuthorized:
@@ -937,9 +927,6 @@ describe(
             false,
 
           customerContactAuthorized:
-            false,
-
-          recommendationGenerationAuthorized:
             false,
 
           externalDeliveryAuthorized:
@@ -979,104 +966,141 @@ describe(
     );
 
     it(
-      "rejects a Day 25 owner decision that did not approve pilot preparation",
+      "records rejection without authorizing or performing pilot execution",
       async () => {
-        const rejected =
-          createAshaOwnerControlledShadowOperationReviewDecision(
-            await reviewInput({
+        const result =
+          createAshaOwnerLimitedInternalPilotExecutionDecision(
+            await day27DecisionInput({
               decision:
-                "REJECT_LIMITED_INTERNAL_PILOT_PREPARATION",
+                "REJECT_LIMITED_INTERNAL_PILOT_EXECUTION",
 
               reason:
-                "Controlled shadow evidence requires additional internal review.",
+                "Pilot execution remains paused pending additional owner review.",
             }),
           );
 
-        await expect(
-          async () =>
-            createAshaLimitedInternalPilotPreparation({
-              preparationId:
-                "preparation-asha-limited-internal-pilot-001",
+        expect(result.decision).toBe(
+          "REJECT_LIMITED_INTERNAL_PILOT_EXECUTION",
+        );
 
-              ownerControlledShadowOperationReviewDecision:
-                rejected,
+        expect(
+          result.approvedForLimitedInternalPilotExecution,
+        ).toBe(false);
 
-              preparedAt:
-                new Date(
-                  Date.parse(rejected.decidedAt) +
-                    1_000,
-                ).toISOString(),
-            }),
-        ).rejects.toThrow(
-          /requires explicit owner approval/i,
+        expect(
+          result.authorityBoundary
+            .limitedInternalPilotExecutionAuthorized,
+        ).toBe(false);
+
+        expect(
+          result.authorityBoundary
+            .limitedInternalPilotExecutionPerformed,
+        ).toBe(false);
+
+        expect(result.nextStep).toBe(
+          "RETAIN_LIMITED_INTERNAL_PILOT_PREPARATION_ONLY",
         );
       },
     );
 
     it(
-      "rejects tampered Day 25 evidence and preparation before the owner decision",
+      "rejects a different owner and a decision before preparation",
       async () => {
-        const source =
-          await approvedReviewDecision();
+        const input =
+          await day27DecisionInput();
 
-        const tampered = {
-          ...source,
+        expect(() =>
+          createAshaOwnerLimitedInternalPilotExecutionDecision({
+            ...input,
+
+            ownerId:
+              "owner-different",
+          }),
+        ).toThrow(
+          /only the preparation-bound owner/i,
+        );
+
+        expect(() =>
+          createAshaOwnerLimitedInternalPilotExecutionDecision({
+            ...input,
+
+            decidedAt:
+              new Date(
+                Date.parse(
+                  input
+                    .limitedInternalPilotPreparation
+                    .preparedAt,
+                ) - 1,
+              ).toISOString(),
+          }),
+        ).toThrow(
+          /cannot precede its preparation/i,
+        );
+      },
+    );
+
+    it(
+      "rejects tampered preparation invalid decisions and secret-bearing reasons",
+      async () => {
+        const input =
+          await day27DecisionInput();
+
+        const tamperedPreparation = {
+          ...input.limitedInternalPilotPreparation,
 
           ownerId:
             "owner-tampered",
-        } as Day26SourceDecision;
+        } as Day27Preparation;
 
         expect(() =>
-          createAshaLimitedInternalPilotPreparation({
-            preparationId:
-              "preparation-asha-limited-internal-pilot-001",
+          createAshaOwnerLimitedInternalPilotExecutionDecision({
+            ...input,
 
-            ownerControlledShadowOperationReviewDecision:
-              tampered,
-
-            preparedAt:
-              new Date(
-                Date.parse(source.decidedAt) +
-                  1_000,
-              ).toISOString(),
+            limitedInternalPilotPreparation:
+              tamperedPreparation,
           }),
         ).toThrow(
           /integrity verification failed/i,
         );
 
         expect(() =>
-          createAshaLimitedInternalPilotPreparation({
-            preparationId:
-              "preparation-asha-limited-internal-pilot-001",
+          createAshaOwnerLimitedInternalPilotExecutionDecision({
+            ...input,
 
-            ownerControlledShadowOperationReviewDecision:
-              source,
-
-            preparedAt:
-              new Date(
-                Date.parse(source.decidedAt) -
-                  1,
-              ).toISOString(),
+            decision:
+              "INVALID_EXECUTION_DECISION" as
+                Day27DecisionInput["decision"],
           }),
         ).toThrow(
-          /cannot precede the owner review decision/i,
+          /decision is invalid/i,
+        );
+
+        expect(() =>
+          createAshaOwnerLimitedInternalPilotExecutionDecision({
+            ...input,
+
+            reason:
+              "Approved using secret access_token abc123 for execution.",
+          }),
+        ).toThrow(
+          /secret-bearing information/i,
         );
       },
     );
 
     it(
-      "is deterministic deeply frozen digest-bound and rejects secret-bearing preparation identity",
+      "is deterministic deeply frozen digest-bound and rejects secret-bearing decision identity",
       async () => {
         const input =
-          await day26PreparationInput();
+          await day27DecisionInput();
 
         const first =
-          createAshaLimitedInternalPilotPreparation(
+          createAshaOwnerLimitedInternalPilotExecutionDecision(
             input,
           );
 
         const second =
-          createAshaLimitedInternalPilotPreparation(
+          createAshaOwnerLimitedInternalPilotExecutionDecision(
             input,
           );
 
@@ -1087,18 +1111,8 @@ describe(
         );
 
         expect(
-          Object.isFrozen(first.pilotScope),
-        ).toBe(true);
-
-        expect(
           Object.isFrozen(
-            first.humanLikeEmployeeStandard,
-          ),
-        ).toBe(true);
-
-        expect(
-          Object.isFrozen(
-            first.existingPilotArchitectureBridge,
+            first.reviewedPilotPreparation,
           ),
         ).toBe(true);
 
@@ -1109,20 +1123,20 @@ describe(
         ).toBe(true);
 
         const {
-          preparationDigest,
-          ...preparationCore
+          decisionDigest,
+          ...decisionCore
         } = first;
 
-        expect(preparationDigest).toBe(
-          sha256(preparationCore),
+        expect(decisionDigest).toBe(
+          sha256(decisionCore),
         );
 
         expect(() =>
-          createAshaLimitedInternalPilotPreparation({
+          createAshaOwnerLimitedInternalPilotExecutionDecision({
             ...input,
 
-            preparationId:
-              "preparation-secret-token-001",
+            decisionId:
+              "decision-secret-token-001",
           }),
         ).toThrow(
           /invalid or secret-bearing/i,

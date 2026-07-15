@@ -58,8 +58,14 @@ export interface AshaLimitedInternalPilotPreparation {
       "LIMITED_INTERNAL_SYNTHETIC_PILOT";
     dataClass:
       "SYNTHETIC_SANITIZED_ONLY";
+    actorClass:
+      "OWNER_SUPERVISED_INTERNAL_ONLY";
     executionMode:
       "SANDBOX_ONLY";
+    toolId:
+      "tool-inquiry-draft";
+    toolMode:
+      "DRAFT_ONLY";
 
     maximumInquiryCount:
       3;
@@ -691,8 +697,17 @@ export function createAshaLimitedInternalPilotPreparation(
       dataClass:
         "SYNTHETIC_SANITIZED_ONLY" as const,
 
+      actorClass:
+        "OWNER_SUPERVISED_INTERNAL_ONLY" as const,
+
       executionMode:
         "SANDBOX_ONLY" as const,
+
+      toolId:
+        "tool-inquiry-draft" as const,
+
+      toolMode:
+        "DRAFT_ONLY" as const,
 
       maximumInquiryCount:
         3 as const,
