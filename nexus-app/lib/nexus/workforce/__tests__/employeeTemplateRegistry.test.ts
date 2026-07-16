@@ -69,7 +69,7 @@ describe(
 
         expect(
           registry.registeredTemplateCount,
-        ).toBe(1);
+        ).toBe(2);
 
         const asha =
           registry.templates[0];

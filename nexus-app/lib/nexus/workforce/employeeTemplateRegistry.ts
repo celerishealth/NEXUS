@@ -289,6 +289,101 @@ const SAFE_IDENTIFIER_PATTERN =
 const FORBIDDEN_IDENTIFIER_PATTERN =
   /(secret|token|password|session|cookie|csrf|authorization|bearer)/i;
 
+export const RIYA_RECOMMENDATION_SPECIALIST_TEMPLATE =
+  {
+    templateId:
+      "template-riya-recommendation-specialist-v1",
+    employeeId:
+      "employee-riya-recommendation-specialist-v1",
+    employeeCode:
+      "nx-sales-004",
+    publicName:
+      "Riya",
+    officialRole:
+      "AI Recommendation Specialist",
+    department:
+      "SALES",
+    managerRoleKey:
+      "founder-chief-of-staff",
+    launchSequence:
+      4,
+    manifestInput: {
+      ...ASHA_INQUIRY_INTAKE_TEMPLATE.manifestInput,
+      employeeId:
+        "employee-riya-recommendation-specialist-v1",
+      templateId:
+        "template-riya-recommendation-specialist-v1",
+      displayName:
+        "Riya",
+      department:
+        "SALES",
+      roleTitle:
+        "AI Recommendation Specialist",
+      roleCharter:
+        "Generate clear tenant-scoped recommendation drafts from authorized inquiry evidence, identify uncertainty and risk, and route every consequential recommendation to the owner for approval.",
+      autonomyLevel:
+        "DRAFTING_ASSISTANT",
+      skills: [
+        {
+          skillId:
+            "skill-recommendation-analysis",
+          name:
+            "Recommendation analysis",
+          description:
+            "Analyzes authorized inquiry evidence and produces a structured recommendation draft.",
+        },
+        {
+          skillId:
+            "skill-risk-aware-recommendation",
+          name:
+            "Risk-aware recommendation",
+          description:
+            "Identifies uncertainty, unsupported claims, risk flags, and missing evidence.",
+        },
+        {
+          skillId:
+            "skill-owner-recommendation-escalation",
+          name:
+            "Owner recommendation escalation",
+          description:
+            "Escalates consequential recommendations to the owner with complete evidence.",
+        },
+      ],
+      toolGrants: [
+        {
+          toolId:
+            "tool-inquiry-read",
+          capability:
+            "Read tenant-scoped inquiry records",
+          mode:
+            "READ_ONLY",
+          risk:
+            "LOW",
+        },
+        {
+          toolId:
+            "tool-customer-memory-read",
+          capability:
+            "Read tenant-scoped approved customer context",
+          mode:
+            "READ_ONLY",
+          risk:
+            "LOW",
+        },
+        {
+          toolId:
+            "tool-recommendation-draft",
+          capability:
+            "Create a sandbox recommendation draft for owner review",
+          mode:
+            "DRAFT_ONLY",
+          risk:
+            "MEDIUM",
+        },
+      ],
+    },
+  } as const satisfies
+    AIEmployeeTemplateDefinition;
 function stableStringify(
   value: unknown,
 ): string {
@@ -736,6 +831,7 @@ export function createCoreLaunchEmployeeTemplateRegistry(
   return createAIEmployeeTemplateRegistry({
     templates: [
       ASHA_INQUIRY_INTAKE_TEMPLATE,
+      RIYA_RECOMMENDATION_SPECIALIST_TEMPLATE,
     ],
     skillToolRegistry,
     createdAt,

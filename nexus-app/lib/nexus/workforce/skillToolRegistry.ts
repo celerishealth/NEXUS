@@ -135,7 +135,42 @@ export const CORE_WORKFORCE_SKILLS =
       version: 1,
       active: true,
     },
-  ] as const satisfies
+    {
+      skillId:
+        "skill-recommendation-analysis",
+      name:
+        "Recommendation analysis",
+      description:
+        "Analyzes authorized inquiry evidence and produces a structured recommendation draft.",
+      category:
+        "recommendation",
+      version: 1,
+      active: true,
+    },
+    {
+      skillId:
+        "skill-risk-aware-recommendation",
+      name:
+        "Risk-aware recommendation",
+      description:
+        "Identifies uncertainty, unsupported claims, risk flags, and missing evidence.",
+      category:
+        "recommendation",
+      version: 1,
+      active: true,
+    },
+    {
+      skillId:
+        "skill-owner-recommendation-escalation",
+      name:
+        "Owner recommendation escalation",
+      description:
+        "Escalates consequential recommendations to the owner with complete evidence.",
+      category:
+        "owner-control",
+      version: 1,
+      active: true,
+    },  ] as const satisfies
     readonly WorkforceSkillDefinition[];
 
 export const CORE_WORKFORCE_TOOLS =
@@ -209,7 +244,52 @@ export const CORE_WORKFORCE_TOOLS =
       active:
         true,
     },
-  ] as const satisfies
+    {
+      toolId:
+        "tool-customer-memory-read",
+      name:
+        "Customer memory reader",
+      capability:
+        "Read tenant-scoped approved customer context",
+      risk:
+        "LOW",
+      allowedModes: [
+        "READ_ONLY",
+      ],
+      ownerApprovalRequired:
+        false,
+      externalEffect:
+        false,
+      tenantScoped:
+        true,
+      auditRequired:
+        true,
+      active:
+        true,
+    },
+    {
+      toolId:
+        "tool-recommendation-draft",
+      name:
+        "Recommendation draft creator",
+      capability:
+        "Create a sandbox recommendation draft for owner review",
+      risk:
+        "MEDIUM",
+      allowedModes: [
+        "DRAFT_ONLY",
+      ],
+      ownerApprovalRequired:
+        false,
+      externalEffect:
+        false,
+      tenantScoped:
+        true,
+      auditRequired:
+        true,
+      active:
+        true,
+    },  ] as const satisfies
     readonly WorkforceToolDefinition[];
 
 const SAFE_IDENTIFIER_PATTERN =
