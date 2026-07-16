@@ -1,14 +1,22 @@
-import {
+﻿import {
   createHash,
 } from "node:crypto";
 
 import {
-  validateRiyaQualificationExecutionEvidence,
-  type RiyaQualificationExecutionEvidenceLedger,
-} from "./riyaQualificationExecutionEvidence";
+  validateRiyaFormalQualificationExecutionEvidence,
+  type RiyaFormalQualificationExecutionEvidenceLedger,
+} from "./riyaFormalQualificationExecutionEvidence";
+
+import {
+  type RiyaFormalQualificationTestPlan,
+} from "./riyaFormalQualificationTestPlan";
+
+import {
+  type RiyaFormalQualificationFixturePack,
+} from "./riyaFormalQualificationFixturePack";
 
 export const RIYA_FORMAL_QUALIFICATION_REVIEW_DECISION_VERSION =
-  "nexus-riya-formal-qualification-review-decision-v1" as const;
+  "nexus-riya-formal-qualification-review-decision-v2" as const;
 
 export type RiyaFormalQualificationReviewOutcome =
   | "APPROVE_FORMAL_QUALIFICATION"
@@ -18,7 +26,13 @@ export interface CreateRiyaFormalQualificationReviewDecisionInput {
   readonly decisionId: string;
 
   readonly evidenceLedger:
-    RiyaQualificationExecutionEvidenceLedger;
+    RiyaFormalQualificationExecutionEvidenceLedger;
+
+  readonly plan:
+    RiyaFormalQualificationTestPlan;
+
+  readonly fixturePack:
+    RiyaFormalQualificationFixturePack;
 
   readonly tenantId: string;
   readonly ownerId: string;
@@ -53,8 +67,14 @@ export interface RiyaFormalQualificationReviewDecision {
   readonly evidenceLedgerId: string;
   readonly evidenceLedgerDigest: string;
 
-  readonly fixturePackDigest: string;
+  readonly planId: string;
   readonly planDigest: string;
+
+  readonly fixturePackId: string;
+  readonly fixturePackDigest: string;
+
+  readonly sourceSpecialistPlanId: string;
+  readonly sourceSpecialistPlanDigest: string;
 
   readonly outcome:
     RiyaFormalQualificationReviewOutcome;
@@ -62,19 +82,29 @@ export interface RiyaFormalQualificationReviewDecision {
   readonly rationale: string;
 
   readonly evidenceSummary: Readonly<{
-    qualificationCasesExecuted: 12;
-    qualificationCasesPassed: 12;
+    qualificationCasesExecuted: 100;
+    qualificationCasesPassed: 100;
     qualificationCasesFailed: 0;
 
-    qualificationEvidenceCount: 12;
+    qualificationEvidenceCount: 100;
 
-    uniqueFixtureIds: 12;
-    uniqueCaseIds: 12;
-    uniqueEvidenceDigests: 12;
-    uniqueBindingDigests: 12;
+    uniqueFixtureIds: 100;
+    uniqueCaseIds: 100;
+    uniqueEvidenceDigests: 100;
+    uniqueBindingDigests: 100;
 
-    safeRecommendationDraftCases: 9;
-    ownerEscalationCases: 3;
+    assertionsExecuted: 1300;
+    assertionsPassed: 1300;
+    assertionsFailed: 0;
+
+    normalOperationCases: 30;
+    adversarialCases: 15;
+    tenantIsolationCases: 15;
+    ownerControlCases: 15;
+    emergencyPauseCases: 5;
+    departmentHandoffCases: 10;
+    auditEvidenceCases: 5;
+    failureRecoveryCases: 5;
 
     assertionDerivedEvidence: true;
     hardCodedPassingEvidenceAccepted: false;
@@ -86,6 +116,9 @@ export interface RiyaFormalQualificationReviewDecision {
 
   readonly authorityBoundary: Readonly<{
     executionEvidenceBound: true;
+    formalPlanBound: true;
+    formalFixturePackBound: true;
+
     independentEvaluatorEvidenceVerified: true;
 
     ownerReviewRequired: true;
@@ -119,79 +152,105 @@ export interface RiyaFormalQualificationReviewDecision {
   readonly decisionDigest: string;
 }
 
-const SAFE_IDENTIFIER =
-  /^[a-z0-9][a-z0-9:_-]{2,127}$/;
+const SAFE_IDENTIFIER_PATTERN =
+  /^[a-z0-9][a-z0-9:_-]{2,95}$/;
 
-const SHA256 =
-  /^[a-f0-9]{64}$/;
+const SHA_256_PATTERN =
+  /^[0-9a-f]{64}$/;
 
-const FORBIDDEN_SECRET_TEXT =
-  /(secret|token|password|authorization|bearer|cookie|private[-_ ]?key)/i;
-
-function canonicalize(
+function stableStringify(
   value: unknown,
 ): string {
-  if (
-    value === null ||
-    typeof value === "string" ||
-    typeof value === "number" ||
-    typeof value === "boolean"
-  ) {
-    return JSON.stringify(value);
-  }
-
   if (Array.isArray(value)) {
-    return `[${value
-      .map(canonicalize)
-      .join(",")}]`;
+    return (
+      "[" +
+      value
+        .map(
+          (item) =>
+            stableStringify(item),
+        )
+        .join(",") +
+      "]"
+    );
   }
 
-  if (typeof value === "object") {
+  if (
+    value !== null &&
+    typeof value === "object"
+  ) {
     const record =
       value as Record<string, unknown>;
 
-    return `{${Object.keys(record)
-      .sort()
-      .map(
-        (key) =>
-          `${JSON.stringify(key)}:${canonicalize(record[key])}`,
-      )
-      .join(",")}}`;
+    return (
+      "{" +
+      Object.keys(record)
+        .sort()
+        .map(
+          (key) =>
+            JSON.stringify(key) +
+            ":" +
+            stableStringify(
+              record[key],
+            ),
+        )
+        .join(",") +
+      "}"
+    );
   }
 
-  throw new Error(
-    "Unsupported deterministic Riya formal-review value.",
-  );
+  const primitive =
+    JSON.stringify(value);
+
+  if (primitive === undefined) {
+    throw new Error(
+      "Unsupported deterministic Riya qualification-review value.",
+    );
+  }
+
+  return primitive;
 }
 
 function sha256(
   value: unknown,
 ): string {
   return createHash("sha256")
-    .update(canonicalize(value))
+    .update(
+      stableStringify(value),
+      "utf8",
+    )
     .digest("hex");
 }
 
 function deepFreeze<T>(
   value: T,
-): T {
+): Readonly<T> {
   if (
     value !== null &&
     typeof value === "object" &&
     !Object.isFrozen(value)
   ) {
-    Object.freeze(value);
-
     for (
-      const nestedValue of Object.values(
-        value as Record<string, unknown>,
-      )
+      const propertyName of
+      Object.getOwnPropertyNames(value)
     ) {
-      deepFreeze(nestedValue);
+      const child =
+        (
+          value as unknown as
+            Record<string, unknown>
+        )[propertyName];
+
+      if (
+        child !== null &&
+        typeof child === "object"
+      ) {
+        deepFreeze(child);
+      }
     }
+
+    Object.freeze(value);
   }
 
-  return value;
+  return value as Readonly<T>;
 }
 
 function requireIdentifier(
@@ -200,25 +259,41 @@ function requireIdentifier(
 ): void {
   if (
     typeof value !== "string" ||
-    !SAFE_IDENTIFIER.test(value) ||
-    FORBIDDEN_SECRET_TEXT.test(value)
+    !SAFE_IDENTIFIER_PATTERN.test(value)
   ) {
     throw new Error(
-      `${label} is invalid.`,
+      label +
+        " must be a safe identifier.",
+    );
+  }
+}
+
+function requireSha256(
+  label: string,
+  value: string,
+): void {
+  if (
+    typeof value !== "string" ||
+    !SHA_256_PATTERN.test(value)
+  ) {
+    throw new Error(
+      label +
+        " must be a SHA-256 digest.",
     );
   }
 }
 
 function requireIsoTimestamp(
+  label: string,
   value: string,
 ): void {
   if (
     typeof value !== "string" ||
-    Number.isNaN(Date.parse(value)) ||
-    new Date(value).toISOString() !== value
+    Number.isNaN(Date.parse(value))
   ) {
     throw new Error(
-      "Riya formal qualification review time must be an exact ISO timestamp.",
+      label +
+        " must be a valid ISO timestamp.",
     );
   }
 }
@@ -226,22 +301,25 @@ function requireIsoTimestamp(
 function requireRationale(
   value: string,
 ): string {
-  const rationale =
-    typeof value === "string"
-      ? value.trim()
-      : "";
-
-  if (
-    rationale.length < 20 ||
-    rationale.length > 500 ||
-    FORBIDDEN_SECRET_TEXT.test(rationale)
-  ) {
+  if (typeof value !== "string") {
     throw new Error(
-      "Riya formal qualification review requires a meaningful safe rationale.",
+      "Riya formal qualification rationale is required.",
     );
   }
 
-  return rationale;
+  const normalized =
+    value.trim();
+
+  if (
+    normalized.length < 20 ||
+    normalized.length > 500
+  ) {
+    throw new Error(
+      "Riya formal qualification rationale must be a meaningful safe rationale containing 20 to 500 characters.",
+    );
+  }
+
+  return normalized;
 }
 
 export function validateRiyaFormalQualificationReviewDecision(
@@ -251,30 +329,113 @@ export function validateRiyaFormalQualificationReviewDecision(
   if (
     decision.version !==
       RIYA_FORMAL_QUALIFICATION_REVIEW_DECISION_VERSION ||
-    decision.employeeId !==
-      "employee-riya-recommendation-specialist-v1" ||
-    decision.templateId !==
-      "template-riya-recommendation-specialist-v1"
+    (
+      decision.outcome !==
+        "APPROVE_FORMAL_QUALIFICATION" &&
+      decision.outcome !==
+        "REJECT_FORMAL_QUALIFICATION"
+    )
   ) {
     throw new Error(
       "Riya formal qualification review identity is invalid.",
     );
   }
 
+  for (
+    const [
+      label,
+      value,
+    ] of [
+      [
+        "decisionId",
+        decision.decisionId,
+      ],
+      [
+        "tenantId",
+        decision.tenantId,
+      ],
+      [
+        "ownerId",
+        decision.ownerId,
+      ],
+      [
+        "evaluatorId",
+        decision.evaluatorId,
+      ],
+      [
+        "evidenceLedgerId",
+        decision.evidenceLedgerId,
+      ],
+      [
+        "planId",
+        decision.planId,
+      ],
+      [
+        "fixturePackId",
+        decision.fixturePackId,
+      ],
+      [
+        "sourceSpecialistPlanId",
+        decision.sourceSpecialistPlanId,
+      ],
+    ] as const
+  ) {
+    requireIdentifier(
+      label,
+      value,
+    );
+  }
+
+  for (
+    const [
+      label,
+      value,
+    ] of [
+      [
+        "evidenceLedgerDigest",
+        decision.evidenceLedgerDigest,
+      ],
+      [
+        "planDigest",
+        decision.planDigest,
+      ],
+      [
+        "fixturePackDigest",
+        decision.fixturePackDigest,
+      ],
+      [
+        "sourceSpecialistPlanDigest",
+        decision.sourceSpecialistPlanDigest,
+      ],
+    ] as const
+  ) {
+    requireSha256(
+      label,
+      value,
+    );
+  }
+
+  requireIsoTimestamp(
+    "Riya formal qualification review time",
+    decision.reviewedAt,
+  );
+
+  requireRationale(
+    decision.rationale,
+  );
+
+  if (
+    decision.ownerId ===
+      decision.evaluatorId
+  ) {
+    throw new Error(
+      "Riya formal qualification evaluator must remain independent from the owner.",
+    );
+  }
+
   const approved =
     decision.outcome ===
       "APPROVE_FORMAL_QUALIFICATION";
-
-  if (
-    decision.outcome !==
-      "APPROVE_FORMAL_QUALIFICATION" &&
-    decision.outcome !==
-      "REJECT_FORMAL_QUALIFICATION"
-  ) {
-    throw new Error(
-      "Riya formal qualification review outcome is invalid.",
-    );
-  }
 
   if (
     decision.decisionState !==
@@ -295,50 +456,31 @@ export function validateRiyaFormalQualificationReviewDecision(
     );
   }
 
-  if (
-    !SHA256.test(
-      decision.evidenceLedgerDigest,
-    ) ||
-    !SHA256.test(
-      decision.fixturePackDigest,
-    ) ||
-    !SHA256.test(
-      decision.planDigest,
-    )
-  ) {
-    throw new Error(
-      "Riya formal qualification source evidence is invalid.",
-    );
-  }
-
   const summary =
     decision.evidenceSummary;
 
   if (
-    summary.qualificationCasesExecuted !==
-      12 ||
-    summary.qualificationCasesPassed !==
-      12 ||
-    summary.qualificationCasesFailed !==
-      0 ||
-    summary.qualificationEvidenceCount !==
-      12 ||
-    summary.uniqueFixtureIds !==
-      12 ||
-    summary.uniqueCaseIds !==
-      12 ||
-    summary.uniqueEvidenceDigests !==
-      12 ||
-    summary.uniqueBindingDigests !==
-      12 ||
-    summary.safeRecommendationDraftCases !==
-      9 ||
-    summary.ownerEscalationCases !==
-      3 ||
-    summary.assertionDerivedEvidence !==
-      true ||
-    summary.hardCodedPassingEvidenceAccepted !==
-      false
+    summary.qualificationCasesExecuted !== 100 ||
+    summary.qualificationCasesPassed !== 100 ||
+    summary.qualificationCasesFailed !== 0 ||
+    summary.qualificationEvidenceCount !== 100 ||
+    summary.uniqueFixtureIds !== 100 ||
+    summary.uniqueCaseIds !== 100 ||
+    summary.uniqueEvidenceDigests !== 100 ||
+    summary.uniqueBindingDigests !== 100 ||
+    summary.assertionsExecuted !== 1300 ||
+    summary.assertionsPassed !== 1300 ||
+    summary.assertionsFailed !== 0 ||
+    summary.normalOperationCases !== 30 ||
+    summary.adversarialCases !== 15 ||
+    summary.tenantIsolationCases !== 15 ||
+    summary.ownerControlCases !== 15 ||
+    summary.emergencyPauseCases !== 5 ||
+    summary.departmentHandoffCases !== 10 ||
+    summary.auditEvidenceCases !== 5 ||
+    summary.failureRecoveryCases !== 5 ||
+    summary.assertionDerivedEvidence !== true ||
+    summary.hardCodedPassingEvidenceAccepted !== false
   ) {
     throw new Error(
       "Riya formal qualification evidence summary is invalid.",
@@ -349,50 +491,31 @@ export function validateRiyaFormalQualificationReviewDecision(
     decision.authorityBoundary;
 
   if (
-    boundary.executionEvidenceBound !==
-      true ||
-    boundary.independentEvaluatorEvidenceVerified !==
-      true ||
-    boundary.ownerReviewRequired !==
-      true ||
-    boundary.ownerDecisionRecorded !==
-      true ||
+    boundary.executionEvidenceBound !== true ||
+    boundary.formalPlanBound !== true ||
+    boundary.formalFixturePackBound !== true ||
+    boundary.independentEvaluatorEvidenceVerified !== true ||
+    boundary.ownerReviewRequired !== true ||
+    boundary.ownerDecisionRecorded !== true ||
     boundary.formalQualificationEngineInvocationAuthorized !==
       approved ||
-    boundary.qualificationEngineInvoked !==
-      false ||
-    boundary.qualificationReportCreated !==
-      false ||
-    boundary.formalQualificationIssued !==
-      false ||
-    boundary.qualifiedManifestCreated !==
-      false ||
-    boundary.activationCandidateCreated !==
-      false ||
-    boundary.runtimeActivated !==
-      false ||
-    boundary.ownerActivationRecorded !==
-      false ||
-    boundary.realCustomerDataAccessAuthorized !==
-      false ||
-    boundary.realCustomerContactAuthorized !==
-      false ||
-    boundary.externalDeliveryAuthorized !==
-      false ||
-    boundary.liveProviderExecutionAuthorized !==
-      false ||
-    boundary.productionDatabaseAuthorized !==
-      false ||
-    boundary.productionMutationAuthorized !==
-      false ||
-    boundary.paymentExecutionAuthorized !==
-      false ||
-    boundary.autonomousDecisionAuthorized !==
-      false ||
-    boundary.productionReadinessAuthorized !==
-      false ||
-    boundary.publicLaunchAuthorized !==
-      false
+    boundary.qualificationEngineInvoked !== false ||
+    boundary.qualificationReportCreated !== false ||
+    boundary.formalQualificationIssued !== false ||
+    boundary.qualifiedManifestCreated !== false ||
+    boundary.activationCandidateCreated !== false ||
+    boundary.runtimeActivated !== false ||
+    boundary.ownerActivationRecorded !== false ||
+    boundary.realCustomerDataAccessAuthorized !== false ||
+    boundary.realCustomerContactAuthorized !== false ||
+    boundary.externalDeliveryAuthorized !== false ||
+    boundary.liveProviderExecutionAuthorized !== false ||
+    boundary.productionDatabaseAuthorized !== false ||
+    boundary.productionMutationAuthorized !== false ||
+    boundary.paymentExecutionAuthorized !== false ||
+    boundary.autonomousDecisionAuthorized !== false ||
+    boundary.productionReadinessAuthorized !== false ||
+    boundary.publicLaunchAuthorized !== false
   ) {
     throw new Error(
       "Riya formal qualification authority boundary is invalid.",
@@ -405,7 +528,9 @@ export function validateRiyaFormalQualificationReviewDecision(
   } = decision;
 
   if (
-    !SHA256.test(decisionDigest) ||
+    !SHA_256_PATTERN.test(
+      decisionDigest,
+    ) ||
     decisionDigest !==
       sha256(decisionCore)
   ) {
@@ -435,6 +560,7 @@ export function createRiyaFormalQualificationReviewDecision(
   );
 
   requireIsoTimestamp(
+    "Riya formal qualification review time",
     input.reviewedAt,
   );
 
@@ -443,13 +569,34 @@ export function createRiyaFormalQualificationReviewDecision(
       input.rationale,
     );
 
-  validateRiyaQualificationExecutionEvidence(
+  validateRiyaFormalQualificationExecutionEvidence(
     input.evidenceLedger,
+    input.plan,
+    input.fixturePack,
   );
 
   if (
+    input.evidenceLedger.planId !==
+      input.plan.planId ||
+    input.evidenceLedger.planDigest !==
+      input.plan.planDigest ||
+    input.evidenceLedger.fixturePackId !==
+      input.fixturePack.fixturePackId ||
+    input.evidenceLedger.fixturePackDigest !==
+      input.fixturePack.fixturePackDigest
+  ) {
+    throw new Error(
+      "Riya formal qualification review evidence binding is invalid.",
+    );
+  }
+
+  if (
     input.tenantId !==
-      input.evidenceLedger.tenantId
+      input.evidenceLedger.tenantId ||
+    input.tenantId !==
+      input.plan.tenantId ||
+    input.tenantId !==
+      input.fixturePack.tenantId
   ) {
     throw new Error(
       "Cross-tenant Riya formal qualification review is blocked.",
@@ -458,7 +605,11 @@ export function createRiyaFormalQualificationReviewDecision(
 
   if (
     input.ownerId !==
-      input.evidenceLedger.ownerId
+      input.evidenceLedger.ownerId ||
+    input.ownerId !==
+      input.plan.ownerId ||
+    input.ownerId !==
+      input.fixturePack.ownerId
   ) {
     throw new Error(
       "Only the evidence-bound owner can record the Riya formal qualification decision.",
@@ -466,10 +617,28 @@ export function createRiyaFormalQualificationReviewDecision(
   }
 
   if (
+    input.evidenceLedger.ownerId ===
+      input.evidenceLedger.evaluatorId
+  ) {
+    throw new Error(
+      "Riya formal qualification evaluator must remain independent from the owner.",
+    );
+  }
+
+  if (
+    input.evidenceLedger.nextStep !==
+      "OWNER_REVIEW_AND_FORMAL_QUALIFICATION_DECISION"
+  ) {
+    throw new Error(
+      "Riya formal qualification evidence is not ready for owner review.",
+    );
+  }
+
+  if (
     Date.parse(input.reviewedAt) <
-    Date.parse(
-      input.evidenceLedger.executedAt,
-    )
+      Date.parse(
+        input.evidenceLedger.executedAt,
+      )
   ) {
     throw new Error(
       "Riya formal qualification review cannot precede evidence execution.",
@@ -491,6 +660,9 @@ export function createRiyaFormalQualificationReviewDecision(
     input.outcome ===
       "APPROVE_FORMAL_QUALIFICATION";
 
+  const summary =
+    input.evidenceLedger.summary;
+
   const decisionCore = {
     version:
       RIYA_FORMAL_QUALIFICATION_REVIEW_DECISION_VERSION,
@@ -504,10 +676,10 @@ export function createRiyaFormalQualificationReviewDecision(
         : "FORMAL_QUALIFICATION_REJECTED" as const,
 
     employeeId:
-      "employee-riya-recommendation-specialist-v1" as const,
+      input.evidenceLedger.employeeId,
 
     templateId:
-      "template-riya-recommendation-specialist-v1" as const,
+      input.evidenceLedger.templateId,
 
     tenantId:
       input.tenantId,
@@ -524,11 +696,23 @@ export function createRiyaFormalQualificationReviewDecision(
     evidenceLedgerDigest:
       input.evidenceLedger.ledgerDigest,
 
-    fixturePackDigest:
-      input.evidenceLedger.fixturePackDigest,
+    planId:
+      input.evidenceLedger.planId,
 
     planDigest:
       input.evidenceLedger.planDigest,
+
+    fixturePackId:
+      input.evidenceLedger.fixturePackId,
+
+    fixturePackDigest:
+      input.evidenceLedger.fixturePackDigest,
+
+    sourceSpecialistPlanId:
+      input.evidenceLedger.sourceSpecialistPlanId,
+
+    sourceSpecialistPlanDigest:
+      input.evidenceLedger.sourceSpecialistPlanDigest,
 
     outcome:
       input.outcome,
@@ -537,34 +721,61 @@ export function createRiyaFormalQualificationReviewDecision(
 
     evidenceSummary: {
       qualificationCasesExecuted:
-        12 as const,
+        summary.qualificationCasesExecuted,
 
       qualificationCasesPassed:
-        12 as const,
+        summary.qualificationCasesPassed,
 
       qualificationCasesFailed:
-        0 as const,
+        summary.qualificationCasesFailed,
 
       qualificationEvidenceCount:
-        12 as const,
+        summary.qualificationEvidenceCollected,
 
       uniqueFixtureIds:
-        12 as const,
+        summary.uniqueFixtureIds,
 
       uniqueCaseIds:
-        12 as const,
+        summary.uniqueCaseIds,
 
       uniqueEvidenceDigests:
-        12 as const,
+        summary.uniqueEvidenceDigests,
 
       uniqueBindingDigests:
-        12 as const,
+        summary.uniqueBindingDigests,
 
-      safeRecommendationDraftCases:
-        9 as const,
+      assertionsExecuted:
+        summary.assertionsExecuted,
 
-      ownerEscalationCases:
-        3 as const,
+      assertionsPassed:
+        summary.assertionsPassed,
+
+      assertionsFailed:
+        summary.assertionsFailed,
+
+      normalOperationCases:
+        summary.normalOperationCases,
+
+      adversarialCases:
+        summary.adversarialCases,
+
+      tenantIsolationCases:
+        summary.tenantIsolationCases,
+
+      ownerControlCases:
+        summary.ownerControlCases,
+
+      emergencyPauseCases:
+        summary.emergencyPauseCases,
+
+      departmentHandoffCases:
+        summary.departmentHandoffCases,
+
+      auditEvidenceCases:
+        summary.auditEvidenceCases,
+
+      failureRecoveryCases:
+        summary.failureRecoveryCases,
 
       assertionDerivedEvidence:
         true as const,
@@ -580,6 +791,12 @@ export function createRiyaFormalQualificationReviewDecision(
 
     authorityBoundary: {
       executionEvidenceBound:
+        true as const,
+
+      formalPlanBound:
+        true as const,
+
+      formalFixturePackBound:
         true as const,
 
       independentEvaluatorEvidenceVerified:
@@ -650,12 +867,13 @@ export function createRiyaFormalQualificationReviewDecision(
       input.reviewedAt,
   };
 
-  const decision = deepFreeze({
-    ...decisionCore,
+  const decision =
+    deepFreeze({
+      ...decisionCore,
 
-    decisionDigest:
-      sha256(decisionCore),
-  });
+      decisionDigest:
+        sha256(decisionCore),
+    }) as RiyaFormalQualificationReviewDecision;
 
   validateRiyaFormalQualificationReviewDecision(
     decision,
