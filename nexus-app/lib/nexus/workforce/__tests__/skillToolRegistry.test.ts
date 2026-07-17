@@ -165,11 +165,11 @@ describe(
 
         expect(
           registry.skills,
-        ).toHaveLength(6);
+        ).toHaveLength(9);
 
         expect(
           registry.tools,
-        ).toHaveLength(5);
+        ).toHaveLength(7);
 
         expect(
           registry.registryDigest,

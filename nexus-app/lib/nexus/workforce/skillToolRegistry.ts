@@ -170,7 +170,44 @@ export const CORE_WORKFORCE_SKILLS =
         "owner-control",
       version: 1,
       active: true,
-    },  ] as const satisfies
+    },
+    {
+      skillId:
+        "skill-quotation-proposal-drafting",
+      name:
+        "Quotation and proposal drafting",
+      description:
+        "Creates clear tenant-scoped quotation and proposal drafts from authorized evidence.",
+      category:
+        "commercial-drafting",
+      version: 1,
+      active: true,
+    },
+    {
+      skillId:
+        "skill-pricing-assumption-analysis",
+      name:
+        "Pricing assumption analysis",
+      description:
+        "Identifies pricing assumptions, exclusions, uncertainty, and missing commercial evidence.",
+      category:
+        "commercial-analysis",
+      version: 1,
+      active: true,
+    },
+    {
+      skillId:
+        "skill-owner-commercial-escalation",
+      name:
+        "Owner commercial escalation",
+      description:
+        "Escalates consequential pricing and commercial commitments to the owner with complete evidence.",
+      category:
+        "owner-control",
+      version: 1,
+      active: true,
+    },
+  ] as const satisfies
     readonly WorkforceSkillDefinition[];
 
 export const CORE_WORKFORCE_TOOLS =
@@ -289,7 +326,54 @@ export const CORE_WORKFORCE_TOOLS =
         true,
       active:
         true,
-    },  ] as const satisfies
+    },
+    {
+      toolId:
+        "tool-recommendation-read",
+      name:
+        "Approved recommendation reader",
+      capability:
+        "Read tenant-scoped owner-approved recommendation records",
+      risk:
+        "LOW",
+      allowedModes: [
+        "READ_ONLY",
+      ],
+      ownerApprovalRequired:
+        false,
+      externalEffect:
+        false,
+      tenantScoped:
+        true,
+      auditRequired:
+        true,
+      active:
+        true,
+    },
+    {
+      toolId:
+        "tool-quotation-proposal-draft",
+      name:
+        "Quotation and proposal draft creator",
+      capability:
+        "Create a sandbox quotation or proposal draft for owner review",
+      risk:
+        "MEDIUM",
+      allowedModes: [
+        "DRAFT_ONLY",
+      ],
+      ownerApprovalRequired:
+        false,
+      externalEffect:
+        false,
+      tenantScoped:
+        true,
+      auditRequired:
+        true,
+      active:
+        true,
+    },
+  ] as const satisfies
     readonly WorkforceToolDefinition[];
 
 const SAFE_IDENTIFIER_PATTERN =

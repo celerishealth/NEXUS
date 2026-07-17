@@ -384,6 +384,135 @@ export const RIYA_RECOMMENDATION_SPECIALIST_TEMPLATE =
     },
   } as const satisfies
     AIEmployeeTemplateDefinition;
+
+export const MEERA_QUOTATION_PROPOSAL_SPECIALIST_TEMPLATE =
+  {
+    templateId:
+      "template-meera-quotation-proposal-specialist-v1",
+    employeeId:
+      "employee-meera-quotation-proposal-specialist-v1",
+    employeeCode:
+      "nx-sales-005",
+    publicName:
+      "Meera",
+    officialRole:
+      "AI Quotation & Proposal Specialist",
+    department:
+      "SALES",
+    managerRoleKey:
+      "founder-chief-of-staff",
+    launchSequence:
+      5,
+    manifestInput: {
+      ...RIYA_RECOMMENDATION_SPECIALIST_TEMPLATE.manifestInput,
+      employeeId:
+        "employee-meera-quotation-proposal-specialist-v1",
+      templateId:
+        "template-meera-quotation-proposal-specialist-v1",
+      displayName:
+        "Meera",
+      department:
+        "SALES",
+      roleTitle:
+        "AI Quotation & Proposal Specialist",
+      roleCharter:
+        "Prepare clear tenant-scoped quotation and proposal drafts from authorized inquiry evidence and owner-approved recommendations, expose pricing assumptions, exclusions, and missing commercial evidence, and route every consequential commercial commitment to the owner for approval.",
+      autonomyLevel:
+        "DRAFTING_ASSISTANT",
+      skills: [
+        {
+          skillId:
+            "skill-quotation-proposal-drafting",
+          name:
+            "Quotation and proposal drafting",
+          description:
+            "Creates clear tenant-scoped quotation and proposal drafts from authorized evidence.",
+        },
+        {
+          skillId:
+            "skill-pricing-assumption-analysis",
+          name:
+            "Pricing assumption analysis",
+          description:
+            "Identifies pricing assumptions, exclusions, uncertainty, and missing commercial evidence.",
+        },
+        {
+          skillId:
+            "skill-owner-commercial-escalation",
+          name:
+            "Owner commercial escalation",
+          description:
+            "Escalates consequential pricing and commercial commitments to the owner with complete evidence.",
+        },
+      ],
+      toolGrants: [
+        {
+          toolId:
+            "tool-inquiry-read",
+          capability:
+            "Read tenant-scoped inquiry records",
+          mode:
+            "READ_ONLY",
+          risk:
+            "LOW",
+        },
+        {
+          toolId:
+            "tool-recommendation-read",
+          capability:
+            "Read tenant-scoped owner-approved recommendation records",
+          mode:
+            "READ_ONLY",
+          risk:
+            "LOW",
+        },
+        {
+          toolId:
+            "tool-quotation-proposal-draft",
+          capability:
+            "Create a sandbox quotation or proposal draft for owner review",
+          mode:
+            "DRAFT_ONLY",
+          risk:
+            "MEDIUM",
+        },
+      ],
+      kpis: [
+        {
+          kpiId:
+            "kpi-meera-commercial-draft-accuracy",
+          name:
+            "Commercial draft accuracy",
+          measurement:
+            "Percentage of quotation and proposal drafts accepted without owner correction to material commercial terms.",
+          ownerVisible:
+            true,
+        },
+        {
+          kpiId:
+            "kpi-meera-assumption-clarity",
+          name:
+            "Pricing assumption clarity",
+          measurement:
+            "Percentage of drafts that clearly expose assumptions, exclusions, uncertainty, and missing evidence.",
+          ownerVisible:
+            true,
+        },
+        {
+          kpiId:
+            "kpi-meera-owner-review-readiness",
+          name:
+            "Owner review readiness",
+          measurement:
+            "Percentage of commercial drafts complete enough for an informed owner decision.",
+          ownerVisible:
+            true,
+        },
+      ],
+    },
+  } as const satisfies
+    AIEmployeeTemplateDefinition;
+
 function stableStringify(
   value: unknown,
 ): string {
@@ -832,6 +961,7 @@ export function createCoreLaunchEmployeeTemplateRegistry(
     templates: [
       ASHA_INQUIRY_INTAKE_TEMPLATE,
       RIYA_RECOMMENDATION_SPECIALIST_TEMPLATE,
+      MEERA_QUOTATION_PROPOSAL_SPECIALIST_TEMPLATE,
     ],
     skillToolRegistry,
     createdAt,
