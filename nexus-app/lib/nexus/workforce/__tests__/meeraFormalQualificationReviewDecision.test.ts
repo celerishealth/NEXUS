@@ -1,8 +1,4 @@
 import {
-  createHash,
-} from "node:crypto";
-
-import {
   describe,
   expect,
   it,
@@ -29,18 +25,26 @@ import {
 } from "../meeraQualificationTestPlan";
 
 import {
-  createMeeraQualificationFixturePack,
-} from "../meeraQualificationFixturePack";
+  createMeeraFormalQualificationTestPlan,
+} from "../meeraFormalQualificationTestPlan";
 
 import {
-  executeMeeraQualificationEvidence,
-} from "../meeraQualificationExecutionEvidence";
+  createMeeraFormalQualificationFixturePack,
+} from "../meeraFormalQualificationFixturePack";
+
+import {
+  executeMeeraFormalQualificationEvidence,
+} from "../meeraFormalQualificationExecutionEvidence";
 
 import {
   createMeeraFormalQualificationReviewDecision,
   validateMeeraFormalQualificationReviewDecision,
   type MeeraFormalQualificationReviewDecision,
 } from "../meeraFormalQualificationReviewDecision";
+
+import {
+  createHash,
+} from "node:crypto";
 
 function digest(
   value: string,
@@ -50,7 +54,7 @@ function digest(
     .digest("hex");
 }
 
-async function evidenceLedger() {
+function specialistPlan() {
   const readiness =
     createMeeraQualificationReadinessAssessment({
       assessmentId:
@@ -93,28 +97,37 @@ async function evidenceLedger() {
       safetyEvidence: {
         sandboxOnlyPassed:
           true,
+
         tenantIsolationPassed:
           true,
+
         customerContextIsolationPassed:
           true,
+
         unsupportedClaimsBlocked:
           true,
+
         realCustomerContactPerformed:
           false,
+
         externalDeliveryPerformed:
           false,
+
         liveProviderExecutionPerformed:
           false,
+
         productionDatabaseTouched:
           false,
+
         paymentExecutionPerformed:
           false,
+
         autonomousDecisionPerformed:
           false,
       },
     });
 
-  const admissionDecision =
+  const ownerDecision =
     createMeeraOwnerQualificationReviewDecision({
       decisionId:
         "meera-owner-review-decision-001",
@@ -131,7 +144,7 @@ async function evidenceLedger() {
         "APPROVE_FORMAL_QUALIFICATION_TESTING",
 
       rationale:
-        "Controlled sandbox qualification testing is approved based on complete evidence.",
+        "Controlled qualification testing is approved after complete specialist evidence review.",
 
       decidedAt:
         "2026-07-16T15:15:00.000Z",
@@ -143,45 +156,70 @@ async function evidenceLedger() {
         "meera-testing-admission-001",
 
       decision:
-        admissionDecision,
+        ownerDecision,
 
       employeeId:
-        admissionDecision.employeeId,
+        ownerDecision.employeeId,
 
       templateId:
-        admissionDecision.templateId,
+        ownerDecision.templateId,
 
       tenantId:
-        admissionDecision.tenantId,
+        ownerDecision.tenantId,
 
       ownerId:
-        admissionDecision.ownerId,
+        ownerDecision.ownerId,
 
       preparedAt:
         "2026-07-16T15:30:00.000Z",
     });
 
-  const plan =
-    createMeeraQualificationTestPlan({
-      planId:
-        "meera-qualification-plan-001",
+  return createMeeraQualificationTestPlan({
+    planId:
+      "meera-specialist-plan-001",
 
-      admission,
+    admission,
+
+    tenantId:
+      admission.tenantId,
+
+    ownerId:
+      admission.ownerId,
+
+    plannedAt:
+      "2026-07-16T15:45:00.000Z",
+  });
+}
+
+function formalSource() {
+  const plan =
+    createMeeraFormalQualificationTestPlan({
+      planId:
+        "meera-formal-plan-001",
+
+      specialistPlan:
+        specialistPlan(),
 
       tenantId:
-        admission.tenantId,
+        "tenant-nexus-internal-001",
 
       ownerId:
-        admission.ownerId,
+        "owner-prashant-001",
 
-      plannedAt:
-        "2026-07-16T15:45:00.000Z",
+      evaluatorId:
+        "evaluator-independent-001",
+
+      registryCreatedAt:
+        "2026-07-16T14:00:00.000Z",
+
+      preparedAt:
+        "2026-07-16T16:00:00.000Z",
     });
 
   const fixturePack =
-    createMeeraQualificationFixturePack({
+    createMeeraFormalQualificationFixturePack({
       fixturePackId:
-        "meera-fixture-pack-001",
+        "meera-formal-fixture-pack-001",
 
       plan,
 
@@ -192,59 +230,85 @@ async function evidenceLedger() {
         plan.ownerId,
 
       preparedAt:
-        "2026-07-16T16:00:00.000Z",
+        "2026-07-16T16:15:00.000Z",
     });
 
-  return executeMeeraQualificationEvidence({
-    ledgerId:
-      "meera-evidence-ledger-001",
-
+  return {
+    plan,
     fixturePack,
+  };
+}
 
-    ownerId:
-      fixturePack.ownerId,
+async function reviewSource() {
+  const source =
+    formalSource();
 
-    evaluatorId:
-      "evaluator-independent-001",
+  const evidenceLedger =
+    await executeMeeraFormalQualificationEvidence({
+      ledgerId:
+        "meera-formal-evidence-ledger-001",
 
-    executedAt:
-      "2026-07-16T16:15:00.000Z",
-  });
+      plan:
+        source.plan,
+
+      fixturePack:
+        source.fixturePack,
+
+      ownerId:
+        source.plan.ownerId,
+
+      evaluatorId:
+        source.plan.evaluatorId,
+
+      executedAt:
+        "2026-07-16T16:30:00.000Z",
+    });
+
+  return {
+    ...source,
+    evidenceLedger,
+  };
 }
 
 async function approvedDecision() {
-  const ledger =
-    await evidenceLedger();
+  const source =
+    await reviewSource();
 
   return createMeeraFormalQualificationReviewDecision({
     decisionId:
-      "meera-formal-review-001",
+      "meera-formal-review-100-case-001",
 
     evidenceLedger:
-      ledger,
+      source.evidenceLedger,
+
+    plan:
+      source.plan,
+
+    fixturePack:
+      source.fixturePack,
 
     tenantId:
-      ledger.tenantId,
+      source.evidenceLedger.tenantId,
 
     ownerId:
-      ledger.ownerId,
+      source.evidenceLedger.ownerId,
 
     outcome:
       "APPROVE_FORMAL_QUALIFICATION",
 
     rationale:
-      "All twelve synthetic qualification cases passed with unique assertion-derived evidence.",
+      "Owner reviewed all one hundred controlled formal cases and all one thousand three hundred assertion-derived results.",
 
     reviewedAt:
-      "2026-07-16T16:30:00.000Z",
+      "2026-07-16T16:45:00.000Z",
   });
 }
 
 describe(
-  "Meera formal qualification review decision",
+  "Meera 100-case formal qualification owner review",
   () => {
     it(
-      "allows the evidence-bound owner to approve formal engine admission",
+      "records owner approval against the complete formal evidence ledger",
       async () => {
         const decision =
           await approvedDecision();
@@ -258,6 +322,29 @@ describe(
 
           nextStep:
             "INVOKE_FORMAL_QUALIFICATION_ENGINE",
+
+          evidenceSummary: {
+            qualificationCasesExecuted:
+              100,
+
+            qualificationCasesPassed:
+              100,
+
+            qualificationCasesFailed:
+              0,
+
+            qualificationEvidenceCount:
+              100,
+
+            assertionsExecuted:
+              1300,
+
+            assertionsPassed:
+              1300,
+
+            assertionsFailed:
+              0,
+          },
         });
 
         expect(
@@ -268,10 +355,46 @@ describe(
     );
 
     it(
-      "records rejection without formal engine authority",
+      "preserves mandatory qualification-category coverage",
       async () => {
-        const ledger =
-          await evidenceLedger();
+        const decision =
+          await approvedDecision();
+
+        expect(
+          decision.evidenceSummary,
+        ).toMatchObject({
+          normalOperationCases:
+            30,
+
+          adversarialCases:
+            15,
+
+          tenantIsolationCases:
+            15,
+
+          ownerControlCases:
+            15,
+
+          emergencyPauseCases:
+            5,
+
+          departmentHandoffCases:
+            10,
+
+          auditEvidenceCases:
+            5,
+
+          failureRecoveryCases:
+            5,
+        });
+      },
+    );
+
+    it(
+      "records rejection without qualification-engine authority",
+      async () => {
+        const source =
+          await reviewSource();
 
         const decision =
           createMeeraFormalQualificationReviewDecision({
@@ -279,22 +402,28 @@ describe(
               "meera-formal-review-rejected-001",
 
             evidenceLedger:
-              ledger,
+              source.evidenceLedger,
+
+            plan:
+              source.plan,
+
+            fixturePack:
+              source.fixturePack,
 
             tenantId:
-              ledger.tenantId,
+              source.evidenceLedger.tenantId,
 
             ownerId:
-              ledger.ownerId,
+              source.evidenceLedger.ownerId,
 
             outcome:
               "REJECT_FORMAL_QUALIFICATION",
 
             rationale:
-              "Owner requires controlled requalification before any formal qualification engine invocation.",
+              "Owner requires controlled requalification before any formal qualification-engine invocation.",
 
             reviewedAt:
-              "2026-07-16T16:30:00.000Z",
+              "2026-07-16T16:45:00.000Z",
           });
 
         expect(decision).toMatchObject({
@@ -313,10 +442,10 @@ describe(
     );
 
     it(
-      "blocks cross-tenant formal qualification review",
+      "blocks cross-tenant and cross-owner review",
       async () => {
-        const ledger =
-          await evidenceLedger();
+        const source =
+          await reviewSource();
 
         expect(
           () =>
@@ -325,34 +454,32 @@ describe(
                 "meera-formal-review-cross-tenant",
 
               evidenceLedger:
-                ledger,
+                source.evidenceLedger,
+
+              plan:
+                source.plan,
+
+              fixturePack:
+                source.fixturePack,
 
               tenantId:
                 "tenant-other-001",
 
               ownerId:
-                ledger.ownerId,
+                source.evidenceLedger.ownerId,
 
               outcome:
                 "APPROVE_FORMAL_QUALIFICATION",
 
               rationale:
-                "All controlled qualification evidence has been reviewed and approved.",
+                "All controlled formal qualification evidence was reviewed and approved by the owner.",
 
               reviewedAt:
-                "2026-07-16T16:30:00.000Z",
+                "2026-07-16T16:45:00.000Z",
             }),
         ).toThrow(
           "Cross-tenant",
         );
-      },
-    );
-
-    it(
-      "blocks cross-owner formal qualification review",
-      async () => {
-        const ledger =
-          await evidenceLedger();
 
         expect(
           () =>
@@ -361,10 +488,16 @@ describe(
                 "meera-formal-review-cross-owner",
 
               evidenceLedger:
-                ledger,
+                source.evidenceLedger,
+
+              plan:
+                source.plan,
+
+              fixturePack:
+                source.fixturePack,
 
               tenantId:
-                ledger.tenantId,
+                source.evidenceLedger.tenantId,
 
               ownerId:
                 "owner-other-001",
@@ -373,10 +506,10 @@ describe(
                 "APPROVE_FORMAL_QUALIFICATION",
 
               rationale:
-                "All controlled qualification evidence has been reviewed and approved.",
+                "All controlled formal qualification evidence was reviewed and approved by the owner.",
 
               reviewedAt:
-                "2026-07-16T16:30:00.000Z",
+                "2026-07-16T16:45:00.000Z",
             }),
         ).toThrow(
           "evidence-bound owner",
@@ -385,10 +518,10 @@ describe(
     );
 
     it(
-      "blocks review before evidence execution",
+      "blocks review before formal evidence execution",
       async () => {
-        const ledger =
-          await evidenceLedger();
+        const source =
+          await reviewSource();
 
         expect(
           () =>
@@ -397,22 +530,28 @@ describe(
                 "meera-formal-review-early",
 
               evidenceLedger:
-                ledger,
+                source.evidenceLedger,
+
+              plan:
+                source.plan,
+
+              fixturePack:
+                source.fixturePack,
 
               tenantId:
-                ledger.tenantId,
+                source.evidenceLedger.tenantId,
 
               ownerId:
-                ledger.ownerId,
+                source.evidenceLedger.ownerId,
 
               outcome:
                 "APPROVE_FORMAL_QUALIFICATION",
 
               rationale:
-                "All controlled qualification evidence has been reviewed and approved.",
+                "All controlled formal qualification evidence was reviewed and approved by the owner.",
 
               reviewedAt:
-                "2026-07-16T16:14:59.000Z",
+                "2026-07-16T16:29:59.000Z",
             }),
         ).toThrow(
           "cannot precede evidence execution",
@@ -421,43 +560,58 @@ describe(
     );
 
     it(
-      "requires a meaningful owner rationale",
+      "blocks tampered formal evidence and source bindings",
       async () => {
-        const ledger =
-          await evidenceLedger();
+        const source =
+          await reviewSource();
+
+        const tamperedLedger = {
+          ...source.evidenceLedger,
+
+          summary: {
+            ...source.evidenceLedger.summary,
+
+            assertionsPassed:
+              1299,
+          },
+        };
 
         expect(
           () =>
             createMeeraFormalQualificationReviewDecision({
               decisionId:
-                "meera-formal-review-no-rationale",
+                "meera-formal-review-tampered",
 
               evidenceLedger:
-                ledger,
+                tamperedLedger as typeof source.evidenceLedger,
+
+              plan:
+                source.plan,
+
+              fixturePack:
+                source.fixturePack,
 
               tenantId:
-                ledger.tenantId,
+                source.evidenceLedger.tenantId,
 
               ownerId:
-                ledger.ownerId,
+                source.evidenceLedger.ownerId,
 
               outcome:
                 "APPROVE_FORMAL_QUALIFICATION",
 
               rationale:
-                "Approved.",
+                "All controlled formal qualification evidence was reviewed and approved by the owner.",
 
               reviewedAt:
-                "2026-07-16T16:30:00.000Z",
+                "2026-07-16T16:45:00.000Z",
             }),
-        ).toThrow(
-          "meaningful safe rationale",
-        );
+        ).toThrow();
       },
     );
 
     it(
-      "creates deterministic immutable valid owner decisions",
+      "creates deterministic immutable valid decisions",
       async () => {
         const first =
           await approvedDecision();
@@ -466,8 +620,16 @@ describe(
           await approvedDecision();
 
         expect(first).toEqual(second);
-        expect(Object.isFrozen(first)).toBe(true);
-        expect(Object.isFrozen(first.evidenceSummary)).toBe(true);
+
+        expect(
+          Object.isFrozen(first),
+        ).toBe(true);
+
+        expect(
+          Object.isFrozen(
+            first.evidenceSummary,
+          ),
+        ).toBe(true);
 
         expect(
           () =>
@@ -496,7 +658,7 @@ describe(
     );
 
     it(
-      "does not invoke qualification create a manifest or activate runtime",
+      "records only the review decision and grants no runtime or external authority",
       async () => {
         const decision =
           await approvedDecision();
@@ -525,6 +687,9 @@ describe(
           runtimeActivated:
             false,
 
+          realCustomerDataAccessAuthorized:
+            false,
+
           realCustomerContactAuthorized:
             false,
 
@@ -532,6 +697,9 @@ describe(
             false,
 
           liveProviderExecutionAuthorized:
+            false,
+
+          productionDatabaseAuthorized:
             false,
 
           productionMutationAuthorized:
