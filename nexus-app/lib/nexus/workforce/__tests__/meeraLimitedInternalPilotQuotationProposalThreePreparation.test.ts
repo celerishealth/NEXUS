@@ -102,7 +102,7 @@ import {
   type MeeraLimitedInternalPilotQuotationProposalExecution,
 } from "../meeraLimitedInternalPilotQuotationProposalExecution";
 import {
-  MEERA_OWNER_LIMITED_INTERNAL_PILOT_RECOMMENDATION_REVIEW_DECISION_VERSION,
+  MEERA_OWNER_LIMITED_INTERNAL_PILOT_QUOTATION_PROPOSAL_REVIEW_DECISION_VERSION,
   createMeeraOwnerLimitedInternalPilotQuotationProposalReviewDecision,
   validateMeeraOwnerLimitedInternalPilotQuotationProposalReviewDecision,
 } from "../meeraOwnerLimitedInternalPilotQuotationProposalReviewDecision";

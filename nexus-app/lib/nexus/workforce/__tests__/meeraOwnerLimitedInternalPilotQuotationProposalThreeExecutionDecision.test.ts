@@ -107,7 +107,7 @@ import {
   type MeeraLimitedInternalPilotQuotationProposalExecution,
 } from "../meeraLimitedInternalPilotQuotationProposalExecution";
 import {
-  MEERA_OWNER_LIMITED_INTERNAL_PILOT_RECOMMENDATION_REVIEW_DECISION_VERSION,
+  MEERA_OWNER_LIMITED_INTERNAL_PILOT_QUOTATION_PROPOSAL_REVIEW_DECISION_VERSION,
   createMeeraOwnerLimitedInternalPilotQuotationProposalReviewDecision,
   validateMeeraOwnerLimitedInternalPilotQuotationProposalReviewDecision,
 } from "../meeraOwnerLimitedInternalPilotQuotationProposalReviewDecision";
@@ -1186,27 +1186,27 @@ describe(
         );
 
         expect(
-          decision.sourceQuotationProposalReviewDecisionId,
+          decision.sourceQuotationProposalTwoReviewDecisionId,
         ).toBe(
-          source.sourceQuotationProposalReviewDecisionId,
+          source.sourceQuotationProposalTwoReviewDecisionId,
         );
 
         expect(
-          decision.sourceQuotationProposalExecutionId,
+          decision.sourceQuotationProposalTwoExecutionId,
         ).toBe(
-          source.sourceQuotationProposalExecutionId,
+          source.sourceQuotationProposalTwoExecutionId,
         );
 
         expect(
-          decision.ownerExecutionDecisionId,
+          decision.ownerQuotationProposalTwoExecutionDecisionId,
         ).toBe(
-          source.ownerExecutionDecisionId,
+          source.ownerQuotationProposalTwoExecutionDecisionId,
         );
 
         expect(
-          decision.sourcePilotPreparationId,
+          decision.quotationProposalTwoPreparationId,
         ).toBe(
-          source.sourcePilotPreparationId,
+          source.quotationProposalTwoPreparationId,
         );
 
         expect(

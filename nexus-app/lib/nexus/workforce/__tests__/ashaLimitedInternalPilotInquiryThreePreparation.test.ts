@@ -732,7 +732,7 @@ describe(
               ...valid.reviewedEvidence,
 
               remainingInquiryCapacity:
-                2,
+                (2 as unknown as 1),
             },
           });
 
