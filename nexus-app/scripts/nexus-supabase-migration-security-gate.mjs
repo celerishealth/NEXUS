@@ -12,8 +12,8 @@ import {
   fileURLToPath,
 } from "node:url";
 
-const EXPECTED_MIGRATION_COUNT = 16;
-const EXPECTED_TABLE_COUNT = 11;
+const EXPECTED_MIGRATION_COUNT = 18;
+const EXPECTED_TABLE_COUNT = 16;
 const EXPECTED_SECURITY_DEFINER_COUNT = 17;
 
 const allowedRoles =
@@ -544,7 +544,7 @@ export function buildSupabaseMigrationSecurityReport({
     highRiskFindings.length === 0 &&
     missingRls.length === 0 &&
     unknownRlsTargets.length === 0 &&
-    policyCount === 0 &&
+    policyCount === 2 &&
     unparsedPermissionStatements.length ===
       0 &&
     unexpectedRoles.length === 0 &&

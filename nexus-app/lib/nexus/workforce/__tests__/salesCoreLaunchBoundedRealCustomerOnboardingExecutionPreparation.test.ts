@@ -748,7 +748,10 @@ describe(
             ...input,
 
             customerOnboardingAndDeliveryBoundaryDecision:
-              tamperedSource,
+              tamperedSource as unknown as
+                CreateSalesCoreLaunchBoundedRealCustomerOnboardingExecutionPreparationInput[
+                  "customerOnboardingAndDeliveryBoundaryDecision"
+                ],
           }),
         ).toThrow(
           "integrity verification failed",

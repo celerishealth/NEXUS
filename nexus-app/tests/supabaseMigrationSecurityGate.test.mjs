@@ -23,17 +23,17 @@ test(
 
     assert.equal(
       report.permanentMigrationCount,
-      16,
+      18,
     );
 
     assert.equal(
       report.publicTableCount,
-      11,
+      16,
     );
 
     assert.equal(
       report.rlsEnabledTableCount,
-      11,
+      16,
     );
 
     assert.deepEqual(
@@ -48,7 +48,7 @@ test(
 
     assert.equal(
       report.policyCount,
-      0,
+      2,
     );
 
     assert.deepEqual(
@@ -88,7 +88,7 @@ test(
 
     assert.equal(
       report.directServiceRoleTableCount,
-      7,
+      12,
     );
 
     assert.equal(

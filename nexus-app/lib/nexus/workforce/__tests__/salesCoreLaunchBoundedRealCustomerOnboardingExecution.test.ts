@@ -942,7 +942,7 @@ describe(
             publicLaunchAuthorized:
               true,
           },
-        } as Day125ExecutionInput[
+        } as unknown as Day125ExecutionInput[
           "boundedRealCustomerOnboardingExecutionDecision"
         ];
 
