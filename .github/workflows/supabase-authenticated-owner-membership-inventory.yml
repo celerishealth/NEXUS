@@ -1,0 +1,171 @@
+name: Supabase Authenticated Owner Membership Inventory
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: Type VERIFY AUTHENTICATED OWNER MEMBERSHIP INVENTORY
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nexus-supabase-authenticated-owner-membership-inventory
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    name: Inventory authenticated-owner membership read-only
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    defaults:
+      run:
+        working-directory: nexus-app
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify explicit owner confirmation
+        shell: bash
+        env:
+          OWNER_CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          set -euo pipefail
+
+          if [[ "${OWNER_CONFIRMATION}" != "VERIFY AUTHENTICATED OWNER MEMBERSHIP INVENTORY" ]]; then
+            echo "::error::Exact owner confirmation was not provided."
+            exit 1
+          fi
+
+          echo "OWNER READ-ONLY MEMBERSHIP INVENTORY: AUTHORIZED"
+
+      - name: Reinforce secret masking
+        shell: bash
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        run: |
+          set +x
+          echo "::add-mask::${SUPABASE_ACCESS_TOKEN}"
+          echo "::add-mask::${SUPABASE_DB_PASSWORD}"
+
+      - name: Verify workflow and SQL contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check tests/supabaseAuthenticatedOwnerMembershipInventory.test.mjs
+          node --test tests/supabaseAuthenticatedOwnerMembershipInventory.test.mjs
+
+      - name: Install Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: 2.109.1
+
+      - name: Install PostgreSQL client
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install --yes postgresql-client
+          psql --version
+
+      - name: Link NEXUS Supabase project
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        run: supabase link --project-ref cvtjcysatndfzkszufen
+
+      - name: Verify already-applied migration history
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        run: |
+          set -euo pipefail
+          supabase migration list --linked
+          echo "APPLIED MIGRATION HISTORY: INSPECTED"
+
+      - name: Resolve linked database parameters without exposing password
+        id: linked_db
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          from urllib.parse import urlparse
+
+          pooler_path = Path("supabase/.temp/pooler-url")
+          if not pooler_path.is_file():
+              raise SystemExit("Linked pooler URL file was not created.")
+
+          raw = pooler_path.read_text(encoding="utf-8").strip()
+          parsed = urlparse(raw.replace("[YOUR-PASSWORD]", "placeholder"))
+
+          host = parsed.hostname
+          port = parsed.port
+          user = parsed.username
+          database = parsed.path.lstrip("/") or "postgres"
+
+          if not host or not port or not user:
+              raise SystemExit(
+                  "Linked pooler URL did not contain complete connection parameters."
+              )
+
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              output.write(f"host={host}\n")
+              output.write(f"port={port}\n")
+              output.write(f"user={user}\n")
+              output.write(f"database={database}\n")
+          PY
+
+          echo "LINKED DATABASE PARAMETERS: RESOLVED"
+
+      - name: Inventory authenticated-owner membership in explicit read-only transaction
+        shell: bash
+        env:
+          DB_HOST: ${{ steps.linked_db.outputs.host }}
+          DB_PORT: ${{ steps.linked_db.outputs.port }}
+          DB_USER: ${{ steps.linked_db.outputs.user }}
+          DB_NAME: ${{ steps.linked_db.outputs.database }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        run: |
+          set -euo pipefail
+          set +x
+
+          if ! output="$(
+            PGPASSWORD="${SUPABASE_DB_PASSWORD}" \
+            PGSSLMODE=require \
+            PGCONNECT_TIMEOUT=20 \
+            psql -X -A -t -v ON_ERROR_STOP=1 \
+              --host "${DB_HOST}" \
+              --port "${DB_PORT}" \
+              --username "${DB_USER}" \
+              --dbname "${DB_NAME}" \
+              --file supabase/tests/authenticated_owner_membership_inventory.sql 2>&1
+          )"; then
+            printf '%s\n' "${output}"
+            exit 1
+          fi
+
+          printf '%s\n' "${output}"
+
+          marker="$(
+            printf '%s\n' "${output}" |
+              grep -E \
+                '^NEXUS_AUTHENTICATED_OWNER_MEMBERSHIP_INVENTORY=TENANTS:[0-9]+/OWNERS:[0-9]+/MEMBERSHIPS:[0-9]+/ACTIVE_OWNER_MEMBERSHIPS:[0-9]+/CREDENTIALS:[0-9]+/SESSIONS:[0-9]+$' |
+              tail -n 1 |
+              xargs
+          )"
+
+          if [[ -z "${marker}" ]]; then
+            echo "::error::Authenticated-owner membership inventory marker was not produced."
+            exit 1
+          fi
+
+          echo "${marker}"
+          echo "AUTHENTICATED OWNER REMOTE MEMBERSHIP INVENTORY: PASS"
