@@ -1,4 +1,14 @@
 export interface PostgresAuthenticatedOwnerAuthAccess {
+  activateCredential(
+    input: Readonly<{
+      ownerId: string;
+      email: string;
+      password: string;
+      ownerApprovalGranted: true;
+      activatedAt: string;
+    }>,
+  ): Promise<unknown>;
+
   authenticateAndIssueSession(
     input: Readonly<{
       email: string;
@@ -49,6 +59,13 @@ export interface PostgresAuthenticatedOwnerAuthResponse {
 
 interface LoginBody {
   readonly tenantId: string;
+  readonly email: string;
+  readonly password: string;
+}
+
+interface ActivationBody {
+  readonly tenantId: string;
+  readonly ownerId: string;
   readonly email: string;
   readonly password: string;
 }
@@ -138,6 +155,56 @@ function parseLoginBody(
   };
 }
 
+function parseActivationBody(
+  value: unknown,
+): ActivationBody {
+  if (!isRecord(value)) {
+    throw {
+      code: "INVALID_INPUT",
+    };
+  }
+
+  const tenantId =
+    readRequiredString(
+      value,
+      "tenantId",
+      true,
+    );
+
+  const ownerId =
+    readRequiredString(
+      value,
+      "ownerId",
+      true,
+    );
+
+  if (
+    !UUID_PATTERN.test(tenantId) ||
+    !UUID_PATTERN.test(ownerId)
+  ) {
+    throw {
+      code: "INVALID_INPUT",
+    };
+  }
+
+  return {
+    tenantId,
+    ownerId,
+    email:
+      readRequiredString(
+        value,
+        "email",
+        true,
+      ),
+    password:
+      readRequiredString(
+        value,
+        "password",
+        false,
+      ),
+  };
+}
+
 function readTenantId(
   headers:
     PostgresAuthenticatedOwnerAuthHeaders,
@@ -210,6 +277,26 @@ function requireResultString(
   if (
     typeof fieldValue !== "string" ||
     fieldValue.length === 0
+  ) {
+    throw new Error(
+      "Authenticated owner runtime returned an invalid result.",
+    );
+  }
+
+  return fieldValue;
+}
+
+function requireResultNumber(
+  value: Record<string, unknown>,
+  fieldName: string,
+): number {
+  const fieldValue =
+    value[fieldName];
+
+  if (
+    typeof fieldValue !== "number" ||
+    !Number.isSafeInteger(fieldValue) ||
+    fieldValue < 1
   ) {
     throw new Error(
       "Authenticated owner runtime returned an invalid result.",
@@ -346,6 +433,114 @@ function failureResponse(
           ...blockedBoundaries(),
         },
       };
+  }
+}
+
+export async function activatePostgresAuthenticatedOwnerCredential(
+  input: Readonly<{
+    body: unknown;
+    headers:
+      PostgresAuthenticatedOwnerAuthHeaders;
+    ownerApprovalGranted: boolean;
+  }>,
+  runtime:
+    PostgresAuthenticatedOwnerAuthRuntime,
+): Promise<PostgresAuthenticatedOwnerAuthResponse> {
+  try {
+    if (input.ownerApprovalGranted !== true) {
+      throw {
+        code:
+          "OWNER_APPROVAL_REQUIRED",
+      };
+    }
+
+    const body =
+      parseActivationBody(
+        input.body,
+      );
+
+    const headerTenantId =
+      readTenantId(
+        input.headers,
+      );
+
+    if (headerTenantId !== body.tenantId) {
+      throw {
+        code:
+          "INVALID_INPUT",
+      };
+    }
+
+    const access =
+      runtime.createAccess({
+        tenantId:
+          body.tenantId,
+        requestId:
+          readRequestId(
+            input.headers,
+            runtime,
+          ),
+      });
+
+    const rawResult =
+      await access
+        .activateCredential({
+          ownerId:
+            body.ownerId,
+          email:
+            body.email,
+          password:
+            body.password,
+          ownerApprovalGranted:
+            true,
+          activatedAt:
+            runtime.now(),
+        });
+
+    const result =
+      requireResultRecord(
+        rawResult,
+      );
+
+    return {
+      status: 201,
+      body: {
+        activated:
+          true,
+        credential: {
+          tenantId:
+            requireResultString(
+              result,
+              "tenantId",
+            ),
+          ownerId:
+            requireResultString(
+              result,
+              "ownerId",
+            ),
+          emailNormalized:
+            requireResultString(
+              result,
+              "emailNormalized",
+            ),
+          status:
+            requireResultString(
+              result,
+              "status",
+            ),
+          credentialVersion:
+            requireResultNumber(
+              result,
+              "credentialVersion",
+            ),
+        },
+        ...blockedBoundaries(),
+      },
+    };
+  } catch (error) {
+    return failureResponse(
+      error,
+    );
   }
 }
 

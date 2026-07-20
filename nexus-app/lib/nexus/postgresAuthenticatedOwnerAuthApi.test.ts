@@ -6,6 +6,7 @@ import {
 } from "vitest";
 
 import {
+  activatePostgresAuthenticatedOwnerCredential,
   issuePostgresAuthenticatedOwnerSession,
   resolvePostgresAuthenticatedOwnerSession,
   revokePostgresAuthenticatedOwnerSession,
@@ -40,6 +41,22 @@ function createAccess(
   > = {},
 ): PostgresAuthenticatedOwnerAuthAccess {
   return {
+    activateCredential:
+      vi.fn(
+        async () => ({
+          tenantId:
+            TENANT_ID,
+          ownerId:
+            OWNER_ID,
+          emailNormalized:
+            "owner@example.com",
+          status:
+            "ACTIVE",
+          credentialVersion:
+            1,
+        }),
+      ),
+
     authenticateAndIssueSession:
       vi.fn(
         async () => ({
@@ -130,6 +147,236 @@ function createRuntime(
 describe(
   "PostgreSQL authenticated owner HTTP contract",
   () => {
+    it(
+      "activates a credential only after explicit owner approval and tenant match",
+      async () => {
+        const access =
+          createAccess();
+
+        const runtime =
+          createRuntime(
+            access,
+          );
+
+        const result =
+          await activatePostgresAuthenticatedOwnerCredential(
+            {
+              body: {
+                tenantId:
+                  TENANT_ID,
+                ownerId:
+                  OWNER_ID,
+                email:
+                  " Owner@Example.com ",
+                password:
+                  "controlled-password",
+              },
+              headers: {
+                tenantId:
+                  TENANT_ID,
+                requestId:
+                  REQUEST_ID,
+              },
+              ownerApprovalGranted:
+                true,
+            },
+            runtime,
+          );
+
+        expect(result.status)
+          .toBe(201);
+
+        expect(result.body)
+          .toMatchObject({
+            activated:
+              true,
+            credential: {
+              tenantId:
+                TENANT_ID,
+              ownerId:
+                OWNER_ID,
+              emailNormalized:
+                "owner@example.com",
+              status:
+                "ACTIVE",
+              credentialVersion:
+                1,
+            },
+            publicSignupAuthorized:
+              false,
+            publicLaunchAuthorized:
+              false,
+            paymentExecutionAuthorized:
+              false,
+          });
+
+        expect(
+          access.activateCredential,
+        ).toHaveBeenCalledWith({
+          ownerId:
+            OWNER_ID,
+          email:
+            "Owner@Example.com",
+          password:
+            "controlled-password",
+          ownerApprovalGranted:
+            true,
+          activatedAt:
+            NOW,
+        });
+
+        expect(
+          JSON.stringify(
+            result.body,
+          ),
+        ).not.toContain(
+          "controlled-password",
+        );
+      },
+    );
+
+    it(
+      "blocks credential activation without owner approval",
+      async () => {
+        const access =
+          createAccess();
+
+        const result =
+          await activatePostgresAuthenticatedOwnerCredential(
+            {
+              body: {
+                tenantId:
+                  TENANT_ID,
+                ownerId:
+                  OWNER_ID,
+                email:
+                  "owner@example.com",
+                password:
+                  "controlled-password",
+              },
+              headers: {
+                tenantId:
+                  TENANT_ID,
+              },
+              ownerApprovalGranted:
+                false,
+            },
+            createRuntime(
+              access,
+            ),
+          );
+
+        expect(result.status)
+          .toBe(403);
+
+        expect(
+          access.activateCredential,
+        ).not.toHaveBeenCalled();
+      },
+    );
+
+    it(
+      "blocks cross-tenant credential activation",
+      async () => {
+        const access =
+          createAccess();
+
+        const result =
+          await activatePostgresAuthenticatedOwnerCredential(
+            {
+              body: {
+                tenantId:
+                  TENANT_ID,
+                ownerId:
+                  OWNER_ID,
+                email:
+                  "owner@example.com",
+                password:
+                  "controlled-password",
+              },
+              headers: {
+                tenantId:
+                  "66666666-6666-4666-8666-666666666666",
+              },
+              ownerApprovalGranted:
+                true,
+            },
+            createRuntime(
+              access,
+            ),
+          );
+
+        expect(result.status)
+          .toBe(400);
+
+        expect(
+          access.activateCredential,
+        ).not.toHaveBeenCalled();
+      },
+    );
+
+    it(
+      "sanitizes credential activation storage failures",
+      async () => {
+        const access =
+          createAccess({
+            activateCredential:
+              vi.fn(
+                async () => {
+                  throw {
+                    code:
+                      "CREDENTIAL_ACTIVATION_FAILED",
+                    detail:
+                      "postgres://owner:database-password@private-host/nexus",
+                  };
+                },
+              ),
+          });
+
+        const result =
+          await activatePostgresAuthenticatedOwnerCredential(
+            {
+              body: {
+                tenantId:
+                  TENANT_ID,
+                ownerId:
+                  OWNER_ID,
+                email:
+                  "owner@example.com",
+                password:
+                  "controlled-password",
+              },
+              headers: {
+                tenantId:
+                  TENANT_ID,
+              },
+              ownerApprovalGranted:
+                true,
+            },
+            createRuntime(
+              access,
+            ),
+          );
+
+        expect(result.status)
+          .toBe(503);
+
+        expect(result.body)
+          .toMatchObject({
+            error:
+              "Authenticated owner service is unavailable.",
+          });
+
+        expect(
+          JSON.stringify(
+            result.body,
+          ),
+        ).not.toContain(
+          "database-password",
+        );
+      },
+    );
+
     it(
       "issues an opaque tenant-bound owner session",
       async () => {
