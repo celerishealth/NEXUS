@@ -1,0 +1,211 @@
+name: Supabase Authenticated Owner Prerequisite Bootstrap
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: Type APPLY AUTHENTICATED OWNER PREREQUISITE BOOTSTRAP
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nexus-supabase-authenticated-owner-prerequisite-bootstrap
+  cancel-in-progress: false
+
+jobs:
+  bootstrap:
+    name: Apply authenticated-owner prerequisites
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    defaults:
+      run:
+        working-directory: nexus-app
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify explicit owner confirmation
+        shell: bash
+        env:
+          OWNER_CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          set -euo pipefail
+
+          if [[ "${OWNER_CONFIRMATION}" != "APPLY AUTHENTICATED OWNER PREREQUISITE BOOTSTRAP" ]]; then
+            echo "::error::Exact owner confirmation was not provided."
+            exit 1
+          fi
+
+          echo "OWNER AUTHENTICATED-OWNER PREREQUISITE BOOTSTRAP: AUTHORIZED"
+
+      - name: Reinforce secret masking
+        shell: bash
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          NEXUS_BOOTSTRAP_TENANT_ID: ${{ secrets.NEXUS_BOOTSTRAP_TENANT_ID }}
+          NEXUS_BOOTSTRAP_TENANT_DISPLAY_NAME: ${{ secrets.NEXUS_BOOTSTRAP_TENANT_DISPLAY_NAME }}
+          NEXUS_BOOTSTRAP_OWNER_ID: ${{ secrets.NEXUS_BOOTSTRAP_OWNER_ID }}
+          NEXUS_BOOTSTRAP_AUTHORITY_EPOCH: ${{ secrets.NEXUS_BOOTSTRAP_AUTHORITY_EPOCH }}
+        run: |
+          set +x
+          echo "::add-mask::${SUPABASE_ACCESS_TOKEN}"
+          echo "::add-mask::${SUPABASE_DB_PASSWORD}"
+          echo "::add-mask::${NEXUS_BOOTSTRAP_TENANT_ID}"
+          echo "::add-mask::${NEXUS_BOOTSTRAP_TENANT_DISPLAY_NAME}"
+          echo "::add-mask::${NEXUS_BOOTSTRAP_OWNER_ID}"
+          echo "::add-mask::${NEXUS_BOOTSTRAP_AUTHORITY_EPOCH}"
+
+      - name: Verify workflow and SQL contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check tests/supabaseAuthenticatedOwnerPrerequisiteBootstrap.test.mjs
+          node --test tests/supabaseAuthenticatedOwnerPrerequisiteBootstrap.test.mjs
+
+      - name: Install Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: 2.109.1
+
+      - name: Install PostgreSQL client
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install --yes postgresql-client
+          psql --version
+
+      - name: Link NEXUS Supabase project
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        run: supabase link --project-ref cvtjcysatndfzkszufen
+
+      - name: Verify already-applied migration history
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        run: |
+          set -euo pipefail
+          supabase migration list --linked
+          echo "APPLIED MIGRATION HISTORY: INSPECTED"
+
+      - name: Resolve linked database parameters without exposing password
+        id: linked_db
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          from urllib.parse import urlparse
+
+          pooler_path = Path("supabase/.temp/pooler-url")
+          if not pooler_path.is_file():
+              raise SystemExit("Linked pooler URL file was not created.")
+
+          raw = pooler_path.read_text(encoding="utf-8").strip()
+          parsed = urlparse(raw.replace("[YOUR-PASSWORD]", "placeholder"))
+
+          host = parsed.hostname
+          port = parsed.port
+          user = parsed.username
+          database = parsed.path.lstrip("/") or "postgres"
+
+          if not host or not port or not user:
+              raise SystemExit(
+                  "Linked pooler URL did not contain complete connection parameters."
+              )
+
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              output.write(f"host={host}\n")
+              output.write(f"port={port}\n")
+              output.write(f"user={user}\n")
+              output.write(f"database={database}\n")
+          PY
+
+          echo "LINKED DATABASE PARAMETERS: RESOLVED"
+
+      - name: Validate owner-controlled bootstrap secret contract
+        shell: bash
+        env:
+          NEXUS_BOOTSTRAP_TENANT_ID: ${{ secrets.NEXUS_BOOTSTRAP_TENANT_ID }}
+          NEXUS_BOOTSTRAP_TENANT_DISPLAY_NAME: ${{ secrets.NEXUS_BOOTSTRAP_TENANT_DISPLAY_NAME }}
+          NEXUS_BOOTSTRAP_OWNER_ID: ${{ secrets.NEXUS_BOOTSTRAP_OWNER_ID }}
+          NEXUS_BOOTSTRAP_AUTHORITY_EPOCH: ${{ secrets.NEXUS_BOOTSTRAP_AUTHORITY_EPOCH }}
+        run: |
+          set -euo pipefail
+          set +x
+
+          for required_name in \
+            NEXUS_BOOTSTRAP_TENANT_ID \
+            NEXUS_BOOTSTRAP_TENANT_DISPLAY_NAME \
+            NEXUS_BOOTSTRAP_OWNER_ID \
+            NEXUS_BOOTSTRAP_AUTHORITY_EPOCH
+          do
+            if [[ -z "${!required_name:-}" ]]; then
+              echo "::error::A required owner-controlled bootstrap secret is missing."
+              exit 1
+            fi
+          done
+
+          echo "OWNER-CONTROLLED BOOTSTRAP SECRET CONTRACT: PASS"
+
+      - name: Apply idempotent authenticated-owner prerequisites
+        shell: bash
+        env:
+          DB_HOST: ${{ steps.linked_db.outputs.host }}
+          DB_PORT: ${{ steps.linked_db.outputs.port }}
+          DB_USER: ${{ steps.linked_db.outputs.user }}
+          DB_NAME: ${{ steps.linked_db.outputs.database }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          NEXUS_BOOTSTRAP_TENANT_ID: ${{ secrets.NEXUS_BOOTSTRAP_TENANT_ID }}
+          NEXUS_BOOTSTRAP_TENANT_DISPLAY_NAME: ${{ secrets.NEXUS_BOOTSTRAP_TENANT_DISPLAY_NAME }}
+          NEXUS_BOOTSTRAP_OWNER_ID: ${{ secrets.NEXUS_BOOTSTRAP_OWNER_ID }}
+          NEXUS_BOOTSTRAP_AUTHORITY_EPOCH: ${{ secrets.NEXUS_BOOTSTRAP_AUTHORITY_EPOCH }}
+        run: |
+          set -euo pipefail
+          set +x
+
+          if ! output="$(
+            PGPASSWORD="${SUPABASE_DB_PASSWORD}" \
+            PGSSLMODE=require \
+            PGCONNECT_TIMEOUT=20 \
+            psql -X -A -t -v ON_ERROR_STOP=1 \
+              --host "${DB_HOST}" \
+              --port "${DB_PORT}" \
+              --username "${DB_USER}" \
+              --dbname "${DB_NAME}" \
+              -v tenant_id="${NEXUS_BOOTSTRAP_TENANT_ID}" \
+              -v tenant_display_name="${NEXUS_BOOTSTRAP_TENANT_DISPLAY_NAME}" \
+              -v owner_id="${NEXUS_BOOTSTRAP_OWNER_ID}" \
+              -v authority_epoch="${NEXUS_BOOTSTRAP_AUTHORITY_EPOCH}" \
+              --file supabase/operations/authenticated_owner_prerequisite_bootstrap.sql 2>&1
+          )"; then
+            echo "::error::Authenticated-owner prerequisite bootstrap failed closed. Raw database output was suppressed."
+            exit 1
+          fi
+
+          marker="$(
+            printf '%s\n' "${output}" |
+              grep -E \
+                '^NEXUS_AUTHENTICATED_OWNER_PREREQUISITE_BOOTSTRAP=TENANT:1/OWNER:1/MEMBERSHIP:1/ACTIVE_OWNER_MEMBERSHIP:1$' |
+              tail -n 1 |
+              xargs
+          )"
+
+          if [[ -z "${marker}" ]]; then
+            echo "::error::Authenticated-owner prerequisite bootstrap marker was not produced."
+            exit 1
+          fi
+
+          echo "${marker}"
+          echo "BOOTSTRAP COMMIT: ${GITHUB_SHA}"
+          echo "AUTHENTICATED OWNER PREREQUISITE BOOTSTRAP: PASS"
