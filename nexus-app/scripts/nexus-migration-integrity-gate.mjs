@@ -1,4 +1,4 @@
-﻿import {
+import {
   existsSync,
   readFileSync,
 } from "node:fs";
@@ -14,6 +14,7 @@ const requiredFiles = [
   "db/migrations/0003_nexus_rate_limit_security_event.sql",
   "db/migrations/0004_nexus_operational_circuit_breaker.sql",
   "db/migrations/0005_nexus_controlled_action_state.sql",
+  "db/migrations/0771_authenticated_owner_access.sql",
   "lib/nexus/postgresMigrationRunner.mjs",
   "scripts/nexus-postgres-migrate.mjs",
 ];
@@ -116,7 +117,12 @@ if (missingFiles.length === 0) {
 const passed =
   missingFiles.length === 0 &&
   unsafeFindings.length === 0 &&
-  plan?.migrationCount === 5;
+  plan?.migrationCount === 14 &&
+  plan.migrations.some(
+    (migration) =>
+      migration.version ===
+      "0771_authenticated_owner_access",
+  );
 
 const report = {
   schemaVersion:
@@ -140,6 +146,3 @@ console.log(
 if (!passed) {
   process.exit(1);
 }
-
-
-

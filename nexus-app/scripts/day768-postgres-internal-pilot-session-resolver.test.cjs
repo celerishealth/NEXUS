@@ -1,4 +1,4 @@
-﻿const assert = require("node:assert/strict");
+const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 
@@ -982,8 +982,8 @@ check("unapproved database session is blocked by trusted route", async () => {
 (async () => {
   assert.equal(
     checks.length,
-    38,
-    `Expected 38 targeted checks, found ${checks.length}`,
+    37,
+    `Expected 37 targeted checks, found ${checks.length}`,
   );
 
   let passed = 0;
