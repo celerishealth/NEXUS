@@ -45,7 +45,7 @@ const originalActivationEnabled =
 
 const originalStorageMode =
   process.env
-    .NEXUS_CONTROLLED_ACTION_STORAGE;
+    .NEXUS_POSTGRES_AUTH_STORAGE_MODE;
 
 const originalActivationSecret =
   process.env
@@ -112,7 +112,7 @@ function configureEnabledRoute(): void {
     "true";
 
   process.env
-    .NEXUS_CONTROLLED_ACTION_STORAGE =
+    .NEXUS_POSTGRES_AUTH_STORAGE_MODE =
     "postgres";
 
   process.env
@@ -193,7 +193,7 @@ describe(
           .NEXUS_POSTGRES_OWNER_CREDENTIAL_ACTIVATION_ENABLED;
 
         delete process.env
-          .NEXUS_CONTROLLED_ACTION_STORAGE;
+          .NEXUS_POSTGRES_AUTH_STORAGE_MODE;
 
         delete process.env
           .NEXUS_POSTGRES_OWNER_CREDENTIAL_ACTIVATION_SECRET;
@@ -227,7 +227,7 @@ describe(
         );
 
         restoreEnvironmentValue(
-          "NEXUS_CONTROLLED_ACTION_STORAGE",
+          "NEXUS_POSTGRES_AUTH_STORAGE_MODE",
           originalStorageMode,
         );
 
@@ -292,7 +292,7 @@ describe(
           "true";
 
         process.env
-          .NEXUS_CONTROLLED_ACTION_STORAGE =
+          .NEXUS_POSTGRES_AUTH_STORAGE_MODE =
           "file";
 
         const response =
@@ -332,7 +332,7 @@ describe(
           "true";
 
         process.env
-          .NEXUS_CONTROLLED_ACTION_STORAGE =
+          .NEXUS_POSTGRES_AUTH_STORAGE_MODE =
           "postgres";
 
         const response =

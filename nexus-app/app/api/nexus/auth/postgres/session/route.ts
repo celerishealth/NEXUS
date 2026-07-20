@@ -124,8 +124,8 @@ function assertEnabled() {
 
   const storageMode =
     process.env
-      .NEXUS_CONTROLLED_ACTION_STORAGE
-      ?.trim() ?? "file";
+      .NEXUS_POSTGRES_AUTH_STORAGE_MODE
+      ?.trim() ?? "";
 
   if (storageMode !== "postgres") {
     return disabledResponse(
