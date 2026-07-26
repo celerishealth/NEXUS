@@ -1,4 +1,4 @@
-﻿import assert from "node:assert/strict";
+import assert from "node:assert/strict";
 import {
   readFileSync,
 } from "node:fs";
@@ -374,7 +374,7 @@ test(
 );
 
 test(
-  "permits explicitly controlled production preview mode without granting execution",
+  "blocks production process-local preview mode without granting execution",
   async () => {
     const result =
       await inspectProtectedApiSignedEnvelope(
@@ -388,17 +388,31 @@ test(
         },
       );
 
-    assert.equal(result.ok, true);
+    assert.equal(result.ok, false);
+    assert.equal(result.status, 503);
 
     assert.equal(
-      result.authorizationContext
-        .durableReplayPersistenceVerified,
+      result.error.errorCode,
+      "DURABLE_REPLAY_PROTECTION_REQUIRED",
+    );
+
+    assert.equal(
+      result.error.executionAuthorized,
       false,
     );
 
     assert.equal(
-      result.authorizationContext
-        .executionAuthorized,
+      result.error.externalExecutionPerformed,
+      false,
+    );
+
+    assert.equal(
+      result.error.providerInvocationPerformed,
+      false,
+    );
+
+    assert.equal(
+      result.error.persistencePerformed,
       false,
     );
   },
@@ -433,18 +447,28 @@ test(
       getProtectedApiAuthenticationPosture();
 
     assert.equal(
+      posture.schemaVersion,
+      "nexus.protected-api-authentication-posture.v2",
+    );
+
+    assert.equal(
       posture.envelopeVersion,
       PROTECTED_API_ENVELOPE_VERSION,
     );
 
     assert.equal(
-      posture.processLocalReplayProtection,
+      posture.developmentProcessLocalProtection,
       true,
     );
 
     assert.equal(
       posture.durableSharedReplayProtection,
-      false,
+      true,
+    );
+
+    assert.equal(
+      posture.productionDefaultState,
+      "BLOCKED_UNLESS_POSTGRES_ATOMIC_V1_IS_CONFIGURED",
     );
 
     assert.equal(
@@ -458,8 +482,8 @@ test(
     );
 
     assert.equal(
-      posture.persistenceAuthorized,
-      false,
+      posture.persistenceAuthorizationLimitedTo,
+      "SECURITY_NONCE_LEDGER_ONLY",
     );
 
     assert.ok(
@@ -470,7 +494,13 @@ test(
 
     assert.ok(
       posture.controls.includes(
-        "PRODUCTION_FAIL_CLOSED_WITHOUT_DURABLE_REPLAY_MODE",
+        "POSTGRES_ATOMIC_NONCE_CONSUMPTION",
+      ),
+    );
+
+    assert.ok(
+      posture.controls.includes(
+        "PRODUCTION_FAIL_CLOSED_WITHOUT_POSTGRES_LEDGER",
       ),
     );
   },

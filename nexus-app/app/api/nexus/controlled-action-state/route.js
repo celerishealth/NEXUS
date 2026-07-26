@@ -1,4 +1,4 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 import {
   inspectProtectedApiRequest,
@@ -68,20 +68,6 @@ function fail({
       headers,
     },
   );
-}
-
-export async function GET() {
-  return NextResponse.json({
-    service:
-      "NEXUS Controlled Action State API v1",
-    operations: [
-      "CREATE",
-      "TRANSITION",
-    ],
-    executedStateExists: false,
-    executionAuthorized: false,
-    providerInvocationPerformed: false,
-  });
 }
 
 export async function POST(request) {

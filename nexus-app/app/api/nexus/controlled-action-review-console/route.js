@@ -1,4 +1,4 @@
-﻿import {
+import {
   enforceProtectedApiOperationalControl,
 } from "../../../../lib/nexus/protectedApiOperationalControlGuard.mjs";
 
@@ -35,53 +35,8 @@ import {
   prepareControlledActionReviewPipeline,
 } from "../../../../lib/nexus/controlledActionReviewOrchestrator.mjs";
 
-import {
-  createControlledActionReviewScenario,
-} from "../../../../lib/nexus/controlledActionReviewConsolePreview.mjs";
-
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
-export async function GET() {
-  return NextResponse.json({
-    service:
-      "NEXUS Unified Owner-Controlled Action Review Console v1",
-
-    safetyBoundary: {
-      reviewAndEvidenceOnly: true,
-      executionAuthorized: false,
-      externalExecutionPerformed: false,
-      providerInvocationPerformed: false,
-      persistencePerformed: false,
-      publicLaunchAuthorized: false,
-      paymentAutomationAuthorized: false,
-      whatsappAutoSendAuthorized: false,
-      uncontrolledAiActionAuthorized: false,
-    },
-
-    scenarios: {
-      approvedCandidate:
-        createControlledActionReviewScenario(),
-
-      permanentOwnerRejection:
-        createControlledActionReviewScenario({
-          decision:
-            "REJECT_PERMANENTLY",
-        }),
-
-      ownerReworkRequired:
-        createControlledActionReviewScenario({
-          decision:
-            "REQUIRE_REWORK",
-        }),
-
-      forgedOwnerReviewBlocked:
-        createControlledActionReviewScenario({
-          forgedReview: true,
-        }),
-    },
-  });
-}
 
 export async function POST(request) {
   const requestGuard =

@@ -10,6 +10,24 @@ import {
   inspectPostgresMigrationStatus,
 } from "../lib/nexus/postgresMigrationRunner.mjs";
 
+const EXPECTED_MIGRATION_VERSIONS =
+  Object.freeze([
+    "0001_nexus_protected_api_nonce",
+    "0002_nexus_tenant_owner_membership",
+    "0003_nexus_rate_limit_security_event",
+    "0004_nexus_operational_circuit_breaker",
+    "0005_nexus_controlled_action_state",
+    "0750_customer_vertical_slice_postgres",
+    "0752_transactional_sandbox_outbox",
+    "0753_sandbox_outbox_lease_recovery",
+    "0754_sandbox_outbox_fenced_finalization",
+    "0756_sandbox_outbox_results",
+    "0763_sandbox_worker_command_receipts",
+    "0768_internal_pilot_owner_sessions",
+    "0770_internal_pilot_command_audit",
+    "0771_authenticated_owner_access",
+  ]);
+
 function createFakeClient({
   applied = [],
   ledgerConflict = false,
@@ -137,7 +155,7 @@ test(
 
     assert.equal(
       migrations.length,
-      13,
+      EXPECTED_MIGRATION_VERSIONS.length,
     );
 
     assert.deepEqual(
@@ -145,21 +163,7 @@ test(
         (item) =>
           item.version,
       ),
-      [
-        "0001_nexus_protected_api_nonce",
-        "0002_nexus_tenant_owner_membership",
-        "0003_nexus_rate_limit_security_event",
-        "0004_nexus_operational_circuit_breaker",
-        "0005_nexus_controlled_action_state",
-        "0750_customer_vertical_slice_postgres",
-        "0752_transactional_sandbox_outbox",
-        "0753_sandbox_outbox_lease_recovery",
-        "0754_sandbox_outbox_fenced_finalization",
-        "0756_sandbox_outbox_results",
-        "0763_sandbox_worker_command_receipts",
-        "0768_internal_pilot_owner_sessions",
-        "0770_internal_pilot_command_audit",
-      ],
+      EXPECTED_MIGRATION_VERSIONS,
     );
 
     for (
@@ -187,7 +191,7 @@ test(
 
     assert.equal(
       plan.migrationCount,
-      13,
+      EXPECTED_MIGRATION_VERSIONS.length,
     );
 
     assert.equal(
@@ -246,7 +250,7 @@ test(
 
     assert.equal(
       result.appliedMigrationCount,
-      13,
+      EXPECTED_MIGRATION_VERSIONS.length,
     );
 
     assert.equal(
@@ -282,7 +286,7 @@ test(
 
     assert.equal(
       client.ledger.size,
-      13,
+      EXPECTED_MIGRATION_VERSIONS.length,
     );
   },
 );
@@ -327,7 +331,7 @@ test(
 
     assert.equal(
       result.previouslyAppliedCount,
-      13,
+      EXPECTED_MIGRATION_VERSIONS.length,
     );
   },
 );
@@ -415,7 +419,7 @@ test(
 
     assert.equal(
       status.pendingMigrationCount,
-      13,
+      EXPECTED_MIGRATION_VERSIONS.length,
     );
 
     assert.equal(

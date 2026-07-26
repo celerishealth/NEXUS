@@ -1,4 +1,4 @@
-﻿import {
+import {
   enforceProtectedApiOperationalControl,
 } from "../../../../lib/nexus/protectedApiOperationalControlGuard.mjs";
 
@@ -35,50 +35,8 @@ import {
   verifyControlledActionEvidenceBundle,
 } from "../../../../lib/nexus/controlledActionEvidenceBundle.mjs";
 
-import {
-  createControlledActionEvidencePreview,
-} from "../../../../lib/nexus/controlledActionEvidencePreview.mjs";
-
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
-export async function GET() {
-  const valid =
-    createControlledActionEvidencePreview();
-
-  const tampered =
-    createControlledActionEvidencePreview({
-      tamper: true,
-    });
-
-  return NextResponse.json({
-    service:
-      "NEXUS Tamper-Evident Controlled Action Evidence Bundle v1",
-    safetyBoundary: {
-      evidenceOnly: true,
-      executionAuthorized: false,
-      externalExecutionPerformed: false,
-      providerInvocationPerformed: false,
-      persistencePerformed: false,
-      publicLaunchAuthorized: false,
-      paymentAutomationAuthorized: false,
-      whatsappAutoSendAuthorized: false,
-      uncontrolledAiActionAuthorized: false,
-    },
-    scenarios: {
-      verifiedEvidence: {
-        bundle: valid.evidence,
-        verification:
-          valid.verification,
-      },
-      tamperedEvidence: {
-        bundle: tampered.evidence,
-        verification:
-          tampered.verification,
-      },
-    },
-  });
-}
 
 export async function POST(request) {
   const requestGuard =

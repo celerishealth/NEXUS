@@ -1,4 +1,4 @@
-﻿import {
+import {
   enforceProtectedApiOperationalControl,
 } from "../../../../lib/nexus/protectedApiOperationalControlGuard.mjs";
 
@@ -37,28 +37,6 @@ import {
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
-export async function GET() {
-  return NextResponse.json({
-    service:
-      "NEXUS Protected API End-to-End Security Probe v1",
-    state:
-      "READY_FOR_SIGNED_POST_PROBE",
-    protectedControls: [
-      "REQUEST_SECURITY_GUARD",
-      "OWNER_SIGNING_SECRET_GATE",
-      "SIGNED_HMAC_ENVELOPE",
-      "DURABLE_POSTGRES_REPLAY_LEDGER",
-      "DURABLE_TENANT_OWNER_AUTHORIZATION",
-      "DURABLE_OPERATIONAL_CIRCUIT_BREAKER",
-      "DISTRIBUTED_POSTGRES_RATE_LIMIT",
-      "DURABLE_SECURITY_EVENT_LEDGER",
-    ],
-    executionAuthorized: false,
-    providerInvocationPerformed: false,
-    customerDataMutationPerformed: false,
-  });
-}
 
 export async function POST(request) {
   const requestGuard =

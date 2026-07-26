@@ -145,7 +145,12 @@ function buildSecretPatterns() {
     {
       name: "OPENAI_STYLE_SECRET",
       expression: new RegExp(
-        ["sk", "-", "[A-Za-z0-9_-]{20,}"].join(""),
+        [
+          "(?<![A-Za-z0-9_-])",
+          "sk",
+          "-",
+          "[A-Za-z0-9_-]{20,}",
+        ].join(""),
         "g",
       ),
     },
