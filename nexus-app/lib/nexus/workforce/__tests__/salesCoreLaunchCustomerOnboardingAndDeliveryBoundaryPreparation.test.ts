@@ -22,57 +22,39 @@ import type {
 
 import {
   createSalesCoreLaunchCommercialEvidenceRemediationRecord,
-  validateSalesCoreLaunchCommercialEvidenceRemediationRecord,
   type CreateSalesCoreLaunchCommercialEvidenceRemediationRecordInput,
-  type SalesCoreLaunchCommercialEvidenceRemediationRecord,
 } from "../salesCoreLaunchCommercialEvidenceRemediationRecord";
 
 import {
   createSalesCoreLaunchCommercialEvidenceRemediationReviewDecision,
-  validateSalesCoreLaunchCommercialEvidenceRemediationReviewDecision,
   type CreateSalesCoreLaunchCommercialEvidenceRemediationReviewDecisionInput,
-  type SalesCoreLaunchCommercialEvidenceRemediationReviewDecision,
 } from "../salesCoreLaunchCommercialEvidenceRemediationReviewDecision";
 import {
-  MEERA_COMMERCIAL_REQUALIFICATION_CASES,
   createSalesCoreLaunchCommercialEvidenceControlledRequalificationPreparation,
-  validateSalesCoreLaunchCommercialEvidenceControlledRequalificationPreparation,
   type CreateSalesCoreLaunchCommercialEvidenceControlledRequalificationPreparationInput,
-  type SalesCoreLaunchCommercialEvidenceControlledRequalificationPreparation,
 } from "../salesCoreLaunchCommercialEvidenceControlledRequalificationPreparation";
 import {
   createSalesCoreLaunchCommercialEvidenceControlledRequalificationExecutionDecision,
-  validateSalesCoreLaunchCommercialEvidenceControlledRequalificationExecutionDecision,
   type CreateSalesCoreLaunchCommercialEvidenceControlledRequalificationExecutionDecisionInput,
-  type SalesCoreLaunchCommercialEvidenceControlledRequalificationExecutionDecision,
 } from "../salesCoreLaunchCommercialEvidenceControlledRequalificationExecutionDecision";
 import {
   executeSalesCoreLaunchCommercialEvidenceControlledRequalification,
-  validateSalesCoreLaunchCommercialEvidenceControlledRequalificationExecutionEvidence,
   type ExecuteSalesCoreLaunchCommercialEvidenceControlledRequalificationInput,
-  type SalesCoreLaunchCommercialEvidenceControlledRequalificationExecutionEvidence,
 } from "../salesCoreLaunchCommercialEvidenceControlledRequalificationExecutionEvidence";
 import {
   createSalesCoreLaunchCommercialEvidenceControlledRequalificationExecutionReviewDecision,
-  validateSalesCoreLaunchCommercialEvidenceControlledRequalificationExecutionReviewDecision,
   type CreateSalesCoreLaunchCommercialEvidenceControlledRequalificationExecutionReviewDecisionInput,
-  type SalesCoreLaunchCommercialEvidenceControlledRequalificationExecutionReviewDecision,
 } from "../salesCoreLaunchCommercialEvidenceControlledRequalificationExecutionReviewDecision";
 import {
   createSalesCoreLaunchCommercialEvidenceRequalificationRecord,
-  validateSalesCoreLaunchCommercialEvidenceRequalificationRecord,
   type CreateSalesCoreLaunchCommercialEvidenceRequalificationRecordInput,
-  type SalesCoreLaunchCommercialEvidenceRequalificationRecord,
 } from "../salesCoreLaunchCommercialEvidenceRequalificationRecord";
 import {
   createSalesCoreLaunchCorrectedReadinessReassessment,
-  validateSalesCoreLaunchCorrectedReadinessReassessment,
   type CreateSalesCoreLaunchCorrectedReadinessReassessmentInput,
-  type SalesCoreLaunchCorrectedReadinessReassessment,
 } from "../salesCoreLaunchCorrectedReadinessReassessment";
 import {
   createSalesCoreLaunchCommercialInfrastructureClosureRecord,
-  validateSalesCoreLaunchCommercialInfrastructureClosureRecord,
   type CreateSalesCoreLaunchCommercialInfrastructureClosureRecordInput,
   type SalesCoreLaunchCommercialInfrastructureClosureRecord,
 } from "../salesCoreLaunchCommercialInfrastructureClosureRecord";
@@ -158,24 +140,6 @@ function signRecord<
   } as T;
 }
 
-function resignRecord<
-  T extends Record<string, unknown>,
->(
-  record: T,
-  digestField: string,
-): T {
-  const unsigned = {
-    ...record,
-  } as Record<string, unknown>;
-
-  delete unsigned[digestField];
-
-  return {
-    ...unsigned,
-    [digestField]:
-      sha256(unsigned),
-  } as T;
-}
 
 function createInput():
   CreateSalesCoreLaunchCommercialEvidenceRemediationRecordInput {

@@ -15,24 +15,23 @@ export default function Home() {
     { id: number; type: string; input: string; response: string; status: string; riskLevel?: string; riskTags?: string[] }[]
   >([]);
 
-  const [selectedIndustryPack, setSelectedIndustryPack] = useState("Universal Business Pack");
-  const [customIndustrySector, setCustomIndustrySector] = useState("");
-  const [customOwnerRule, setCustomOwnerRule] = useState("");
-  const [approvalQueueFilter, setApprovalQueueFilter] = useState<"All" | "Pending Owner Approval" | "Approved" | "Rejected">("All");
-  const [approvalQueueSearch, setApprovalQueueSearch] = useState("");
+  const [selectedIndustryPack] = useState("Universal Business Pack");
+  const [customIndustrySector] = useState("");
+  const [customOwnerRule] = useState("");
+  const [approvalQueueFilter] = useState<"All" | "Pending Owner Approval" | "Approved" | "Rejected">("All");
+  const [approvalQueueSearch] = useState("");
 
-  const totalRequests = responseHistory.length;
+  void (responseHistory.length);
   const pendingRequests = responseHistory.filter(
     (item) => item.status === "Pending Owner Approval"
   );
-  const approvedRequests = responseHistory.filter(
+  void (responseHistory.filter(
     (item) => item.status === "Approved"
-  );
-  const rejectedRequests = responseHistory.filter(
+  ));
+  void (responseHistory.filter(
     (item) => item.status === "Rejected"
-  );
-  const zeroStuckStatus =
-    pendingRequests.length === 0 ? "Smooth" : "Review Needed";
+  ));
+  void (pendingRequests.length === 0 ? "Smooth" : "Review Needed");
   const industryPacks = [
     {
       title: "Universal Business Pack",
@@ -98,7 +97,7 @@ export default function Home() {
     },
   ];
 
-  const universalSectorCoverage = [
+  void ([
     "Retail",
     "Wholesale",
     "Distribution",
@@ -126,7 +125,7 @@ export default function Home() {
     "Local Shop",
     "Enterprise",
     "Any Custom Sector",
-  ];
+  ]);
 
   const selectedIndustryPackDetails =
     industryPacks.find((pack) => pack.title === selectedIndustryPack) ||
@@ -382,21 +381,21 @@ export default function Home() {
     setAiResponse("NEXUS AI Brain is thinking...");
 
     try {
-      const detectedRisk = detectRequestRisks(aiInput);
+      void (detectRequestRisks(aiInput));
 
-    const ownerRulesContext = activeOwnerRules
+    void (activeOwnerRules
       .map(
         (rule) =>
           `${rule.title}: ${rule.rule} Protection: ${rule.risk}`
       )
-      .join("\n");
+      .join("\n"));
 
-    const industryContext = `
+    void (`
 Active Industry Pack: ${selectedIndustryPack}
 Active Sector: ${activeIndustryName}
 Pack Purpose: ${selectedIndustryPackDetails.focus}
 Pack Protection Rules: ${selectedIndustryPackDetails.rules.join(", ")}
-`;
+`);
     const apiResponse = await fetch("/api/ai", {
         method: "POST",
         headers: {
@@ -473,34 +472,7 @@ ${aiInput}`,
     );
   }
 
-  function getOwnerDecisionAudit(status: string, ownerDecisionAt?: string) {
-    if (status === "Approved") {
-      return `Approved by owner at ${ownerDecisionAt ?? "decision time unavailable"}`;
-    }
 
-    if (status === "Rejected") {
-      return `Rejected by owner at ${ownerDecisionAt ?? "decision time unavailable"}`;
-    }
-
-    return "Awaiting owner decision";
-  }
-  function getExecutionGuardLabel(status: string) {
-    if (status === "Approved") return "Ready for Safe Execution";
-    if (status === "Rejected") return "Permanently Blocked";
-    return "Locked ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â Owner Approval Required";
-  }
-
-  function getExecutionGuardDetail(status: string) {
-    if (status === "Approved") {
-      return "Owner approved. NEXUS may now continue toward safe execution.";
-    }
-
-    if (status === "Rejected") {
-      return "Owner rejected. NEXUS must not execute this risky action.";
-    }
-
-    return "Pending approval. NEXUS must not perform any final risky action.";
-  }
   function copyResponse() {
     if (!aiResponse) return;
     navigator.clipboard.writeText(aiResponse);
@@ -512,10 +484,10 @@ ${aiInput}`,
     setSelectedTemplate("Custom Prompt");
   }
 
-  const pendingApprovalCount = responseHistory.filter((item) => item.status === "Pending Owner Approval").length;
-  const approvedApprovalCount = responseHistory.filter((item) => item.status === "Approved").length;
-  const rejectedApprovalCount = responseHistory.filter((item) => item.status === "Rejected").length;
-  const totalApprovalRoutes = responseHistory.length;
+  void (responseHistory.filter((item) => item.status === "Pending Owner Approval").length);
+  void (responseHistory.filter((item) => item.status === "Approved").length);
+  void (responseHistory.filter((item) => item.status === "Rejected").length);
+  void (responseHistory.length);
   const approvalRoutesByStatus =
     approvalQueueFilter === "All"
       ? responseHistory
@@ -6616,70 +6588,3 @@ const dangerButton = {
   cursor: "pointer",
   fontWeight: "bold",
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -7,7 +7,6 @@ import {
   AI_EMPLOYEE_QUALIFICATION_MINIMUMS,
   AI_EMPLOYEE_QUALIFICATION_VERSION,
   createAIEmployeeQualificationReport,
-  type AIEmployeeQualificationCategory,
   type AIEmployeeQualificationReport,
 } from "./employeeQualification";
 

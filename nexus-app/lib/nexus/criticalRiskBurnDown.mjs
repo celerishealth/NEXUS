@@ -5,7 +5,6 @@
 import {
   extname,
   join,
-  relative,
 } from "node:path";
 
 import {

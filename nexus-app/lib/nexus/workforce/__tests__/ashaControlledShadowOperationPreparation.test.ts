@@ -729,6 +729,7 @@ describe(
             _ignoredDigest,
           ...sourceCore
         } = source;
+        void _ignoredDigest;
 
         const crossTenantCore = {
           ...sourceCore,

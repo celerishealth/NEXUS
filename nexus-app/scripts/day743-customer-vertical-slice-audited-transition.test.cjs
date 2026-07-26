@@ -1,5 +1,4 @@
-﻿/* eslint-disable */
-const assert = require("node:assert/strict");
+﻿const assert = require("node:assert/strict");
 
 const modulePath = process.env.DAY743_MODULE;
 const auditModulePath = process.env.DAY743_AUDIT_MODULE;

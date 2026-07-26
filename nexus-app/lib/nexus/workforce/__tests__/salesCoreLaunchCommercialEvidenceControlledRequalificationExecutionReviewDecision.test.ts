@@ -22,33 +22,23 @@ import type {
 
 import {
   createSalesCoreLaunchCommercialEvidenceRemediationRecord,
-  validateSalesCoreLaunchCommercialEvidenceRemediationRecord,
   type CreateSalesCoreLaunchCommercialEvidenceRemediationRecordInput,
-  type SalesCoreLaunchCommercialEvidenceRemediationRecord,
 } from "../salesCoreLaunchCommercialEvidenceRemediationRecord";
 
 import {
   createSalesCoreLaunchCommercialEvidenceRemediationReviewDecision,
-  validateSalesCoreLaunchCommercialEvidenceRemediationReviewDecision,
   type CreateSalesCoreLaunchCommercialEvidenceRemediationReviewDecisionInput,
-  type SalesCoreLaunchCommercialEvidenceRemediationReviewDecision,
 } from "../salesCoreLaunchCommercialEvidenceRemediationReviewDecision";
 import {
-  MEERA_COMMERCIAL_REQUALIFICATION_CASES,
   createSalesCoreLaunchCommercialEvidenceControlledRequalificationPreparation,
-  validateSalesCoreLaunchCommercialEvidenceControlledRequalificationPreparation,
   type CreateSalesCoreLaunchCommercialEvidenceControlledRequalificationPreparationInput,
-  type SalesCoreLaunchCommercialEvidenceControlledRequalificationPreparation,
 } from "../salesCoreLaunchCommercialEvidenceControlledRequalificationPreparation";
 import {
   createSalesCoreLaunchCommercialEvidenceControlledRequalificationExecutionDecision,
-  validateSalesCoreLaunchCommercialEvidenceControlledRequalificationExecutionDecision,
   type CreateSalesCoreLaunchCommercialEvidenceControlledRequalificationExecutionDecisionInput,
-  type SalesCoreLaunchCommercialEvidenceControlledRequalificationExecutionDecision,
 } from "../salesCoreLaunchCommercialEvidenceControlledRequalificationExecutionDecision";
 import {
   executeSalesCoreLaunchCommercialEvidenceControlledRequalification,
-  validateSalesCoreLaunchCommercialEvidenceControlledRequalificationExecutionEvidence,
   type ExecuteSalesCoreLaunchCommercialEvidenceControlledRequalificationInput,
   type SalesCoreLaunchCommercialEvidenceControlledRequalificationExecutionEvidence,
 } from "../salesCoreLaunchCommercialEvidenceControlledRequalificationExecutionEvidence";
@@ -134,24 +124,6 @@ function signRecord<
   } as T;
 }
 
-function resignRecord<
-  T extends Record<string, unknown>,
->(
-  record: T,
-  digestField: string,
-): T {
-  const unsigned = {
-    ...record,
-  } as Record<string, unknown>;
-
-  delete unsigned[digestField];
-
-  return {
-    ...unsigned,
-    [digestField]:
-      sha256(unsigned),
-  } as T;
-}
 
 function createInput():
   CreateSalesCoreLaunchCommercialEvidenceRemediationRecordInput {

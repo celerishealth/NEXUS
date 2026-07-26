@@ -1,17 +1,11 @@
 import {
   createRiyaOwnerLimitedInternalPilotExecutionDecision,
-  validateRiyaOwnerLimitedInternalPilotExecutionDecision,
-  type RiyaOwnerLimitedInternalPilotExecutionDecision,
 } from "../riyaOwnerLimitedInternalPilotExecutionDecision";
 import {
   createRiyaLimitedInternalPilotPreparation,
-  validateRiyaLimitedInternalPilotPreparation,
-  type RiyaLimitedInternalPilotPreparation,
 } from "../riyaLimitedInternalPilotPreparation";
 import {
   createRiyaOwnerControlledShadowOperationReviewDecision,
-  validateRiyaOwnerControlledShadowOperationReviewDecision,
-  type RiyaOwnerControlledShadowOperationReviewDecision,
 } from "../riyaOwnerControlledShadowOperationReviewDecision";
 import {
   createHash,
@@ -71,40 +65,28 @@ import {
 
 import {
   createRiyaActivationCandidateIssuance,
-  validateRiyaActivationCandidateIssuance,
   type RiyaActivationCandidateIssuance,
 } from "../riyaActivationCandidateIssuance";
 
 import {
   createRiyaOwnerActivationDecision,
-  validateRiyaOwnerActivationDecision,
-  type RiyaOwnerActivationDecision,
   type RiyaOwnerActivationDecisionType,
 } from "../riyaOwnerActivationDecision";
 import {
   createRiyaOwnerActivatedRuntimeIssuance,
-  validateRiyaOwnerActivatedRuntimeIssuance,
   type RiyaOwnerActivatedRuntimeIssuance,
 } from "../riyaOwnerActivatedRuntimeIssuance";
 import {
   createRiyaControlledShadowOperationPreparation,
-  validateRiyaControlledShadowOperationPreparation,
-  type RiyaControlledShadowOperationPreparation,
 } from "../riyaControlledShadowOperationPreparation";
 import {
   executeRiyaControlledShadowOperation,
-  validateRiyaControlledShadowOperationExecution,
-  type RiyaControlledShadowOperationExecution,
 } from "../riyaControlledShadowOperationExecution";
 import {
   executeRiyaLimitedInternalPilotRecommendation,
-  validateRiyaLimitedInternalPilotRecommendationExecution,
-  type RiyaLimitedInternalPilotRecommendationExecution,
 } from "../riyaLimitedInternalPilotRecommendationExecution";
 import {
-  RIYA_OWNER_LIMITED_INTERNAL_PILOT_RECOMMENDATION_REVIEW_DECISION_VERSION,
   createRiyaOwnerLimitedInternalPilotRecommendationReviewDecision,
-  validateRiyaOwnerLimitedInternalPilotRecommendationReviewDecision,
 } from "../riyaOwnerLimitedInternalPilotRecommendationReviewDecision";
 import {
   RIYA_LIMITED_INTERNAL_PILOT_RECOMMENDATION_TWO_PREPARATION_VERSION,
@@ -617,84 +599,12 @@ async function day59ReviewInput(
   };
 }
 
-async function approvedDay59ReviewDecision() {
-  return createRiyaOwnerControlledShadowOperationReviewDecision(
-    await day59ReviewInput(),
-  );
-}
 
-type Day60PreparationInput =
-  Parameters<
-    typeof createRiyaLimitedInternalPilotPreparation
-  >[0];
 
-async function day60PreparationInput(
-  overrides:
-    Partial<Day60PreparationInput> = {},
-): Promise<Day60PreparationInput> {
-  return {
-    preparationId:
-      "riya-limited-internal-pilot-preparation-day-60",
 
-    ownerControlledShadowOperationReviewDecision:
-      await approvedDay59ReviewDecision(),
 
-    preparedAt:
-      "2026-07-16T19:00:00.000Z",
 
-    ...overrides,
-  };
-}
 
-type Day61DecisionInput =
-  Parameters<
-    typeof createRiyaOwnerLimitedInternalPilotExecutionDecision
-  >[0];
-
-type Day61Preparation =
-  Day61DecisionInput[
-    "limitedInternalPilotPreparation"
-  ];
-
-async function approvedDay60Preparation():
-  Promise<Day61Preparation> {
-  return createRiyaLimitedInternalPilotPreparation(
-    await day60PreparationInput(),
-  );
-}
-
-async function day61DecisionInput(
-  overrides:
-    Partial<Day61DecisionInput> = {},
-): Promise<Day61DecisionInput> {
-  const preparation =
-    await approvedDay60Preparation();
-
-  return {
-    limitedInternalPilotPreparation:
-      preparation,
-
-    decisionId:
-      "riya-owner-pilot-execution-decision-day-61",
-
-    ownerId:
-      preparation.ownerId,
-
-    decision:
-      "APPROVE_LIMITED_INTERNAL_PILOT_EXECUTION",
-
-    reason:
-      "Owner approves only the bounded synthetic recommendation pilot while every real-world authority remains blocked.",
-
-    decidedAt:
-      new Date(
-        Date.parse(preparation.preparedAt) +
-          1_000,
-      ).toISOString(),
-
-    ...overrides,
-  };
-}
 
 
 type Day62ExecutionInput =
@@ -1190,6 +1100,7 @@ describe(
             _discardedDigest,
           ...unsafeDigestCore
         } = unsafeCore;
+        void _discardedDigest;
 
         const unsafeRecomputed = {
           ...unsafeDigestCore,

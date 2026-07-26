@@ -5,7 +5,6 @@ import {
 } from "../meeraLimitedInternalPilotPreparation";
 import {
   createMeeraOwnerControlledShadowOperationReviewDecision,
-  validateMeeraOwnerControlledShadowOperationReviewDecision,
   type MeeraOwnerControlledShadowOperationReviewDecision,
 } from "../meeraOwnerControlledShadowOperationReviewDecision";
 import {
@@ -66,30 +65,22 @@ import {
 
 import {
   createMeeraActivationCandidateIssuance,
-  validateMeeraActivationCandidateIssuance,
   type MeeraActivationCandidateIssuance,
 } from "../meeraActivationCandidateIssuance";
 
 import {
   createMeeraOwnerActivationDecision,
-  validateMeeraOwnerActivationDecision,
-  type MeeraOwnerActivationDecision,
   type MeeraOwnerActivationDecisionType,
 } from "../meeraOwnerActivationDecision";
 import {
   createMeeraOwnerActivatedRuntimeIssuance,
-  validateMeeraOwnerActivatedRuntimeIssuance,
   type MeeraOwnerActivatedRuntimeIssuance,
 } from "../meeraOwnerActivatedRuntimeIssuance";
 import {
   createMeeraControlledShadowOperationPreparation,
-  validateMeeraControlledShadowOperationPreparation,
-  type MeeraControlledShadowOperationPreparation,
 } from "../meeraControlledShadowOperationPreparation";
 import {
   executeMeeraControlledShadowOperation,
-  validateMeeraControlledShadowOperationExecution,
-  type MeeraControlledShadowOperationExecution,
 } from "../meeraControlledShadowOperationExecution";
 const TENANT_ID =
   "tenant-nexus-internal-001";

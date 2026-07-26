@@ -1,5 +1,4 @@
-﻿/* eslint-disable */
-const assert = require("node:assert/strict");
+﻿const assert = require("node:assert/strict");
 
 const registryModulePath =
   process.env.DAY747_REGISTRY_MODULE;

@@ -1277,6 +1277,7 @@ describe(
           decisionDigest: _ignored,
           ...approvedCore
         } = approved;
+        void _ignored;
 
         const rejectedCore = {
           ...approvedCore,
@@ -1380,6 +1381,7 @@ describe(
           executionDigest: _ignored,
           ...core
         } = first;
+        void _ignored;
 
         expect(first.executionDigest).toBe(
           sha256(core),

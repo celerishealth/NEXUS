@@ -56,7 +56,6 @@ import {
 
 import {
   createMeeraActivationCandidateIssuance,
-  validateMeeraActivationCandidateIssuance,
   type MeeraActivationCandidateIssuance,
 } from "../meeraActivationCandidateIssuance";
 

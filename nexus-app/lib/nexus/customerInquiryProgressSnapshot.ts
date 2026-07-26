@@ -93,30 +93,6 @@ function normalizeKnownVersion(
   return normalized;
 }
 
-function isAtOrAfter(
-  status: CustomerInquiryLifecycleStatus,
-  target:
-    | "recommendation_ready"
-    | "owner_approved"
-    | "sandbox_executing"
-    | "sandbox_succeeded"
-    | "result_released"
-    | "customer_acknowledged",
-): boolean {
-  const order: Record<CustomerInquiryLifecycleStatus, number> = {
-    inquiry_received: 0,
-    recommendation_ready: 1,
-    owner_approved: 2,
-    owner_rejected: 2,
-    sandbox_executing: 3,
-    sandbox_failed: 3,
-    sandbox_succeeded: 4,
-    result_released: 5,
-    customer_acknowledged: 6,
-  };
-
-  return order[status] >= order[target];
-}
 
 function buildSteps(
   view: CustomerInquiryLifecycleView,

@@ -56,7 +56,6 @@ import {
 
 import {
   createRiyaActivationCandidateIssuance,
-  validateRiyaActivationCandidateIssuance,
   type RiyaActivationCandidateIssuance,
 } from "../riyaActivationCandidateIssuance";
 

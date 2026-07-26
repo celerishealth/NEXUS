@@ -1,57 +1,7 @@
 import { NextResponse } from "next/server";
 
-function getCustomerMessage(prompt: string) {
-  const marker = "Customer/business message:";
-  if (prompt.includes(marker)) {
-    return prompt.split(marker).pop()?.trim() || prompt.trim();
-  }
-  return prompt.trim();
-}
 
-function normalizeMedicineName(line: string) {
-  const lower = line.toLowerCase();
 
-  if (lower.includes("pan 40") || lower.includes("pantoprazole")) {
-    return "Pantoprazole 40mg";
-  }
-
-  if (lower.includes("pcm 650") || lower.includes("paracetamol")) {
-    return "Paracetamol 650mg";
-  }
-
-  if (
-    lower.includes("cetrizine") ||
-    lower.includes("cetirizine") ||
-    lower.includes("cetrizine 10mg") ||
-    lower.includes("cetirizine 10mg")
-  ) {
-    return "Cetirizine 10mg";
-  }
-
-  return line.replace(/\s+/g, " ").trim();
-}
-
-function parseOrderLine(line: string) {
-  const cleanLine = line.replace(/\s+/g, " ").trim();
-
-  const quantityMatch = cleanLine.match(/(\d+)\s*(box|boxes|strip|strips|bottle|bottles|vial|vials|piece|pieces|pcs|pack|packs)/i);
-
-  if (!quantityMatch) {
-    return null;
-  }
-
-  const quantity = quantityMatch[1];
-  const unit = quantityMatch[2].toLowerCase();
-
-  const itemText = cleanLine.slice(0, quantityMatch.index).trim();
-  const item = normalizeMedicineName(itemText);
-
-  return {
-    item,
-    quantity,
-    unit,
-  };
-}
 
 function buildLocalFallbackResponse(prompt: string) {
   const customerMessage = prompt || "";
@@ -218,5 +168,3 @@ export async function POST(request: Request) {
     });
   }
 }
-
-

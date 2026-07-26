@@ -35,6 +35,7 @@ const {
     "controlledInternalPilotProductionApiRouter.js",
   ),
 );
+void INTERNAL_PILOT_WORKER_ROUTE_PATH;
 
 const checks = [];
 
@@ -618,6 +619,7 @@ check("safe retry preserves original batch size", async () => {
       run: async (
         input,
       ) => {
+        void input;
         attempt += 1;
 
         if (attempt === 1) {
@@ -1122,7 +1124,7 @@ check("session revocation delegates safely", async () => {
 });
 
 check("revocation clears pending recovery state", async () => {
-  let attempt = 0;
+  void (0);
 
   const harness = makeWorkflow({
     consoleOptions: {

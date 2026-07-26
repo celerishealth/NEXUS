@@ -783,6 +783,7 @@ describe(
           executionDigest: _discardedDigest,
           ...recomputedCore
         } = tamperedCore;
+        void _discardedDigest;
 
         const recomputed = {
           ...recomputedCore,

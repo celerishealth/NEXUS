@@ -22,9 +22,7 @@ import type {
 
 import {
   createSalesCoreLaunchCommercialEvidenceRemediationRecord,
-  validateSalesCoreLaunchCommercialEvidenceRemediationRecord,
   type CreateSalesCoreLaunchCommercialEvidenceRemediationRecordInput,
-  type SalesCoreLaunchCommercialEvidenceRemediationRecord,
 } from "../salesCoreLaunchCommercialEvidenceRemediationRecord";
 
 import {
@@ -109,24 +107,6 @@ function signRecord<
   } as T;
 }
 
-function resignRecord<
-  T extends Record<string, unknown>,
->(
-  record: T,
-  digestField: string,
-): T {
-  const unsigned = {
-    ...record,
-  } as Record<string, unknown>;
-
-  delete unsigned[digestField];
-
-  return {
-    ...unsigned,
-    [digestField]:
-      sha256(unsigned),
-  } as T;
-}
 
 function createInput():
   CreateSalesCoreLaunchCommercialEvidenceRemediationRecordInput {

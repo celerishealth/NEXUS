@@ -5,24 +5,16 @@ import {
   type MeeraLimitedInternalPilotQuotationProposalThreeExecution,
 } from "../meeraLimitedInternalPilotQuotationProposalThreeExecution";
 import {
-  MEERA_OWNER_LIMITED_INTERNAL_PILOT_QUOTATION_PROPOSAL_THREE_EXECUTION_DECISION_VERSION,
   createMeeraOwnerLimitedInternalPilotQuotationProposalThreeExecutionDecision,
-  validateMeeraOwnerLimitedInternalPilotQuotationProposalThreeExecutionDecision,
 } from "../meeraOwnerLimitedInternalPilotQuotationProposalThreeExecutionDecision";
 import {
   createMeeraOwnerLimitedInternalPilotExecutionDecision,
-  validateMeeraOwnerLimitedInternalPilotExecutionDecision,
-  type MeeraOwnerLimitedInternalPilotExecutionDecision,
 } from "../meeraOwnerLimitedInternalPilotExecutionDecision";
 import {
   createMeeraLimitedInternalPilotPreparation,
-  validateMeeraLimitedInternalPilotPreparation,
-  type MeeraLimitedInternalPilotPreparation,
 } from "../meeraLimitedInternalPilotPreparation";
 import {
   createMeeraOwnerControlledShadowOperationReviewDecision,
-  validateMeeraOwnerControlledShadowOperationReviewDecision,
-  type MeeraOwnerControlledShadowOperationReviewDecision,
 } from "../meeraOwnerControlledShadowOperationReviewDecision";
 import {
   createHash,
@@ -82,65 +74,43 @@ import {
 
 import {
   createMeeraActivationCandidateIssuance,
-  validateMeeraActivationCandidateIssuance,
   type MeeraActivationCandidateIssuance,
 } from "../meeraActivationCandidateIssuance";
 
 import {
   createMeeraOwnerActivationDecision,
-  validateMeeraOwnerActivationDecision,
-  type MeeraOwnerActivationDecision,
   type MeeraOwnerActivationDecisionType,
 } from "../meeraOwnerActivationDecision";
 import {
   createMeeraOwnerActivatedRuntimeIssuance,
-  validateMeeraOwnerActivatedRuntimeIssuance,
   type MeeraOwnerActivatedRuntimeIssuance,
 } from "../meeraOwnerActivatedRuntimeIssuance";
 import {
   createMeeraControlledShadowOperationPreparation,
-  validateMeeraControlledShadowOperationPreparation,
-  type MeeraControlledShadowOperationPreparation,
 } from "../meeraControlledShadowOperationPreparation";
 import {
   executeMeeraControlledShadowOperation,
-  validateMeeraControlledShadowOperationExecution,
-  type MeeraControlledShadowOperationExecution,
 } from "../meeraControlledShadowOperationExecution";
 import {
   executeMeeraLimitedInternalPilotQuotationProposal,
-  validateMeeraLimitedInternalPilotQuotationProposalExecution,
-  type MeeraLimitedInternalPilotQuotationProposalExecution,
 } from "../meeraLimitedInternalPilotQuotationProposalExecution";
 import {
-  MEERA_OWNER_LIMITED_INTERNAL_PILOT_QUOTATION_PROPOSAL_REVIEW_DECISION_VERSION,
   createMeeraOwnerLimitedInternalPilotQuotationProposalReviewDecision,
-  validateMeeraOwnerLimitedInternalPilotQuotationProposalReviewDecision,
 } from "../meeraOwnerLimitedInternalPilotQuotationProposalReviewDecision";
 import {
-  MEERA_LIMITED_INTERNAL_PILOT_QUOTATION_PROPOSAL_TWO_PREPARATION_VERSION,
   createMeeraLimitedInternalPilotQuotationProposalTwoPreparation,
-  validateMeeraLimitedInternalPilotQuotationProposalTwoPreparation,
 } from "../meeraLimitedInternalPilotQuotationProposalTwoPreparation";
 import {
-  MEERA_OWNER_LIMITED_INTERNAL_PILOT_QUOTATION_PROPOSAL_TWO_EXECUTION_DECISION_VERSION,
   createMeeraOwnerLimitedInternalPilotQuotationProposalTwoExecutionDecision,
-  validateMeeraOwnerLimitedInternalPilotQuotationProposalTwoExecutionDecision,
 } from "../meeraOwnerLimitedInternalPilotQuotationProposalTwoExecutionDecision";
 import {
-  MEERA_LIMITED_INTERNAL_PILOT_QUOTATION_PROPOSAL_TWO_EXECUTION_VERSION,
   executeMeeraLimitedInternalPilotQuotationProposalTwo,
-  validateMeeraLimitedInternalPilotQuotationProposalTwoExecution,
 } from "../meeraLimitedInternalPilotQuotationProposalTwoExecution";
 import {
-  MEERA_OWNER_LIMITED_INTERNAL_PILOT_QUOTATION_PROPOSAL_TWO_REVIEW_DECISION_VERSION,
   createMeeraOwnerLimitedInternalPilotQuotationProposalTwoReviewDecision,
-  validateMeeraOwnerLimitedInternalPilotQuotationProposalTwoReviewDecision,
 } from "../meeraOwnerLimitedInternalPilotQuotationProposalTwoReviewDecision";
 import {
-  MEERA_LIMITED_INTERNAL_PILOT_QUOTATION_PROPOSAL_THREE_PREPARATION_VERSION,
   createMeeraLimitedInternalPilotQuotationProposalThreePreparation,
-  validateMeeraLimitedInternalPilotQuotationProposalThreePreparation,
 } from "../meeraLimitedInternalPilotQuotationProposalThreePreparation";
 const TENANT_ID =
   "tenant-nexus-internal-001";
@@ -648,84 +618,12 @@ async function day59ReviewInput(
   };
 }
 
-async function approvedDay59ReviewDecision() {
-  return createMeeraOwnerControlledShadowOperationReviewDecision(
-    await day59ReviewInput(),
-  );
-}
 
-type Day60PreparationInput =
-  Parameters<
-    typeof createMeeraLimitedInternalPilotPreparation
-  >[0];
 
-async function day60PreparationInput(
-  overrides:
-    Partial<Day60PreparationInput> = {},
-): Promise<Day60PreparationInput> {
-  return {
-    preparationId:
-      "meera-limited-internal-pilot-preparation-day-60",
 
-    ownerControlledShadowOperationReviewDecision:
-      await approvedDay59ReviewDecision(),
 
-    preparedAt:
-      "2026-07-16T19:00:00.000Z",
 
-    ...overrides,
-  };
-}
 
-type Day61DecisionInput =
-  Parameters<
-    typeof createMeeraOwnerLimitedInternalPilotExecutionDecision
-  >[0];
-
-type Day61Preparation =
-  Day61DecisionInput[
-    "limitedInternalPilotPreparation"
-  ];
-
-async function approvedDay60Preparation():
-  Promise<Day61Preparation> {
-  return createMeeraLimitedInternalPilotPreparation(
-    await day60PreparationInput(),
-  );
-}
-
-async function day61DecisionInput(
-  overrides:
-    Partial<Day61DecisionInput> = {},
-): Promise<Day61DecisionInput> {
-  const preparation =
-    await approvedDay60Preparation();
-
-  return {
-    limitedInternalPilotPreparation:
-      preparation,
-
-    decisionId:
-      "meera-owner-pilot-execution-decision-day-61",
-
-    ownerId:
-      preparation.ownerId,
-
-    decision:
-      "APPROVE_LIMITED_INTERNAL_PILOT_EXECUTION",
-
-    reason:
-      "Owner approves only the bounded synthetic quotation/proposal pilot while every real-world authority remains blocked.",
-
-    decidedAt:
-      new Date(
-        Date.parse(preparation.preparedAt) +
-          1_000,
-      ).toISOString(),
-
-    ...overrides,
-  };
-}
 
 
 type Day62ExecutionInput =
@@ -837,67 +735,7 @@ async function day63ReviewInput(
 }
 
 
-function day64StableStringify(
-  value: unknown,
-): string {
-  if (Array.isArray(value)) {
-    return (
-      "[" +
-      value
-        .map((item) =>
-          day64StableStringify(item),
-        )
-        .join(",") +
-      "]"
-    );
-  }
 
-  if (
-    value !== null &&
-    typeof value === "object"
-  ) {
-    const record =
-      value as Record<string, unknown>;
-
-    return (
-      "{" +
-      Object.keys(record)
-        .sort()
-        .map(
-          (key) =>
-            JSON.stringify(key) +
-            ":" +
-            day64StableStringify(
-              record[key],
-            ),
-        )
-        .join(",") +
-      "}"
-    );
-  }
-
-  const primitive =
-    JSON.stringify(value);
-
-  if (primitive === undefined) {
-    throw new Error(
-      "Unsupported deterministic Day 64 test value.",
-    );
-  }
-
-  return primitive;
-}
-
-function day64Sha256(
-  value: unknown,
-): string {
-  return createHash("sha256")
-    .update(
-      day64StableStringify(value),
-      "utf8",
-    )
-    .digest("hex");
-}
 type Day64PreparationInput =
   Parameters<
     typeof createMeeraLimitedInternalPilotQuotationProposalTwoPreparation

@@ -635,6 +635,7 @@ describe(
           decisionDigest: _discardedDigest,
           ...core
         } = rejectedCore;
+        void _discardedDigest;
 
         const rejected = {
           ...core,

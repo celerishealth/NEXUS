@@ -56,24 +56,19 @@ import {
 
 import {
   createRiyaActivationCandidateIssuance,
-  validateRiyaActivationCandidateIssuance,
   type RiyaActivationCandidateIssuance,
 } from "../riyaActivationCandidateIssuance";
 
 import {
   createRiyaOwnerActivationDecision,
-  validateRiyaOwnerActivationDecision,
-  type RiyaOwnerActivationDecision,
   type RiyaOwnerActivationDecisionType,
 } from "../riyaOwnerActivationDecision";
 import {
   createRiyaOwnerActivatedRuntimeIssuance,
-  validateRiyaOwnerActivatedRuntimeIssuance,
   type RiyaOwnerActivatedRuntimeIssuance,
 } from "../riyaOwnerActivatedRuntimeIssuance";
 import {
   createRiyaControlledShadowOperationPreparation,
-  validateRiyaControlledShadowOperationPreparation,
   type RiyaControlledShadowOperationPreparation,
 } from "../riyaControlledShadowOperationPreparation";
 import {

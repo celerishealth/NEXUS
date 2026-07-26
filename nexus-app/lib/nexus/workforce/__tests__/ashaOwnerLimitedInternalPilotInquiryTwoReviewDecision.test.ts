@@ -5,7 +5,6 @@ import {
 } from "../ashaOwnerLimitedInternalPilotInquiryTwoReviewDecision";
 
 import {
-  ASHA_LIMITED_INTERNAL_PILOT_INQUIRY_TWO_EXECUTION_VERSION,
   executeAshaLimitedInternalPilotInquiryTwo,
   type ExecuteAshaLimitedInternalPilotInquiryTwoInput,
 } from "../ashaLimitedInternalPilotInquiryTwoExecution";
@@ -1420,6 +1419,7 @@ describe(
           receiptDigest: _ignoredReceiptDigest,
           ...receiptCore
         } = receipt;
+        void _ignoredReceiptDigest;
 
         const recomputedReceipt = {
           ...receiptCore,
@@ -1439,6 +1439,7 @@ describe(
           executionDigest: _ignoredExecutionDigest,
           ...coreWithoutExecutionDigest
         } = tamperedExecutionCore;
+        void _ignoredExecutionDigest;
 
         const recomputedExecution = {
           ...coreWithoutExecutionDigest,
@@ -1493,6 +1494,7 @@ describe(
           decisionDigest: _ignored,
           ...core
         } = first;
+        void _ignored;
 
         expect(first.decisionDigest).toBe(
           sha256(core),

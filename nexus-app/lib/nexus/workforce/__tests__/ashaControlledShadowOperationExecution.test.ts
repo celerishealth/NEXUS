@@ -849,6 +849,7 @@ describe(
             _oldPreparationDigest,
           ...preparationCore
         } = input.preparation;
+        void _oldPreparationDigest;
 
         const alteredCore = {
           ...preparationCore,
@@ -905,6 +906,7 @@ describe(
             _executionDigest,
           ...executionCore
         } = first;
+        void _executionDigest;
 
         expect(
           first.executionDigest,

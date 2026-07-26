@@ -525,6 +525,7 @@ describe(
             _ignored,
           ...alteredCore
         } = alteredPack;
+        void _ignored;
 
         await expect(
           executeAshaQualificationEvidence({

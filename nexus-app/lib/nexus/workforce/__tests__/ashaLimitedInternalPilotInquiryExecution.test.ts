@@ -1209,6 +1209,7 @@ describe(
 
           ...executionCore
         } = first;
+        void _executionDigest;
 
         expect(first.executionDigest).toBe(
           sha256(executionCore),

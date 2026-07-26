@@ -56,24 +56,19 @@ import {
 
 import {
   createMeeraActivationCandidateIssuance,
-  validateMeeraActivationCandidateIssuance,
   type MeeraActivationCandidateIssuance,
 } from "../meeraActivationCandidateIssuance";
 
 import {
   createMeeraOwnerActivationDecision,
-  validateMeeraOwnerActivationDecision,
-  type MeeraOwnerActivationDecision,
   type MeeraOwnerActivationDecisionType,
 } from "../meeraOwnerActivationDecision";
 import {
   createMeeraOwnerActivatedRuntimeIssuance,
-  validateMeeraOwnerActivatedRuntimeIssuance,
   type MeeraOwnerActivatedRuntimeIssuance,
 } from "../meeraOwnerActivatedRuntimeIssuance";
 import {
   createMeeraControlledShadowOperationPreparation,
-  validateMeeraControlledShadowOperationPreparation,
   type MeeraControlledShadowOperationPreparation,
 } from "../meeraControlledShadowOperationPreparation";
 import {
