@@ -159,7 +159,7 @@ function assertCoordinatedResult(input: {
     (!requireStateVersionMatch ||
       (state.version === event.nextVersion &&
         state.status === event.toStatus)) &&
-    state.version === auditEntry.nextVersion &&
+    event.nextVersion === auditEntry.nextVersion &&
     event.eventId === auditEntry.sourceEventId &&
     event.idempotencyKey ===
       auditEntry.sourceIdempotencyKey &&

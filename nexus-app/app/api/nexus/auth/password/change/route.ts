@@ -1,7 +1,4 @@
 ﻿import {
-  resolve,
-} from "node:path";
-import {
   NextRequest,
   NextResponse,
 } from "next/server";
@@ -14,6 +11,10 @@ import {
   SQLiteAuthenticatedTenantSessionStore,
   verifyAuthenticatedTenantSessionToken,
 } from "@/lib/nexus/sqliteAuthenticatedTenantSessionStore";
+
+import {
+  resolveControlledActionSQLiteRuntimePath,
+} from "@/lib/nexus/controlledActionSQLiteRuntimePath";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -213,11 +214,9 @@ export async function POST(
   }
 
   const databasePath =
-    resolve(
-      process.cwd(),
+    resolveControlledActionSQLiteRuntimePath(
       process.env
-        .NEXUS_CONTROLLED_ACTION_SQLITE_PATH ??
-        ".nexus-runtime/controlled-action-state.sqlite",
+        .NEXUS_CONTROLLED_ACTION_SQLITE_PATH,
     );
 
   let sessionStore:

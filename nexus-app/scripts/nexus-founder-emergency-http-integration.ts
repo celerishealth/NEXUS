@@ -704,9 +704,25 @@ const temporaryRoot =
     ),
   );
 
+const sqliteRuntimeSegment =
+  `day805-${randomUUID()}`;
+
+const sqliteRelativePath =
+  join(
+    sqliteRuntimeSegment,
+    "founder-emergency.sqlite",
+  );
+
+const sqliteRuntimeDirectory =
+  join(
+    process.cwd(),
+    ".nexus-runtime",
+    sqliteRuntimeSegment,
+  );
+
 const sqlitePath =
   join(
-    temporaryRoot,
+    sqliteRuntimeDirectory,
     "founder-emergency.sqlite",
   );
 
@@ -896,7 +912,7 @@ try {
         NEXUS_CONTROLLED_ACTION_STORAGE:
           "sqlite",
         NEXUS_CONTROLLED_ACTION_SQLITE_PATH:
-          sqlitePath,
+          sqliteRelativePath,
         NEXUS_AUTH_SESSION_KEY_ID:
           keyId,
         NEXUS_AUTH_SESSION_SIGNING_SECRET:
@@ -2250,6 +2266,15 @@ try {
       supabaseStub.server,
     );
   }
+
+  await rm(
+    sqliteRuntimeDirectory,
+    {
+      recursive: true,
+      force: true,
+    },
+  );
+
 
   await rm(
     temporaryRoot,

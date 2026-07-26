@@ -23,6 +23,15 @@ const doubles = vi.hoisted(
 );
 
 vi.mock(
+  "@/lib/nexus/controlledActionSQLiteRuntimePath",
+  () => ({
+    resolveControlledActionSQLiteRuntimePath:
+      () =>
+        ".nexus-runtime/controlled-action-state.sqlite",
+  }),
+);
+
+vi.mock(
   "@/lib/nexus/founderEmergencyOperations",
   () => ({
     readFounderEmergencyStatus:

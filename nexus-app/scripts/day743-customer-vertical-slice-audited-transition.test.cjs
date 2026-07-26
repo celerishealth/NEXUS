@@ -541,6 +541,72 @@ async function main() {
     "customer",
   );
 
+  const compareAndSetCallsBeforeAdvancedReplay =
+    repository.getCompareAndSetCalls();
+
+  const auditAppendCallsBeforeAdvancedReplay =
+    repository.getAuditAppendCalls();
+
+  const auditedAdvancedReplay = await apply({
+    actorContext: serviceActorContext,
+    expectedVersion: "initial-v1",
+    transition: "generate_recommendation",
+    idempotencyKey: "inquiry-735:recommendation:v1",
+    repository,
+  });
+
+  assert.equal(
+    auditedAdvancedReplay.transitionApplied,
+    false,
+  );
+
+  assert.equal(
+    auditedAdvancedReplay.transitionIdempotent,
+    true,
+  );
+
+  assert.equal(
+    auditedAdvancedReplay.auditCreated,
+    false,
+  );
+
+  assert.equal(
+    auditedAdvancedReplay.auditIdempotent,
+    true,
+  );
+
+  assert.equal(
+    auditedAdvancedReplay.state.status,
+    "customer_acknowledged",
+    "Advanced replay must return the current lifecycle state.",
+  );
+
+  assert.equal(
+    auditedAdvancedReplay.state.version,
+    acknowledgement.state.version,
+  );
+
+  assert.equal(
+    auditedAdvancedReplay.event.eventId,
+    recommendation.event.eventId,
+  );
+
+  assert.equal(
+    auditedAdvancedReplay.auditEntry.auditId,
+    recommendation.auditEntry.auditId,
+  );
+
+  assert.equal(
+    repository.getCompareAndSetCalls(),
+    compareAndSetCallsBeforeAdvancedReplay,
+    "Advanced replay must not repeat the state write.",
+  );
+
+  assert.equal(
+    repository.getAuditAppendCalls(),
+    auditAppendCallsBeforeAdvancedReplay,
+    "Advanced replay must not repeat the audit append.",
+  );
   const entries = repository.getAuditEntries();
 
   assert.equal(entries.length, 6);
@@ -566,7 +632,7 @@ async function main() {
     entries[entries.length - 1].hash,
   );
 
-  console.log("DAY 743 TARGETED TESTS PASS (15/15)");
+  console.log("DAY 743 TARGETED TESTS PASS (16/16)");
 }
 
 main().catch((error) => {

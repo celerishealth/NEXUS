@@ -618,7 +618,7 @@ function appendAudit(
 
 async function pathExists(path: string): Promise<boolean> {
   try {
-    await stat(path);
+    await stat(/* turbopackIgnore: true */ path);
     return true;
   } catch (error) {
     const code = (error as NodeJS.ErrnoException).code;
@@ -2529,13 +2529,13 @@ export class PersistentControlledActionVerticalSlice {
   }
 
   private async acquireLock(): Promise<() => Promise<void>> {
-    await mkdir(dirname(this.statePath), { recursive: true });
+    await mkdir(/* turbopackIgnore: true */ dirname(this.statePath), { recursive: true });
 
     const startedAt = Date.now();
 
     while (true) {
       try {
-        const lockHandle = await open(this.lockPath, "wx");
+        const lockHandle = await open(/* turbopackIgnore: true */ this.lockPath, "wx");
 
         await lockHandle.writeFile(
           JSON.stringify({
@@ -2549,7 +2549,7 @@ export class PersistentControlledActionVerticalSlice {
 
         return async () => {
           await lockHandle.close();
-          await rm(this.lockPath, { force: true });
+          await rm(/* turbopackIgnore: true */ this.lockPath, { force: true });
         };
       } catch (error) {
         const code = (error as NodeJS.ErrnoException).code;
@@ -2559,10 +2559,10 @@ export class PersistentControlledActionVerticalSlice {
         }
 
         try {
-          const lockStat = await stat(this.lockPath);
+          const lockStat = await stat(/* turbopackIgnore: true */ this.lockPath);
 
           if (Date.now() - lockStat.mtimeMs > STALE_LOCK_MS) {
-            await rm(this.lockPath, { force: true });
+            await rm(/* turbopackIgnore: true */ this.lockPath, { force: true });
             continue;
           }
         } catch (lockStatError) {
@@ -2601,7 +2601,7 @@ export class PersistentControlledActionVerticalSlice {
       return createInitialState();
     }
 
-    const rawState = await readFile(selectedPath, "utf8");
+    const rawState = await readFile(/* turbopackIgnore: true */ selectedPath, "utf8");
     const parsedState = JSON.parse(
       rawState,
     ) as PersistentControlledActionState;
@@ -2613,7 +2613,7 @@ export class PersistentControlledActionVerticalSlice {
   private async persistState(
     state: PersistentControlledActionState,
   ): Promise<void> {
-    await mkdir(dirname(this.statePath), { recursive: true });
+    await mkdir(/* turbopackIgnore: true */ dirname(this.statePath), { recursive: true });
 
     const temporaryPath =
       `${this.statePath}.${randomUUID()}.tmp`;
@@ -2621,7 +2621,7 @@ export class PersistentControlledActionVerticalSlice {
     const serializedState =
       `${JSON.stringify(state, null, 2)}\n`;
 
-    const temporaryHandle = await open(temporaryPath, "wx");
+    const temporaryHandle = await open(/* turbopackIgnore: true */ temporaryPath, "wx");
 
     try {
       await temporaryHandle.writeFile(serializedState, "utf8");
@@ -2630,24 +2630,24 @@ export class PersistentControlledActionVerticalSlice {
       await temporaryHandle.close();
     }
 
-    await rm(this.backupPath, { force: true });
+    await rm(/* turbopackIgnore: true */ this.backupPath, { force: true });
 
     if (await pathExists(this.statePath)) {
-      await rename(this.statePath, this.backupPath);
+      await rename(/* turbopackIgnore: true */ this.statePath, this.backupPath);
     }
 
     try {
-      await rename(temporaryPath, this.statePath);
-      await rm(this.backupPath, { force: true });
+      await rename(/* turbopackIgnore: true */ temporaryPath, this.statePath);
+      await rm(/* turbopackIgnore: true */ this.backupPath, { force: true });
     } catch (error) {
       if (
         !(await pathExists(this.statePath)) &&
         (await pathExists(this.backupPath))
       ) {
-        await rename(this.backupPath, this.statePath);
+        await rename(/* turbopackIgnore: true */ this.backupPath, this.statePath);
       }
 
-      await rm(temporaryPath, { force: true });
+      await rm(/* turbopackIgnore: true */ temporaryPath, { force: true });
       throw error;
     }
   }

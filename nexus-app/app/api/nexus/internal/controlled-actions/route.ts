@@ -1,5 +1,4 @@
-﻿import { resolve } from "node:path";
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import {
   ControlledActionCommandGateway,
 } from "@/lib/nexus/controlledActionCommandGateway";
@@ -30,24 +29,34 @@ import {
   verifySignedControlledActionGatewayEnvelope,
 } from "@/lib/nexus/signedControlledActionGatewayEnvelope";
 
+import {
+  resolveControlledActionRuntimePath,
+  resolveControlledActionSQLiteRuntimePath,
+} from "@/lib/nexus/controlledActionSQLiteRuntimePath";
+
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const actionStatePath = resolve(
-  process.cwd(),
-  process.env.NEXUS_CONTROLLED_ACTION_STATE_PATH ??
-    ".nexus-runtime/controlled-action-state.json",
-);
+const actionStatePath =
+  resolveControlledActionRuntimePath(
+    process.env.NEXUS_CONTROLLED_ACTION_STATE_PATH,
+    {
+      fieldName:
+        "NEXUS_CONTROLLED_ACTION_STATE_PATH",
+      defaultRelativePath:
+        "controlled-action-state.json",
+    },
+  );
 
 const controlledActionStorageMode =
   process.env.NEXUS_CONTROLLED_ACTION_STORAGE?.trim() ??
   "file";
 
-const sqliteDatabasePath = resolve(
-  process.cwd(),
-  process.env.NEXUS_CONTROLLED_ACTION_SQLITE_PATH ??
-    ".nexus-runtime/controlled-action-state.sqlite",
-);
+const sqliteDatabasePath =
+  resolveControlledActionSQLiteRuntimePath(
+    process.env
+      .NEXUS_CONTROLLED_ACTION_SQLITE_PATH,
+  );
 
 function createControlledActionEngine() {
   if (controlledActionStorageMode === "sqlite") {
@@ -69,17 +78,27 @@ function createControlledActionEngine() {
   );
 }
 
-const replayStatePath = resolve(
-  process.cwd(),
-  process.env.NEXUS_GATEWAY_REPLAY_STATE_PATH ??
-    ".nexus-runtime/controlled-action-gateway-replay.json",
-);
+const replayStatePath =
+  resolveControlledActionRuntimePath(
+    process.env.NEXUS_GATEWAY_REPLAY_STATE_PATH,
+    {
+      fieldName:
+        "NEXUS_GATEWAY_REPLAY_STATE_PATH",
+      defaultRelativePath:
+        "controlled-action-gateway-replay.json",
+    },
+  );
 
-const outcomeJournalPath = resolve(
-  process.cwd(),
-  process.env.NEXUS_GATEWAY_OUTCOME_JOURNAL_PATH ??
-    ".nexus-runtime/controlled-action-gateway-outcomes.json",
-);
+const outcomeJournalPath =
+  resolveControlledActionRuntimePath(
+    process.env.NEXUS_GATEWAY_OUTCOME_JOURNAL_PATH,
+    {
+      fieldName:
+        "NEXUS_GATEWAY_OUTCOME_JOURNAL_PATH",
+      defaultRelativePath:
+        "controlled-action-gateway-outcomes.json",
+    },
+  );
 
 const gateway = new ControlledActionCommandGateway(
   createControlledActionEngine(),
@@ -154,20 +173,28 @@ function createCommandReadinessGate():
   const backupDatabasePath =
     process.env
       .NEXUS_CONTROLLED_ACTION_BACKUP_SQLITE_PATH
-      ? resolve(
-          process.cwd(),
+      ? resolveControlledActionRuntimePath(
           process.env
             .NEXUS_CONTROLLED_ACTION_BACKUP_SQLITE_PATH,
+          {
+            fieldName:
+              "NEXUS_CONTROLLED_ACTION_BACKUP_SQLITE_PATH",
+            allowAbsolute: true,
+          },
         )
       : undefined;
 
   const backupManifestPath =
     process.env
       .NEXUS_CONTROLLED_ACTION_BACKUP_MANIFEST_PATH
-      ? resolve(
-          process.cwd(),
+      ? resolveControlledActionRuntimePath(
           process.env
             .NEXUS_CONTROLLED_ACTION_BACKUP_MANIFEST_PATH,
+          {
+            fieldName:
+              "NEXUS_CONTROLLED_ACTION_BACKUP_MANIFEST_PATH",
+            allowAbsolute: true,
+          },
         )
       : undefined;
 

@@ -315,7 +315,7 @@ async function pathExists(
   path: string,
 ): Promise<boolean> {
   try {
-    await stat(path);
+    await stat(/* turbopackIgnore: true */ path);
     return true;
   } catch (error) {
     if (
@@ -570,7 +570,7 @@ export class DurableSignedGatewayOutcomeJournal {
   private async acquireLock(): Promise<
     () => Promise<void>
   > {
-    await mkdir(dirname(this.statePath), {
+    await mkdir(/* turbopackIgnore: true */ dirname(this.statePath), {
       recursive: true,
     });
 
@@ -579,7 +579,7 @@ export class DurableSignedGatewayOutcomeJournal {
     while (true) {
       try {
         const lockHandle = await open(
-          this.lockPath,
+          /* turbopackIgnore: true */ this.lockPath,
           "wx",
         );
 
@@ -595,7 +595,7 @@ export class DurableSignedGatewayOutcomeJournal {
 
         return async () => {
           await lockHandle.close();
-          await rm(this.lockPath, {
+          await rm(/* turbopackIgnore: true */ this.lockPath, {
             force: true,
           });
         };
@@ -609,14 +609,14 @@ export class DurableSignedGatewayOutcomeJournal {
 
         try {
           const lockState = await stat(
-            this.lockPath,
+            /* turbopackIgnore: true */ this.lockPath,
           );
 
           if (
             Date.now() - lockState.mtimeMs >
             STALE_LOCK_MS
           ) {
-            await rm(this.lockPath, {
+            await rm(/* turbopackIgnore: true */ this.lockPath, {
               force: true,
             });
 
@@ -662,7 +662,7 @@ export class DurableSignedGatewayOutcomeJournal {
     }
 
     const raw = await readFile(
-      selectedPath,
+      /* turbopackIgnore: true */ selectedPath,
       "utf8",
     );
 
@@ -678,7 +678,7 @@ export class DurableSignedGatewayOutcomeJournal {
   private async persistState(
     state: SignedGatewayOutcomeJournalState,
   ): Promise<void> {
-    await mkdir(dirname(this.statePath), {
+    await mkdir(/* turbopackIgnore: true */ dirname(this.statePath), {
       recursive: true,
     });
 
@@ -686,7 +686,7 @@ export class DurableSignedGatewayOutcomeJournal {
       `${this.statePath}.${randomUUID()}.tmp`;
 
     const temporaryHandle = await open(
-      temporaryPath,
+      /* turbopackIgnore: true */ temporaryPath,
       "wx",
     );
 
@@ -701,24 +701,24 @@ export class DurableSignedGatewayOutcomeJournal {
       await temporaryHandle.close();
     }
 
-    await rm(this.backupPath, {
+    await rm(/* turbopackIgnore: true */ this.backupPath, {
       force: true,
     });
 
     if (await pathExists(this.statePath)) {
       await rename(
-        this.statePath,
+        /* turbopackIgnore: true */ this.statePath,
         this.backupPath,
       );
     }
 
     try {
       await rename(
-        temporaryPath,
+        /* turbopackIgnore: true */ temporaryPath,
         this.statePath,
       );
 
-      await rm(this.backupPath, {
+      await rm(/* turbopackIgnore: true */ this.backupPath, {
         force: true,
       });
     } catch (error) {
@@ -727,12 +727,12 @@ export class DurableSignedGatewayOutcomeJournal {
         (await pathExists(this.backupPath))
       ) {
         await rename(
-          this.backupPath,
+          /* turbopackIgnore: true */ this.backupPath,
           this.statePath,
         );
       }
 
-      await rm(temporaryPath, {
+      await rm(/* turbopackIgnore: true */ temporaryPath, {
         force: true,
       });
 

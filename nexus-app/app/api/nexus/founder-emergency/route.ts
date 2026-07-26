@@ -2,10 +2,6 @@ import {
   randomUUID,
 } from "node:crypto";
 import {
-  resolve,
-} from "node:path";
-
-import {
   NextResponse,
 } from "next/server";
 
@@ -23,6 +19,10 @@ import {
 import {
   SupabaseControlledPilotOperationStateReader,
 } from "@/lib/nexus/supabaseControlledPilotOperationStateReader";
+
+import {
+  resolveControlledActionSQLiteRuntimePath,
+} from "@/lib/nexus/controlledActionSQLiteRuntimePath";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -250,11 +250,9 @@ async function authenticateFounder(
 
     sessionStore =
       new SQLiteAuthenticatedTenantSessionStore(
-        resolve(
-          /* turbopackIgnore: true */ process.cwd(),
+        resolveControlledActionSQLiteRuntimePath(
           process.env
-            .NEXUS_CONTROLLED_ACTION_SQLITE_PATH ??
-            ".nexus-runtime/controlled-action-state.sqlite",
+            .NEXUS_CONTROLLED_ACTION_SQLITE_PATH,
         ),
       );
 

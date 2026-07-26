@@ -2,15 +2,17 @@
   timingSafeEqual,
 } from "node:crypto";
 import {
-  resolve,
-} from "node:path";
-import {
   NextRequest,
   NextResponse,
 } from "next/server";
 import {
   ControlledActionOperationalReadinessService,
 } from "@/lib/nexus/controlledActionOperationalReadiness";
+
+import {
+  resolveControlledActionRuntimePath,
+  resolveControlledActionSQLiteRuntimePath,
+} from "@/lib/nexus/controlledActionSQLiteRuntimePath";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -157,11 +159,9 @@ export async function GET(
         ?.trim() ?? "file";
 
     const databasePath =
-      resolve(
-        process.cwd(),
+      resolveControlledActionSQLiteRuntimePath(
         process.env
-          .NEXUS_CONTROLLED_ACTION_SQLITE_PATH ??
-          ".nexus-runtime/controlled-action-state.sqlite",
+          .NEXUS_CONTROLLED_ACTION_SQLITE_PATH,
       );
 
     const requireVerifiedBackup =
@@ -174,20 +174,28 @@ export async function GET(
     const backupDatabasePath =
       process.env
         .NEXUS_CONTROLLED_ACTION_BACKUP_SQLITE_PATH
-        ? resolve(
-            process.cwd(),
+        ? resolveControlledActionRuntimePath(
             process.env
               .NEXUS_CONTROLLED_ACTION_BACKUP_SQLITE_PATH,
+            {
+              fieldName:
+                "NEXUS_CONTROLLED_ACTION_BACKUP_SQLITE_PATH",
+              allowAbsolute: true,
+            },
           )
         : undefined;
 
     const backupManifestPath =
       process.env
         .NEXUS_CONTROLLED_ACTION_BACKUP_MANIFEST_PATH
-        ? resolve(
-            process.cwd(),
+        ? resolveControlledActionRuntimePath(
             process.env
               .NEXUS_CONTROLLED_ACTION_BACKUP_MANIFEST_PATH,
+            {
+              fieldName:
+                "NEXUS_CONTROLLED_ACTION_BACKUP_MANIFEST_PATH",
+              allowAbsolute: true,
+            },
           )
         : undefined;
 

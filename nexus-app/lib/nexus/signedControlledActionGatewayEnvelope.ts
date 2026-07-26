@@ -320,7 +320,7 @@ async function sleep(milliseconds: number): Promise<void> {
 
 async function pathExists(path: string): Promise<boolean> {
   try {
-    await stat(path);
+    await stat(/* turbopackIgnore: true */ path);
     return true;
   } catch (error) {
     if (
@@ -566,7 +566,7 @@ export class PersistentControlledActionGatewayReplayGuard {
   }
 
   private async acquireLock(): Promise<() => Promise<void>> {
-    await mkdir(dirname(this.statePath), {
+    await mkdir(/* turbopackIgnore: true */ dirname(this.statePath), {
       recursive: true,
     });
 
@@ -575,7 +575,7 @@ export class PersistentControlledActionGatewayReplayGuard {
     while (true) {
       try {
         const lockHandle = await open(
-          this.lockPath,
+          /* turbopackIgnore: true */ this.lockPath,
           "wx",
         );
 
@@ -591,7 +591,7 @@ export class PersistentControlledActionGatewayReplayGuard {
 
         return async () => {
           await lockHandle.close();
-          await rm(this.lockPath, { force: true });
+          await rm(/* turbopackIgnore: true */ this.lockPath, { force: true });
         };
       } catch (error) {
         if (
@@ -602,13 +602,13 @@ export class PersistentControlledActionGatewayReplayGuard {
         }
 
         try {
-          const lockState = await stat(this.lockPath);
+          const lockState = await stat(/* turbopackIgnore: true */ this.lockPath);
 
           if (
             Date.now() - lockState.mtimeMs >
             STALE_LOCK_MS
           ) {
-            await rm(this.lockPath, { force: true });
+            await rm(/* turbopackIgnore: true */ this.lockPath, { force: true });
             continue;
           }
         } catch (lockError) {
@@ -649,7 +649,7 @@ export class PersistentControlledActionGatewayReplayGuard {
       return createInitialReplayState();
     }
 
-    const raw = await readFile(selectedPath, "utf8");
+    const raw = await readFile(/* turbopackIgnore: true */ selectedPath, "utf8");
     const state = JSON.parse(raw) as GatewayReplayState;
 
     validateReplayState(state);
@@ -659,14 +659,14 @@ export class PersistentControlledActionGatewayReplayGuard {
   private async persistState(
     state: GatewayReplayState,
   ): Promise<void> {
-    await mkdir(dirname(this.statePath), {
+    await mkdir(/* turbopackIgnore: true */ dirname(this.statePath), {
       recursive: true,
     });
 
     const temporaryPath =
       `${this.statePath}.${randomUUID()}.tmp`;
 
-    const handle = await open(temporaryPath, "wx");
+    const handle = await open(/* turbopackIgnore: true */ temporaryPath, "wx");
 
     try {
       await handle.writeFile(
@@ -679,27 +679,27 @@ export class PersistentControlledActionGatewayReplayGuard {
       await handle.close();
     }
 
-    await rm(this.backupPath, { force: true });
+    await rm(/* turbopackIgnore: true */ this.backupPath, { force: true });
 
     if (await pathExists(this.statePath)) {
-      await rename(this.statePath, this.backupPath);
+      await rename(/* turbopackIgnore: true */ this.statePath, this.backupPath);
     }
 
     try {
-      await rename(temporaryPath, this.statePath);
-      await rm(this.backupPath, { force: true });
+      await rename(/* turbopackIgnore: true */ temporaryPath, this.statePath);
+      await rm(/* turbopackIgnore: true */ this.backupPath, { force: true });
     } catch (error) {
       if (
         !(await pathExists(this.statePath)) &&
         (await pathExists(this.backupPath))
       ) {
         await rename(
-          this.backupPath,
+          /* turbopackIgnore: true */ this.backupPath,
           this.statePath,
         );
       }
 
-      await rm(temporaryPath, { force: true });
+      await rm(/* turbopackIgnore: true */ temporaryPath, { force: true });
       throw error;
     }
   }
