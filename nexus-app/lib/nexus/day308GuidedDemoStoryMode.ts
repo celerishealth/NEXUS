@@ -186,7 +186,7 @@ export function getNexusDay308GuidedDemoStoryMode() {
   return nexusDay308GuidedDemoStoryMode;
 }
 
-export function validateNexusDay308GuidedDemoStoryMode(): any {
+export function validateNexusDay308GuidedDemoStoryMode() {
   const day307Validation = validateNexusDay307LegalSafeComplianceShieldPanel();
   const day307 = nexusDay307LegalSafeComplianceShieldPanel;
   const story = nexusDay308GuidedDemoStoryMode;

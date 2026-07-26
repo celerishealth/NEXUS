@@ -144,7 +144,7 @@ export function getNexusDay314CinematicDemoOwnerReviewGate() {
   return nexusDay314CinematicDemoOwnerReviewGate;
 }
 
-export function validateNexusDay314CinematicDemoOwnerReviewGate(): any {
+export function validateNexusDay314CinematicDemoOwnerReviewGate() {
   const day313Validation = validateNexusDay313CinematicDemoSharingSafetyPack();
   const day313 = nexusDay313CinematicDemoSharingSafetyPack;
   const gate = nexusDay314CinematicDemoOwnerReviewGate;

@@ -75,7 +75,7 @@ export function getControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpo
   return controlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary;
 }
 
-export function validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary(): any {
+export function validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReviewCheckpointSummary() {
   const sourceValidation =
     validateControlledPaidPilotSubscriptionLockBoundaryFinalReviewCheckpointSummaryFinalReview();
 

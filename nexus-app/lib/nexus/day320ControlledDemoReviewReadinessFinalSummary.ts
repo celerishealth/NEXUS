@@ -171,7 +171,7 @@ export function getNexusDay320ControlledDemoReviewReadinessFinalSummary() {
   return nexusDay320ControlledDemoReviewReadinessFinalSummary;
 }
 
-export function validateNexusDay320ControlledDemoReviewReadinessFinalSummary(): any {
+export function validateNexusDay320ControlledDemoReviewReadinessFinalSummary() {
   const day319Validation = validateNexusDay319ControlledDemoReviewReadinessCheckpoint();
   const day319 = nexusDay319ControlledDemoReviewReadinessCheckpoint;
   const summary = nexusDay320ControlledDemoReviewReadinessFinalSummary;

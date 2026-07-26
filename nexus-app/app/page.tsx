@@ -366,7 +366,7 @@ export default function Home() {
     "Day 8 production build passed",
   ];
 
-  function useTemplate(templateTitle: string, templatePrompt: string) {
+  function handleTemplateSelection(templateTitle: string, templatePrompt: string) {
     setSelectedTemplate(templateTitle);
     setSelectedTemplatePrompt(templatePrompt);
     setAiInput("");
@@ -681,7 +681,7 @@ ${aiInput}`,
             {promptTemplates.map((template) => (
               <button
                 key={template.title}
-                onClick={() => useTemplate(template.title, template.prompt)}
+                onClick={() => handleTemplateSelection(template.title, template.prompt)}
                 style={{
                   background:
                     selectedTemplate === template.title ? "#1d4ed8" : "#111827",

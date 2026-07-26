@@ -179,7 +179,7 @@ export function getNexusDay325OwnerReviewPackageFinalCheckpoint() {
   return nexusDay325OwnerReviewPackageFinalCheckpoint;
 }
 
-export function validateNexusDay325OwnerReviewPackageFinalCheckpoint(): any {
+export function validateNexusDay325OwnerReviewPackageFinalCheckpoint() {
   const day324Validation = validateNexusDay324OwnerReviewPrepFinalSummary();
   const day324 = nexusDay324OwnerReviewPrepFinalSummary;
   const checkpoint = nexusDay325OwnerReviewPackageFinalCheckpoint;

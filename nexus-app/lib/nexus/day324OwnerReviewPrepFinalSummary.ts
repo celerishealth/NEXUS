@@ -176,7 +176,7 @@ export function getNexusDay324OwnerReviewPrepFinalSummary() {
   return nexusDay324OwnerReviewPrepFinalSummary;
 }
 
-export function validateNexusDay324OwnerReviewPrepFinalSummary(): any {
+export function validateNexusDay324OwnerReviewPrepFinalSummary() {
   const day323Validation = validateNexusDay323OwnerReviewPrepCheckpoint();
   const day323 = nexusDay323OwnerReviewPrepCheckpoint;
   const summary = nexusDay324OwnerReviewPrepFinalSummary;

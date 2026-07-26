@@ -145,7 +145,7 @@ export function getNexusDay313CinematicDemoSharingSafetyPack() {
   return nexusDay313CinematicDemoSharingSafetyPack;
 }
 
-export function validateNexusDay313CinematicDemoSharingSafetyPack(): any {
+export function validateNexusDay313CinematicDemoSharingSafetyPack() {
   const day312Validation = validateNexusDay312CinematicDemoVisualQaChecklist();
   const day312 = nexusDay312CinematicDemoVisualQaChecklist;
   const sharing = nexusDay313CinematicDemoSharingSafetyPack;

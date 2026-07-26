@@ -153,7 +153,7 @@ export function getNexusDay316CinematicDemoOwnerReviewGateCheckpoint() {
   return nexusDay316CinematicDemoOwnerReviewGateCheckpoint;
 }
 
-export function validateNexusDay316CinematicDemoOwnerReviewGateCheckpoint(): any {
+export function validateNexusDay316CinematicDemoOwnerReviewGateCheckpoint() {
   const day315Validation = validateNexusDay315CinematicDemoOwnerReviewGateValidator();
   const day315 = nexusDay315CinematicDemoOwnerReviewGateValidator;
   const checkpoint = nexusDay316CinematicDemoOwnerReviewGateCheckpoint;

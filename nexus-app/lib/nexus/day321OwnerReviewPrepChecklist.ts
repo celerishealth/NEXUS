@@ -180,7 +180,7 @@ export function getNexusDay321OwnerReviewPrepChecklist() {
   return nexusDay321OwnerReviewPrepChecklist;
 }
 
-export function validateNexusDay321OwnerReviewPrepChecklist(): any {
+export function validateNexusDay321OwnerReviewPrepChecklist() {
   const day320Validation = validateNexusDay320ControlledDemoReviewReadinessFinalSummary();
   const day320 = nexusDay320ControlledDemoReviewReadinessFinalSummary;
   const checklist = nexusDay321OwnerReviewPrepChecklist;

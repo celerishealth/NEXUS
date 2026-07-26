@@ -148,7 +148,7 @@ export function getNexusDay311CinematicDemoAccessNavigationPolish() {
   return nexusDay311CinematicDemoAccessNavigationPolish;
 }
 
-export function validateNexusDay311CinematicDemoAccessNavigationPolish(): any {
+export function validateNexusDay311CinematicDemoAccessNavigationPolish() {
   const day310Validation = validateNexusDay310CinematicDemoReviewCheckpoint();
   const day310 = nexusDay310CinematicDemoReviewCheckpoint;
   const access = nexusDay311CinematicDemoAccessNavigationPolish;

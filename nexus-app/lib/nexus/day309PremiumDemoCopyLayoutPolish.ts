@@ -158,7 +158,7 @@ export function getNexusDay309PremiumDemoCopyLayoutPolish() {
   return nexusDay309PremiumDemoCopyLayoutPolish;
 }
 
-export function validateNexusDay309PremiumDemoCopyLayoutPolish(): any {
+export function validateNexusDay309PremiumDemoCopyLayoutPolish() {
   const day308Validation = validateNexusDay308GuidedDemoStoryMode();
   const day308 = nexusDay308GuidedDemoStoryMode;
   const polish = nexusDay309PremiumDemoCopyLayoutPolish;

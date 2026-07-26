@@ -170,7 +170,7 @@ export function getNexusDay322OwnerReviewPrepValidator() {
   return nexusDay322OwnerReviewPrepValidator;
 }
 
-export function validateNexusDay322OwnerReviewPrepValidator(): any {
+export function validateNexusDay322OwnerReviewPrepValidator() {
   const day321Validation = validateNexusDay321OwnerReviewPrepChecklist();
   const day321 = nexusDay321OwnerReviewPrepChecklist;
   const validator = nexusDay322OwnerReviewPrepValidator;

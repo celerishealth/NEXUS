@@ -146,7 +146,7 @@ export function getNexusDay307LegalSafeComplianceShieldPanel() {
   return nexusDay307LegalSafeComplianceShieldPanel;
 }
 
-export function validateNexusDay307LegalSafeComplianceShieldPanel(): any {
+export function validateNexusDay307LegalSafeComplianceShieldPanel() {
   const day306Validation = validateNexusDay306SubscriptionLockVisualPanel();
   const day306 = nexusDay306SubscriptionLockVisualPanel;
   const panel = nexusDay307LegalSafeComplianceShieldPanel;

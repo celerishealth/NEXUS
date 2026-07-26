@@ -175,7 +175,7 @@ export function getNexusDay318ControlledDemoReviewReadinessValidator() {
   return nexusDay318ControlledDemoReviewReadinessValidator;
 }
 
-export function validateNexusDay318ControlledDemoReviewReadinessValidator(): any {
+export function validateNexusDay318ControlledDemoReviewReadinessValidator() {
   const day317Validation = validateNexusDay317ControlledDemoReviewReadinessSummary();
   const day317 = nexusDay317ControlledDemoReviewReadinessSummary;
   const validator = nexusDay318ControlledDemoReviewReadinessValidator;

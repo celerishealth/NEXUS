@@ -17,14 +17,14 @@ export default function NexusTenantIsolationValidatorPage() {
         <li>Every subscription entitlement check must carry tenant reference.</li>
       </ul>
       <ul>
-        <li>A tenant cannot read another tenant's inquiries.</li>
-        <li>A tenant cannot read another tenant's catalog items.</li>
-        <li>A tenant cannot read another tenant's risk flags.</li>
-        <li>A tenant cannot approve another tenant's response.</li>
-        <li>A tenant cannot read another tenant's audit records.</li>
-        <li>A tenant cannot read another tenant's customer memory.</li>
-        <li>A tenant cannot update another tenant's follow-up state.</li>
-        <li>A tenant cannot unlock another tenant's subscription entitlement.</li>
+        <li>A tenant cannot read another tenant&apos;s inquiries.</li>
+        <li>A tenant cannot read another tenant&apos;s catalog items.</li>
+        <li>A tenant cannot read another tenant&apos;s risk flags.</li>
+        <li>A tenant cannot approve another tenant&apos;s response.</li>
+        <li>A tenant cannot read another tenant&apos;s audit records.</li>
+        <li>A tenant cannot read another tenant&apos;s customer memory.</li>
+        <li>A tenant cannot update another tenant&apos;s follow-up state.</li>
+        <li>A tenant cannot unlock another tenant&apos;s subscription entitlement.</li>
       </ul>
       <ul>
         <li>No real database write claim allowed yet.</li>

@@ -155,7 +155,7 @@ export function getNexusDay323OwnerReviewPrepCheckpoint() {
   return nexusDay323OwnerReviewPrepCheckpoint;
 }
 
-export function validateNexusDay323OwnerReviewPrepCheckpoint(): any {
+export function validateNexusDay323OwnerReviewPrepCheckpoint() {
   const day322Validation = validateNexusDay322OwnerReviewPrepValidator();
   const day322 = nexusDay322OwnerReviewPrepValidator;
   const checkpoint = nexusDay323OwnerReviewPrepCheckpoint;

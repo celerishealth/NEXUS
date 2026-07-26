@@ -160,7 +160,7 @@ export function getNexusDay319ControlledDemoReviewReadinessCheckpoint() {
   return nexusDay319ControlledDemoReviewReadinessCheckpoint;
 }
 
-export function validateNexusDay319ControlledDemoReviewReadinessCheckpoint(): any {
+export function validateNexusDay319ControlledDemoReviewReadinessCheckpoint() {
   const day318Validation = validateNexusDay318ControlledDemoReviewReadinessValidator();
   const day318 = nexusDay318ControlledDemoReviewReadinessValidator;
   const checkpoint = nexusDay319ControlledDemoReviewReadinessCheckpoint;

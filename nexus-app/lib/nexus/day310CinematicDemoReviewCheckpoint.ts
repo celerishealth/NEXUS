@@ -102,7 +102,7 @@ export function getNexusDay310CinematicDemoReviewCheckpoint() {
   return nexusDay310CinematicDemoReviewCheckpoint;
 }
 
-export function validateNexusDay310CinematicDemoReviewCheckpoint(): any {
+export function validateNexusDay310CinematicDemoReviewCheckpoint() {
   const day309Validation = validateNexusDay309PremiumDemoCopyLayoutPolish();
   const day309 = nexusDay309PremiumDemoCopyLayoutPolish;
   const checkpoint = nexusDay310CinematicDemoReviewCheckpoint;

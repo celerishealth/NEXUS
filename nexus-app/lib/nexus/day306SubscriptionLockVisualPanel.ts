@@ -172,7 +172,7 @@ export function getNexusDay306SubscriptionLockVisualPanel() {
   return nexusDay306SubscriptionLockVisualPanel;
 }
 
-export function validateNexusDay306SubscriptionLockVisualPanel(): any {
+export function validateNexusDay306SubscriptionLockVisualPanel() {
   const day305Validation = validateNexusDay305AiRiskRadarOwnerApprovalFlow();
   const day305 = nexusDay305AiRiskRadarOwnerApprovalFlow;
   const panel = nexusDay306SubscriptionLockVisualPanel;

@@ -450,7 +450,7 @@ async function run() {
   console.log("LIVE PROVIDER EXECUTION: BLOCKED");
   console.log("EXTERNAL DELIVERY: BLOCKED");
   console.log("PAYMENT EXECUTION: BLOCKED");
-});
+}
 
 run().catch((error) => {
   console.error(error);

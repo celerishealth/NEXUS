@@ -144,7 +144,7 @@ export function getNexusDay312CinematicDemoVisualQaChecklist() {
   return nexusDay312CinematicDemoVisualQaChecklist;
 }
 
-export function validateNexusDay312CinematicDemoVisualQaChecklist(): any {
+export function validateNexusDay312CinematicDemoVisualQaChecklist() {
   const day311Validation = validateNexusDay311CinematicDemoAccessNavigationPolish();
   const day311 = nexusDay311CinematicDemoAccessNavigationPolish;
   const qa = nexusDay312CinematicDemoVisualQaChecklist;

@@ -166,7 +166,7 @@ export function getNexusDay315CinematicDemoOwnerReviewGateValidator() {
   return nexusDay315CinematicDemoOwnerReviewGateValidator;
 }
 
-export function validateNexusDay315CinematicDemoOwnerReviewGateValidator(): any {
+export function validateNexusDay315CinematicDemoOwnerReviewGateValidator() {
   const day314Validation = validateNexusDay314CinematicDemoOwnerReviewGate();
   const day314 = nexusDay314CinematicDemoOwnerReviewGate;
   const validator = nexusDay315CinematicDemoOwnerReviewGateValidator;
