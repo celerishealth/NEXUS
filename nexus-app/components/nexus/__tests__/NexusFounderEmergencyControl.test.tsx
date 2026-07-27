@@ -292,12 +292,10 @@ describe(
         ).toBeTruthy();
 
         expect(
-          (
-            screen.getByLabelText(
-              "Password",
-            ) as HTMLInputElement
-          ).value,
-        ).toBe("");
+          screen.queryByLabelText(
+            "Password",
+          ),
+        ).toBeNull();
       },
     );
 
