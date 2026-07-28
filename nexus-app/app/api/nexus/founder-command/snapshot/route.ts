@@ -1,3 +1,5 @@
+import { authenticateFounderCommandRequest } from "@/lib/nexus/founderCommandServerAuthentication";
+
 import {
   randomUUID,
 } from "node:crypto";
@@ -16,10 +18,6 @@ import {
 import {
   PersistentControlledActionVerticalSlice,
 } from "@/lib/nexus/persistentControlledActionVerticalSlice";
-import {
-  SQLiteAuthenticatedTenantSessionStore,
-  verifyAuthenticatedTenantSessionToken,
-} from "@/lib/nexus/sqliteAuthenticatedTenantSessionStore";
 import {
   SQLiteControlledActionStateRepository,
 } from "@/lib/nexus/sqliteControlledActionStateRepository";
@@ -48,54 +46,6 @@ function json(
       headers: NO_STORE_HEADERS,
     },
   );
-}
-
-function readBearerToken(
-  request: Request,
-): string | null {
-  const authorization =
-    request.headers
-      .get("authorization")
-      ?.trim() ?? "";
-
-  const match =
-    /^Bearer\s+(.+)$/i.exec(
-      authorization,
-    );
-
-  if (!match) {
-    return null;
-  }
-
-  const token =
-    match[1]?.trim() ?? "";
-
-  return token.length > 0
-    ? token
-    : null;
-}
-
-function readMaximumClockSkewMs(): number {
-  const raw =
-    process.env
-      .NEXUS_AUTH_SESSION_MAX_CLOCK_SKEW_MS
-      ?.trim();
-
-  if (!raw) {
-    return 60_000;
-  }
-
-  const parsed = Number(raw);
-
-  if (
-    !Number.isInteger(parsed) ||
-    parsed < 0 ||
-    parsed > 300_000
-  ) {
-    return 60_000;
-  }
-
-  return parsed;
 }
 
 function isRecord(
@@ -144,139 +94,6 @@ function assertSafeSnapshotResponse(
   }
 }
 
-async function authenticateFounder(
-  request: Request,
-): Promise<
-  | {
-      ok: true;
-      tenantId: string;
-      actorId: string;
-    }
-  | {
-      ok: false;
-      response: NextResponse;
-    }
-> {
-  const token =
-    readBearerToken(request);
-
-  if (!token) {
-    return {
-      ok: false,
-      response: json(
-        {
-          error:
-            "Authentication failed.",
-        },
-        401,
-      ),
-    };
-  }
-
-  const keyId =
-    process.env
-      .NEXUS_AUTH_SESSION_KEY_ID
-      ?.trim() ?? "primary";
-
-  const signingSecret =
-    process.env
-      .NEXUS_AUTH_SESSION_SIGNING_SECRET
-      ?.trim() ?? "";
-
-  const allowedOwnerActorId =
-    process.env
-      .NEXUS_FOUNDER_COMMAND_OWNER_ACTOR_ID
-      ?.trim() ?? "";
-
-  if (
-    !signingSecret ||
-    !allowedOwnerActorId
-  ) {
-    return {
-      ok: false,
-      response: json(
-        {
-          error:
-            "Founder command authentication is not configured.",
-        },
-        503,
-      ),
-    };
-  }
-
-  const now =
-    new Date().toISOString();
-
-  let sessionStore:
-    | SQLiteAuthenticatedTenantSessionStore
-    | null = null;
-
-  try {
-    const claims =
-      verifyAuthenticatedTenantSessionToken(
-        token,
-        {
-          [keyId]: signingSecret,
-        },
-        {
-          now,
-          maxClockSkewMs:
-            readMaximumClockSkewMs(),
-        },
-      );
-
-    sessionStore =
-      new SQLiteAuthenticatedTenantSessionStore(
-        resolveControlledActionSQLiteRuntimePath(
-          process.env
-            .NEXUS_CONTROLLED_ACTION_SQLITE_PATH,
-        ),
-      );
-
-    await sessionStore
-      .assertActiveSession(
-        claims,
-        now,
-      );
-
-    if (
-      claims.role !== "owner" ||
-      claims.actorId !==
-        allowedOwnerActorId
-    ) {
-      return {
-        ok: false,
-        response: json(
-          {
-            error:
-              "Owner authority is required.",
-          },
-          403,
-        ),
-      };
-    }
-
-    return {
-      ok: true,
-      tenantId: claims.tenantId,
-      actorId: claims.actorId,
-    };
-  } catch {
-    return {
-      ok: false,
-      response: json(
-        {
-          error:
-            "Authentication failed.",
-        },
-        401,
-      ),
-    };
-  } finally {
-    sessionStore?.close();
-  }
-}
-
 export async function GET(
   request: Request,
 ) {
@@ -311,10 +128,17 @@ export async function GET(
   }
 
   const authentication =
-    await authenticateFounder(request);
+    await authenticateFounderCommandRequest(request);
 
   if (!authentication.ok) {
-    return authentication.response;
+    const error =
+      authentication.reason === "authentication-not-configured"
+        ? "Founder command authentication is not configured."
+        : authentication.reason === "owner-authority-required"
+          ? "Owner authority is required."
+          : "Authentication failed.";
+
+    return json({ error }, authentication.status);
   }
 
   const repository =
