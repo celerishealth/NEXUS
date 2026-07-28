@@ -20,6 +20,11 @@ import {
   type FounderGrowthStatusSummaryResult,
   readFounderGrowthStatusSummary,
 } from "@/lib/nexus/founderGrowthStatusSummaryClient";
+import {
+  FounderCommercialEvidenceSummaryClientError,
+  type FounderCommercialEvidenceSummaryResult,
+  readFounderCommercialEvidenceSummary,
+} from "@/lib/nexus/founderCommercialEvidenceSummaryClient";
 
 import {
   FounderEmergencyClientError,
@@ -101,6 +106,10 @@ export default function NexusFounderCommandDashboard() {
     useState<FounderGrowthStatusSummaryResult | null>(null);
   const [growthStatusMessage, setGrowthStatusMessage] =
     useState("");
+  const [commercialResult, setCommercialResult] =
+    useState<FounderCommercialEvidenceSummaryResult | null>(null);
+  const [commercialMessage, setCommercialMessage] =
+    useState("");
 
   async function loadGrowthSnapshot(
     currentSession: FounderEmergencySession,
@@ -159,6 +168,34 @@ export default function NexusFounderCommandDashboard() {
       );
     }
   }
+  async function loadCommercialEvidenceSummary(
+    currentSession: FounderEmergencySession,
+  ) {
+    setCommercialMessage("");
+
+    try {
+      const commercial =
+        await readFounderCommercialEvidenceSummary({
+          accessToken: currentSession.accessToken,
+          expectedTenantId: currentSession.tenantId,
+          expectedOwnerActorId: currentSession.actorId,
+        });
+
+      setCommercialResult(commercial);
+      setCommercialMessage(
+        "Founder commercial evidence verified.",
+      );
+    } catch (error) {
+      setCommercialResult(null);
+      setCommercialMessage(
+        error instanceof
+          FounderCommercialEvidenceSummaryClientError
+          ? error.message
+          : "Founder commercial evidence request failed safely. No action was taken.",
+      );
+    }
+  }
+
   function lockBrowserSession(
     nextMessage: string,
   ) {
@@ -168,6 +205,8 @@ export default function NexusFounderCommandDashboard() {
     setGrowthMessage("");
     setGrowthStatusResult(null);
     setGrowthStatusMessage("");
+    setCommercialResult(null);
+    setCommercialMessage("");
     setPassword("");
     setMessage(nextMessage);
   }
@@ -183,6 +222,8 @@ export default function NexusFounderCommandDashboard() {
     setGrowthMessage("");
     setGrowthStatusResult(null);
     setGrowthStatusMessage("");
+    setCommercialResult(null);
+    setCommercialMessage("");
 
     try {
       const issuedSession =
@@ -210,6 +251,7 @@ export default function NexusFounderCommandDashboard() {
       );
       await loadGrowthSnapshot(issuedSession);
       await loadGrowthStatusSummary(issuedSession);
+      await loadCommercialEvidenceSummary(issuedSession);
     } catch (error) {
       setPassword("");
       setSession(null);
@@ -218,6 +260,8 @@ export default function NexusFounderCommandDashboard() {
       setGrowthMessage("");
       setGrowthStatusResult(null);
       setGrowthStatusMessage("");
+      setCommercialResult(null);
+      setCommercialMessage("");
       setMessage(safeMessage(error));
     } finally {
       setBusy(null);
@@ -252,12 +296,15 @@ export default function NexusFounderCommandDashboard() {
       );
       await loadGrowthSnapshot(session);
       await loadGrowthStatusSummary(session);
+      await loadCommercialEvidenceSummary(session);
     } catch (error) {
       setResult(null);
       setGrowthResult(null);
       setGrowthMessage("");
       setGrowthStatusResult(null);
       setGrowthStatusMessage("");
+      setCommercialResult(null);
+      setCommercialMessage("");
 
       if (
         error instanceof
@@ -312,6 +359,8 @@ export default function NexusFounderCommandDashboard() {
         setGrowthMessage("");
         setGrowthStatusResult(null);
         setGrowthStatusMessage("");
+        setCommercialResult(null);
+        setCommercialMessage("");
         setMessage(safeMessage(error));
       }
     } finally {
@@ -589,8 +638,70 @@ export default function NexusFounderCommandDashboard() {
                 )}
 
                 <p className="mt-4 text-xs leading-5 text-slate-400">
-                  Qualified leads, quotations, orders, and revenue remain unavailable until separately verified evidence exists.
+                  Commercial metrics are displayed separately only when verified owner-bound evidence exists.
                 </p>
+              </section>
+
+              <section
+                aria-label="Founder commercial evidence"
+                className="rounded-2xl border border-emerald-300/20 bg-emerald-950/20 p-5"
+              >
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-300">
+                  Commercial evidence
+                </p>
+                <h2 className="mt-2 text-xl font-bold text-white">
+                  Verified owner-bound revenue chain
+                </h2>
+                <p className="mt-2 text-sm leading-6 text-slate-300">
+                  Read-only commercial evidence only. Customer contact, quotation delivery, order execution, payment execution, provider mutation, and public launch remain unauthorized.
+                </p>
+
+                {commercialResult ? (
+                  <>
+                    <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+                      <article className="rounded-xl border border-slate-700 bg-slate-950/70 p-4">
+                        <p className="text-xs uppercase tracking-[0.12em] text-slate-400">Qualified leads</p>
+                        <p aria-label="Commercial qualified leads" className="mt-2 text-2xl font-black text-white">{commercialResult.summary.qualifiedLeadCount}</p>
+                      </article>
+                      <article className="rounded-xl border border-slate-700 bg-slate-950/70 p-4">
+                        <p className="text-xs uppercase tracking-[0.12em] text-slate-400">Quotations issued</p>
+                        <p aria-label="Commercial quotations" className="mt-2 text-2xl font-black text-white">{commercialResult.summary.quotationCount}</p>
+                      </article>
+                      <article className="rounded-xl border border-slate-700 bg-slate-950/70 p-4">
+                        <p className="text-xs uppercase tracking-[0.12em] text-slate-400">Orders confirmed</p>
+                        <p aria-label="Commercial orders" className="mt-2 text-2xl font-black text-white">{commercialResult.summary.orderCount}</p>
+                      </article>
+                      <article className="rounded-xl border border-slate-700 bg-slate-950/70 p-4">
+                        <p className="text-xs uppercase tracking-[0.12em] text-slate-400">Payment receipts</p>
+                        <p aria-label="Commercial payment receipts" className="mt-2 text-2xl font-black text-white">{commercialResult.summary.paymentReceiptCount}</p>
+                      </article>
+                      <article className="rounded-xl border border-slate-700 bg-slate-950/70 p-4">
+                        <p className="text-xs uppercase tracking-[0.12em] text-slate-400">Evidence records</p>
+                        <p aria-label="Commercial source records" className="mt-2 text-2xl font-black text-white">{commercialResult.summary.sourceRecordCount}</p>
+                      </article>
+                    </div>
+
+                    <div className="mt-4 rounded-xl border border-slate-700 bg-slate-950/70 p-4">
+                      <p className="text-xs uppercase tracking-[0.12em] text-slate-400">Verified revenue in minor currency units</p>
+                      {Object.entries(commercialResult.summary.revenueByCurrencyMinor).length > 0 ? (
+                        <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+                          {Object.entries(commercialResult.summary.revenueByCurrencyMinor).map(([currencyCode, amountMinor]) => (
+                            <li aria-label={`Commercial revenue ${currencyCode}`} className="rounded-lg border border-slate-800 px-3 py-2 text-sm font-semibold text-emerald-100" key={currencyCode}>
+                              {currencyCode}: {amountMinor}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="mt-3 text-sm text-slate-400">No verified payment revenue is recorded.</p>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <p className="mt-5 rounded-xl border border-amber-300/25 bg-amber-950/20 p-4 text-sm text-amber-100">
+                    {commercialMessage ||
+                      "Founder commercial evidence has not been verified."}
+                  </p>
+                )}
               </section>
 
               <section

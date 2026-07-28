@@ -21,6 +21,7 @@ import {
 } from "@/lib/nexus/founderCommandSnapshotClient";
 import { FounderGrowthSnapshotClientError } from "@/lib/nexus/founderGrowthSnapshotClient";
 import { FounderGrowthStatusSummaryClientError } from "@/lib/nexus/founderGrowthStatusSummaryClient";
+import { FounderCommercialEvidenceSummaryClientError } from "@/lib/nexus/founderCommercialEvidenceSummaryClient";
 
 import {
   FounderEmergencyClientError,
@@ -32,6 +33,7 @@ const doubles = vi.hoisted(
     readSnapshot: vi.fn(),
     readGrowthSnapshot: vi.fn(),
     readGrowthStatusSummary: vi.fn(),
+    readCommercialEvidence: vi.fn(),
     revokeSession: vi.fn(),
   }),
 );
@@ -109,6 +111,24 @@ vi.mock(
     };
   },
 );
+vi.mock(
+  "@/lib/nexus/founderCommercialEvidenceSummaryClient",
+  async () => {
+    const actual =
+      await vi.importActual<
+        typeof import("@/lib/nexus/founderCommercialEvidenceSummaryClient")
+      >(
+        "@/lib/nexus/founderCommercialEvidenceSummaryClient",
+      );
+
+    return {
+      ...actual,
+      readFounderCommercialEvidenceSummary:
+        doubles.readCommercialEvidence,
+    };
+  },
+);
+
 const session = {
   accessToken:
     "authenticated-session-token",
@@ -222,6 +242,44 @@ const growthStatusSummaryResult = {
   paymentExecutionAuthorized: false as const,
   publicLaunchAuthorized: false as const,
 };
+const commercialEvidenceSummaryResult = {
+  schemaVersion:
+    "nexus-founder-commercial-evidence-summary-v1" as const,
+  tenantId: "tenant-a",
+  ownerActorId: "owner-a",
+  summary: {
+    version:
+      "nexus-founder-commercial-evidence-summary-v1" as const,
+    tenantId: "tenant-a",
+    ownerActorId: "owner-a",
+    generatedAt: "2026-07-28T00:00:00.000Z",
+    evidenceBoundary:
+      "VERIFIED_OWNER_BOUND_COMMERCIAL_EVIDENCE_ONLY" as const,
+    sourceRecordCount: 4,
+    qualifiedLeadCount: 1,
+    quotationCount: 1,
+    orderCount: 1,
+    paymentReceiptCount: 1,
+    revenueByCurrencyMinor: { INR: 125000 },
+    customerIdentityExposed: false as const,
+    inquiryMessageExposed: false as const,
+    customerContactAuthorized: false as const,
+    quotationDeliveryAuthorized: false as const,
+    orderExecutionAuthorized: false as const,
+    paymentExecutionAuthorized: false as const,
+    providerMutationAuthorized: false as const,
+    publicLaunchAuthorized: false as const,
+  },
+  liveProviderExecutionAuthorized: false as const,
+  providerMutationAuthorized: false as const,
+  resumeAuthorized: false as const,
+  customerContactAuthorized: false as const,
+  quotationDeliveryAuthorized: false as const,
+  orderExecutionAuthorized: false as const,
+  paymentExecutionAuthorized: false as const,
+  publicLaunchAuthorized: false as const,
+};
+
 async function fillLoginForm() {
   const user = userEvent.setup();
 
@@ -287,6 +345,10 @@ describe(
       doubles.readGrowthStatusSummary
         .mockResolvedValue(
           growthStatusSummaryResult,
+        );
+      doubles.readCommercialEvidence
+        .mockResolvedValue(
+          commercialEvidenceSummaryResult,
         );
       doubles.revokeSession
         .mockResolvedValue({
@@ -669,7 +731,7 @@ describe(
         ).toBe("7");
         expect(
           screen.getByText(
-            "Qualified leads, quotations, orders, and revenue remain unavailable until separately verified evidence exists.",
+            "Commercial metrics are displayed separately only when verified owner-bound evidence exists.",
           ),
         ).toBeTruthy();
       },
@@ -728,6 +790,50 @@ describe(
         await screen.findByText("Authenticated logout verified. Browser-held access token cleared. No execution or resume action was performed.");
         expect(screen.queryByLabelText("Inquiry status ownerReview")).toBeNull();
         expect(screen.queryByLabelText("Inquiry lifecycle evidence")).toBeNull();
+      },
+    );
+
+    it(
+      "renders verified owner-bound commercial evidence without granting authority",
+      async () => {
+        render(<NexusFounderCommandDashboard />);
+        await authenticateDashboard();
+
+        expect(doubles.readCommercialEvidence).toHaveBeenCalledWith({
+          accessToken: "authenticated-session-token",
+          expectedTenantId: "tenant-a",
+          expectedOwnerActorId: "owner-a",
+        });
+        expect((await screen.findByLabelText("Commercial qualified leads")).textContent).toBe("1");
+        expect(screen.getByLabelText("Commercial quotations").textContent).toBe("1");
+        expect(screen.getByLabelText("Commercial orders").textContent).toBe("1");
+        expect(screen.getByLabelText("Commercial payment receipts").textContent).toBe("1");
+        expect(screen.getByLabelText("Commercial source records").textContent).toBe("4");
+        expect(screen.getByLabelText("Commercial revenue INR").textContent).toContain("125000");
+        expect(screen.getByText("Verified owner-bound revenue chain")).toBeTruthy();
+        expect(screen.queryByRole("button", { name: /execute|approve|resume|send|payment|pause/i })).toBeNull();
+      },
+    );
+
+    it(
+      "preserves command growth and lifecycle evidence when commercial evidence is unavailable",
+      async () => {
+        doubles.readCommercialEvidence.mockRejectedValue(
+          new FounderCommercialEvidenceSummaryClientError(
+            503,
+            "Founder commercial evidence summary is unavailable. No action was taken.",
+          ),
+        );
+        render(<NexusFounderCommandDashboard />);
+        await authenticateDashboard();
+
+        await screen.findByText(
+          "Founder commercial evidence summary is unavailable. No action was taken.",
+        );
+        expect(screen.getByLabelText("Snapshot revision").textContent).toBe("7");
+        expect(screen.getByLabelText("Growth total inquiries").textContent).toBe("12");
+        expect(screen.getByLabelText("Inquiry status ownerReview").textContent).toBe("2");
+        expect(screen.queryByLabelText("Commercial qualified leads")).toBeNull();
       },
     );
 
