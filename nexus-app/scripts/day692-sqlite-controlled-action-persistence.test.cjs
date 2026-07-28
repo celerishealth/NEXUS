@@ -1,4 +1,4 @@
-﻿const assert = require("node:assert/strict");
+const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const fsp = require("node:fs/promises");
 const os = require("node:os");
@@ -552,12 +552,12 @@ test("route supports explicit SQLite storage while remaining file-backed by defa
 
   assert.match(
     routeSource,
-    /storageMode === "sqlite"/,
+    /controlledActionStorageMode === "sqlite"/,
   );
 
   assert.match(
     routeSource,
-    /storageMode === "file"/,
+    /controlledActionStorageMode === "file"/,
   );
 
   assert.doesNotMatch(

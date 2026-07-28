@@ -127,11 +127,11 @@ describe(
         );
 
         expect(source).toMatch(
-          /resolveControlledActionSQLiteRuntimePath\(\s*process\.env\s*\.\s*NEXUS_CONTROLLED_ACTION_SQLITE_PATH,\s*\)/s,
+          /resolveControlledActionSQLiteRuntimePath\(\s*process\.env\s*\.\s*NEXUS_CONTROLLED_ACTION_SQLITE_PATH,\s*\)/,
         );
 
         expect(source).not.toMatch(
-          /resolve\(\s*(?:\/\*\s*turbopackIgnore:\s*true\s*\*\/\s*)?process\.cwd\(\)\s*,\s*process\.env\s*\.\s*NEXUS_CONTROLLED_ACTION_SQLITE_PATH/s,
+          /resolve\(\s*(?:\/\*\s*turbopackIgnore:\s*true\s*\*\/\s*)?process\.cwd\(\)\s*,\s*process\.env\s*\.\s*NEXUS_CONTROLLED_ACTION_SQLITE_PATH/,
         );
       },
     );
@@ -303,11 +303,11 @@ describe(
         ).toBe(expectedResolverCalls);
 
         expect(source).not.toMatch(
-          /resolve\(\s*process\.cwd\(\)\s*,\s*process\.env/s,
+          /resolve\(\s*process\.cwd\(\)\s*,\s*process\.env/,
         );
 
         expect(source).not.toMatch(
-          /from\s*"node:path"/s,
+          /from\s*"node:path"/,
         );
       },
     );

@@ -1,4 +1,4 @@
-﻿import { dirname } from "node:path";
+import { dirname } from "node:path";
 import { mkdirSync } from "node:fs";
 import type {
   ControlledActionStateRepository,
@@ -382,7 +382,8 @@ export class SQLiteControlledActionStateRepository
 
     this.database = new DatabaseSync(normalizedPath);
 
-    this.database.exec(`
+    try {
+      this.database.exec(`
       PRAGMA journal_mode = WAL;
       PRAGMA synchronous = FULL;
       PRAGMA foreign_keys = ON;
@@ -423,7 +424,7 @@ export class SQLiteControlledActionStateRepository
         status TEXT NOT NULL
           CHECK (length(status) > 0),
         version INTEGER NOT NULL
-          CHECK (version >= 1),
+          CHECK (version >= 0),
         outbox_id TEXT,
         lease_owner TEXT,
         lease_expires_at TEXT,
@@ -455,7 +456,7 @@ export class SQLiteControlledActionStateRepository
         status TEXT NOT NULL
           CHECK (length(status) > 0),
         version INTEGER NOT NULL
-          CHECK (version >= 1),
+          CHECK (version >= 0),
         delivery_attempt_count INTEGER NOT NULL
           CHECK (delivery_attempt_count >= 0),
         max_delivery_attempts INTEGER NOT NULL
@@ -616,7 +617,18 @@ export class SQLiteControlledActionStateRepository
       }
     }
 
-    this.initializeOrVerifyProjectionState();
+      this.migrateZeroBasedProjectionVersions();
+      this.initializeOrVerifyProjectionState();
+    } catch (error) {
+      try {
+        this.database.close();
+        this.closed = true;
+      } catch {
+        // Original constructor failure remains authoritative.
+      }
+
+      throw error;
+    }
   }
 
   async readSnapshot(): Promise<PersistentControlledActionState> {
@@ -1629,6 +1641,187 @@ export class SQLiteControlledActionStateRepository
       );
   }
 
+  private migrateZeroBasedProjectionVersions(): void {
+    const actionTable = this.database
+      .prepare(
+        "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'nexus_controlled_actions_projection'",
+      )
+      .get();
+
+    const outboxTable = this.database
+      .prepare(
+        "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'nexus_dispatch_outbox_projection'",
+      )
+      .get();
+
+    if (!actionTable || !outboxTable) {
+      throw new Error(
+        "SQLite controlled-action projection tables are missing.",
+      );
+    }
+
+    const actionSql = readString(
+      actionTable,
+      "sql",
+    );
+
+    const outboxSql = readString(
+      outboxTable,
+      "sql",
+    );
+
+    const legacyConstraint =
+      /CHECK\s*\(\s*version\s*>=\s*1\s*\)/i;
+
+    const zeroBasedConstraint =
+      /CHECK\s*\(\s*version\s*>=\s*0\s*\)/i;
+
+    const actionMode =
+      legacyConstraint.test(actionSql)
+        ? "legacy"
+        : zeroBasedConstraint.test(actionSql)
+          ? "zero_based"
+          : "unknown";
+
+    const outboxMode =
+      legacyConstraint.test(outboxSql)
+        ? "legacy"
+        : zeroBasedConstraint.test(outboxSql)
+          ? "zero_based"
+          : "unknown";
+
+    if (
+      actionMode === "unknown" ||
+      outboxMode === "unknown" ||
+      actionMode !== outboxMode
+    ) {
+      throw new Error(
+        "SQLite projection version constraints are unrecognized or inconsistent.",
+      );
+    }
+
+    const recordMigration = (): void => {
+      this.database
+        .prepare(`
+          INSERT OR IGNORE INTO nexus_schema_migrations (
+            version,
+            migration_name,
+            applied_at
+          )
+          VALUES (?, ?, ?)
+        `)
+        .run(
+          8,
+          "controlled_action_zero_based_projection_versions_v1",
+          new Date().toISOString(),
+        );
+    };
+
+    if (actionMode === "zero_based") {
+      recordMigration();
+      return;
+    }
+
+    this.database.exec("BEGIN IMMEDIATE");
+
+    try {
+      this.database.exec(`
+        DROP TABLE nexus_dispatch_outbox_projection;
+        DROP TABLE nexus_controlled_actions_projection;
+
+        CREATE TABLE nexus_controlled_actions_projection (
+          action_id TEXT PRIMARY KEY
+            CHECK (length(action_id) > 0),
+          tenant_id TEXT NOT NULL
+            CHECK (length(tenant_id) > 0),
+          idempotency_key TEXT NOT NULL
+            CHECK (length(idempotency_key) > 0),
+          status TEXT NOT NULL
+            CHECK (length(status) > 0),
+          version INTEGER NOT NULL
+            CHECK (version >= 0),
+          outbox_id TEXT,
+          lease_owner TEXT,
+          lease_expires_at TEXT,
+          lease_fence INTEGER NOT NULL
+            CHECK (lease_fence >= 0),
+          recovery_count INTEGER NOT NULL
+            CHECK (recovery_count >= 0),
+          created_at TEXT NOT NULL,
+          updated_at TEXT NOT NULL,
+          record_json TEXT NOT NULL,
+          UNIQUE (tenant_id, idempotency_key),
+          UNIQUE (tenant_id, action_id)
+        );
+
+        CREATE INDEX
+          nexus_controlled_actions_tenant_status_idx
+        ON nexus_controlled_actions_projection (
+          tenant_id,
+          status,
+          updated_at
+        );
+
+        CREATE TABLE nexus_dispatch_outbox_projection (
+          outbox_id TEXT PRIMARY KEY
+            CHECK (length(outbox_id) > 0),
+          action_id TEXT NOT NULL,
+          tenant_id TEXT NOT NULL
+            CHECK (length(tenant_id) > 0),
+          status TEXT NOT NULL
+            CHECK (length(status) > 0),
+          version INTEGER NOT NULL
+            CHECK (version >= 0),
+          delivery_attempt_count INTEGER NOT NULL
+            CHECK (delivery_attempt_count >= 0),
+          max_delivery_attempts INTEGER NOT NULL
+            CHECK (max_delivery_attempts >= 1),
+          next_attempt_at TEXT NOT NULL,
+          lease_owner TEXT,
+          lease_expires_at TEXT,
+          lease_fence INTEGER NOT NULL
+            CHECK (lease_fence >= 0),
+          recovery_count INTEGER NOT NULL
+            CHECK (recovery_count >= 0),
+          created_at TEXT NOT NULL,
+          updated_at TEXT NOT NULL,
+          record_json TEXT NOT NULL,
+          FOREIGN KEY (action_id)
+            REFERENCES nexus_controlled_actions_projection (
+              action_id
+            )
+            ON DELETE CASCADE,
+          UNIQUE (tenant_id, outbox_id)
+        );
+
+        CREATE INDEX
+          nexus_dispatch_outbox_due_idx
+        ON nexus_dispatch_outbox_projection (
+          tenant_id,
+          status,
+          next_attempt_at,
+          created_at,
+          outbox_id
+        );
+      `);
+
+      this.syncProjections(
+        this.readAuthoritativeState(),
+      );
+
+      recordMigration();
+
+      this.database.exec("COMMIT");
+    } catch (error) {
+      try {
+        this.database.exec("ROLLBACK");
+      } catch {
+        // Original migration error remains authoritative.
+      }
+
+      throw error;
+    }
+  }
   private ensureOpen(): void {
     if (this.closed) {
       throw new Error(
