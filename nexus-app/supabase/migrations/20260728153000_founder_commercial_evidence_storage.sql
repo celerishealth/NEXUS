@@ -454,6 +454,84 @@ begin
 end
 $$;
 
+create or replace function public.nexus_read_founder_commercial_evidence(
+    p_tenant_id text,
+    p_owner_id text
+)
+returns table (
+    evidence_id uuid,
+    tenant_id varchar(128),
+    owner_id varchar(128),
+    inquiry_id uuid,
+    evidence_kind varchar(32),
+    quotation_id varchar(200),
+    order_id varchar(200),
+    payment_id varchar(200),
+    amount_minor bigint,
+    currency_code char(3),
+    buyer_requirement_verified boolean,
+    buyer_intent_verified boolean,
+    fake_or_irrelevant_lead_excluded boolean,
+    owner_approved boolean,
+    customer_delivery_verified boolean,
+    owner_confirmed boolean,
+    customer_acceptance_verified boolean,
+    payment_receipt_verified boolean,
+    verified_at timestamptz
+)
+language sql
+security definer
+set search_path = public, pg_temp
+stable
+as $$
+    select
+        evidence.evidence_id, evidence.tenant_id, evidence.owner_id,
+        evidence.inquiry_id, evidence.evidence_kind, evidence.quotation_id,
+        evidence.order_id, evidence.payment_id, evidence.amount_minor,
+        evidence.currency_code, evidence.buyer_requirement_verified,
+        evidence.buyer_intent_verified,
+        evidence.fake_or_irrelevant_lead_excluded, evidence.owner_approved,
+        evidence.customer_delivery_verified, evidence.owner_confirmed,
+        evidence.customer_acceptance_verified,
+        evidence.payment_receipt_verified, evidence.verified_at
+    from public.nexus_founder_commercial_evidence as evidence
+    inner join public.nexus_tenant_owner_membership as membership
+        on membership.tenant_id = evidence.tenant_id
+        and membership.owner_id = evidence.owner_id
+    inner join public.nexus_tenant as tenant
+        on tenant.tenant_id = membership.tenant_id
+    inner join public.nexus_owner_identity as owner_identity
+        on owner_identity.owner_id = membership.owner_id
+    where evidence.tenant_id = trim(p_tenant_id)
+        and evidence.owner_id = trim(p_owner_id)
+        and length(trim(p_tenant_id)) between 1 and 128
+        and length(trim(p_owner_id)) between 1 and 128
+        and tenant.status = 'ACTIVE'
+        and owner_identity.status = 'ACTIVE'
+        and membership.status = 'ACTIVE'
+        and membership.role = 'OWNER'
+    order by evidence.verified_at asc, evidence.evidence_id asc;
+$$;
+
+revoke all on function public.nexus_read_founder_commercial_evidence(text, text) from public;
+
+do $$
+begin
+    if exists (select 1 from pg_roles where rolname = 'anon') then
+        execute 'revoke all on function public.nexus_read_founder_commercial_evidence(text,text) from anon';
+    end if;
+    if exists (select 1 from pg_roles where rolname = 'authenticated') then
+        execute 'revoke all on function public.nexus_read_founder_commercial_evidence(text,text) from authenticated';
+    end if;
+    if exists (select 1 from pg_roles where rolname = 'service_role') then
+        execute 'grant execute on function public.nexus_read_founder_commercial_evidence(text,text) to service_role';
+    end if;
+end
+$$;
+
+comment on function public.nexus_read_founder_commercial_evidence(text, text) is
+    'Server-only read path for exact-tenant, exact-owner verified commercial evidence. Exposes no customer identity or inquiry message and authorizes no customer contact, delivery, order execution, payment execution, provider mutation, or public launch.';
+
 comment on table public.nexus_founder_commercial_evidence is
     'Append-only exact-tenant, exact-owner, session-authority-bound commercial proof without customer identity or inquiry message content.';
 

@@ -14,7 +14,7 @@ import {
 
 const EXPECTED_MIGRATION_COUNT = 21;
 const EXPECTED_TABLE_COUNT = 17;
-const EXPECTED_SECURITY_DEFINER_COUNT = 20;
+const EXPECTED_SECURITY_DEFINER_COUNT = 21;
 
 const allowedRoles =
   new Set([
