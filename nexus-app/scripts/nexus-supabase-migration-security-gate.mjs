@@ -12,9 +12,9 @@ import {
   fileURLToPath,
 } from "node:url";
 
-const EXPECTED_MIGRATION_COUNT = 18;
-const EXPECTED_TABLE_COUNT = 16;
-const EXPECTED_SECURITY_DEFINER_COUNT = 17;
+const EXPECTED_MIGRATION_COUNT = 21;
+const EXPECTED_TABLE_COUNT = 17;
+const EXPECTED_SECURITY_DEFINER_COUNT = 20;
 
 const allowedRoles =
   new Set([

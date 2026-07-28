@@ -149,6 +149,27 @@ describe("founder commercial evidence storage migration", () => {
     );
   });
 
+  it("keeps the mutation blocker invoker-only with no callable role authority", () => {
+    const triggerFunction = migration.match(
+      /create or replace function public\.nexus_reject_founder_commercial_evidence_mutation\(\)([\s\S]*?)\$\$;/i,
+    )?.[1];
+
+    expect(triggerFunction).toBeDefined();
+    expect(triggerFunction).not.toMatch(/\bsecurity\s+definer\b/i);
+    expect(migration).toContain(
+      "revoke all on function public.nexus_reject_founder_commercial_evidence_mutation() from public",
+    );
+    expect(migration).toContain(
+      "revoke all on function public.nexus_reject_founder_commercial_evidence_mutation() from anon",
+    );
+    expect(migration).toContain(
+      "revoke all on function public.nexus_reject_founder_commercial_evidence_mutation() from authenticated",
+    );
+    expect(migration).toContain(
+      "revoke all on function public.nexus_reject_founder_commercial_evidence_mutation() from service_role",
+    );
+  });
+
   it("provides conflict-safe idempotency without granting business authority", () => {
     expect(migration).toContain(
       "on conflict (evidence_id) do nothing",

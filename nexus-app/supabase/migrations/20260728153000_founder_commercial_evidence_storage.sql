@@ -165,7 +165,6 @@ $$;
 create or replace function public.nexus_reject_founder_commercial_evidence_mutation()
 returns trigger
 language plpgsql
-security definer
 set search_path = public, pg_temp
 as $$
 begin
@@ -174,6 +173,20 @@ end;
 $$;
 
 revoke all on function public.nexus_reject_founder_commercial_evidence_mutation() from public;
+
+do $$
+begin
+    if exists (select 1 from pg_roles where rolname = 'anon') then
+        execute 'revoke all on function public.nexus_reject_founder_commercial_evidence_mutation() from anon';
+    end if;
+    if exists (select 1 from pg_roles where rolname = 'authenticated') then
+        execute 'revoke all on function public.nexus_reject_founder_commercial_evidence_mutation() from authenticated';
+    end if;
+    if exists (select 1 from pg_roles where rolname = 'service_role') then
+        execute 'revoke all on function public.nexus_reject_founder_commercial_evidence_mutation() from service_role';
+    end if;
+end
+$$;
 
 drop trigger if exists nexus_founder_commercial_evidence_append_only
 on public.nexus_founder_commercial_evidence;
