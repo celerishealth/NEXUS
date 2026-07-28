@@ -1,3 +1,5 @@
+import { normalizeDatabaseIdentity } from "./databaseIdentity";
+
 export interface PostgresAuthenticatedOwnerAuthAccess {
   activateCredential(
     input: Readonly<{
@@ -132,7 +134,7 @@ function parseLoginBody(
       true,
     );
 
-  if (!UUID_PATTERN.test(tenantId)) {
+  if (normalizeDatabaseIdentity(tenantId) !== tenantId) {
     throw {
       code: "INVALID_INPUT",
     };
@@ -179,8 +181,8 @@ function parseActivationBody(
     );
 
   if (
-    !UUID_PATTERN.test(tenantId) ||
-    !UUID_PATTERN.test(ownerId)
+    normalizeDatabaseIdentity(tenantId) !== tenantId ||
+    normalizeDatabaseIdentity(ownerId) !== ownerId
   ) {
     throw {
       code: "INVALID_INPUT",
@@ -210,12 +212,11 @@ function readTenantId(
     PostgresAuthenticatedOwnerAuthHeaders,
 ): string {
   const tenantId =
-    headers.tenantId?.trim() ?? "";
+    normalizeDatabaseIdentity(
+      headers.tenantId,
+    );
 
-  if (
-    !tenantId ||
-    !UUID_PATTERN.test(tenantId)
-  ) {
+  if (tenantId === null) {
     throw {
       code: "INVALID_INPUT",
     };

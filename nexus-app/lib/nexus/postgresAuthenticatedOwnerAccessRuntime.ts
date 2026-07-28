@@ -1,3 +1,5 @@
+import { normalizeDatabaseIdentity } from "./databaseIdentity";
+
 import {
   randomBytes,
   randomUUID,
@@ -354,7 +356,12 @@ export function createPostgresAuthenticatedOwnerAuthRuntime(
     createAccess(
       input,
     ) {
-      if (!UUID_PATTERN.test(input.tenantId)) {
+      const tenantId =
+        normalizeDatabaseIdentity(
+          input.tenantId,
+        );
+
+      if (tenantId === null) {
         throw {
           code:
             "INVALID_INPUT",
@@ -378,7 +385,7 @@ export function createPostgresAuthenticatedOwnerAuthRuntime(
 
       return factory({
         tenantId:
-          input.tenantId,
+          tenantId,
 
         randomBytes(
           size,
@@ -400,7 +407,7 @@ export function createPostgresAuthenticatedOwnerAuthRuntime(
             ),
             {
               tenantId:
-                input.tenantId,
+                tenantId,
               actorId,
               requestId,
             },
