@@ -131,15 +131,15 @@ where evidence_kind = 'qualified-lead';
 
 create unique index if not exists nexus_founder_commercial_evidence_quotation_uq
 on public.nexus_founder_commercial_evidence (tenant_id, owner_id, quotation_id)
-where quotation_id is not null;
+where evidence_kind = 'quotation-issued';
 
 create unique index if not exists nexus_founder_commercial_evidence_order_uq
 on public.nexus_founder_commercial_evidence (tenant_id, owner_id, order_id)
-where order_id is not null;
+where evidence_kind = 'order-confirmed';
 
 create unique index if not exists nexus_founder_commercial_evidence_payment_uq
 on public.nexus_founder_commercial_evidence (tenant_id, owner_id, payment_id)
-where payment_id is not null;
+where evidence_kind = 'payment-received';
 
 create index if not exists nexus_founder_commercial_evidence_tenant_time_idx
 on public.nexus_founder_commercial_evidence (tenant_id, owner_id, verified_at desc);
