@@ -6,6 +6,7 @@ import {
 
 import {
   createFounderGrowthSnapshot,
+  createFounderGrowthSnapshotFromTotals,
   type FounderGrowthInquiryEvidence,
 } from "../founderGrowthSnapshot";
 
@@ -159,3 +160,27 @@ describe(
     );
   },
 );
+
+
+describe("founder growth snapshot lifecycle evidence", () => {
+  it("counts a verified inquiry after it advances to owner review", () => {
+    const inquiry = { inquiryId: "22222222-2222-4222-8222-222222222222", tenantId: "tenant-a", customerRef: "customer-b", channel: "web" as const, status: "owner-review" as const, receivedAt: 2 };
+    const snapshot = createFounderGrowthSnapshot({ tenantId: "tenant-a", generatedAt: "2026-07-28T00:00:00.000Z", inquiries: [inquiry] });
+    expect(snapshot.totalInquiries).toBe(1);
+    expect(snapshot.uniqueCustomers).toBe(1);
+  });
+});
+
+describe("founder growth snapshot aggregate evidence", () => {
+  it("creates an exact snapshot from verified tenant totals", () => {
+    const snapshot = createFounderGrowthSnapshotFromTotals({ tenantId: "tenant-a", generatedAt: "2026-07-28T00:00:00.000Z", totals: { tenantId: "tenant-a", totalInquiries: 12, uniqueCustomers: 7 } });
+    expect(snapshot.totalInquiries).toBe(12);
+    expect(snapshot.uniqueCustomers).toBe(7);
+    expect(snapshot.qualifiedLeadCount).toBeNull();
+  });
+
+  it("blocks foreign-tenant or impossible aggregate totals", () => {
+    expect(() => createFounderGrowthSnapshotFromTotals({ tenantId: "tenant-a", generatedAt: "2026-07-28T00:00:00.000Z", totals: { tenantId: "tenant-b", totalInquiries: 2, uniqueCustomers: 1 } })).toThrow();
+    expect(() => createFounderGrowthSnapshotFromTotals({ tenantId: "tenant-a", generatedAt: "2026-07-28T00:00:00.000Z", totals: { tenantId: "tenant-a", totalInquiries: 2, uniqueCustomers: 3 } })).toThrow();
+  });
+});
