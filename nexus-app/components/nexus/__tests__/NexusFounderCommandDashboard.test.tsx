@@ -20,6 +20,7 @@ import {
   FounderCommandSnapshotClientError,
 } from "@/lib/nexus/founderCommandSnapshotClient";
 import { FounderGrowthSnapshotClientError } from "@/lib/nexus/founderGrowthSnapshotClient";
+import { FounderGrowthStatusSummaryClientError } from "@/lib/nexus/founderGrowthStatusSummaryClient";
 
 import {
   FounderEmergencyClientError,
@@ -30,6 +31,7 @@ const doubles = vi.hoisted(
     issueSession: vi.fn(),
     readSnapshot: vi.fn(),
     readGrowthSnapshot: vi.fn(),
+    readGrowthStatusSummary: vi.fn(),
     revokeSession: vi.fn(),
   }),
 );
@@ -90,6 +92,23 @@ vi.mock(
   },
 );
 
+vi.mock(
+  "@/lib/nexus/founderGrowthStatusSummaryClient",
+  async () => {
+    const actual =
+      await vi.importActual<
+        typeof import("@/lib/nexus/founderGrowthStatusSummaryClient")
+      >(
+        "@/lib/nexus/founderGrowthStatusSummaryClient",
+      );
+
+    return {
+      ...actual,
+      readFounderGrowthStatusSummary:
+        doubles.readGrowthStatusSummary,
+    };
+  },
+);
 const session = {
   accessToken:
     "authenticated-session-token",
@@ -176,6 +195,33 @@ const growthSnapshotResult = {
   publicLaunchAuthorized: false as const,
 };
 
+const growthStatusSummaryResult = {
+  schemaVersion:
+    "nexus-founder-growth-status-summary-v1" as const,
+  tenantId: "tenant-a",
+  ownerActorId: "owner-a",
+  summary: {
+    tenantId: "tenant-a",
+    generatedAt: "2026-07-28T00:00:00.000Z",
+    evidenceBoundary:
+      "VERIFIED_INQUIRY_STATUS_AGGREGATES_ONLY" as const,
+    totalInquiries: 12,
+    latestReceivedAt: 1722124800000,
+    counts: { received: 2, recommendationPending: 2, ownerReview: 2, approved: 1, rejected: 1, sandboxExecuted: 1, completed: 2, failed: 1 },
+    customerIdentityExposed: false as const,
+    inquiryMessageExposed: false as const,
+    liveProviderExecutionAuthorized: false as const,
+    customerContactAuthorized: false as const,
+    paymentExecutionAuthorized: false as const,
+    publicLaunchAuthorized: false as const,
+  },
+  liveProviderExecutionAuthorized: false as const,
+  providerMutationAuthorized: false as const,
+  resumeAuthorized: false as const,
+  customerContactAuthorized: false as const,
+  paymentExecutionAuthorized: false as const,
+  publicLaunchAuthorized: false as const,
+};
 async function fillLoginForm() {
   const user = userEvent.setup();
 
@@ -237,6 +283,10 @@ describe(
       doubles.readGrowthSnapshot
         .mockResolvedValue(
           growthSnapshotResult,
+        );
+      doubles.readGrowthStatusSummary
+        .mockResolvedValue(
+          growthStatusSummaryResult,
         );
       doubles.revokeSession
         .mockResolvedValue({
@@ -622,6 +672,62 @@ describe(
             "Qualified leads, quotations, orders, and revenue remain unavailable until separately verified evidence exists.",
           ),
         ).toBeTruthy();
+      },
+    );
+
+
+    it(
+      "renders verified inquiry lifecycle status aggregates",
+      async () => {
+        render(<NexusFounderCommandDashboard />);
+        await authenticateDashboard();
+        expect((await screen.findByLabelText("Inquiry status ownerReview")).textContent).toBe("2");
+        expect(doubles.readGrowthStatusSummary).toHaveBeenCalledWith({ accessToken: "authenticated-session-token", expectedTenantId: "tenant-a", expectedOwnerActorId: "owner-a" });
+        expect(screen.getByText("Verified aggregate status labels")).toBeTruthy();
+      },
+    );
+
+    it(
+      "preserves the command snapshot and inquiry totals when status evidence is unavailable",
+      async () => {
+        doubles.readGrowthStatusSummary.mockRejectedValue(new FounderGrowthStatusSummaryClientError(503, "Founder growth status summary is unavailable. No action was taken."));
+        render(<NexusFounderCommandDashboard />);
+        await authenticateDashboard();
+        await screen.findByText("Founder growth status summary is unavailable. No action was taken.");
+        expect(screen.getByLabelText("Snapshot revision").textContent).toBe("7");
+        expect(screen.getByLabelText("Growth total inquiries").textContent).toBe("12");
+        expect(screen.getByLabelText("Growth unique customers").textContent).toBe("7");
+      },
+    );
+
+    it(
+      "preserves refreshed command and growth evidence when refreshed status evidence fails",
+      async () => {
+        doubles.readSnapshot.mockResolvedValueOnce(snapshotResult).mockResolvedValueOnce({ ...snapshotResult, requestId: "request-founder-command-status-refresh", snapshot: { ...snapshotResult.snapshot, revision: 8 } });
+        doubles.readGrowthSnapshot.mockResolvedValueOnce(growthSnapshotResult).mockResolvedValueOnce({ ...growthSnapshotResult, snapshot: { ...growthSnapshotResult.snapshot, totalInquiries: 13, uniqueCustomers: 8 } });
+        doubles.readGrowthStatusSummary.mockResolvedValueOnce(growthStatusSummaryResult).mockRejectedValueOnce(new FounderGrowthStatusSummaryClientError(503, "Founder growth status summary is unavailable. No action was taken."));
+        render(<NexusFounderCommandDashboard />);
+        const user = await authenticateDashboard();
+        await screen.findByLabelText("Inquiry status ownerReview");
+        await user.click(screen.getByRole("button", { name: "Refresh snapshot" }));
+        await screen.findByText("Founder growth status summary is unavailable. No action was taken.");
+        expect(screen.getByLabelText("Snapshot revision").textContent).toBe("8");
+        expect(screen.getByLabelText("Growth total inquiries").textContent).toBe("13");
+        expect(screen.getByLabelText("Growth unique customers").textContent).toBe("8");
+        expect(screen.queryByLabelText("Inquiry status ownerReview")).toBeNull();
+      },
+    );
+
+    it(
+      "clears inquiry lifecycle evidence after authenticated logout",
+      async () => {
+        render(<NexusFounderCommandDashboard />);
+        const user = await authenticateDashboard();
+        await screen.findByLabelText("Inquiry status ownerReview");
+        await user.click(screen.getByRole("button", { name: "Log out and revoke session" }));
+        await screen.findByText("Authenticated logout verified. Browser-held access token cleared. No execution or resume action was performed.");
+        expect(screen.queryByLabelText("Inquiry status ownerReview")).toBeNull();
+        expect(screen.queryByLabelText("Inquiry lifecycle evidence")).toBeNull();
       },
     );
 

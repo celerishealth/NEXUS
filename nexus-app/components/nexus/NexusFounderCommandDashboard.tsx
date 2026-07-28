@@ -15,6 +15,11 @@ import {
   type FounderGrowthSnapshotResult,
   readFounderGrowthSnapshot,
 } from "@/lib/nexus/founderGrowthSnapshotClient";
+import {
+  FounderGrowthStatusSummaryClientError,
+  type FounderGrowthStatusSummaryResult,
+  readFounderGrowthStatusSummary,
+} from "@/lib/nexus/founderGrowthStatusSummaryClient";
 
 import {
   FounderEmergencyClientError,
@@ -92,6 +97,10 @@ export default function NexusFounderCommandDashboard() {
     );
   const [growthMessage, setGrowthMessage] =
     useState("");
+  const [growthStatusResult, setGrowthStatusResult] =
+    useState<FounderGrowthStatusSummaryResult | null>(null);
+  const [growthStatusMessage, setGrowthStatusMessage] =
+    useState("");
 
   async function loadGrowthSnapshot(
     currentSession: FounderEmergencySession,
@@ -124,6 +133,32 @@ export default function NexusFounderCommandDashboard() {
     }
   }
 
+  async function loadGrowthStatusSummary(
+    currentSession: FounderEmergencySession,
+  ) {
+    setGrowthStatusMessage("");
+
+    try {
+      const statusSummary =
+        await readFounderGrowthStatusSummary({
+          accessToken: currentSession.accessToken,
+          expectedTenantId: currentSession.tenantId,
+          expectedOwnerActorId: currentSession.actorId,
+        });
+
+      setGrowthStatusResult(statusSummary);
+      setGrowthStatusMessage(
+        "Inquiry lifecycle evidence verified.",
+      );
+    } catch (error) {
+      setGrowthStatusResult(null);
+      setGrowthStatusMessage(
+        error instanceof FounderGrowthStatusSummaryClientError
+          ? error.message
+          : "Inquiry lifecycle evidence request failed safely. No action was taken.",
+      );
+    }
+  }
   function lockBrowserSession(
     nextMessage: string,
   ) {
@@ -131,6 +166,8 @@ export default function NexusFounderCommandDashboard() {
     setResult(null);
     setGrowthResult(null);
     setGrowthMessage("");
+    setGrowthStatusResult(null);
+    setGrowthStatusMessage("");
     setPassword("");
     setMessage(nextMessage);
   }
@@ -144,6 +181,8 @@ export default function NexusFounderCommandDashboard() {
     setResult(null);
     setGrowthResult(null);
     setGrowthMessage("");
+    setGrowthStatusResult(null);
+    setGrowthStatusMessage("");
 
     try {
       const issuedSession =
@@ -170,12 +209,15 @@ export default function NexusFounderCommandDashboard() {
         "Authenticated founder command snapshot verified.",
       );
       await loadGrowthSnapshot(issuedSession);
+      await loadGrowthStatusSummary(issuedSession);
     } catch (error) {
       setPassword("");
       setSession(null);
       setResult(null);
       setGrowthResult(null);
       setGrowthMessage("");
+      setGrowthStatusResult(null);
+      setGrowthStatusMessage("");
       setMessage(safeMessage(error));
     } finally {
       setBusy(null);
@@ -209,10 +251,13 @@ export default function NexusFounderCommandDashboard() {
         "Founder command snapshot refreshed.",
       );
       await loadGrowthSnapshot(session);
+      await loadGrowthStatusSummary(session);
     } catch (error) {
       setResult(null);
       setGrowthResult(null);
       setGrowthMessage("");
+      setGrowthStatusResult(null);
+      setGrowthStatusMessage("");
 
       if (
         error instanceof
@@ -265,6 +310,8 @@ export default function NexusFounderCommandDashboard() {
         setResult(null);
         setGrowthResult(null);
         setGrowthMessage("");
+        setGrowthStatusResult(null);
+        setGrowthStatusMessage("");
         setMessage(safeMessage(error));
       }
     } finally {
@@ -546,6 +593,53 @@ export default function NexusFounderCommandDashboard() {
                 </p>
               </section>
 
+              <section
+                aria-label="Inquiry lifecycle evidence"
+                className="rounded-2xl border border-violet-300/20 bg-violet-950/20 p-5"
+              >
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-violet-300">
+                  Inquiry lifecycle evidence
+                </p>
+                <h2 className="mt-2 text-xl font-bold text-white">
+                  Verified aggregate status labels
+                </h2>
+                <p className="mt-2 text-sm leading-6 text-slate-300">
+                  Privacy-safe exact-tenant aggregates only. These labels do not prove customer contact, payment, order fulfilment, or live provider execution.
+                </p>
+
+                {growthStatusResult ? (
+                  <>
+                    <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                      {Object.entries(growthStatusResult.summary.counts).map(
+                        ([status, count]) => (
+                          <article
+                            className="rounded-xl border border-slate-700 bg-slate-950/70 p-4"
+                            key={status}
+                          >
+                            <p className="break-words text-xs uppercase tracking-[0.12em] text-slate-400">
+                              {status}
+                            </p>
+                            <p
+                              aria-label={`Inquiry status ${status}`}
+                              className="mt-2 text-2xl font-black text-white"
+                            >
+                              {count}
+                            </p>
+                          </article>
+                        ),
+                      )}
+                    </div>
+                    <p className="mt-4 text-xs text-slate-400">
+                      Latest received epoch: {growthStatusResult.summary.latestReceivedAt ?? "Unavailable"}
+                    </p>
+                  </>
+                ) : (
+                  <p className="mt-5 rounded-xl border border-amber-300/25 bg-amber-950/20 p-4 text-sm text-amber-100">
+                    {growthStatusMessage ||
+                      "Inquiry lifecycle evidence has not been verified."}
+                  </p>
+                )}
+              </section>
               <section className="grid gap-5 xl:grid-cols-2">
                 <article className="rounded-2xl border border-slate-700 bg-slate-900/75 p-5">
                   <h2 className="text-xl font-bold text-white">
