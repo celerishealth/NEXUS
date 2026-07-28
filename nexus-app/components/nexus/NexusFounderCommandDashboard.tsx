@@ -11,6 +11,12 @@ import {
   readFounderCommandSnapshot,
 } from "@/lib/nexus/founderCommandSnapshotClient";
 import {
+  FounderGrowthSnapshotClientError,
+  type FounderGrowthSnapshotResult,
+  readFounderGrowthSnapshot,
+} from "@/lib/nexus/founderGrowthSnapshotClient";
+
+import {
   FounderEmergencyClientError,
   type FounderEmergencySession,
   issueFounderEmergencySession,
@@ -80,12 +86,51 @@ export default function NexusFounderCommandDashboard() {
     useState<BusyAction>(null);
   const [message, setMessage] =
     useState("");
+  const [growthResult, setGrowthResult] =
+    useState<FounderGrowthSnapshotResult | null>(
+      null,
+    );
+  const [growthMessage, setGrowthMessage] =
+    useState("");
+
+  async function loadGrowthSnapshot(
+    currentSession: FounderEmergencySession,
+  ) {
+    setGrowthMessage("");
+
+    try {
+      const growth =
+        await readFounderGrowthSnapshot({
+          accessToken:
+            currentSession.accessToken,
+          expectedTenantId:
+            currentSession.tenantId,
+          expectedOwnerActorId:
+            currentSession.actorId,
+        });
+
+      setGrowthResult(growth);
+      setGrowthMessage(
+        "Founder growth snapshot verified.",
+      );
+    } catch (error) {
+      setGrowthResult(null);
+      setGrowthMessage(
+        error instanceof
+          FounderGrowthSnapshotClientError
+          ? error.message
+          : "Founder growth snapshot request failed safely. No action was taken.",
+      );
+    }
+  }
 
   function lockBrowserSession(
     nextMessage: string,
   ) {
     setSession(null);
     setResult(null);
+    setGrowthResult(null);
+    setGrowthMessage("");
     setPassword("");
     setMessage(nextMessage);
   }
@@ -97,6 +142,8 @@ export default function NexusFounderCommandDashboard() {
     setBusy("login");
     setMessage("");
     setResult(null);
+    setGrowthResult(null);
+    setGrowthMessage("");
 
     try {
       const issuedSession =
@@ -122,10 +169,13 @@ export default function NexusFounderCommandDashboard() {
       setMessage(
         "Authenticated founder command snapshot verified.",
       );
+      await loadGrowthSnapshot(issuedSession);
     } catch (error) {
       setPassword("");
       setSession(null);
       setResult(null);
+      setGrowthResult(null);
+      setGrowthMessage("");
       setMessage(safeMessage(error));
     } finally {
       setBusy(null);
@@ -158,8 +208,11 @@ export default function NexusFounderCommandDashboard() {
       setMessage(
         "Founder command snapshot refreshed.",
       );
+      await loadGrowthSnapshot(session);
     } catch (error) {
       setResult(null);
+      setGrowthResult(null);
+      setGrowthMessage("");
 
       if (
         error instanceof
@@ -210,6 +263,8 @@ export default function NexusFounderCommandDashboard() {
         );
       } else {
         setResult(null);
+        setGrowthResult(null);
+        setGrowthMessage("");
         setMessage(safeMessage(error));
       }
     } finally {
@@ -436,6 +491,59 @@ export default function NexusFounderCommandDashboard() {
                     {auditEntries.length}
                   </p>
                 </article>
+              </section>
+
+              <section
+                aria-label="Founder growth evidence"
+                className="rounded-2xl border border-sky-300/20 bg-sky-950/20 p-5"
+              >
+                <div className="flex flex-col gap-2">
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-sky-300">
+                    Growth-to-revenue evidence
+                  </p>
+                  <h2 className="text-xl font-bold text-white">
+                    Verified inquiry totals
+                  </h2>
+                  <p className="text-sm leading-6 text-slate-300">
+                    Exact-tenant aggregate evidence only. Customer contact, provider execution, payments, and public launch remain unauthorized.
+                  </p>
+                </div>
+
+                {growthResult ? (
+                  <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                    <article className="rounded-xl border border-slate-700 bg-slate-950/70 p-4">
+                      <p className="text-xs uppercase tracking-[0.16em] text-slate-400">
+                        Total inquiries
+                      </p>
+                      <p
+                        aria-label="Growth total inquiries"
+                        className="mt-2 text-3xl font-black text-white"
+                      >
+                        {growthResult.snapshot.totalInquiries}
+                      </p>
+                    </article>
+                    <article className="rounded-xl border border-slate-700 bg-slate-950/70 p-4">
+                      <p className="text-xs uppercase tracking-[0.16em] text-slate-400">
+                        Unique customers
+                      </p>
+                      <p
+                        aria-label="Growth unique customers"
+                        className="mt-2 text-3xl font-black text-white"
+                      >
+                        {growthResult.snapshot.uniqueCustomers}
+                      </p>
+                    </article>
+                  </div>
+                ) : (
+                  <p className="mt-5 rounded-xl border border-amber-300/25 bg-amber-950/20 p-4 text-sm text-amber-100">
+                    {growthMessage ||
+                      "Founder growth evidence has not been verified."}
+                  </p>
+                )}
+
+                <p className="mt-4 text-xs leading-5 text-slate-400">
+                  Qualified leads, quotations, orders, and revenue remain unavailable until separately verified evidence exists.
+                </p>
               </section>
 
               <section className="grid gap-5 xl:grid-cols-2">

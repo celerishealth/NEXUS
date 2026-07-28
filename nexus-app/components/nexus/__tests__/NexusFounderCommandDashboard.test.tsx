@@ -19,6 +19,8 @@ import NexusFounderCommandDashboard from "../NexusFounderCommandDashboard";
 import {
   FounderCommandSnapshotClientError,
 } from "@/lib/nexus/founderCommandSnapshotClient";
+import { FounderGrowthSnapshotClientError } from "@/lib/nexus/founderGrowthSnapshotClient";
+
 import {
   FounderEmergencyClientError,
 } from "@/lib/nexus/founderEmergencyClient";
@@ -27,6 +29,7 @@ const doubles = vi.hoisted(
   () => ({
     issueSession: vi.fn(),
     readSnapshot: vi.fn(),
+    readGrowthSnapshot: vi.fn(),
     revokeSession: vi.fn(),
   }),
 );
@@ -65,6 +68,24 @@ vi.mock(
       ...actual,
       readFounderCommandSnapshot:
         doubles.readSnapshot,
+    };
+  },
+);
+
+vi.mock(
+  "@/lib/nexus/founderGrowthSnapshotClient",
+  async () => {
+    const actual =
+      await vi.importActual<
+        typeof import("@/lib/nexus/founderGrowthSnapshotClient")
+      >(
+        "@/lib/nexus/founderGrowthSnapshotClient",
+      );
+
+    return {
+      ...actual,
+      readFounderGrowthSnapshot:
+        doubles.readGrowthSnapshot,
     };
   },
 );
@@ -125,6 +146,36 @@ const snapshotResult = {
   resumeAuthorized: false as const,
 };
 
+const growthSnapshotResult = {
+  schemaVersion:
+    "nexus-founder-growth-snapshot-v1" as const,
+  tenantId: "tenant-a",
+  ownerActorId: "owner-a",
+  snapshot: {
+    tenantId: "tenant-a",
+    generatedAt:
+      "2026-07-28T00:00:00.000Z",
+    evidenceBoundary:
+      "VERIFIED_INQUIRY_EVIDENCE_ONLY" as const,
+    totalInquiries: 12,
+    uniqueCustomers: 7,
+    qualifiedLeadCount: null,
+    quotationCount: null,
+    orderCount: null,
+    revenueAmount: null,
+    liveProviderExecutionAuthorized: false as const,
+    customerContactAuthorized: false as const,
+    paymentExecutionAuthorized: false as const,
+    publicLaunchAuthorized: false as const,
+  },
+  liveProviderExecutionAuthorized: false as const,
+  providerMutationAuthorized: false as const,
+  resumeAuthorized: false as const,
+  customerContactAuthorized: false as const,
+  paymentExecutionAuthorized: false as const,
+  publicLaunchAuthorized: false as const,
+};
+
 async function fillLoginForm() {
   const user = userEvent.setup();
 
@@ -182,6 +233,10 @@ describe(
       doubles.readSnapshot
         .mockResolvedValue(
           snapshotResult,
+        );
+      doubles.readGrowthSnapshot
+        .mockResolvedValue(
+          growthSnapshotResult,
         );
       doubles.revokeSession
         .mockResolvedValue({
@@ -488,5 +543,87 @@ describe(
         ).toBeTruthy();
       },
     );
+    it(
+      "preserves the verified founder command snapshot when growth evidence is unavailable",
+      async () => {
+        doubles.readGrowthSnapshot
+          .mockRejectedValue(
+            new FounderGrowthSnapshotClientError(
+              503,
+              "Founder growth snapshot is unavailable. No action was taken.",
+            ),
+          );
+
+        render(
+          <NexusFounderCommandDashboard />,
+        );
+
+        await authenticateDashboard();
+
+        await screen.findByText(
+          "Founder growth snapshot is unavailable. No action was taken.",
+        );
+
+        expect(
+          doubles.readGrowthSnapshot,
+        ).toHaveBeenCalledWith({
+          accessToken:
+            "authenticated-session-token",
+          expectedTenantId:
+            "tenant-a",
+          expectedOwnerActorId:
+            "owner-a",
+        });
+        expect(
+          screen.getByLabelText(
+            "Snapshot revision",
+          ).textContent,
+        ).toBe("7");
+        expect(
+          screen.getByRole(
+            "button",
+            { name: "Refresh snapshot" },
+          ),
+        ).toBeTruthy();
+      },
+    );
+
+    it(
+      "renders verified exact-tenant growth totals without inventing commercial metrics",
+      async () => {
+        render(
+          <NexusFounderCommandDashboard />,
+        );
+
+        await authenticateDashboard();
+
+        expect(
+          doubles.readGrowthSnapshot,
+        ).toHaveBeenCalledWith({
+          accessToken:
+            "authenticated-session-token",
+          expectedTenantId:
+            "tenant-a",
+          expectedOwnerActorId:
+            "owner-a",
+        });
+        expect(
+          screen.getByLabelText(
+            "Growth total inquiries",
+          ).textContent,
+        ).toBe("12");
+        expect(
+          screen.getByLabelText(
+            "Growth unique customers",
+          ).textContent,
+        ).toBe("7");
+        expect(
+          screen.getByText(
+            "Qualified leads, quotations, orders, and revenue remain unavailable until separately verified evidence exists.",
+          ),
+        ).toBeTruthy();
+      },
+    );
+
   },
 );
