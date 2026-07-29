@@ -9,6 +9,9 @@ const source = readFileSync(workflowPath, "utf8");
 test("keeps founder commercial browser CI manual isolated and read-only", () => {
   assert.match(source, /workflow_dispatch:/);
   assert.match(source, /permissions:\s*\n\s*contents: read/);
+  assert.match(source, /actions\/checkout@v6/);
+  assert.match(source, /persist-credentials: false/);
+  assert.match(source, /actions\/setup-node@v6/);
   assert.match(source, /node-version: 22/);
   assert.match(source, /npm ci/);
   assert.match(source, /npm run build/);
