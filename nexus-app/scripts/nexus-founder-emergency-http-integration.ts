@@ -1654,7 +1654,7 @@ try {
   const browserContext =
     await browser.newContext({
       baseURL:
-        `http://localhost:${nextPort}`,
+        nextBaseUrl,
       viewport: {
         width: 1440,
         height: 1200,
