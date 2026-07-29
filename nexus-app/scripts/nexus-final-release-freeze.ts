@@ -40,6 +40,11 @@ type CommandResult = Readonly<{
 type BrowserIntegrationReport =
   Readonly<{
     passed?: unknown;
+    controls?: readonly Readonly<{
+      id?: unknown;
+      passed?: unknown;
+    }>[];
+    commercialBrowserVerified?: unknown;
     productionDatabaseModified?: unknown;
     productionDeploymentModified?: unknown;
     liveProviderExecutionAuthorized?: unknown;
@@ -443,6 +448,29 @@ const realBrowserEmergencyRehearsal =
   browserCommand.passed &&
   browserReport?.passed === true;
 
+const requiredFounderCommercialBrowserControls = [
+  "REAL_BROWSER_COMMERCIAL_SUMMARY_VERIFIED",
+  "REAL_BROWSER_COMMERCIAL_RPC_IDENTITY_AUTHENTICATED",
+  "REAL_BROWSER_COMMERCIAL_MUTATION_CONTROLS_ABSENT",
+  "REAL_BROWSER_COMMERCIAL_LOGOUT_CLEAR",
+] as const;
+
+const browserControls =
+  browserReport?.controls;
+
+const founderCommercialBrowserEvidenceVerified =
+  realBrowserEmergencyRehearsal &&
+  browserReport?.commercialBrowserVerified === true &&
+  Array.isArray(browserControls) &&
+  requiredFounderCommercialBrowserControls.every(
+    (requiredId) =>
+      browserControls.some(
+        (control) =>
+          control.id === requiredId &&
+          control.passed === true,
+      ),
+  );
+
 const productionDatabaseUntouched =
   realBrowserEmergencyRehearsal &&
   browserReport
@@ -505,6 +533,7 @@ const evidence:
     releaseFreezeLint,
     productionBuild,
     realBrowserEmergencyRehearsal,
+    founderCommercialBrowserEvidenceVerified,
     originMainSync,
     workingTreeClean,
     productionDatabaseUntouched,

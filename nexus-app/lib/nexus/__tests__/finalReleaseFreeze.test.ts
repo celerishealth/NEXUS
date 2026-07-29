@@ -1,4 +1,7 @@
 
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
 import {
   describe,
   expect,
@@ -41,9 +44,43 @@ function validInput(
   };
 }
 
+const releaseFreezeScriptSource = readFileSync(
+  resolve(
+    process.cwd(),
+    "scripts",
+    "nexus-final-release-freeze.ts",
+  ),
+  "utf8",
+);
+
 describe(
   "final release freeze",
   () => {
+    it(
+      "locks commercial real-browser evidence into the executable freeze",
+      () => {
+        expect(releaseFreezeScriptSource).toMatch(
+          /commercialBrowserVerified === true/,
+        );
+
+        for (
+          const controlId of [
+            "REAL_BROWSER_COMMERCIAL_SUMMARY_VERIFIED",
+            "REAL_BROWSER_COMMERCIAL_RPC_IDENTITY_AUTHENTICATED",
+            "REAL_BROWSER_COMMERCIAL_MUTATION_CONTROLS_ABSENT",
+            "REAL_BROWSER_COMMERCIAL_LOGOUT_CLEAR",
+          ]
+        ) {
+          expect(releaseFreezeScriptSource).toContain(
+            controlId,
+          );
+        }
+
+        expect(releaseFreezeScriptSource).toMatch(
+          /founderCommercialBrowserEvidenceVerified,/,
+        );
+      },
+    );
     for (
       const gate of
       REQUIRED_FINAL_RELEASE_FREEZE_GATES
@@ -124,6 +161,10 @@ describe(
           createFinalReleaseFreezeReport(
             validInput(),
           );
+
+        expect(first.version).toBe(
+          "nexus-final-release-freeze-v2",
+        );
 
         expect(first.evidenceDigest).toBe(
           second.evidenceDigest,

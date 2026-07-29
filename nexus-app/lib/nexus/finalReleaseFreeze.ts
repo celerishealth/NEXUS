@@ -2,7 +2,7 @@
 import { createHash } from "node:crypto";
 
 export const FINAL_RELEASE_FREEZE_VERSION =
-  "nexus-final-release-freeze-v1" as const;
+  "nexus-final-release-freeze-v2" as const;
 
 export const EXPECTED_RELEASE_FREEZE_SOURCE_COMMIT =
   "0c94153" as const;
@@ -17,6 +17,7 @@ export const REQUIRED_FINAL_RELEASE_FREEZE_GATES = [
   "releaseFreezeLint",
   "productionBuild",
   "realBrowserEmergencyRehearsal",
+  "founderCommercialBrowserEvidenceVerified",
   "originMainSync",
   "workingTreeClean",
   "productionDatabaseUntouched",
