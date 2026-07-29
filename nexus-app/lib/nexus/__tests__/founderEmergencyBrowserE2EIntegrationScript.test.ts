@@ -105,6 +105,21 @@ describe(
     );
 
     it(
+      "verifies the read-only founder commercial dashboard in a real browser",
+      () => {
+        expect(source).toMatch(/Founder Command Dashboard/);
+        expect(source).toMatch(/Authenticate and load snapshot/);
+        expect(source).toMatch(/NEXUS_FOUNDER_COMMAND_OWNER_ACTOR_ID/);
+        expect(source).toMatch(/Commercial qualified leads/);
+        expect(source).toMatch(/Commercial revenue INR/);
+        expect(source).toMatch(/REAL_BROWSER_COMMERCIAL_SUMMARY_VERIFIED/);
+        expect(source).toMatch(/REAL_BROWSER_COMMERCIAL_RPC_IDENTITY_AUTHENTICATED/);
+        expect(source).toMatch(/REAL_BROWSER_COMMERCIAL_MUTATION_CONTROLS_ABSENT/);
+        expect(source).toMatch(/REAL_BROWSER_COMMERCIAL_LOGOUT_CLEAR/);
+      },
+    );
+
+    it(
       "keeps RPC identity live execution production data and resume locked",
       () => {
         expect(source).toMatch(

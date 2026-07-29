@@ -51,6 +51,7 @@ interface JsonResult {
 interface StubRequest {
   pathname: string;
   tenantId: string | null;
+  ownerActorId: string | null;
   authorizationVerified: boolean;
 }
 
@@ -239,6 +240,7 @@ async function closeServer(
 
 async function createLocalSupabaseStub(
   tenantId: string,
+  ownerActorId: string,
   serviceRoleKey: string,
 ): Promise<LocalStub> {
   const requests: StubRequest[] = [];
@@ -313,11 +315,18 @@ async function createLocalSupabaseStub(
           "string"
             ? body.p_tenant_id
             : null;
+        const requestOwnerActorId =
+          typeof body.p_owner_id ===
+          "string"
+            ? body.p_owner_id
+            : null;
 
         requests.push({
           pathname: url.pathname,
           tenantId:
             requestTenantId,
+          ownerActorId:
+            requestOwnerActorId,
           authorizationVerified,
         });
 
@@ -469,6 +478,38 @@ async function createLocalSupabaseStub(
               },
             ],
           );
+          return;
+        }
+
+        if (url.pathname === "/rest/v1/rpc/nexus_read_founder_commercial_evidence") {
+          if (requestOwnerActorId !== ownerActorId) {
+            writeJson(response, 200, []);
+            return;
+          }
+          const base = {
+            tenant_id: tenantId,
+            owner_id: ownerActorId,
+            inquiry_id: "30000000-0000-4000-8000-000000000001",
+            quotation_id: null,
+            order_id: null,
+            payment_id: null,
+            amount_minor: null,
+            currency_code: null,
+            buyer_requirement_verified: null,
+            buyer_intent_verified: null,
+            fake_or_irrelevant_lead_excluded: null,
+            owner_approved: null,
+            customer_delivery_verified: null,
+            owner_confirmed: null,
+            customer_acceptance_verified: null,
+            payment_receipt_verified: null,
+          };
+          writeJson(response, 200, [
+            { ...base, evidence_id: "40000000-0000-4000-8000-000000000001", evidence_kind: "qualified-lead", buyer_requirement_verified: true, buyer_intent_verified: true, fake_or_irrelevant_lead_excluded: true, verified_at: "2026-07-28T09:00:00.000Z" },
+            { ...base, evidence_id: "40000000-0000-4000-8000-000000000002", evidence_kind: "quotation-issued", quotation_id: "founder-local-quotation-v1", owner_approved: true, customer_delivery_verified: true, verified_at: "2026-07-28T09:01:00.000Z" },
+            { ...base, evidence_id: "40000000-0000-4000-8000-000000000003", evidence_kind: "order-confirmed", quotation_id: "founder-local-quotation-v1", order_id: "founder-local-order-v1", owner_confirmed: true, customer_acceptance_verified: true, verified_at: "2026-07-28T09:02:00.000Z" },
+            { ...base, evidence_id: "40000000-0000-4000-8000-000000000004", evidence_kind: "payment-received", order_id: "founder-local-order-v1", payment_id: "founder-local-payment-v1", amount_minor: 125000, currency_code: "INR", payment_receipt_verified: true, verified_at: "2026-07-28T09:03:00.000Z" },
+          ]);
           return;
         }
 
@@ -854,6 +895,7 @@ try {
   supabaseStub =
     await createLocalSupabaseStub(
       tenantId,
+      actorId,
       serviceRoleKey,
     );
 
@@ -925,6 +967,12 @@ try {
           "true",
         NEXUS_FOUNDER_EMERGENCY_OWNER_ACTOR_ID:
           actorId,
+        NEXUS_FOUNDER_COMMAND_OWNER_ACTOR_ID:
+          actorId,
+        NEXUS_FOUNDER_COMMAND_SNAPSHOT_ENABLED:
+          "true",
+        NEXUS_FOUNDER_COMMERCIAL_EVIDENCE_SUMMARY_ENABLED:
+          "true",
         SUPABASE_URL:
           stubBaseUrl,
         NEXT_PUBLIC_SUPABASE_URL:
@@ -1606,7 +1654,7 @@ try {
   const browserContext =
     await browser.newContext({
       baseURL:
-        nextBaseUrl,
+        `http://localhost:${nextPort}`,
       viewport: {
         width: 1440,
         height: 1200,
@@ -1917,6 +1965,39 @@ try {
     "paused",
   );
 
+  const commercialRpcCountBeforeBrowser = supabaseStub.requests.length;
+  await browserPage.goto("/nexus-founder-command", { waitUntil: "domcontentloaded", timeout: 60_000 });
+  await browserPage.getByRole("heading", { name: "Founder Command Dashboard", exact: true }).waitFor({ state: "visible", timeout: 30_000 });
+  await browserPage.getByLabel("Workspace ID").fill(tenantId);
+  await browserPage.getByLabel("Owner email").fill(ownerEmail);
+  await browserPage.getByLabel("Password").fill(ownerPassword);
+  await browserPage.getByRole("button", { name: "Authenticate and load snapshot", exact: true }).click();
+  await browserPage.getByText("Authenticated founder command snapshot verified.", { exact: true }).waitFor({ state: "visible", timeout: 30_000 });
+  await browserPage.getByLabel("Commercial qualified leads").waitFor({ state: "visible", timeout: 30_000 });
+
+  const commercialQualifiedLeads = (await browserPage.getByLabel("Commercial qualified leads").textContent())?.trim();
+  const commercialQuotations = (await browserPage.getByLabel("Commercial quotations").textContent())?.trim();
+  const commercialOrders = (await browserPage.getByLabel("Commercial orders").textContent())?.trim();
+  const commercialPaymentReceipts = (await browserPage.getByLabel("Commercial payment receipts").textContent())?.trim();
+  const commercialSourceRecords = (await browserPage.getByLabel("Commercial source records").textContent())?.trim();
+  const commercialRevenueInr = (await browserPage.getByLabel("Commercial revenue INR").textContent())?.trim() ?? "";
+  assert.deepEqual(
+    [commercialQualifiedLeads, commercialQuotations, commercialOrders, commercialPaymentReceipts, commercialSourceRecords],
+    ["1", "1", "1", "1", "4"],
+  );
+  assert.match(commercialRevenueInr, /125000/);
+
+  const commercialMutationControlCount = await browserPage.getByRole("button", { name: /execute|approve|resume|send|payment|pause/i }).count();
+  assert.equal(commercialMutationControlCount, 0);
+  const commercialRpcRequests = supabaseStub.requests.slice(commercialRpcCountBeforeBrowser).filter((request) => request.pathname === "/rest/v1/rpc/nexus_read_founder_commercial_evidence");
+  assert.ok(commercialRpcRequests.length >= 1);
+  assert.ok(commercialRpcRequests.every((request) => request.tenantId === tenantId && request.ownerActorId === actorId && request.authorizationVerified));
+
+  await browserPage.getByRole("button", { name: "Log out and revoke session", exact: true }).click();
+  await browserPage.getByText("Authenticated logout verified. Browser-held access token cleared. No execution or resume action was performed.", { exact: true }).waitFor({ state: "visible", timeout: 30_000 });
+  const postCommercialLogoutEvidenceCount = await browserPage.getByLabel("Commercial qualified leads").count();
+  assert.equal(postCommercialLogoutEvidenceCount, 0);
+
   await browserContext.close();
   await browser.close();
   browser = null;
@@ -2142,6 +2223,22 @@ try {
         ),
     },
     {
+      id: "REAL_BROWSER_COMMERCIAL_SUMMARY_VERIFIED",
+      passed: commercialQualifiedLeads === "1" && commercialQuotations === "1" && commercialOrders === "1" && commercialPaymentReceipts === "1" && commercialSourceRecords === "4" && /125000/.test(commercialRevenueInr),
+    },
+    {
+      id: "REAL_BROWSER_COMMERCIAL_RPC_IDENTITY_AUTHENTICATED",
+      passed: commercialRpcRequests.length >= 1 && commercialRpcRequests.every((request) => request.tenantId === tenantId && request.ownerActorId === actorId && request.authorizationVerified),
+    },
+    {
+      id: "REAL_BROWSER_COMMERCIAL_MUTATION_CONTROLS_ABSENT",
+      passed: commercialMutationControlCount === 0,
+    },
+    {
+      id: "REAL_BROWSER_COMMERCIAL_LOGOUT_CLEAR",
+      passed: postCommercialLogoutEvidenceCount === 0,
+    },
+    {
       id:
         "LIVE_EXECUTION_LOCKED",
       passed:
@@ -2204,9 +2301,13 @@ try {
       supabaseStub.getCommitCount(),
     browserRpcRequestCount:
       browserRpcRequests.length,
+    commercialBrowserRpcRequestCount:
+      commercialRpcRequests.length,
     browserConsoleErrorCount:
       browserConsoleErrors.length,
     realBrowserVerified:
+      true,
+    commercialBrowserVerified:
       true,
     realNextServerVerified:
       true,
