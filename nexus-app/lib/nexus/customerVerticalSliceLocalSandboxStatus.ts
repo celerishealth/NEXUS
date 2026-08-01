@@ -1,4 +1,4 @@
-﻿import { createHash } from "node:crypto";
+import { createHash } from "node:crypto";
 
 import {
   createFileBackedCustomerVerticalSliceRepository,
@@ -558,6 +558,16 @@ export async function handleCustomerVerticalSliceLocalSandboxStatus(
         actionMessage:
           action.actionMessage,
         updatedAt: state.updatedAt,
+      },
+      authority: {
+        sandboxOnly: true,
+        readOnly: true,
+        publicLaunchAuthorized: false,
+        paymentExecutionAuthorized: false,
+        liveProviderExecutionAuthorized: false,
+        externalDeliveryAuthorized: false,
+        customerContactAuthorized: false,
+        providerMutationAuthorized: false,
       },
     }),
     {
