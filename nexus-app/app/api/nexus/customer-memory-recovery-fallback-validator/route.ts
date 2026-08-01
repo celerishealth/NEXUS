@@ -1,4 +1,4 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 import {
   validateCustomerMemoryRecoveryFallbackPreview,
@@ -68,60 +68,4 @@ export async function GET() {
     method: "GET",
     ...validateCustomerMemoryRecoveryFallbackPreview(SAMPLE_INPUT),
   });
-}
-
-export async function POST(request: NextRequest) {
-  try {
-    const body = (await request.json()) as CustomerMemoryRecoveryFallbackValidationInput;
-
-    return NextResponse.json({
-      route: "/api/nexus/customer-memory-recovery-fallback-validator",
-      method: "POST",
-      ...validateCustomerMemoryRecoveryFallbackPreview(body),
-    });
-  } catch {
-    return NextResponse.json(
-      {
-        route: "/api/nexus/customer-memory-recovery-fallback-validator",
-        method: "POST",
-        ...validateCustomerMemoryRecoveryFallbackPreview({
-          businessId: "",
-          customerId: "",
-          conversationId: "",
-          ownerId: "",
-          recoveryMode: "safe-fallback-preview",
-          fallbackReason: "Invalid JSON payload blocked.",
-          failedStage: "customer-memory-pipeline-preview",
-          requestedAction: "invalid-json-payload",
-          riskLevel: "low",
-          safetyDecision: "blocked",
-          ownerApprovalRequired: false,
-          recoveryFallbackContractDecision: "blocked",
-          isRecoveryFallbackContractReady: false,
-          auditEventPreviewId: "",
-          proposedFinalResponsePreview: "",
-          fallbackPreviewMessage: "",
-          hasRealDatabaseAccess: false,
-          hasAuditWriteIntent: false,
-          hasAuditPersistenceIntent: false,
-          hasRecoveryWriteIntent: false,
-          hasWriteIntent: false,
-          hasCustomerDataWriteIntent: false,
-          hasMemoryWriteIntent: false,
-          hasMessageSendingIntent: false,
-          hasPaymentIntent: false,
-          hasApprovalExecutionIntent: false,
-          hasRejectExecutionIntent: false,
-          hasOwnerDecisionExecutionIntent: false,
-          hasPromptExecutionIntent: false,
-          hasAiModelExecutionIntent: false,
-          hasResponseGenerationIntent: false,
-          hasResponseSendIntent: false,
-          hasRecoveryExecutionIntent: false,
-          fallbackSubjects: [],
-        }),
-      },
-      { status: 400 },
-    );
-  }
 }

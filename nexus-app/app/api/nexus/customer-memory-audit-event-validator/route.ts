@@ -1,4 +1,4 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 import {
   validateCustomerMemoryAuditEventPreview,
@@ -61,56 +61,4 @@ export async function GET() {
     method: "GET",
     ...validateCustomerMemoryAuditEventPreview(SAMPLE_INPUT),
   });
-}
-
-export async function POST(request: NextRequest) {
-  try {
-    const body = (await request.json()) as CustomerMemoryAuditEventValidationInput;
-
-    return NextResponse.json({
-      route: "/api/nexus/customer-memory-audit-event-validator",
-      method: "POST",
-      ...validateCustomerMemoryAuditEventPreview(body),
-    });
-  } catch {
-    return NextResponse.json(
-      {
-        route: "/api/nexus/customer-memory-audit-event-validator",
-        method: "POST",
-        ...validateCustomerMemoryAuditEventPreview({
-          businessId: "",
-          customerId: "",
-          conversationId: "",
-          ownerId: "",
-          auditEventPreviewId: "",
-          auditEventType: "final-response-safety-preview",
-          auditMode: "audit-event-validation-preview",
-          requestedAction: "invalid-json-payload",
-          riskLevel: "low",
-          safetyDecision: "blocked",
-          ownerApprovalRequired: false,
-          auditEventContractDecision: "blocked",
-          isAuditEventContractReady: false,
-          proposedFinalResponsePreview: "",
-          hasRealDatabaseAccess: false,
-          hasAuditWriteIntent: false,
-          hasAuditPersistenceIntent: false,
-          hasWriteIntent: false,
-          hasCustomerDataWriteIntent: false,
-          hasMemoryWriteIntent: false,
-          hasMessageSendingIntent: false,
-          hasPaymentIntent: false,
-          hasApprovalExecutionIntent: false,
-          hasRejectExecutionIntent: false,
-          hasOwnerDecisionExecutionIntent: false,
-          hasPromptExecutionIntent: false,
-          hasAiModelExecutionIntent: false,
-          hasResponseGenerationIntent: false,
-          hasResponseSendIntent: false,
-          auditSubjects: [],
-        }),
-      },
-      { status: 400 },
-    );
-  }
 }

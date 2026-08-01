@@ -1,4 +1,4 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 import {
   runCustomerMemoryFinalResponseSafetyGate,
@@ -54,51 +54,4 @@ export async function GET() {
     method: "GET",
     ...runCustomerMemoryFinalResponseSafetyGate(SAMPLE_INPUT),
   });
-}
-
-export async function POST(request: NextRequest) {
-  try {
-    const body = (await request.json()) as CustomerMemoryFinalResponseSafetyGateInput;
-
-    return NextResponse.json({
-      route: "/api/nexus/customer-memory-final-response-safety-gate",
-      method: "POST",
-      ...runCustomerMemoryFinalResponseSafetyGate(body),
-    });
-  } catch {
-    return NextResponse.json(
-      {
-        route: "/api/nexus/customer-memory-final-response-safety-gate",
-        method: "POST",
-        ...runCustomerMemoryFinalResponseSafetyGate({
-          businessId: "",
-          customerId: "",
-          conversationId: "",
-          ownerId: "",
-          finalResponseMode: "safe-preview",
-          requestedAction: "invalid-json-payload",
-          riskLevel: "low",
-          ownerApprovalRequired: false,
-          ownerReviewValidationDecision: "blocked",
-          isOwnerReviewValid: false,
-          proposedFinalResponsePreview: "",
-          hasRealDatabaseAccess: false,
-          hasWriteIntent: false,
-          hasCustomerDataWriteIntent: false,
-          hasMemoryWriteIntent: false,
-          hasMessageSendingIntent: false,
-          hasPaymentIntent: false,
-          hasApprovalExecutionIntent: false,
-          hasRejectExecutionIntent: false,
-          hasOwnerDecisionExecutionIntent: false,
-          hasPromptExecutionIntent: false,
-          hasAiModelExecutionIntent: false,
-          hasResponseGenerationIntent: false,
-          hasResponseSendIntent: false,
-          finalResponseSafetyBlocks: [],
-        }),
-      },
-      { status: 400 },
-    );
-  }
 }

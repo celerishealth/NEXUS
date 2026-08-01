@@ -1,4 +1,4 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 import {
   validateCustomerMemoryContextInjectionPreview,
@@ -43,41 +43,4 @@ export async function GET() {
     method: "GET",
     ...validateCustomerMemoryContextInjectionPreview(SAMPLE_INPUT),
   });
-}
-
-export async function POST(request: NextRequest) {
-  try {
-    const body = (await request.json()) as CustomerMemoryContextInjectionValidationInput;
-
-    return NextResponse.json({
-      route: "/api/nexus/customer-memory-context-injection-validator",
-      method: "POST",
-      ...validateCustomerMemoryContextInjectionPreview(body),
-    });
-  } catch {
-    return NextResponse.json(
-      {
-        route: "/api/nexus/customer-memory-context-injection-validator",
-        method: "POST",
-        ...validateCustomerMemoryContextInjectionPreview({
-          businessId: "",
-          customerId: "",
-          conversationId: "",
-          requestedAction: "invalid-json-payload",
-          riskLevel: "low",
-          ownerApprovalRequired: false,
-          hasRealDatabaseAccess: false,
-          hasWriteIntent: false,
-          hasMessageSendingIntent: false,
-          hasPaymentIntent: false,
-          hasApprovalExecutionIntent: false,
-          hasPromptExecutionIntent: false,
-          contractDecision: "blocked",
-          isContractReady: false,
-          injectionBlocks: [],
-        }),
-      },
-      { status: 400 },
-    );
-  }
 }

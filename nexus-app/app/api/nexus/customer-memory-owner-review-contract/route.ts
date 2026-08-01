@@ -1,4 +1,4 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 import {
   createCustomerMemoryOwnerReviewContract,
@@ -51,48 +51,4 @@ export async function GET() {
     method: "GET",
     ...createCustomerMemoryOwnerReviewContract(SAMPLE_INPUT),
   });
-}
-
-export async function POST(request: NextRequest) {
-  try {
-    const body = (await request.json()) as CustomerMemoryOwnerReviewContractInput;
-
-    return NextResponse.json({
-      route: "/api/nexus/customer-memory-owner-review-contract",
-      method: "POST",
-      ...createCustomerMemoryOwnerReviewContract(body),
-    });
-  } catch {
-    return NextResponse.json(
-      {
-        route: "/api/nexus/customer-memory-owner-review-contract",
-        method: "POST",
-        ...createCustomerMemoryOwnerReviewContract({
-          businessId: "",
-          customerId: "",
-          conversationId: "",
-          ownerId: "",
-          ownerReviewMode: "owner-review-preview",
-          requestedAction: "invalid-json-payload",
-          riskLevel: "low",
-          ownerApprovalRequired: false,
-          hasRealDatabaseAccess: false,
-          hasWriteIntent: false,
-          hasMessageSendingIntent: false,
-          hasPaymentIntent: false,
-          hasApprovalExecutionIntent: false,
-          hasRejectExecutionIntent: false,
-          hasPromptExecutionIntent: false,
-          hasAiModelExecutionIntent: false,
-          hasResponseGenerationIntent: false,
-          hasResponseSendIntent: false,
-          responseDraftValidationDecision: "blocked",
-          isResponseDraftValid: false,
-          proposedResponseDraftPreview: "",
-          ownerReviewContextBlocks: [],
-        }),
-      },
-      { status: 400 },
-    );
-  }
 }

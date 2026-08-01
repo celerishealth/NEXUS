@@ -1,4 +1,4 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 import {
   createCustomerMemoryResponseDraftContract,
@@ -46,44 +46,4 @@ export async function GET() {
     method: "GET",
     ...createCustomerMemoryResponseDraftContract(SAMPLE_INPUT),
   });
-}
-
-export async function POST(request: NextRequest) {
-  try {
-    const body = (await request.json()) as CustomerMemoryResponseDraftContractInput;
-
-    return NextResponse.json({
-      route: "/api/nexus/customer-memory-response-draft-contract",
-      method: "POST",
-      ...createCustomerMemoryResponseDraftContract(body),
-    });
-  } catch {
-    return NextResponse.json(
-      {
-        route: "/api/nexus/customer-memory-response-draft-contract",
-        method: "POST",
-        ...createCustomerMemoryResponseDraftContract({
-          businessId: "",
-          customerId: "",
-          conversationId: "",
-          responseDraftMode: "safe-preview",
-          requestedAction: "invalid-json-payload",
-          riskLevel: "low",
-          ownerApprovalRequired: false,
-          hasRealDatabaseAccess: false,
-          hasWriteIntent: false,
-          hasMessageSendingIntent: false,
-          hasPaymentIntent: false,
-          hasApprovalExecutionIntent: false,
-          hasPromptExecutionIntent: false,
-          hasAiModelExecutionIntent: false,
-          hasResponseSendIntent: false,
-          promptContextValidationDecision: "blocked",
-          isPromptContextValid: false,
-          validatedPromptContextBlocks: [],
-        }),
-      },
-      { status: 400 },
-    );
-  }
 }

@@ -1,4 +1,4 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 import {
   createCustomerMemoryPromptContextContract,
@@ -44,42 +44,4 @@ export async function GET() {
     method: "GET",
     ...createCustomerMemoryPromptContextContract(SAMPLE_INPUT),
   });
-}
-
-export async function POST(request: NextRequest) {
-  try {
-    const body = (await request.json()) as CustomerMemoryPromptContextContractInput;
-
-    return NextResponse.json({
-      route: "/api/nexus/customer-memory-prompt-context-contract",
-      method: "POST",
-      ...createCustomerMemoryPromptContextContract(body),
-    });
-  } catch {
-    return NextResponse.json(
-      {
-        route: "/api/nexus/customer-memory-prompt-context-contract",
-        method: "POST",
-        ...createCustomerMemoryPromptContextContract({
-          businessId: "",
-          customerId: "",
-          conversationId: "",
-          promptContextMode: "safe-preview",
-          requestedAction: "invalid-json-payload",
-          riskLevel: "low",
-          ownerApprovalRequired: false,
-          hasRealDatabaseAccess: false,
-          hasWriteIntent: false,
-          hasMessageSendingIntent: false,
-          hasPaymentIntent: false,
-          hasApprovalExecutionIntent: false,
-          hasPromptExecutionIntent: false,
-          injectionValidationDecision: "blocked",
-          isInjectionValid: false,
-          validatedInjectionBlocks: [],
-        }),
-      },
-      { status: 400 },
-    );
-  }
 }

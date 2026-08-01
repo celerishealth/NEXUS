@@ -1,4 +1,4 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 import {
   createCustomerMemoryPipelineSummaryDashboardPreview,
@@ -48,57 +48,4 @@ export async function GET() {
     method: "GET",
     ...createCustomerMemoryPipelineSummaryDashboardPreview(SAMPLE_INPUT),
   });
-}
-
-export async function POST(request: NextRequest) {
-  try {
-    const body = (await request.json()) as CustomerMemoryPipelineSummaryDashboardInput;
-
-    return NextResponse.json({
-      route: "/api/nexus/customer-memory-pipeline-summary-dashboard",
-      method: "POST",
-      ...createCustomerMemoryPipelineSummaryDashboardPreview(body),
-    });
-  } catch {
-    return NextResponse.json(
-      {
-        route: "/api/nexus/customer-memory-pipeline-summary-dashboard",
-        method: "POST",
-        ...createCustomerMemoryPipelineSummaryDashboardPreview({
-          businessId: "",
-          customerId: "",
-          conversationId: "",
-          ownerId: "",
-          dashboardMode: "pipeline-summary-dashboard-preview",
-          requestedAction: "invalid-json-payload",
-          riskLevel: "low",
-          ownerApprovalRequired: false,
-          fullPipelineDecision: "pipeline-preview-blocked",
-          isPipelinePreviewSafe: false,
-          proposedFinalResponsePreview: "",
-          fallbackPreviewMessage: "",
-          hasRealDatabaseAccess: false,
-          hasAuditWriteIntent: false,
-          hasAuditPersistenceIntent: false,
-          hasRecoveryWriteIntent: false,
-          hasWriteIntent: false,
-          hasCustomerDataWriteIntent: false,
-          hasMemoryWriteIntent: false,
-          hasMessageSendingIntent: false,
-          hasPaymentIntent: false,
-          hasApprovalExecutionIntent: false,
-          hasRejectExecutionIntent: false,
-          hasOwnerDecisionExecutionIntent: false,
-          hasPromptExecutionIntent: false,
-          hasAiModelExecutionIntent: false,
-          hasResponseGenerationIntent: false,
-          hasResponseSendIntent: false,
-          hasRecoveryExecutionIntent: false,
-          hasPipelineExecutionIntent: false,
-          stages: [],
-        }),
-      },
-      { status: 400 },
-    );
-  }
 }
