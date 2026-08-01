@@ -1,5 +1,28 @@
 import { NextResponse } from "next/server";
 
+const MAX_PUBLIC_DEMO_AI_REQUEST_BYTES =
+  16 * 1024;
+
+const MAX_PUBLIC_DEMO_AI_PROMPT_CHARACTERS =
+  8_000;
+
+const PUBLIC_DEMO_AI_RESPONSE_HEADERS = {
+  "Cache-Control": "no-store, max-age=0",
+  "X-Content-Type-Options": "nosniff",
+  "Referrer-Policy": "no-referrer",
+} as const;
+
+function jsonResponse(
+  body: Readonly<Record<string, unknown>>,
+  status = 200,
+): NextResponse {
+  return NextResponse.json(body, {
+    status,
+    headers:
+      PUBLIC_DEMO_AI_RESPONSE_HEADERS,
+  });
+}
+
 
 
 
@@ -99,72 +122,176 @@ Do not auto-send or finalize billing without business owner review.`;
   return `${response}${safetyNote}`;
 }
 
-export async function POST(request: Request) {
-  let prompt = "";
+export async function POST(
+  request: Request,
+): Promise<NextResponse> {
+  const contentType =
+    request.headers
+      .get("content-type")
+      ?.toLowerCase() ?? "";
 
-  try {
-    const body = await request.json();
-    prompt = String(body?.prompt || body?.message || body?.input || "").trim();
+  if (
+    !contentType.startsWith(
+      "application/json",
+    )
+  ) {
+    return jsonResponse(
+      {
+        error:
+          "Content-Type must be application/json.",
+      },
+      415,
+    );
+  }
 
-    if (!prompt) {
-      return NextResponse.json({
-        response:
-          "Please enter a customer message or order details to continue.",
-      });
-    }
+  const declaredLength =
+    request.headers.get(
+      "content-length",
+    );
 
-    const apiKey = process.env.GEMINI_API_KEY;
-
-    if (!apiKey) {
-      return NextResponse.json({
-        response: applySafetyLayer(buildLocalFallbackResponse(prompt)),
-      });
-    }
-
-    try {
-      const geminiResponse = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            contents: [
-              {
-                parts: [
-                  {
-                    text: prompt,
-                  },
-                ],
-              },
-            ],
-          }),
-        }
+  if (declaredLength !== null) {
+    const parsedLength =
+      Number.parseInt(
+        declaredLength,
+        10,
       );
 
-      if (!geminiResponse.ok) {
-        return NextResponse.json({
-          response: applySafetyLayer(buildLocalFallbackResponse(prompt)),
-        });
-      }
-
-      const data = await geminiResponse.json();
-
-      const text =
-        data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-        buildLocalFallbackResponse(prompt);
-
-      return NextResponse.json({ response: applySafetyLayer(text) });
-    } catch {
-      return NextResponse.json({
-        response: applySafetyLayer(buildLocalFallbackResponse(prompt)),
-      });
+    if (
+      !Number.isFinite(parsedLength) ||
+      parsedLength < 0
+    ) {
+      return jsonResponse(
+        {
+          error:
+            "Content-Length is invalid.",
+        },
+        400,
+      );
     }
-  } catch {
-    return NextResponse.json({
-      response:
-        "NEXUS is ready. Please enter the customer message again.",
-    });
+
+    if (
+      parsedLength >
+      MAX_PUBLIC_DEMO_AI_REQUEST_BYTES
+    ) {
+      return jsonResponse(
+        {
+          error:
+            "Public demo AI request is too large.",
+        },
+        413,
+      );
+    }
   }
+
+  let rawBody = "";
+
+  try {
+    rawBody = await request.text();
+  } catch {
+    return jsonResponse(
+      {
+        error:
+          "Public demo AI request body could not be read.",
+      },
+      400,
+    );
+  }
+
+  const actualBodyBytes =
+    new TextEncoder()
+      .encode(rawBody)
+      .byteLength;
+
+  if (
+    actualBodyBytes >
+    MAX_PUBLIC_DEMO_AI_REQUEST_BYTES
+  ) {
+    return jsonResponse(
+      {
+        error:
+          "Public demo AI request is too large.",
+      },
+      413,
+    );
+  }
+
+  let parsedBody: unknown;
+
+  try {
+    parsedBody = JSON.parse(rawBody);
+  } catch {
+    return jsonResponse(
+      {
+        error:
+          "Public demo AI request must contain valid JSON.",
+      },
+      400,
+    );
+  }
+
+  if (
+    parsedBody === null ||
+    typeof parsedBody !== "object" ||
+    Array.isArray(parsedBody)
+  ) {
+    return jsonResponse(
+      {
+        error:
+          "Public demo AI request must contain a JSON object.",
+      },
+      400,
+    );
+  }
+
+  const body =
+    parsedBody as Record<
+      string,
+      unknown
+    >;
+
+  const candidate =
+    body.prompt ??
+    body.message ??
+    body.input ??
+    "";
+
+  const prompt =
+    typeof candidate === "string"
+      ? candidate.trim()
+      : "";
+
+  if (!prompt) {
+    return jsonResponse(
+      {
+        error:
+          "Please enter a customer message or order details to continue.",
+      },
+      400,
+    );
+  }
+
+  if (
+    prompt.length >
+    MAX_PUBLIC_DEMO_AI_PROMPT_CHARACTERS
+  ) {
+    return jsonResponse(
+      {
+        error:
+          "Public demo AI prompt is too long.",
+      },
+      413,
+    );
+  }
+
+  return jsonResponse({
+    response: applySafetyLayer(
+      buildLocalFallbackResponse(
+        prompt,
+      ),
+    ),
+    mode:
+      "LOCAL_PUBLIC_DEMO_DRAFT_ONLY",
+    externalProviderCalled: false,
+    ownerApprovalRequired: true,
+  });
 }
