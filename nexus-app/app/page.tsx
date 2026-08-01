@@ -1,6 +1,3 @@
-"use client";
-
-
 import NexusFounderEmergencyControl from "@/components/nexus/NexusFounderEmergencyControl";
 import NexusControlledPaidPilotRegistry from "@/components/nexus/NexusControlledPaidPilotRegistry";
 import NexusRootStaticEvidencePanels from "@/components/nexus/NexusRootStaticEvidencePanels";
@@ -36,50 +33,30 @@ export default function Home() {
           <NexusRootHeaderStatusPanels />
 
           <NexusRootAiBrain>
+            <section
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "20px",
+                marginTop: "28px",
+              }}
+            >
+              <NexusRootRecentActivityPanel />
+              <NexusRootCinematicDemoPanels />
+              <NexusRootBuildLogPanel />
+              <NexusRootArchitectureEvidencePanels />
+              <NexusRootSafetyLayerPanel />
+            </section>
 
-          <section
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "20px",
-              marginTop: "28px",
-            }}
-          >
-            <NexusRootRecentActivityPanel />
-
-        <NexusRootCinematicDemoPanels />
-
-            <NexusRootBuildLogPanel />
-
-        <NexusRootArchitectureEvidencePanels />
-        <NexusRootSafetyLayerPanel />
-
-          </section>
-
-          <NexusRootMvpReadinessPanel />
-
+            <NexusRootMvpReadinessPanel />
           </NexusRootAiBrain>
         </section>
 
-          <NexusRootStaticEvidencePanels />
-
-          <NexusRootPaidPilotReadinessPanels />
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <NexusFounderEmergencyControl />
-  <NexusControlledPaidPilotRegistry />
-  </main>
+        <NexusRootStaticEvidencePanels />
+        <NexusRootPaidPilotReadinessPanels />
+        <NexusFounderEmergencyControl />
+        <NexusControlledPaidPilotRegistry />
+      </main>
     </NexusRootLaunchGate>
   );
 }
