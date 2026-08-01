@@ -1,29 +1,55 @@
 export default function NexusPpaRiskEnginePage() {
   return (
-    <main>
-      <h1>PPA Industrial Solution Risk Engine Rules</h1>
-      <p>Day 601 controlled risk engine rules for the first internal NEXUS business tenant.</p>
-      <p>These rules protect PPA Industrial Solution while keeping NEXUS reusable for all future business sectors.</p>
-      <h2>Blocked Until Owner Approval</h2>
-      <ul>
-        <li>Price confirmation risk: NEXUS must not auto-confirm final price.</li>
-        <li>Discount risk: NEXUS must not auto-offer discount or negotiation terms.</li>
-        <li>Delivery risk: NEXUS must not promise fixed delivery date or timeline.</li>
-        <li>Warranty risk: NEXUS must not confirm warranty terms without owner approval.</li>
-        <li>Installation risk: NEXUS must not promise installation support or site visit automatically.</li>
-        <li>Payment risk: NEXUS must not confirm advance, credit, invoice, GST, or payment terms automatically.</li>
-        <li>Replacement and return risk: NEXUS must not promise replacement, refund, or return terms automatically.</li>
-        <li>Legal and claim risk: NEXUS must not make safety, compliance, certification, or performance claims without owner approval.</li>
-      </ul>
-      <h2>Safe Allowed Draft Behavior</h2>
-      <ul>
-        <li>Ask for quantity, city, installation location, voltage requirement, use case, and timeline.</li>
-        <li>Explain that final price, delivery, warranty, payment, and installation details require owner approval.</li>
-      </ul>
-      <h2>Owner Approval Actions</h2>
-      <ul>
-      </ul>
-      <h2>Locked Boundary</h2>
+    <main className="min-h-screen bg-slate-950 px-6 py-10 text-white">
+      <section className="mx-auto max-w-5xl">
+        <p className="text-sm font-bold uppercase tracking-[0.3em] text-cyan-300">
+          Controlled internal risk preview
+        </p>
+        <h1 className="mt-4 text-4xl font-black">
+          PPA Industrial Solution Risk Engine Rules
+        </h1>
+        <p className="mt-4 leading-7 text-slate-300">
+          These static rules protect the PPA internal NEXUS preview while
+          preserving owner authority and reusable sector boundaries.
+        </p>
+
+        <h2 className="mt-8 text-2xl font-black text-red-200">
+          Blocked until owner approval
+        </h2>
+        <ul className="mt-4 space-y-3 text-slate-300">
+          <li>Final price, discount and negotiation terms.</li>
+          <li>Fixed delivery dates, installation promises and site visits.</li>
+          <li>Warranty, replacement, refund and return commitments.</li>
+          <li>Advance, credit, invoice, GST and payment terms.</li>
+          <li>Safety, compliance, certification and performance claims.</li>
+        </ul>
+
+        <h2 className="mt-8 text-2xl font-black text-emerald-200">
+          Safe allowed draft behavior
+        </h2>
+        <ul className="mt-4 space-y-3 text-slate-300">
+          <li>Ask for quantity, city, location, use case and required timeline.</li>
+          <li>Identify missing specifications without inventing facts.</li>
+          <li>State that commercial and technical commitments require owner approval.</li>
+        </ul>
+
+        <h2 className="mt-8 text-2xl font-black text-cyan-200">
+          Owner approval actions
+        </h2>
+        <ul className="mt-4 space-y-3 text-slate-300">
+          <li>Approve, edit, reject or request more information.</li>
+          <li>Keep the inquiry in internal preview or bounded sandbox status.</li>
+          <li>Record the decision without authorizing external execution.</li>
+        </ul>
+
+        <h2 className="mt-8 text-2xl font-black text-red-200">
+          Locked boundary
+        </h2>
+        <p className="mt-4 leading-7 text-slate-300">
+          Public launch, payment execution, customer contact, live provider
+          execution and uncontrolled AI actions remain unauthorized.
+        </p>
+      </section>
     </main>
   );
 }
