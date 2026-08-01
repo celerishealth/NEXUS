@@ -11,6 +11,7 @@ import {
 } from "vitest";
 
 const pagePaths = [
+  "app/nexus-ppa-inquiry-workflow/page.tsx",
   "app/nexus-ppa-dashboard-validator/page.tsx",
   "app/nexus-ppa-operating-summary/page.tsx",
   "app/nexus-ppa-owner-approval/page.tsx",
@@ -71,4 +72,25 @@ describe("PPA static preview page completeness", () => {
       );
     },
   );
-});
+
+  it("completes the PPA inquiry workflow evidence without enabling execution", () => {
+    const source = readPage(
+      "app/nexus-ppa-inquiry-workflow/page.tsx",
+    );
+
+    expect(source).toMatch(
+      /Sample Customer Inquiry[\s\S]*logo projector light[\s\S]*quantity[\s\S]*delivery city/i,
+    );
+    expect(source).toMatch(
+      /Safe NEXUS Draft[\s\S]*draft only[\s\S]*owner review/i,
+    );
+    expect(source).toMatch(
+      /Locked Boundary[\s\S]*public launch[\s\S]*(unauthorized|blocked|disabled)/i,
+    );
+    expect(source).toMatch(
+      /customer contact[\s\S]*(unauthorized|blocked|disabled)/i,
+    );
+    expect(source).toMatch(
+      /payment[\s\S]*(unauthorized|blocked|disabled)/i,
+    );
+  });});
