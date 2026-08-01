@@ -11,13 +11,19 @@ import {
 } from "vitest";
 
 const pagePaths = [
-  "app/nexus-ppa-inquiry-workflow/page.tsx",
+  "app/nexus-ppa-controlled-use-readiness/page.tsx",
+  "app/nexus-ppa-controlled-use-validator/page.tsx",
   "app/nexus-ppa-dashboard-validator/page.tsx",
+  "app/nexus-ppa-full-version/page.tsx",
+  "app/nexus-ppa-inquiry-workflow/page.tsx",
   "app/nexus-ppa-operating-summary/page.tsx",
   "app/nexus-ppa-owner-approval/page.tsx",
+  "app/nexus-ppa-pilot-dashboard/page.tsx",
   "app/nexus-ppa-pilot-readiness/page.tsx",
+  "app/nexus-ppa-preview-completion-summary/page.tsx",
   "app/nexus-ppa-quotation-audit/page.tsx",
   "app/nexus-ppa-risk-engine/page.tsx",
+  "app/nexus-ppa-sector-pack/page.tsx",
 ] as const;
 
 function readPage(relativePath: string): string {
@@ -45,13 +51,19 @@ describe("PPA static preview page completeness", () => {
       const source = readPage(relativePath);
 
       expect(source).toMatch(
-        /controlled internal|internal pilot|internal NEXUS/i,
+        /controlled internal|internal pilot|internal NEXUS|preview only/i,
       );
       expect(source).toMatch(
         /public launch/i,
       );
       expect(source).toMatch(
         /unauthorized|blocked|disabled|off/i,
+      );
+      expect(source).toMatch(
+        /payment/i,
+      );
+      expect(source).toMatch(
+        /customer contact|external delivery|external sending|auto-send|WhatsApp/i,
       );
     },
   );
@@ -93,4 +105,31 @@ describe("PPA static preview page completeness", () => {
     expect(source).toMatch(
       /payment[\s\S]*(unauthorized|blocked|disabled)/i,
     );
-  });});
+  });
+
+  it("records a concrete controlled-use validator result", () => {
+    const source = readPage(
+      "app/nexus-ppa-controlled-use-validator/page.tsx",
+    );
+
+    expect(source).toMatch(
+      /PPA Internal Use Result[\s\S]+PASS/i,
+    );
+    expect(source).toMatch(
+      /public launch[\s\S]*(blocked|unauthorized|disabled)/i,
+    );
+  });
+
+  it("makes the operating summary external-delivery boundary explicit", () => {
+    const source = readPage(
+      "app/nexus-ppa-operating-summary/page.tsx",
+    );
+
+    expect(source).toMatch(
+      /customer contact|external delivery|auto-send|WhatsApp/i,
+    );
+    expect(source).toMatch(
+      /live provider execution[\s\S]*(unauthorized|blocked|disabled)/i,
+    );
+  });
+});

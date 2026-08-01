@@ -35,7 +35,7 @@ export default function NexusPpaOperatingSummaryPage() {
         <ul className="mt-4 space-y-3 text-slate-300">
           <li>Public launch remains blocked.</li>
           <li>Payment, billing and customer signup remain disabled.</li>
-          <li>External sending and live provider execution remain unauthorized.</li>
+          <li>Customer contact, external delivery, WhatsApp auto-send and live provider execution remain unauthorized.</li>
         </ul>
       </section>
     </main>
