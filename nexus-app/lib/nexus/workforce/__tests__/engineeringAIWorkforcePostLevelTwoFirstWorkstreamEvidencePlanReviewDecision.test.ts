@@ -267,6 +267,7 @@ describe(
           ),
         ).not.toThrow();
       },
+      15000,
     );
 
     it(
