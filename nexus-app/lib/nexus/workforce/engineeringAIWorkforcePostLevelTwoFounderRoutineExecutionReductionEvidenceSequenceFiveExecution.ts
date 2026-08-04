@@ -374,5 +374,5 @@ export const ENGINEERING_AI_WORKFORCE_POST_LEVEL_TWO_FOUNDER_ROUTINE_EXECUTION_R
       "engineering-ai-workforce-post-level-two-founder-routine-execution-reduction-evidence-sequence-five-execution-001",
     sourceOwnerReview:
       ENGINEERING_AI_WORKFORCE_POST_LEVEL_TWO_FOUNDER_ROUTINE_EXECUTION_REDUCTION_EVIDENCE_SEQUENCE_FOUR_EXECUTION_OWNER_REVIEW_DECISION,
-    executedAt: "2026-08-04T10:15:00.000Z",
+    executedAt: "2026-08-04T10:05:00.000Z",
   });
