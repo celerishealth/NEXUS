@@ -25,20 +25,31 @@ export default function Home() {
           color: "white",
           display: "flex",
           fontFamily: "Arial, sans-serif",
+          overflowX: "hidden",
         }}
       >
         <NexusRootSidebar />
 
-        <section style={{ flex: 1, padding: "32px", overflow: "auto" }}>
+        <section
+          style={{
+            flex: 1,
+            minWidth: 0,
+            padding: "32px",
+            overflowX: "hidden",
+            overflowY: "auto",
+          }}
+        >
           <NexusRootHeaderStatusPanels />
 
           <NexusRootAiBrain>
             <section
               style={{
                 display: "grid",
-                gridTemplateColumns: "1fr 1fr",
+                gridTemplateColumns:
+                  "repeat(auto-fit, minmax(min(100%, 420px), 1fr))",
                 gap: "20px",
                 marginTop: "28px",
+                minWidth: 0,
               }}
             >
               <NexusRootRecentActivityPanel />
@@ -50,12 +61,23 @@ export default function Home() {
 
             <NexusRootMvpReadinessPanel />
           </NexusRootAiBrain>
-        </section>
 
-        <NexusRootStaticEvidencePanels />
-        <NexusRootPaidPilotReadinessPanels />
-        <NexusFounderEmergencyControl />
-        <NexusControlledPaidPilotRegistry />
+          <section
+            style={{
+              display: "grid",
+              gridTemplateColumns: "minmax(0, 1fr)",
+              gap: "20px",
+              marginTop: "20px",
+              minWidth: 0,
+              width: "100%",
+            }}
+          >
+            <NexusRootStaticEvidencePanels />
+            <NexusRootPaidPilotReadinessPanels />
+            <NexusFounderEmergencyControl />
+            <NexusControlledPaidPilotRegistry />
+          </section>
+        </section>
       </main>
     </NexusRootLaunchGate>
   );
