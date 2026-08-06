@@ -492,7 +492,7 @@ export default function NexusRootOwnerApprovalRouting({
                       Reject
                     </button>
                   </div>
-                <p style={{ color: "#94a3b8", marginBottom: "8px" }}>
+                <div style={{ color: "#94a3b8", marginBottom: "8px" }}>
                   <p style={{ color: "#f8fafc", fontWeight: 700, marginBottom: "8px" }}>
                     Customer Memory Mini v1
                   </p>
@@ -522,7 +522,7 @@ export default function NexusRootOwnerApprovalRouting({
                     </p>
                   </div>
                   Customer Input: {item.input}
-                </p>
+                </div>
                 <p style={{ color: "#cbd5e1", whiteSpace: "pre-wrap" }}>
                   {item.response}
                 </p>
