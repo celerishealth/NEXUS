@@ -1,0 +1,75 @@
+import {
+  describe,
+  expect,
+  it,
+} from "vitest";
+
+import {
+  AUTONOMOUS_GLOBAL_GROWTH_QUALIFICATION_ADMISSION_TRANSITION_APPROVAL_DECISION,
+  AUTONOMOUS_GLOBAL_GROWTH_QUALIFICATION_ADMISSION_TRANSITION_APPROVAL_RECORD_VERSION,
+} from "../autonomousGlobalGrowthQualificationAdmissionTransitionApprovalRecord";
+import {
+  validateAutonomousGlobalGrowthQualificationAdmissionTransitionDecision,
+} from "../autonomousGlobalGrowthQualificationAdmissionTransitionDecision";
+
+describe("Autonomous Global Growth qualification-admission approval record", () => {
+  it("records owner approval only for TEMPLATE_PREPARED to QUALIFICATION_ADMISSION_PENDING", () => {
+    const decision =
+      AUTONOMOUS_GLOBAL_GROWTH_QUALIFICATION_ADMISSION_TRANSITION_APPROVAL_DECISION;
+
+    expect(
+      AUTONOMOUS_GLOBAL_GROWTH_QUALIFICATION_ADMISSION_TRANSITION_APPROVAL_RECORD_VERSION,
+    ).toBe(
+      "nexus-autonomous-global-growth-qualification-admission-transition-approval-record-v1",
+    );
+
+    expect(decision.qualificationAdmissionTransitionApproved).toBe(true);
+    expect(decision.candidateCount).toBe(9);
+    expect(decision.sourceLifecycleState).toBe("TEMPLATE_PREPARED");
+    expect(decision.targetLifecycleState).toBe(
+      "QUALIFICATION_ADMISSION_PENDING",
+    );
+    expect(decision.nextStep).toBe(
+      "APPLY_OWNER_CONTROLLED_AUTONOMOUS_GLOBAL_GROWTH_QUALIFICATION_ADMISSION_TRANSITION_V1",
+    );
+  });
+
+  it("keeps qualification execution and every later authority blocked", () => {
+    const boundary =
+      AUTONOMOUS_GLOBAL_GROWTH_QUALIFICATION_ADMISSION_TRANSITION_APPROVAL_DECISION
+        .authorityBoundary;
+
+    expect(boundary.qualificationAdmissionTransitionAuthorized).toBe(true);
+    expect(boundary.qualificationAdmissionTransitionExecuted).toBe(false);
+    expect(boundary.qualificationAdmissionAuthorized).toBe(false);
+    expect(boundary.qualificationExecutionAuthorized).toBe(false);
+    expect(boundary.qualificationEvidenceAccepted).toBe(false);
+    expect(boundary.ownerQualificationApproved).toBe(false);
+    expect(boundary.employeeActivationAuthorized).toBe(false);
+    expect(boundary.runtimeAuthorized).toBe(false);
+    expect(boundary.realCredentialAccessAuthorized).toBe(false);
+    expect(boundary.liveConnectorActivationAuthorized).toBe(false);
+    expect(boundary.publicPublishingAuthorized).toBe(false);
+    expect(boundary.customerMessagingAuthorized).toBe(false);
+    expect(boundary.leadContactAuthorized).toBe(false);
+    expect(boundary.productionExecutionAuthorized).toBe(false);
+    expect(boundary.autonomousExternalActionAuthorized).toBe(false);
+    expect(boundary.levelThreeAuthorityGranted).toBe(false);
+    expect(boundary.founderLiberationAchieved).toBe(false);
+    expect(boundary.ownerFinalAuthorityPreserved).toBe(true);
+  });
+
+  it("remains immutable and digest-valid", () => {
+    const decision =
+      AUTONOMOUS_GLOBAL_GROWTH_QUALIFICATION_ADMISSION_TRANSITION_APPROVAL_DECISION;
+
+    expect(Object.isFrozen(decision)).toBe(true);
+    expect(Object.isFrozen(decision.authorityBoundary)).toBe(true);
+
+    expect(() =>
+      validateAutonomousGlobalGrowthQualificationAdmissionTransitionDecision(
+        decision,
+      ),
+    ).not.toThrow();
+  });
+});
