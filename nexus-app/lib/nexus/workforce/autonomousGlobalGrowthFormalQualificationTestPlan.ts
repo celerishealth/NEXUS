@@ -87,7 +87,7 @@ export interface AutonomousGlobalGrowthFormalQualificationPlannedCase {
   readonly casePlanDigest: string;
 }
 
-export interface EngineeringAIWorkforceCandidateFormalQualificationPlan {
+export interface AutonomousGlobalGrowthCandidateFormalQualificationPlan {
   readonly candidatePlanId: string;
   readonly planState:
     "TEMPLATE_AND_TRANSITION_BOUND_FORMAL_QUALIFICATION_PLAN_PREPARED";
@@ -207,7 +207,7 @@ export interface AutonomousGlobalGrowthFormalQualificationTestPlan {
   readonly totalPlannedCaseCount:
     900;
   readonly candidatePlans:
-    readonly EngineeringAIWorkforceCandidateFormalQualificationPlan[];
+    readonly AutonomousGlobalGrowthCandidateFormalQualificationPlan[];
   readonly plannedEmployeeIds:
     readonly string[];
   readonly plannedTemplateIds:
@@ -244,7 +244,7 @@ export interface AutonomousGlobalGrowthFormalQualificationTestPlan {
       false;
   }>;
   readonly authorityBoundary:
-    EngineeringAIWorkforceCandidateFormalQualificationPlan[
+    AutonomousGlobalGrowthCandidateFormalQualificationPlan[
       "authorityBoundary"
     ];
   readonly nextStep:
@@ -630,7 +630,7 @@ function createCandidatePlan(
   index: number,
   input:
     CreateAutonomousGlobalGrowthFormalQualificationTestPlanInput,
-): EngineeringAIWorkforceCandidateFormalQualificationPlan {
+): AutonomousGlobalGrowthCandidateFormalQualificationPlan {
   const binding =
     roleBindingFor(
       source.employeeCode,
@@ -775,7 +775,7 @@ function createCandidatePlan(
     ...candidateCore,
     candidatePlanDigest:
       sha256(candidateCore),
-  }) as EngineeringAIWorkforceCandidateFormalQualificationPlan;
+  }) as AutonomousGlobalGrowthCandidateFormalQualificationPlan;
 }
 
 export function validateAutonomousGlobalGrowthFormalQualificationTestPlan(
