@@ -1,4 +1,6 @@
-﻿import { createHash } from "node:crypto";
+import { NEXUS_TOP_CUSTOMER_VALUE_GATE_QUESTION } from "./nexusTopCustomerValueGate";
+
+import { createHash } from "node:crypto";
 
 import {
   WORLD_CLASS_AI_WORKFORCE_MASTER_ROSTER,
@@ -141,6 +143,12 @@ export interface AIEmployeeFactoryLifecycleFoundation {
   readonly plannedCandidateCount: number;
   readonly safetyBoundary: Readonly<{
     existingActivatedEmployeesExcluded:
+      true;
+    customerValueGateQuestion:
+      typeof NEXUS_TOP_CUSTOMER_VALUE_GATE_QUESTION;
+    customerValueGateRequired: true;
+    customerValueGateBypassBlocked: true;
+    unsupportedCustomerValueTreatedAsNo:
       true;
     directTemplateBypassBlocked: true;
     directQualificationBypassBlocked:
@@ -489,6 +497,14 @@ export function createAIEmployeeFactoryLifecycleFoundation(
       candidateRecords.length,
     safetyBoundary: {
       existingActivatedEmployeesExcluded:
+        true,
+      customerValueGateQuestion:
+        NEXUS_TOP_CUSTOMER_VALUE_GATE_QUESTION,
+      customerValueGateRequired:
+        true,
+      customerValueGateBypassBlocked:
+        true,
+      unsupportedCustomerValueTreatedAsNo:
         true,
       directTemplateBypassBlocked:
         true,

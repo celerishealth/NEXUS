@@ -1,3 +1,5 @@
+import { NEXUS_TOP_CUSTOMER_VALUE_GATE_QUESTION } from "./nexusTopCustomerValueGate";
+
 
 import { createHash } from "node:crypto";
 
@@ -59,6 +61,12 @@ export interface AIEmployeeTemplateRecord {
     string;
   readonly safetyBoundary: Readonly<{
     ownerControlled: true;
+    customerValueGateQuestion:
+      typeof NEXUS_TOP_CUSTOMER_VALUE_GATE_QUESTION;
+    customerValueGateRequired: true;
+    customerValueGateBypassBlocked: true;
+    unsupportedCustomerValueTreatedAsNo:
+      true;
     tenantIsolationRequired: true;
     unqualifiedActivationBlocked: true;
     externalDeliveryAuthorized: false;
@@ -99,6 +107,12 @@ export interface AIEmployeeTemplateRegistry {
     duplicateLaunchSequenceBlocked: true;
     unqualifiedActivationBlocked: true;
     ownerControlRequired: true;
+    customerValueGateQuestion:
+      typeof NEXUS_TOP_CUSTOMER_VALUE_GATE_QUESTION;
+    customerValueGateRequired: true;
+    customerValueGateBypassBlocked: true;
+    unsupportedCustomerValueTreatedAsNo:
+      true;
     tenantIsolationRequired: true;
   }>;
   readonly createdAt: string;
@@ -855,6 +869,14 @@ export function createAIEmployeeTemplateRegistry(
             validation.validationDigest,
           safetyBoundary: {
             ownerControlled: true,
+            customerValueGateQuestion:
+              NEXUS_TOP_CUSTOMER_VALUE_GATE_QUESTION,
+            customerValueGateRequired:
+              true,
+            customerValueGateBypassBlocked:
+              true,
+            unsupportedCustomerValueTreatedAsNo:
+              true,
             tenantIsolationRequired:
               true,
             unqualifiedActivationBlocked:
@@ -929,6 +951,14 @@ export function createAIEmployeeTemplateRegistry(
       unqualifiedActivationBlocked:
         true,
       ownerControlRequired:
+        true,
+      customerValueGateQuestion:
+        NEXUS_TOP_CUSTOMER_VALUE_GATE_QUESTION,
+      customerValueGateRequired:
+        true,
+      customerValueGateBypassBlocked:
+        true,
+      unsupportedCustomerValueTreatedAsNo:
         true,
       tenantIsolationRequired:
         true,

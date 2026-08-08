@@ -1,4 +1,4 @@
-﻿import {
+import {
   describe,
   expect,
   it,
@@ -120,8 +120,16 @@ describe(
             .safetyBoundary,
         ).toEqual({
           existingActivatedEmployeesExcluded:
-            true,
-          directTemplateBypassBlocked:
+        true,
+      customerValueGateQuestion:
+        "Kya ye paying customer lane ya existing customer ko result dene me help karta hai?",
+      customerValueGateRequired:
+        true,
+      customerValueGateBypassBlocked:
+        true,
+      unsupportedCustomerValueTreatedAsNo:
+        true,
+      directTemplateBypassBlocked:
             true,
           directQualificationBypassBlocked:
             true,
