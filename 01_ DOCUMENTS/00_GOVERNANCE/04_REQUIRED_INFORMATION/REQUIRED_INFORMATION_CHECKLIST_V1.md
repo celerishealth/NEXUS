@@ -176,13 +176,11 @@ Required information status:
 
 Working proposal:
 
-Home-based registered office
-
-
+Current rented residence is NOT suitable as the working registered-office option because owner cooperation/supporting documents are unavailable.
 
 Status:
 
-NOT YET VERIFIED
+BLOCKED — ALTERNATIVE REGISTERED OFFICE REQUIRED
 
 
 
