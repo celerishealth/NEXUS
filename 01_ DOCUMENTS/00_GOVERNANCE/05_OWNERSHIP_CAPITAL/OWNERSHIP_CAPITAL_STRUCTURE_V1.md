@@ -82,10 +82,10 @@ Paid-up capital:
 ₹1,000 — APPROVED BY FOUNDER
 
 Number of shares:
-TO DECIDE
+100 equity shares — APPROVED BY FOUNDER
 
 Face value per share:
-TO DECIDE
+₹10 — APPROVED BY FOUNDER
 
 Share class:
 TO VERIFY / DECIDE
