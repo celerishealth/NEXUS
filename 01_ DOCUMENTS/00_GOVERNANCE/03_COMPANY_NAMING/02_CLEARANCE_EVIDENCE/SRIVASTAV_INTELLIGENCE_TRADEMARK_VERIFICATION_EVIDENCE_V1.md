@@ -1,0 +1,69 @@
+﻿# NEXUS — SRIVASTAV INTELLIGENCE TRADEMARK VERIFICATION EVIDENCE v1
+
+Document Status: CONTROLLED EVIDENCE — IN PROGRESS
+
+Candidate:
+SRIVASTAV INTELLIGENCE PRIVATE LIMITED
+
+Project:
+NEXUS
+
+## CURRENT STATUS
+
+Trademark Verification:
+PENDING
+
+Official IP India Search/Clearance:
+NOT COMPLETED
+
+Founder Final Approval:
+PENDING
+
+Filing Authorization:
+NOT GRANTED
+
+## VERIFICATION SCOPE
+
+Required review:
+
+- SRIVASTAV INTELLIGENCE
+- SRIVASTAVA INTELLIGENCE
+- SRIVASTAV
+- SRIVASTAVA
+- Similar phonetic/commercial variants
+- Relevant software, SaaS, AI and technology-related classes
+
+## CURRENT RESULT
+
+NOT YET VERIFIED
+
+No trademark clearance claim is made.
+
+## RISK TRACKING
+
+Similar marks:
+PENDING REVIEW
+
+Relevant classes:
+TO VERIFY
+
+Material conflicts:
+PENDING REVIEW
+
+## PRODUCT BRAND SEPARATION
+
+Parent Company Candidate:
+SRIVASTAV INTELLIGENCE PRIVATE LIMITED
+
+Product Brand:
+NEXUS
+
+Separate trademark/conflict assessment may be required for NEXUS.
+
+## FINAL DECISION STATUS
+
+SRIVASTAV INTELLIGENCE PRIVATE LIMITED:
+
+STRONG PRIMARY CANDIDATE — TRADEMARK VERIFICATION PENDING — NOT FINAL
+
+END OF TRADEMARK VERIFICATION EVIDENCE v1
