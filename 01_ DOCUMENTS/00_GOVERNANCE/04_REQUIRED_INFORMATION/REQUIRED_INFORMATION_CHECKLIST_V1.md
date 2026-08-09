@@ -275,6 +275,11 @@ Required:
 \- Number/class of shares — 100 equity shares at ₹10 face value APPROVED; share-class/legal wording still TO VERIFY
 
 \- Subscriber details — PENDING
+  - Subscriber identity details — TO COLLECT
+  - Subscriber share subscription allocation — TO CONFIRM
+  - Subscriber KYC/document verification — TO VERIFY
+  - Subscriber declaration/signature requirements — TO VERIFY
+  - Professional review before filing — REQUIRED
 
 \- Founder-control protections — PROFESSIONAL REVIEW REQUIRED
 
