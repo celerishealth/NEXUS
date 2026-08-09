@@ -116,7 +116,7 @@ No candidate receives preferential approval without evidence.
 
 Proposed legal name:
 
-PENDING
+SRIVASTAV INTELLIGENCE PRIVATE LIMITED
 
 
 
