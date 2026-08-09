@@ -60,10 +60,10 @@ REQUIRED
 ## 5. SHAREHOLDING STRUCTURE
 
 Founder shareholding:
-TO DECIDE
+90% — APPROVED BY FOUNDER
 
 Second shareholder shareholding:
-TO DECIDE
+10% — APPROVED BY FOUNDER
 
 Other shareholders:
 NONE PLANNED AT INITIAL STAGE UNLESS FOUNDER SEPARATELY APPROVES
@@ -138,10 +138,10 @@ Founder control objective:
 APPROVED
 
 Founder shareholding percentage:
-PENDING
+90% — APPROVED
 
 Second shareholder percentage:
-PENDING
+10% — APPROVED
 
 Authorized capital:
 PENDING
