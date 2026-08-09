@@ -266,13 +266,13 @@ Required:
 
 \- Proposed authorized capital — TO DECIDE
 
-\- Proposed subscribed/paid-up capital — TO DECIDE
+\- Proposed subscribed/paid-up capital — ₹1,000 APPROVED
 
-\- Founder shareholding — TO DECIDE
+\- Founder shareholding — 90% APPROVED
 
-\- Proposed second shareholder shareholding — TO DECIDE
+\- Proposed second shareholder shareholding — 10% APPROVED
 
-\- Number/class of shares — TO VERIFY/DECIDE
+\- Number/class of shares — 100 equity shares at ₹10 face value APPROVED; share-class/legal wording still TO VERIFY
 
 \- Subscriber details — PENDING
 
