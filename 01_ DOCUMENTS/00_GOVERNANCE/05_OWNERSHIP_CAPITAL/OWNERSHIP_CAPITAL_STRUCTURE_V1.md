@@ -76,10 +76,10 @@ Authorized share capital:
 TO DECIDE
 
 Subscribed share capital:
-TO DECIDE
+₹1,000 — APPROVED BY FOUNDER
 
 Paid-up capital:
-TO DECIDE
+₹1,000 — APPROVED BY FOUNDER
 
 Number of shares:
 TO DECIDE
@@ -147,7 +147,7 @@ Authorized capital:
 PENDING
 
 Paid-up capital:
-PENDING
+₹1,000 — APPROVED
 
 Reserved-matters wording:
 PENDING PROFESSIONAL REVIEW
