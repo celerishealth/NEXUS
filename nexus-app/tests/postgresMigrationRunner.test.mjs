@@ -26,6 +26,7 @@ const EXPECTED_MIGRATION_VERSIONS =
     "0768_internal_pilot_owner_sessions",
     "0770_internal_pilot_command_audit",
     "0771_authenticated_owner_access",
+    "0772_workforce_exclusive_task_ownership",
   ]);
 
 function createFakeClient({

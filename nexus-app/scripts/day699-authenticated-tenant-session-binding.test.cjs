@@ -559,33 +559,39 @@ test("command route authenticates durable principal before readiness and journal
       "utf8",
     );
 
+  const postIndex = source.indexOf("export async function POST");
+
+  assert.ok(postIndex >= 0);
+
+  const postSource = source.slice(postIndex);
+
   const envelopeIndex =
-    source.indexOf(
+    postSource.indexOf(
       "verifySignedControlledActionGatewayEnvelope",
     );
 
   const tokenIndex =
-    source.indexOf(
+    postSource.indexOf(
       "verifyAuthenticatedTenantSessionToken",
     );
 
   const durableSessionIndex =
-    source.indexOf(
+    postSource.indexOf(
       "sessionStore.assertActiveSession",
     );
 
   const identityBindingIndex =
-    source.indexOf(
+    postSource.indexOf(
       "assertAuthenticatedSessionMatchesGatewayContext",
     );
 
   const readinessIndex =
-    source.indexOf(
+    postSource.indexOf(
       "readinessGate.assertOpen",
     );
 
   const journalIndex =
-    source.indexOf(
+    postSource.indexOf(
       "outcomeJournal.begin",
     );
 
