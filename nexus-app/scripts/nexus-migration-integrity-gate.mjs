@@ -15,6 +15,7 @@ const requiredFiles = [
   "db/migrations/0004_nexus_operational_circuit_breaker.sql",
   "db/migrations/0005_nexus_controlled_action_state.sql",
   "db/migrations/0771_authenticated_owner_access.sql",
+  "db/migrations/0772_workforce_exclusive_task_ownership.sql",
   "lib/nexus/postgresMigrationRunner.mjs",
   "scripts/nexus-postgres-migrate.mjs",
 ];
@@ -117,11 +118,11 @@ if (missingFiles.length === 0) {
 const passed =
   missingFiles.length === 0 &&
   unsafeFindings.length === 0 &&
-  plan?.migrationCount === 14 &&
+  plan?.migrationCount === 15 &&
   plan.migrations.some(
     (migration) =>
       migration.version ===
-      "0771_authenticated_owner_access",
+      "0772_workforce_exclusive_task_ownership",
   );
 
 const report = {
