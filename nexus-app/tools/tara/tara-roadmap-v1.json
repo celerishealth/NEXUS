@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "name": "NEXUS TARA RESUMABLE ROADMAP V1",
+  "executionMode": "FAIL_CLOSED_RESUMABLE",
+  "requiredBranch": "ai-workforce-constitution-v1",
+  "jobs": [
+    {
+      "id": "SECTION7B_EVIDENCE_REVERIFY",
+      "type": "machine-verification",
+      "authority": "NO_RUNTIME_AUTHORITY"
+    },
+    {
+      "id": "PHASE0_NEXT_SAFE_GATE_DISCOVERY",
+      "type": "read-only-discovery",
+      "authority": "NO_WRITE_AUTHORITY"
+    },
+    {
+      "id": "OWNER_REVIEW_NEXT_GATE",
+      "type": "owner-review",
+      "authority": "OWNER_DECISION_REQUIRED"
+    }
+  ],
+  "prohibited": [
+    "production-database-access",
+    "postgres-access",
+    "supabase-access",
+    "DATABASE_URL-use",
+    "network-write",
+    "external-send",
+    "payment",
+    "public-launch",
+    "git-stage",
+    "git-commit",
+    "git-reset",
+    "git-clean",
+    "unknown-architecture-auto-invention"
+  ]
+}

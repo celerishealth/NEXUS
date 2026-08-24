@@ -1,0 +1,738 @@
+{
+    "schemaVersion":  2,
+    "tara":  "NEXUS TARA AUTOPILOT V1",
+    "job":  "OWNER_BOOTSTRAP_KEY_FORMAT_REPAIR_SCAN",
+    "sourceA12Sha256":  "8DFE3E7F07FC32D3095DF0C0B2CDC980420198E81086FACF86D464D25454AFC9",
+    "supersedesUnreliableA12_1Sha256":  "3E369B5B5BFC8AF283C04108EFC108C25D31366C4E1CE1643578D4F21B55B6B9",
+    "a12_1Accepted":  false,
+    "scanCompleted":  true,
+    "safeParkVerified":  true,
+    "productionSourceFilesScanned":  829,
+    "productionEvidenceHits":  133,
+    "keyHandlingFiles":  [
+                             "lib\\nexus\\aiWorkforceConstitutionalIssuerEnrollmentProofVerifier.ts",
+                             "lib\\nexus\\aiWorkforceConstitutionalIssuerEnrollmentSignedEnvelope.ts",
+                             "lib\\nexus\\aiWorkforceConstitutionalIssuerEnrollmentSignedEnvelopeValidator.ts",
+                             "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustDecisionCanonicalPayload.ts",
+                             "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustEd25519Verifier.ts",
+                             "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustAnchor.ts",
+                             "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustAnchorValidator.ts",
+                             "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceCanonicalPayload.ts",
+                             "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceEd25519Verifier.ts",
+                             "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceSignedEnvelope.ts",
+                             "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceSignedEnvelopeValidator.ts",
+                             "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootProvenanceAuthorityRoot.ts",
+                             "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootProvenanceAuthorityRootValidator.ts",
+                             "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootSnapshotDigest.ts",
+                             "lib\\nexus\\durableIndeterminateExecutionResolver.ts",
+                             "lib\\nexus\\providerOwnerResolutionAuthority.ts",
+                             "lib\\nexus\\workforce\\ashaIndependentEvaluationHarness.ts",
+                             "lib\\nexus\\workforce\\engineeringAIWorkforcePostLevelTwoRepositoryReadOnlySandboxEvaluationEvidenceSequenceFourExecution.ts"
+                         ],
+    "explicitEd25519Signals":  39,
+    "explicitPemSignals":  10,
+    "explicitSpkiSignals":  0,
+    "exactApplicationKeyFormat":  "EXPLICIT_FORMAT_SIGNALS_FOUND_REVIEW_REQUIRED",
+    "sourceEvidence":  [
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalEvidenceAdmission.ts",
+                               "line":  103,
+                               "text":  "readonly evidenceIssuerKeyId: string;"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalEvidenceAdmission.ts",
+                               "line":  170,
+                               "text":  "readonly trustedIssuers:"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalEvidenceAdmission.ts",
+                               "line":  177,
+                               "text":  "readonly verificationSecrets:"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalEvidenceAdmission.ts",
+                               "line":  332,
+                               "text":  "typeof candidate.evidenceIssuerKeyId !== \"string\" ||"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalEvidenceAdmission.ts",
+                               "line":  333,
+                               "text":  "!candidate.evidenceIssuerKeyId.trim()"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalEvidenceAdmission.ts",
+                               "line":  487,
+                               "text":  "const issuerKeyId = (candidate.evidenceIssuerKeyId as string).trim();"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalEvidenceAdmission.ts",
+                               "line":  488,
+                               "text":  "const trustedIssuer = _context.trustedIssuers[issuerId];"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalEvidenceAdmission.ts",
+                               "line":  490,
+                               "text":  "if (!trustedIssuer || trustedIssuer.status !== \"ACTIVE\") {"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalEvidenceAdmission.ts",
+                               "line":  494,
+                               "text":  "if (trustedIssuer.trustState !== \"VERIFIED\") {"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalEvidenceAdmission.ts",
+                               "line":  499,
+                               "text":  "trustedIssuer.issuerId.trim() !== issuerId ||"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalEvidenceAdmission.ts",
+                               "line":  500,
+                               "text":  "trustedIssuer.keyId.trim() !== issuerKeyId"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalEvidenceAdmission.ts",
+                               "line":  505,
+                               "text":  "const allowedActionClasses = trustedIssuer.allowedActionClasses;"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalEvidenceAdmission.ts",
+                               "line":  506,
+                               "text":  "const allowedCapabilities = trustedIssuer.allowedCapabilities;"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalEvidenceAdmission.ts",
+                               "line":  668,
+                               "text":  "const verificationSecret ="
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalEvidenceAdmission.ts",
+                               "line":  669,
+                               "text":  "_context.verificationSecrets[issuerKeyId]?.trim() ?? \"\";"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalEvidenceAdmission.ts",
+                               "line":  671,
+                               "text":  "if (!verificationSecret) {"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalEvidenceAdmission.ts",
+                               "line":  698,
+                               "text":  "evidenceIssuerKeyId: candidate.evidenceIssuerKeyId,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalEvidenceAdmission.ts",
+                               "line":  705,
+                               "text":  "expectedSignature = createHmac(\"sha256\", verificationSecret)"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalEvidenceAdmissionOrchestrator.ts",
+                               "line":  72,
+                               "text":  "evidenceIssuerKeyId: verifiedRecord.evidenceIssuerKeyId,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalEvidenceReplayGuard.ts",
+                               "line":  7,
+                               "text":  "readonly evidenceIssuerKeyId: string;"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalEvidenceReplayGuard.ts",
+                               "line":  15,
+                               "text":  "readonly evidenceIssuerKeyId: string;"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalEvidenceReplayGuard.ts",
+                               "line":  25,
+                               "text":  "evidenceIssuerKeyId: input.evidenceIssuerKeyId.trim(),"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalEvidenceReplayGuard.ts",
+                               "line":  104,
+                               "text":  "identity.evidenceIssuerKeyId,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalEvidenceReplayGuard.ts",
+                               "line":  158,
+                               "text":  "evidenceIssuerKeyId: input.evidenceIssuerKeyId.trim(),"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalInMemoryTrustContextResolver.ts",
+                               "line":  32,
+                               "text":  "readonly trustedIssuers:"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalInMemoryTrustContextResolver.ts",
+                               "line":  38,
+                               "text":  "readonly verificationSecrets: Readonly\u003cRecord\u003cstring, string\u003e\u003e;"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalInMemoryTrustContextResolver.ts",
+                               "line":  71,
+                               "text":  "const trustedIssuers = Object.freeze("
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalInMemoryTrustContextResolver.ts",
+                               "line":  73,
+                               "text":  "Object.entries(snapshot.trustedIssuers).map("
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalInMemoryTrustContextResolver.ts",
+                               "line":  111,
+                               "text":  "const verificationSecrets = Object.freeze({"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalInMemoryTrustContextResolver.ts",
+                               "line":  112,
+                               "text":  "...snapshot.verificationSecrets,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalInMemoryTrustContextResolver.ts",
+                               "line":  171,
+                               "text":  "trustedIssuers,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalInMemoryTrustContextResolver.ts",
+                               "line":  174,
+                               "text":  "verificationSecrets,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerEnrollmentProofVerifier.ts",
+                               "line":  8,
+                               "text":  "import { verifyConstitutionalIssuerTrustEd25519Proof } from \"./aiWorkforceConstitutionalIssuerTrustEd25519Verifier\";"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerEnrollmentProofVerifier.ts",
+                               "line":  70,
+                               "text":  "* Verifies exact cross-binding and Ed25519 possession only."
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerEnrollmentProofVerifier.ts",
+                               "line":  131,
+                               "text":  "const cryptoProof = verifyConstitutionalIssuerTrustEd25519Proof({"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerEnrollmentProofVerifier.ts",
+                               "line":  133,
+                               "text":  "publicKeyPem: anchor.publicKeyPem,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerEnrollmentSignedEnvelope.ts",
+                               "line":  19,
+                               "text":  "readonly signatureAlgorithm: \"Ed25519\";"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerEnrollmentSignedEnvelopeValidator.ts",
+                               "line":  85,
+                               "text":  "if (candidate.signatureAlgorithm !== \"Ed25519\") {"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustDecisionCanonicalPayload.ts",
+                               "line":  50,
+                               "text":  "* public key, provenance source, or candidate and grants no authority."
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustEd25519Verifier.ts",
+                               "line":  1,
+                               "text":  "import { createPublicKey, verify as verifySignature } from \"node:crypto\";"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustEd25519Verifier.ts",
+                               "line":  3,
+                               "text":  "export type ConstitutionalIssuerTrustEd25519VerificationFailureCode ="
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustEd25519Verifier.ts",
+                               "line":  13,
+                               "text":  "export interface ConstitutionalIssuerTrustEd25519VerificationResult {"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustEd25519Verifier.ts",
+                               "line":  15,
+                               "text":  "readonly failureCodes: readonly ConstitutionalIssuerTrustEd25519VerificationFailureCode[];"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustEd25519Verifier.ts",
+                               "line":  16,
+                               "text":  "readonly verifiedAlgorithm: \"Ed25519\" | null;"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustEd25519Verifier.ts",
+                               "line":  28,
+                               "text":  "proofState: ConstitutionalIssuerTrustEd25519VerificationResult[\"proofState\"],"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustEd25519Verifier.ts",
+                               "line":  29,
+                               "text":  "failureCodes: readonly ConstitutionalIssuerTrustEd25519VerificationFailureCode[],"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustEd25519Verifier.ts",
+                               "line":  30,
+                               "text":  "verifiedAlgorithm: \"Ed25519\" | null = null,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustEd25519Verifier.ts",
+                               "line":  31,
+                               "text":  "): ConstitutionalIssuerTrustEd25519VerificationResult =\u003e Object.freeze({"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustEd25519Verifier.ts",
+                               "line":  53,
+                               "text":  "* Ed25519 public-key material. A valid signature does NOT establish issuer"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustEd25519Verifier.ts",
+                               "line":  55,
+                               "text":  "* public key. Public-key provenance remains a separate owner-controlled gate."
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustEd25519Verifier.ts",
+                               "line":  57,
+                               "text":  "export function verifyConstitutionalIssuerTrustEd25519Proof("
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustEd25519Verifier.ts",
+                               "line":  59,
+                               "text":  "): ConstitutionalIssuerTrustEd25519VerificationResult {"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustEd25519Verifier.ts",
+                               "line":  66,
+                               "text":  "const publicKeyPem = input.publicKeyPem;"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustEd25519Verifier.ts",
+                               "line":  74,
+                               "text":  "!isNonEmptyString(publicKeyPem) ||"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustEd25519Verifier.ts",
+                               "line":  75,
+                               "text":  "!publicKeyPem.trim().startsWith(\"-----BEGIN PUBLIC KEY-----\") ||"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustEd25519Verifier.ts",
+                               "line":  76,
+                               "text":  "!publicKeyPem.trim().endsWith(\"-----END PUBLIC KEY-----\") ||"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustEd25519Verifier.ts",
+                               "line":  77,
+                               "text":  "publicKeyPem.includes(\"PRIVATE KEY\")"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustEd25519Verifier.ts",
+                               "line":  89,
+                               "text":  "let publicKey;"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustEd25519Verifier.ts",
+                               "line":  91,
+                               "text":  "publicKey = createPublicKey(publicKeyPem);"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustEd25519Verifier.ts",
+                               "line":  92,
+                               "text":  "if (publicKey.asymmetricKeyType !== \"ed25519\") {"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustEd25519Verifier.ts",
+                               "line":  113,
+                               "text":  "publicKey,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustEd25519Verifier.ts",
+                               "line":  117,
+                               "text":  "? makeResult(\"CRYPTOGRAPHIC_PROOF_VALID_NO_TRUST\", [], \"Ed25519\")"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalIssuerTrustLifecycle.ts",
+                               "line":  60,
+                               "text":  "verificationMaterialAcceptedFromCaller: false as const,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustAnchor.ts",
+                               "line":  27,
+                               "text":  "readonly algorithm: \"Ed25519\";"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustAnchor.ts",
+                               "line":  28,
+                               "text":  "readonly publicKeyPem: string;"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustAnchorValidator.ts",
+                               "line":  1,
+                               "text":  "import { createPublicKey } from \"node:crypto\";"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustAnchorValidator.ts",
+                               "line":  82,
+                               "text":  "if (candidate.algorithm !== \"Ed25519\") {"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustAnchorValidator.ts",
+                               "line":  86,
+                               "text":  "const publicKeyPem = candidate.publicKeyPem;"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustAnchorValidator.ts",
+                               "line":  88,
+                               "text":  "!isNonEmptyString(publicKeyPem) ||"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustAnchorValidator.ts",
+                               "line":  89,
+                               "text":  "!publicKeyPem.trim().startsWith(\"-----BEGIN PUBLIC KEY-----\") ||"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustAnchorValidator.ts",
+                               "line":  90,
+                               "text":  "!publicKeyPem.trim().endsWith(\"-----END PUBLIC KEY-----\") ||"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustAnchorValidator.ts",
+                               "line":  91,
+                               "text":  "publicKeyPem.includes(\"PRIVATE KEY\")"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustAnchorValidator.ts",
+                               "line":  96,
+                               "text":  "const publicKey = createPublicKey(publicKeyPem);"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustAnchorValidator.ts",
+                               "line":  97,
+                               "text":  "if (publicKey.asymmetricKeyType !== \"ed25519\") {"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceCanonicalPayload.ts",
+                               "line":  18,
+                               "text":  "readonly signatureAlgorithm: \"Ed25519\";"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceCanonicalPayload.ts",
+                               "line":  26,
+                               "text":  "readonly provenanceRootTrusted: false;"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceCanonicalPayload.ts",
+                               "line":  52,
+                               "text":  "provenanceRootTrusted: false as const,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceCanonicalPayload.ts",
+                               "line":  109,
+                               "text":  "if (input.signatureAlgorithm !== \"Ed25519\") {"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceEd25519Verifier.ts",
+                               "line":  1,
+                               "text":  "import { verify as verifyEd25519 } from \"node:crypto\";"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceEd25519Verifier.ts",
+                               "line":  10,
+                               "text":  "export type ConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceEd25519VerificationFailureCode ="
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceEd25519Verifier.ts",
+                               "line":  23,
+                               "text":  "export interface ConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceEd25519VerificationResult {"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceEd25519Verifier.ts",
+                               "line":  25,
+                               "text":  "readonly failureCodes: readonly ConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceEd25519VerificationFailureCode[];"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceEd25519Verifier.ts",
+                               "line":  32,
+                               "text":  "readonly provenanceRootTrusted: false;"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceEd25519Verifier.ts",
+                               "line":  51,
+                               "text":  "proofState: ConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceEd25519VerificationResult[\"proofState\"],"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceEd25519Verifier.ts",
+                               "line":  52,
+                               "text":  "failureCodes: readonly ConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceEd25519VerificationFailureCode[],"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceEd25519Verifier.ts",
+                               "line":  58,
+                               "text":  "): ConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceEd25519VerificationResult =\u003e Object.freeze({"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceEd25519Verifier.ts",
+                               "line":  67,
+                               "text":  "provenanceRootTrusted: false as const,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceEd25519Verifier.ts",
+                               "line":  85,
+                               "text":  "export function verifyConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceEd25519("
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceEd25519Verifier.ts",
+                               "line":  89,
+                               "text":  "): ConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceEd25519VerificationResult {"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceEd25519Verifier.ts",
+                               "line":  139,
+                               "text":  "cryptographicSignatureValid = verifyEd25519("
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceEd25519Verifier.ts",
+                               "line":  142,
+                               "text":  "root.publicKeyPem,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceSignedEnvelope.ts",
+                               "line":  9,
+                               "text":  "readonly signatureAlgorithm: \"Ed25519\";"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceSignedEnvelope.ts",
+                               "line":  17,
+                               "text":  "callerSuppliedPublicKeyAcceptedAsTrust: false as const,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceSignedEnvelope.ts",
+                               "line":  20,
+                               "text":  "provenanceRootTrusted: false as const,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceSignedEnvelopeValidator.ts",
+                               "line":  15,
+                               "text":  "readonly provenanceRootTrusted: false;"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceSignedEnvelopeValidator.ts",
+                               "line":  36,
+                               "text":  "provenanceRootTrusted: false as const,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootIntegrityReferenceProvenanceSignedEnvelopeValidator.ts",
+                               "line":  64,
+                               "text":  "if (candidate.signatureAlgorithm !== \"Ed25519\") failures.push(\"ALGORITHM_INVALID\");"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootProvenanceAuthorityRoot.ts",
+                               "line":  16,
+                               "text":  "readonly algorithm: \"Ed25519\";"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootProvenanceAuthorityRoot.ts",
+                               "line":  17,
+                               "text":  "readonly publicKeyPem: string;"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootProvenanceAuthorityRoot.ts",
+                               "line":  33,
+                               "text":  "readonly provenanceRootTrusted: false;"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootProvenanceAuthorityRoot.ts",
+                               "line":  53,
+                               "text":  "readonly provenanceRootTrusted: false;"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootProvenanceAuthorityRoot.ts",
+                               "line":  64,
+                               "text":  "* provenance. Runtime verification uses public Ed25519 material only."
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootProvenanceAuthorityRoot.ts",
+                               "line":  77,
+                               "text":  "requestPayloadMaySupplyPublicKey: false as const,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootProvenanceAuthorityRoot.ts",
+                               "line":  78,
+                               "text":  "promptOrModelMaySupplyPublicKey: false as const,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootProvenanceAuthorityRoot.ts",
+                               "line":  87,
+                               "text":  "provenanceRootTrusted: false as const,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootProvenanceAuthorityRootValidator.ts",
+                               "line":  1,
+                               "text":  "import { createPublicKey } from \"node:crypto\";"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootProvenanceAuthorityRootValidator.ts",
+                               "line":  22,
+                               "text":  "readonly provenanceRootTrusted: false;"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootProvenanceAuthorityRootValidator.ts",
+                               "line":  45,
+                               "text":  "provenanceRootTrusted: false as const,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootProvenanceAuthorityRootValidator.ts",
+                               "line":  110,
+                               "text":  "if (candidate.algorithm !== \"Ed25519\") {"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootProvenanceAuthorityRootValidator.ts",
+                               "line":  115,
+                               "text":  "typeof candidate.publicKeyPem !== \"string\" ||"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootProvenanceAuthorityRootValidator.ts",
+                               "line":  116,
+                               "text":  "candidate.publicKeyPem.length \u003c 64 ||"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootProvenanceAuthorityRootValidator.ts",
+                               "line":  117,
+                               "text":  "candidate.publicKeyPem.length \u003e 4096 ||"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootProvenanceAuthorityRootValidator.ts",
+                               "line":  118,
+                               "text":  "candidate.publicKeyPem !== candidate.publicKeyPem.trim() ||"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootProvenanceAuthorityRootValidator.ts",
+                               "line":  119,
+                               "text":  "!candidate.publicKeyPem.startsWith(\"-----BEGIN PUBLIC KEY-----\") ||"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootProvenanceAuthorityRootValidator.ts",
+                               "line":  120,
+                               "text":  "!candidate.publicKeyPem.endsWith(\"-----END PUBLIC KEY-----\") ||"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootProvenanceAuthorityRootValidator.ts",
+                               "line":  121,
+                               "text":  "candidate.publicKeyPem.includes(\"PRIVATE KEY\")"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootProvenanceAuthorityRootValidator.ts",
+                               "line":  126,
+                               "text":  "const key = createPublicKey(candidate.publicKeyPem);"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootProvenanceAuthorityRootValidator.ts",
+                               "line":  127,
+                               "text":  "if (key.asymmetricKeyType !== \"ed25519\") {"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalOwnerReviewerTrustRootSnapshotDigest.ts",
+                               "line":  57,
+                               "text":  "publicKeyPem: anchor.publicKeyPem,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalTrustedAdmissionOrchestrator.ts",
+                               "line":  146,
+                               "text":  "!isRecord(value.trustedIssuers) ||"
+                           },
+                           {
+                               "path":  "lib\\nexus\\aiWorkforceConstitutionalTrustedAdmissionOrchestrator.ts",
+                               "line":  147,
+                               "text":  "!isRecord(value.verificationSecrets)"
+                           },
+                           {
+                               "path":  "lib\\nexus\\containedProviderRecoveryOrchestrator.ts",
+                               "line":  88,
+                               "text":  "const recoveryScopeMatches = ("
+                           },
+                           {
+                               "path":  "lib\\nexus\\containedProviderRecoveryOrchestrator.ts",
+                               "line":  162,
+                               "text":  "!recoveryScopeMatches("
+                           },
+                           {
+                               "path":  "lib\\nexus\\durableIndeterminateExecutionResolver.ts",
+                               "line":  163,
+                               "text":  "this.ownerAuthority.verify({"
+                           },
+                           {
+                               "path":  "lib\\nexus\\providerOwnerResolutionAuthority.ts",
+                               "line":  536,
+                               "text":  "verify("
+                           },
+                           {
+                               "path":  "lib\\nexus\\sqliteConstitutionalEvidenceReplayStore.ts",
+                               "line":  65,
+                               "text":  "scope.evidenceIssuerKeyId,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\sqliteConstitutionalEvidenceReplayStore.ts",
+                               "line":  136,
+                               "text":  "evidenceIssuerKeyId: input.evidenceIssuerKeyId.trim(),"
+                           },
+                           {
+                               "path":  "lib\\nexus\\sqliteConstitutionalEvidenceReplayStore.ts",
+                               "line":  172,
+                               "text":  "scope.evidenceIssuerKeyId,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\sqliteConstitutionalEvidenceReplayStore.ts",
+                               "line":  210,
+                               "text":  "scope.evidenceIssuerKeyId,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\sqliteConstitutionalEvidenceReplayStore.ts",
+                               "line":  253,
+                               "text":  "scope.evidenceIssuerKeyId,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\sqliteConstitutionalEvidenceReplayStore.ts",
+                               "line":  301,
+                               "text":  "scope.evidenceIssuerKeyId,"
+                           },
+                           {
+                               "path":  "lib\\nexus\\workforce\\ashaIndependentEvaluationHarness.ts",
+                               "line":  3680,
+                               "text":  "scenario.verify("
+                           },
+                           {
+                               "path":  "lib\\nexus\\workforce\\engineeringAIWorkforcePostLevelTwoRepositoryReadOnlySandboxEvaluationEvidenceSequenceFourExecution.ts",
+                               "line":  204,
+                               "text":  "syntheticPath: \"config/signing-private-key.pem\","
+                           }
+                       ],
+    "sshKeygenAvailable":  true,
+    "sshVersion":  "9.5.6.1",
+    "readyRemovableDriveCount":  0,
+    "drives":  [
+                   {
+                       "name":  "C:\\",
+                       "driveType":  "Fixed",
+                       "isReady":  true,
+                       "format":  "NTFS"
+                   },
+                   {
+                       "name":  "G:\\",
+                       "driveType":  "Fixed",
+                       "isReady":  true,
+                       "format":  "FAT32"
+                   },
+                   {
+                       "name":  "H:\\",
+                       "driveType":  "Fixed",
+                       "isReady":  true,
+                       "format":  "FAT32"
+                   }
+               ],
+    "privateKeyGenerated":  false,
+    "secretMaterialCaptured":  false,
+    "productionTrustEstablished":  false,
+    "trustedTimeEstablished":  false,
+    "productionDatabaseTouched":  false,
+    "postgresTouched":  false,
+    "supabaseTouched":  false,
+    "networkTouched":  false,
+    "runtimeIntegrationAuthorized":  false,
+    "result":  "OWNER_BOOTSTRAP_KEY_FORMAT_REPAIR_COMPLETE",
+    "next":  "SECURE_EXTERNAL_STORAGE_NOT_YET_PROVEN",
+    "createdAt":  "2026-08-23T15:01:24.6359911Z"
+}

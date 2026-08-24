@@ -1,0 +1,35 @@
+{
+    "schemaVersion":  2,
+    "tara":  "NEXUS TARA AUTOPILOT V1",
+    "job":  "EXACT_PROOF_REVIEW_EXISTING_6C_CANDIDATES_CORRECTED",
+    "correction":  "PowerShell logical negation corrected from unary minus to explicit status-derived classification",
+    "supersedesArtifactSha256":  "75B7F3FB260C2518FC501E93373080DB213438D0CC222C0180DDF5AF9F11049F",
+    "typescriptNoEmit":  "PASS",
+    "targeted6CTests":  "PASS",
+    "issuerSource":  {
+                         "status":  "BOUNDARY_EVIDENCED_PRODUCTION_OWNER_SOURCE_NOT_PROVEN",
+                         "signalCount":  3
+                     },
+    "sourceEvidenceRegistry":  {
+                                   "status":  "BOUNDARY_EVIDENCED_PRODUCTION_OWNER_SOURCE_NOT_PROVEN",
+                                   "signalCount":  5
+                               },
+    "trustContextLifecycleAudit":  {
+                                       "status":  "LOCAL_SAFE_GAP_CONFIRMED",
+                                       "dedicatedFileCount":  0,
+                                       "focusedHitCount":  0
+                                   },
+    "confirmedLocalGaps":  [
+                               "6C_TRUST_CONTEXT_LIFECYCLE_AUDIT"
+                           ],
+    "productionOwnerControlledTrustProvider":  "NOT_PROVEN",
+    "independentVerificationMaterial":  "EXTERNAL_OWNER_EVIDENCE_REQUIRED",
+    "productionDatabaseTouched":  false,
+    "postgresTouched":  false,
+    "supabaseTouched":  false,
+    "networkTouched":  false,
+    "runtimeIntegrationAuthorized":  false,
+    "result":  "6C_EXACT_PROOF_REVIEW_CORRECTED",
+    "next":  "IMPLEMENT_6C_TRUST_CONTEXT_LIFECYCLE_AUDIT",
+    "createdAt":  "2026-08-23T14:46:36.2081638Z"
+}

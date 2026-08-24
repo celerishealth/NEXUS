@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "name": "NEXUS TARA AUTOPILOT V1",
+  "requiredBranch": "ai-workforce-constitution-v1",
+  "executionMode": "FAIL_CLOSED_SUPERVISED_AUTOPILOT",
+  "productionDatabaseAccess": false,
+  "supabaseAccess": false,
+  "postgresAccess": false,
+  "databaseUrlAccess": false,
+  "networkWrites": false,
+  "gitStage": false,
+  "gitCommit": false,
+  "gitReset": false,
+  "gitClean": false,
+  "publicLaunch": false,
+  "externalCommunication": false,
+  "paymentAuthority": false,
+  "legalAuthority": false,
+  "ownerApprovalRequiredFor": [
+    "production-runtime-integration",
+    "production-database-access",
+    "external-send",
+    "public-launch",
+    "payment",
+    "legal-authority",
+    "git-stage",
+    "git-commit"
+  ],
+  "currentCheckpoint": "SECTION_7B_DURABLE_REPLAY",
+  "rules": [
+    "one-microstep-at-a-time",
+    "no-guessing",
+    "fail-closed-on-uncertainty",
+    "preserve-owner-control",
+    "preserve-tenant-isolation",
+    "preserve-auditability",
+    "no-production-db-touch",
+    "machine-evidence-before-pass"
+  ]
+}

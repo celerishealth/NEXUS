@@ -1,0 +1,22 @@
+{
+    "schemaVersion":  6,
+    "tara":  "NEXUS TARA AUTOPILOT V1",
+    "controller":  "RESUMABLE_ROADMAP_V1",
+    "status":  "EXTERNAL_OWNER_EVIDENCE_REQUIRED_SAFE_PARK",
+    "remainingLocalSafeGates":  [
+
+                                ],
+    "externalOwnerEvidenceRequired":  [
+                                          "6C_PRODUCTION_OWNER_CONTROLLED_TRUST_PROVIDER",
+                                          "6C_INDEPENDENT_VERIFICATION_MATERIAL",
+                                          "6A5_TRUSTED_TIME",
+                                          "6A5_ANTI_ROLLBACK_CHECKPOINT",
+                                          "6A5_EXTERNAL_PROVENANCE_BOOTSTRAP",
+                                          "6A5_RELEASE_DEPLOYMENT_BINDING"
+                                      ],
+    "next":  "EXTERNAL_OWNER_BOOTSTRAP_EVIDENCE",
+    "productionDatabaseTouched":  false,
+    "runtimeIntegrationAuthorized":  false,
+    "artifact":  ".\\artifacts\\tara\\phase0-local-vs-external-reclassification-v1.json",
+    "updatedAt":  "2026-08-23T14:55:34.1762121Z"
+}

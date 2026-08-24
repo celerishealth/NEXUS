@@ -1,0 +1,36 @@
+{
+    "schemaVersion":  1,
+    "tara":  "NEXUS TARA AUTOPILOT V1",
+    "job":  "RECLASSIFY_LOCAL_VS_EXTERNAL_PHASE0_GATES",
+    "sourceA9Sha256":  "A3979FB6BCD41F6AD34828D91942FE3C4E9FBA7465EB0AAC4D539632BBBAAE21",
+    "sourceA10Sha256":  "2F7E17361863C7DF979ECCAF92BF5EDD0A7246E384A1613EA94B664D67B05A44",
+    "completedLocalGate":  "6C_DURABLE_LIFECYCLE_AUDIT_PERSISTENCE",
+    "remainingLocalSafeGates":  [
+
+                                ],
+    "externalOwnerEvidenceRequired":  [
+                                          "6C_PRODUCTION_OWNER_CONTROLLED_TRUST_PROVIDER",
+                                          "6C_INDEPENDENT_VERIFICATION_MATERIAL",
+                                          "6A5_TRUSTED_TIME",
+                                          "6A5_ANTI_ROLLBACK_CHECKPOINT",
+                                          "6A5_EXTERNAL_PROVENANCE_BOOTSTRAP",
+                                          "6A5_RELEASE_DEPLOYMENT_BINDING"
+                                      ],
+    "localSafeEngineeringBacklogFromA9":  "CLOSED",
+    "productionTrustEstablished":  false,
+    "trustedTimeEstablished":  false,
+    "externalProvenanceBootstrapEstablished":  false,
+    "productionOwnerControlledTrustProvider":  "NOT_PROVEN",
+    "productionDatabaseTouched":  false,
+    "postgresTouched":  false,
+    "supabaseTouched":  false,
+    "networkTouched":  false,
+    "runtimeIntegrationAuthorized":  false,
+    "result":  "EXTERNAL_OWNER_EVIDENCE_REQUIRED_SAFE_PARK",
+    "next":  "EXTERNAL_OWNER_BOOTSTRAP_EVIDENCE",
+    "runnerSafeParkInstalled":  true,
+    "runnerSha256":  "A3D7A1EB339B70DEC360A2C98E700C3CCF8FF7DA557867C1748BD6346985EED2",
+    "storeSha256":  "EA18C9C0AC2F2A3FBB6EBC614D184A25585A637B9B72EF7FE043C6AAEB765EF5",
+    "designSha256":  "38CD58196CEAF00F68E0A55C2A2C36C59A6B5716EE85A100B4EB6BBA5A7F60E6",
+    "createdAt":  "2026-08-23T14:55:34.1752085Z"
+}

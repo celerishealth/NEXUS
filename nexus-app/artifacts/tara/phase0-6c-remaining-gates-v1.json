@@ -1,0 +1,62 @@
+{
+    "schemaVersion":  1,
+    "tara":  "NEXUS TARA AUTOPILOT V1",
+    "job":  "CLASSIFY_REMAINING_6C_PRODUCTION_GATES",
+    "sourceA8Sha256":  "DFBC9479D0CC43D0F69D037500AD9EA2D9BD3E482D42DF4ADA0D9060AA862CB2",
+    "classification":  [
+                           {
+                               "id":  "6C_DURABLE_LIFECYCLE_AUDIT_PERSISTENCE",
+                               "status":  "LOCAL_SAFE_CANDIDATE",
+                               "evidenceCount":  184
+                           },
+                           {
+                               "id":  "6C_PRODUCTION_OWNER_CONTROLLED_TRUST_PROVIDER",
+                               "status":  "EXTERNAL_OWNER_EVIDENCE_REQUIRED",
+                               "evidenceCount":  120
+                           },
+                           {
+                               "id":  "6C_INDEPENDENT_VERIFICATION_MATERIAL",
+                               "status":  "EXTERNAL_OWNER_EVIDENCE_REQUIRED",
+                               "evidenceCount":  0
+                           },
+                           {
+                               "id":  "6A5_TRUSTED_TIME",
+                               "status":  "EXTERNAL_OWNER_EVIDENCE_REQUIRED",
+                               "evidenceCount":  80
+                           },
+                           {
+                               "id":  "6A5_ANTI_ROLLBACK_CHECKPOINT",
+                               "status":  "EXTERNAL_OWNER_EVIDENCE_REQUIRED",
+                               "evidenceCount":  80
+                           },
+                           {
+                               "id":  "6A5_EXTERNAL_PROVENANCE_BOOTSTRAP",
+                               "status":  "EXTERNAL_OWNER_EVIDENCE_REQUIRED",
+                               "evidenceCount":  0
+                           },
+                           {
+                               "id":  "6A5_RELEASE_DEPLOYMENT_BINDING",
+                               "status":  "EXTERNAL_OWNER_EVIDENCE_REQUIRED",
+                               "evidenceCount":  0
+                           }
+                       ],
+    "localSafeCandidates":  [
+                                "6C_DURABLE_LIFECYCLE_AUDIT_PERSISTENCE"
+                            ],
+    "externalOwnerEvidenceRequired":  [
+                                          "6C_PRODUCTION_OWNER_CONTROLLED_TRUST_PROVIDER",
+                                          "6C_INDEPENDENT_VERIFICATION_MATERIAL",
+                                          "6A5_TRUSTED_TIME",
+                                          "6A5_ANTI_ROLLBACK_CHECKPOINT",
+                                          "6A5_EXTERNAL_PROVENANCE_BOOTSTRAP",
+                                          "6A5_RELEASE_DEPLOYMENT_BINDING"
+                                      ],
+    "productionDatabaseTouched":  false,
+    "postgresTouched":  false,
+    "supabaseTouched":  false,
+    "networkTouched":  false,
+    "runtimeIntegrationAuthorized":  false,
+    "result":  "REMAINING_6C_GATE_CLASSIFICATION_COMPLETE",
+    "next":  "IMPLEMENT_ISOLATED_DURABLE_LIFECYCLE_AUDIT_STORE",
+    "createdAt":  "2026-08-23T14:49:54.9960471Z"
+}
