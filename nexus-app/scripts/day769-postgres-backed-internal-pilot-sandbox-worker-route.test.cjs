@@ -487,7 +487,7 @@ function makeHarness(options = {}) {
         options.maxBodyBytes ??
         16_384,
       now:
-        options.now ||
+        options.now ??
         (() => new Date(fixedNow)),
       commandRuntime: {
         poolInput: {
