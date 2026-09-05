@@ -305,7 +305,7 @@ function makeHarness(options = {}) {
   const lifecycle =
     createPostgresInternalPilotSessionLifecycle({
       tenantId:
-        options.tenantId || "tenant-a",
+        options.tenantId ?? "tenant-a",
       withTransaction:
         database.withTransaction,
       cookieName:
