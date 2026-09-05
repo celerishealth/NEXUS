@@ -1,0 +1,94 @@
+{
+    "schema":  "nexus.autonomy.owner-controlled-ai-workforce-review-snapshot-design-lock.v1",
+    "designVersion":  1,
+    "boundHead":  "1ed3a0c0936c3265c67cabf6bb70005f5df3093d",
+    "purpose":  [
+                    "Provide one compact automatically refreshable owner review snapshot.",
+                    "Reduce repeated manual queue inspection by the owner.",
+                    "Preserve all existing owner-control and fail-closed boundaries."
+                ],
+    "input":  {
+                  "source":  "owner-controlled-ai-workforce-review-entry.cjs",
+                  "queueAccess":  "read_only",
+                  "currentHeadRequired":  true,
+                  "stalePatchReadyActionable":  false,
+                  "stoppedEvidenceActionable":  false,
+                  "malformedEvidenceActionable":  false
+              },
+    "output":  {
+                   "destinationClass":  "local_runtime_owner_review_inbox",
+                   "primaryRepositoryFile":  false,
+                   "primaryWorktreeMutation":  false,
+                   "queueMutation":  false,
+                   "atomicPublicationRequired":  true,
+                   "temporaryFileSameDirectoryRequired":  true,
+                   "replaceOnlyAfterCompleteWrite":  true,
+                   "utf8BomAllowed":  false,
+                   "deterministicJsonPreferred":  true
+               },
+    "snapshotContent":  {
+                            "schemaRequired":  true,
+                            "generatedAtAllowed":  true,
+                            "currentHeadRequired":  true,
+                            "totalPatchReadyRequired":  true,
+                            "actionableCountRequired":  true,
+                            "rejectedCountRequired":  true,
+                            "classificationCountsRequired":  true,
+                            "actionableItemsRequired":  true,
+                            "authorityFlagsRequired":  true
+                        },
+    "authority":  {
+                      "mayApplyPatch":  false,
+                      "mayMutatePrimaryWorktree":  false,
+                      "mayCommit":  false,
+                      "mayMerge":  false,
+                      "mayPush":  false,
+                      "mayPull":  false,
+                      "mayFetch":  false,
+                      "mayReset":  false,
+                      "mayClean":  false,
+                      "mayRebase":  false,
+                      "mayTouchDatabase":  false,
+                      "mayTouchProduction":  false,
+                      "mayLaunchPublicly":  false,
+                      "ownerDecisionRequired":  true
+                  },
+    "runtimeSafety":  {
+                          "queueReadFailure":  "fail_closed",
+                          "reviewEntryFailure":  "fail_closed",
+                          "headResolutionFailure":  "fail_closed",
+                          "snapshotWriteFailure":  "preserve_previous_complete_snapshot",
+                          "partialSnapshotPublicationAllowed":  false,
+                          "staleSnapshotMayGrantAuthority":  false,
+                          "missingSnapshotMayGrantAuthority":  false
+                      },
+    "schedulingBoundary":  {
+                               "scheduledExecutionAuthorizedByThisDesign":  false,
+                               "workerIntegrationAuthorizedByThisDesign":  false,
+                               "schedulerModificationAuthorizedByThisDesign":  false,
+                               "separateImplementationEvidenceRequired":  true
+                           },
+    "implementationBoundary":  {
+                                   "thisFileIsDesignOnly":  true,
+                                   "runtimeBehaviorChangedByThisFile":  false,
+                                   "workerBehaviorChangedByThisFile":  false,
+                                   "schedulerBehaviorChangedByThisFile":  false,
+                                   "queueBehaviorChangedByThisFile":  false,
+                                   "gitAuthorityChangedByThisFile":  false,
+                                   "databaseAuthorityChangedByThisFile":  false,
+                                   "productionAuthorityChangedByThisFile":  false
+                               },
+    "ownerExperience":  [
+                            "Owner should inspect one compact review snapshot rather than many queue directories.",
+                            "Historical stale PATCH_READY artifacts must remain non-actionable.",
+                            "Actionable items must remain bound to the current admitted HEAD.",
+                            "Snapshot convenience must never become patch or Git authority."
+                        ],
+    "failClosedRules":  [
+                            "If current HEAD cannot be proven, publish no new actionable snapshot.",
+                            "If review bundle generation fails, preserve the previous complete snapshot and report failure.",
+                            "If snapshot integrity is uncertain, treat it as non-authoritative.",
+                            "Snapshot content is evidence only and cannot apply patches or commit Git.",
+                            "Owner approval remains mandatory for any later mutation path."
+                        ]
+}
