@@ -1,0 +1,110 @@
+{
+    "schema":  "nexus.autonomy.owner-controlled-ai-workforce-review-snapshot-worker-integration-design-lock.v1",
+    "designVersion":  1,
+    "boundHead":  "74b39a3ef1bbf3dbdef9d00211e1204020b2ac70",
+    "verifiedWorkerTopology":  {
+                                   "wrapper":  "continuous-launch-wrapper.cjs",
+                                   "workerInvocation":  "worker.runWorker",
+                                   "ownerStopMonitorIntervalMs":  250,
+                                   "ownerStopMonitorPurpose":  "propagate_owner_stop_only",
+                                   "ownerStopMonitorMayBeRepurposed":  false,
+                                   "workerHeartbeatPolicy":  "SCHEDULER_POLICY.workerHeartbeatMs"
+                               },
+    "integrationPurpose":  [
+                               "Automatically refresh the owner review snapshot while the autonomy worker remains running.",
+                               "Reduce manual queue inspection without expanding AI employee mutation authority.",
+                               "Keep owner-stop propagation isolated from review snapshot publication."
+                           ],
+    "authorizedIntegration":  {
+                                  "workerIntegrationAuthorized":  true,
+                                  "scope":  "review_snapshot_sidecar_only",
+                                  "separateSidecarRequired":  true,
+                                  "initialSnapshotBeforeWorkerRunAllowed":  true,
+                                  "recurringSnapshotWhileWorkerRunsAllowed":  true,
+                                  "cadenceSource":  "SCHEDULER_POLICY.workerHeartbeatMs",
+                                  "hardcoded250MsReviewLoopForbidden":  true,
+                                  "ownerStopMonitorModificationAuthorized":  false,
+                                  "taskExecutionPathModificationAuthorized":  false,
+                                  "taskAssignmentAuthorityModificationAuthorized":  false,
+                                  "queueSemanticsModificationAuthorized":  false
+                              },
+    "destination":  {
+                        "class":  "local_runtime_owner_review_inbox",
+                        "rootSource":  "LOCALAPPDATA",
+                        "relativePath":  "NEXUS/autonomy-v1/owner-review/latest-review-snapshot.json",
+                        "repositoryDestinationForbidden":  true,
+                        "queueDestinationForbidden":  true,
+                        "atomicPublicationRequired":  true,
+                        "previousCompleteSnapshotPreservedOnFailure":  true
+                    },
+    "sourceRuntime":  {
+                          "module":  "owner-controlled-ai-workforce-review-snapshot.cjs",
+                          "operation":  "writeOwnerControlledReviewSnapshot",
+                          "queueAccess":  "read_only",
+                          "currentHeadRequired":  true
+                      },
+    "failureIsolation":  {
+                             "snapshotFailureMayGrantAuthority":  false,
+                             "snapshotFailureMayApplyPatch":  false,
+                             "snapshotFailureMayCommit":  false,
+                             "snapshotFailureMayMutateQueue":  false,
+                             "snapshotFailureMayTouchDatabase":  false,
+                             "snapshotFailureMayTouchProduction":  false,
+                             "snapshotFailureMustNotDisableOwnerStopPropagation":  true,
+                             "previousCompleteSnapshotMustRemainAuthoritativeAsEvidenceOnly":  true,
+                             "failureMustBeObservable":  true
+                         },
+    "authority":  {
+                      "mayApplyPatch":  false,
+                      "mayMutatePrimaryWorktree":  false,
+                      "mayCreatePrimaryWorktreeFiles":  false,
+                      "mayCommit":  false,
+                      "mayMerge":  false,
+                      "mayPush":  false,
+                      "mayPull":  false,
+                      "mayFetch":  false,
+                      "mayReset":  false,
+                      "mayClean":  false,
+                      "mayRebase":  false,
+                      "mayTouchDatabase":  false,
+                      "mayTouchProduction":  false,
+                      "mayLaunchPublicly":  false,
+                      "ownerDecisionRequired":  true,
+                      "snapshotIsEvidenceOnly":  true
+                  },
+    "lifecycle":  {
+                      "createInitialSnapshotAfterOwnerStopPrecheck":  true,
+                      "startReviewSidecarBeforeAwaitingWorker":  true,
+                      "clearReviewSidecarInFinally":  true,
+                      "ownerStopMonitorRemainsSeparate":  true,
+                      "workerResultSemanticsRemainUnchanged":  true,
+                      "taskStopSemanticsRemainUnchanged":  true,
+                      "ownerStopSemanticsRemainUnchanged":  true
+                  },
+    "implementationBoundary":  {
+                                   "thisFileIsDesignOnly":  true,
+                                   "workerCodeChangedByThisFile":  false,
+                                   "schedulerPolicyChangedByThisFile":  false,
+                                   "queueChangedByThisFile":  false,
+                                   "modelExecutedByThisFile":  false,
+                                   "gitAuthorityChangedByThisFile":  false,
+                                   "databaseAuthorityChangedByThisFile":  false,
+                                   "productionAuthorityChangedByThisFile":  false
+                               },
+    "implementationGate":  [
+                               "Worker integration implementation must be separately syntax checked.",
+                               "Owner-stop monitor behavior must be proven unchanged.",
+                               "Snapshot sidecar must use workerHeartbeatMs rather than the 250 ms owner-stop interval.",
+                               "Synthetic snapshot failure must prove owner-stop propagation remains independently functional.",
+                               "Real queue access must remain read-only.",
+                               "No primary repository snapshot file may be created.",
+                               "No Git commit may occur without explicit owner approval."
+                           ],
+    "failClosedRules":  [
+                            "If LOCALAPPDATA cannot be resolved, do not publish a snapshot and do not infer authority.",
+                            "If current HEAD cannot be resolved, do not publish a new actionable snapshot.",
+                            "If review generation fails, retain the previous complete snapshot.",
+                            "If snapshot publication fails, the failure is observable but cannot alter task authority.",
+                            "Any ambiguity in authority remains denied."
+                        ]
+}
