@@ -1,0 +1,121 @@
+{
+    "schema":  "nexus.autonomy.owner-controlled-ai-workforce-review-bundle-design-lock.v1",
+    "designVersion":  1,
+    "boundHead":  "5afdbdd403765403a9bbd52bb3bde5dec0cc3daa",
+    "purpose":  [
+                    "Reduce repeated manual PowerShell review work for the owner.",
+                    "Aggregate independently produced AI workforce PATCH_READY evidence into one compact owner review bundle.",
+                    "Preserve all existing owner-control, fail-closed, least-privilege and primary-worktree protections."
+                ],
+    "verifiedExistingEntryPoints":  {
+                                        "orchestrator":  {
+                                                             "module":  "orchestrator.cjs",
+                                                             "export":  "executeTask",
+                                                             "authorizationGrantedByThisDesign":  false
+                                                         },
+                                        "worktreeExecutor":  {
+                                                                 "module":  "worktree-executor.cjs",
+                                                                 "export":  "runWorktreeTask",
+                                                                 "authorizationGrantedByThisDesign":  false
+                                                             },
+                                        "workforceAssignment":  {
+                                                                    "module":  "owner-controlled-ai-workforce-task-assignment.cjs",
+                                                                    "export":  "runOwnerControlledAiWorkforceTaskAssignment",
+                                                                    "authorizationGrantedByThisDesign":  false
+                                                                }
+                                    },
+    "reviewBundlePipeline":  [
+                                 "Discover existing queue evidence without mutating queues.",
+                                 "Read PATCH_READY and matching evidence artifacts.",
+                                 "Require exact artifact/evidence cryptographic binding.",
+                                 "Require task baseHead to equal the currently admitted review HEAD.",
+                                 "Require target prestate SHA256 to match when supplied by the task contract.",
+                                 "Classify historical, stale, stopped, malformed, mismatched or unauthorized items as non-actionable.",
+                                 "Never convert STOP or stale evidence into PATCH_READY.",
+                                 "Produce one compact owner-facing bundle of currently actionable proposals.",
+                                 "Present exact mutation scope, checks, evidence and fail-closed reason for every item.",
+                                 "Wait for an explicit owner decision."
+                             ],
+    "admissibleItem":  {
+                           "patchReadyRequired":  true,
+                           "matchingEvidenceRequired":  true,
+                           "currentHeadBindingRequired":  true,
+                           "targetIntegrityRequired":  true,
+                           "exactMutationScopeRequired":  true,
+                           "explicitChecksRequired":  true,
+                           "staleArtifactsRejected":  true,
+                           "stoppedArtifactsRejected":  true,
+                           "malformedArtifactsRejected":  true,
+                           "authorityEscalationRejected":  true
+                       },
+    "bundleOutput":  {
+                         "maySummarize":  true,
+                         "mayClassify":  true,
+                         "mayHashEvidence":  true,
+                         "mayReportChecks":  true,
+                         "mayReportMutationScope":  true,
+                         "mayRecommendOwnerDecision":  true,
+                         "mayApplyPatch":  false,
+                         "mayMutatePrimaryWorktree":  false,
+                         "mayCommit":  false,
+                         "mayMerge":  false,
+                         "mayPush":  false,
+                         "mayPull":  false,
+                         "mayFetch":  false,
+                         "mayReset":  false,
+                         "mayClean":  false,
+                         "mayRebase":  false,
+                         "mayTouchDatabase":  false,
+                         "mayTouchProduction":  false,
+                         "mayLaunchPublicly":  false,
+                         "mayUseGeneralShellAuthority":  false
+                     },
+    "ownerDecisionBoundary":  {
+                                  "explicitOwnerDecisionRequired":  true,
+                                  "patchReadyIsEvidenceOnly":  true,
+                                  "patchReadyIsApplicationAuthority":  false,
+                                  "bundleIsEvidenceOnly":  true,
+                                  "bundleIsApplicationAuthority":  false,
+                                  "silenceIsApproval":  false,
+                                  "timeoutIsApproval":  false,
+                                  "inferredApprovalAllowed":  false
+                              },
+    "currentConstitutionalLocks":  {
+                                       "consumerMayApplyPatch":  false,
+                                       "consumerMayCommitGit":  false,
+                                       "consumerMayTouchDatabase":  false,
+                                       "consumerMayTouchProduction":  false,
+                                       "trustBoundAdapterMayApplyPatch":  false,
+                                       "trustBoundAdapterMayCommit":  false,
+                                       "trustBoundAdapterMayMerge":  false,
+                                       "trustBoundAdapterMayPush":  false,
+                                       "trustBoundAdapterMayTouchDatabase":  false,
+                                       "trustBoundAdapterMayTouchProduction":  false
+                                   },
+    "implementationBoundary":  {
+                                   "thisFileIsDesignOnly":  true,
+                                   "runtimeBehaviorChangedByThisFile":  false,
+                                   "queueBehaviorChangedByThisFile":  false,
+                                   "modelBehaviorChangedByThisFile":  false,
+                                   "workerBehaviorChangedByThisFile":  false,
+                                   "worktreeExecutorAuthorityChangedByThisFile":  false,
+                                   "gitAuthorityChangedByThisFile":  false,
+                                   "databaseAuthorityChangedByThisFile":  false,
+                                   "productionAuthorityChangedByThisFile":  false
+                               },
+    "targetOwnerExperience":  [
+                                  "AI employees may continue producing bounded PATCH_READY evidence under existing gates.",
+                                  "The owner should not need to inspect each historical queue artifact manually.",
+                                  "One review bundle should surface only currently admissible items.",
+                                  "The owner should make a compact approve or reject decision after reviewing evidence.",
+                                  "No future implementation may silently interpret convenience as expanded authority."
+                              ],
+    "failClosedRules":  [
+                            "If current HEAD cannot be proven, produce no actionable bundle.",
+                            "If artifact/evidence binding fails, reject that item.",
+                            "If target integrity fails, reject that item.",
+                            "If an item is stale, stopped or malformed, exclude it from actionable proposals and report the reason.",
+                            "If authority is ambiguous, do not apply, commit, merge, push, touch database, touch production or launch.",
+                            "Any later implementation must preserve existing constitutional owner-control boundaries unless the owner separately and explicitly approves a new constitutional design."
+                        ]
+}
