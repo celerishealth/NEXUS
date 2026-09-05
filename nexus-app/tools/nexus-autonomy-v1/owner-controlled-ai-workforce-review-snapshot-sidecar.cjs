@@ -43,6 +43,7 @@ function startOwnerControlledReviewSnapshotSidecar(input){
     repoRoot,
     queueRoot,
     currentHead,
+    currentHeadResolver,
     intervalMs,
   }=input;
 
@@ -61,8 +62,24 @@ function startOwnerControlledReviewSnapshotSidecar(input){
   }
 
   if(
-    typeof currentHead!=="string" ||
-    currentHead.length===0
+    currentHeadResolver!==undefined &&
+    typeof currentHeadResolver!=="function"
+  ){
+    throw new TypeError(
+      "REVIEW_SIDECAR_CURRENT_HEAD_RESOLVER_INVALID",
+    );
+  }
+
+  const staticCurrentHeadValid=
+    typeof currentHead==="string" &&
+    currentHead.trim().length>0;
+
+  const dynamicCurrentHeadEnabled=
+    typeof currentHeadResolver==="function";
+
+  if(
+    !staticCurrentHeadValid &&
+    !dynamicCurrentHeadEnabled
   ){
     throw new TypeError("REVIEW_SIDECAR_CURRENT_HEAD_INVALID");
   }
@@ -98,8 +115,31 @@ function startOwnerControlledReviewSnapshotSidecar(input){
     publicationFailures:0,
     lastPublishedAt:null,
     lastSnapshotSha256:null,
+    lastCurrentHead:null,
     lastError:null,
   };
+
+  function resolveCurrentHeadForPublication(){
+    let resolved;
+
+    if(dynamicCurrentHeadEnabled){
+      resolved=currentHeadResolver();
+    }
+    else{
+      resolved=currentHead;
+    }
+
+    if(
+      typeof resolved!=="string" ||
+      resolved.trim().length===0
+    ){
+      throw new Error(
+        "REVIEW_SIDECAR_CURRENT_HEAD_UNRESOLVED",
+      );
+    }
+
+    return resolved.trim();
+  }
 
   function publish(){
     if(stopped || running){
@@ -110,11 +150,14 @@ function startOwnerControlledReviewSnapshotSidecar(input){
     state.publicationAttempts+=1;
 
     try{
+      const resolvedCurrentHead=
+        resolveCurrentHeadForPublication();
+
       const result=
         writeOwnerControlledReviewSnapshot({
           repoRoot,
           queueRoot,
-          currentHead,
+          currentHead:resolvedCurrentHead,
           snapshotPath,
         });
 
@@ -122,6 +165,8 @@ function startOwnerControlledReviewSnapshotSidecar(input){
       state.lastPublishedAt=result.generatedAt;
       state.lastSnapshotSha256=
         result.snapshotSha256;
+      state.lastCurrentHead=
+        resolvedCurrentHead;
       state.lastError=null;
 
       return result;
@@ -170,6 +215,7 @@ function startOwnerControlledReviewSnapshotSidecar(input){
       running,
       snapshotPath:path.resolve(snapshotPath),
       intervalMs,
+      dynamicCurrentHeadEnabled,
       publicationAttempts:
         state.publicationAttempts,
       publicationSuccesses:
@@ -180,6 +226,8 @@ function startOwnerControlledReviewSnapshotSidecar(input){
         state.lastPublishedAt,
       lastSnapshotSha256:
         state.lastSnapshotSha256,
+      lastCurrentHead:
+        state.lastCurrentHead,
       lastError:
         state.lastError,
       authority:Object.freeze({
