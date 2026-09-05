@@ -145,7 +145,7 @@ function makeResolver(options = {}) {
   const resolver =
     createPostgresInternalPilotSessionResolver({
       tenantId:
-        options.tenantId || "tenant-a",
+        options.tenantId ?? "tenant-a",
       query: database.query,
       now:
         options.now ||
