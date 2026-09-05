@@ -440,7 +440,7 @@ function makeHarness(options = {}) {
   const cycleCalls = [];
 
   const appendAudit =
-    options.appendAudit ||
+    options.appendAudit ??
     (async (record) => {
       audits.push(clone(record));
     });
