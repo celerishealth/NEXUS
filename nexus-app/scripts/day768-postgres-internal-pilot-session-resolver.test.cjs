@@ -148,7 +148,7 @@ function makeResolver(options = {}) {
         options.tenantId ?? "tenant-a",
       query: database.query,
       now:
-        options.now ||
+        options.now ??
         (() => new Date(fixedNow)),
       cookieName:
         options.cookieName,
