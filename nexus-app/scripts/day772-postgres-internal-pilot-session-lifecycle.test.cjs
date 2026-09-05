@@ -311,7 +311,7 @@ function makeHarness(options = {}) {
       cookieName:
         options.cookieName,
       now:
-        options.now ||
+        options.now ??
         (() => new Date(fixedNow)),
       randomBytes:
         options.randomBytes ||
