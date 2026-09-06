@@ -1,0 +1,31 @@
+{
+    "schema":  "nexus.autonomy.fast-batch-299-post-patch-closure.v1",
+    "branch":  "ai-workforce-constitution-v1",
+    "head":  "11b7f41cc035293081137b58b8dd2e1468f9f3a0",
+    "target":  {
+                   "path":  "app/api/ai/route.ts",
+                   "lineNumber":  30,
+                   "sha256":  "2de6030657391ab696fe1052c802a377c52a8d40048fd5ad360c44ca0d973904",
+                   "line":  "const customerMessage = prompt ?? \"\";"
+               },
+    "applicationEvidenceSha256":  "ffe474a26f36760f20fa94bbabe89c04b3c0521c6fff84f6a51a7a99d98d7b71",
+    "verification":  {
+                         "exactOneDeletion":  true,
+                         "exactOneAddition":  true,
+                         "gitDiffCheckPassed":  true,
+                         "sourceTrackedAsModified":  true
+                     },
+    "authority":  {
+                      "gitAddAuthorized":  false,
+                      "gitCommitAuthorized":  false,
+                      "gitMergeAuthorized":  false,
+                      "gitPushAuthorized":  false,
+                      "modelExecutionAuthorized":  false,
+                      "queueMutationAuthorized":  false,
+                      "databaseAuthorized":  false,
+                      "productionAuthorized":  false,
+                      "networkAuthorized":  false,
+                      "protectedControlPlaneMutationAuthorized":  false
+                  },
+    "state":  "PATCH_APPLIED_VERIFIED_UNCOMMITTED"
+}

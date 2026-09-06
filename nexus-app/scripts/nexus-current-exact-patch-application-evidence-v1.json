@@ -1,0 +1,38 @@
+{
+    "schema":  "nexus.autonomy.exact-patch-application-evidence.v1",
+    "branch":  "ai-workforce-constitution-v1",
+    "baseHead":  "11b7f41cc035293081137b58b8dd2e1468f9f3a0",
+    "ownerApprovalSha256":  "9a0b391ba3f3cb12646f8c79f2b7dd26ac7b5f28b72cb41ea69b29a5193c5b11",
+    "repairedPatchSha256":  "55c62c779ef7cf9dc9844e111caf99e7cf55dd05f6f416b0b90f7ba07b97aed0",
+    "repairLockSha256":  "779f9796700243eeb6a3151b14ecf2f709ce82bb437c6cab5b8bdca9a538a1b8",
+    "target":  {
+                   "path":  "app/api/ai/route.ts",
+                   "lineNumber":  30,
+                   "beforeSha256":  "3a33025a68e07f9b9e419ce47f4c5df770ecff3c69fdb060da004d3afda21b83",
+                   "afterSha256":  "2de6030657391ab696fe1052c802a377c52a8d40048fd5ad360c44ca0d973904",
+                   "oldLine":  "const customerMessage = prompt || \"\";",
+                   "newLine":  "const customerMessage = prompt ?? \"\";"
+               },
+    "verification":  {
+                         "gitApplyCheckPassed":  true,
+                         "exactOneDeletion":  true,
+                         "exactOneAddition":  true,
+                         "indentationSafeDiffVerification":  true,
+                         "allOtherSourceLinesUnchanged":  true
+                     },
+    "result":  {
+                   "exactPatchApplied":  true,
+                   "primarySourceModified":  true,
+                   "additionalSourceMutation":  false,
+                   "gitAddPerformed":  false,
+                   "gitCommitPerformed":  false,
+                   "gitMergePerformed":  false,
+                   "gitPushPerformed":  false,
+                   "modelExecuted":  false,
+                   "queueTouched":  false,
+                   "databaseTouched":  false,
+                   "productionTouched":  false,
+                   "networkCalled":  false,
+                   "protectedControlPlaneModified":  false
+               }
+}

@@ -27,7 +27,7 @@ function jsonResponse(
 
 
 function buildLocalFallbackResponse(prompt: string) {
-  const customerMessage = prompt || "";
+  const customerMessage = prompt ?? "";
   const lowerMessage = customerMessage.toLowerCase();
 
   const looksPharma =

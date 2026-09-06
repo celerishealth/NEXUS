@@ -1,0 +1,29 @@
+{
+    "schema":  "nexus.autonomy.exact-patch-owner-approval.v1",
+    "ownerDecision":  "APPROVE",
+    "scope":  "EXACT_ONE_LINE_PATCH_APPLICATION_ONLY",
+    "branch":  "ai-workforce-constitution-v1",
+    "baseHead":  "11b7f41cc035293081137b58b8dd2e1468f9f3a0",
+    "patchSha256":  "decbdfdf0c9cf1f53fa982f9fdd4c2c7c08b74b06b4b30ca79e3db6ff7ff6436",
+    "targetPath":  "app/api/ai/route.ts",
+    "targetLineNumber":  30,
+    "beforeSha256":  "3a33025a68e07f9b9e419ce47f4c5df770ecff3c69fdb060da004d3afda21b83",
+    "oldLine":  "const customerMessage = prompt || \"\";",
+    "approvedLine":  "const customerMessage = prompt ?? \"\";",
+    "authorized":  {
+                       "exactPatchApplication":  true,
+                       "additionalSourceMutation":  false,
+                       "patchPromotion":  false,
+                       "gitAdd":  false,
+                       "gitCommit":  false,
+                       "gitMerge":  false,
+                       "gitPush":  false,
+                       "modelExecution":  false,
+                       "queueMutation":  false,
+                       "database":  false,
+                       "production":  false,
+                       "publicLaunch":  false,
+                       "network":  false,
+                       "protectedControlPlaneMutation":  false
+                   }
+}

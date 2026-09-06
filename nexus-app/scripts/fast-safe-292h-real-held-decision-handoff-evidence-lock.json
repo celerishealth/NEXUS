@@ -1,0 +1,58 @@
+{
+    "schema":  "NEXUS_FAST_SAFE_292H_REAL_HELD_DECISION_HANDOFF_EVIDENCE_LOCK_V1",
+    "branch":  "ai-workforce-constitution-v1",
+    "head":  "11b7f41cc035293081137b58b8dd2e1468f9f3a0",
+    "realPipeline":  {
+                         "discoveryCandidateCount":  128,
+                         "compatibleCandidateCount":  128,
+                         "missionId":  "semantic-nullish-fallback-preserve-explicit-falsy-v1",
+                         "objectiveStatus":  "OBJECTIVE_READY",
+                         "decisionStatus":  "DECISION_READY",
+                         "handoffStatus":  "HELD_DECISION_READY",
+                         "semanticLane":  "fallback-policy-v1",
+                         "selectedFallbackPolicy":  "nullish_only",
+                         "candidate":  {
+                                           "file":  "app/api/ai/route.ts",
+                                           "lineNumber":  30,
+                                           "sha256":  "3a33025a68e07f9b9e419ce47f4c5df770ecff3c69fdb060da004d3afda21b83",
+                                           "oldLine":  "const customerMessage = prompt || \"\";",
+                                           "proposedLine":  "const customerMessage = prompt ?? \"\";",
+                                           "sourceUnchanged":  true
+                                       }
+                     },
+    "artifacts":  {
+                      "heldDecisionHandoff":  {
+                                                  "file":  "scripts/nexus-pre-model-held-decision-handoff-v1.cjs",
+                                                  "sha256":  "d8740ec7f39ad25cd45d9597e4122f2c205d832281cbfeb9ee4df8f22ecef5c0"
+                                              },
+                      "heldDecisionHandoffSelfTest":  {
+                                                          "file":  "scripts/nexus-pre-model-held-decision-handoff-v1.self-test.cjs",
+                                                          "sha256":  "2b2bb6b01dd8352c6d0e3769053ade65273990561548c2e0ba4bff19322259dc"
+                                                      }
+                  },
+    "authorityBoundary":  {
+                              "modelExecutionAuthorized":  false,
+                              "patchApplicationAuthorized":  false,
+                              "materializerInvocationAuthorized":  false,
+                              "canonicalDelegationAuthorized":  false,
+                              "downstreamExecutionAuthorized":  false,
+                              "reasoningExecutionAuthority":  false,
+                              "modelExecutionAuthority":  false,
+                              "queueMutationAuthority":  false,
+                              "workerExecutionAuthority":  false,
+                              "sourceMutationAuthority":  false,
+                              "patchApplicationAuthority":  false,
+                              "gitAuthority":  false,
+                              "databaseAuthority":  false,
+                              "productionAuthority":  false,
+                              "networkAuthority":  false
+                          },
+    "preservedLocks":  {
+                           "materializer":  "HOLD",
+                           "canonicalDelegation":  "BLOCKED",
+                           "protectedControlPlaneModified":  false,
+                           "writeScope":  [
+                                              "scripts"
+                                          ]
+                       }
+}

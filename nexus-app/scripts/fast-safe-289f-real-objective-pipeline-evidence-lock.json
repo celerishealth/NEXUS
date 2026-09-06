@@ -1,0 +1,60 @@
+{
+    "schema":  "NEXUS_FAST_SAFE_289F_REAL_OBJECTIVE_PIPELINE_EVIDENCE_LOCK_V1",
+    "branch":  "ai-workforce-constitution-v1",
+    "head":  "11b7f41cc035293081137b58b8dd2e1468f9f3a0",
+    "realPipeline":  {
+                         "discoveryCandidateCount":  64,
+                         "compatibleCandidateCount":  64,
+                         "missionId":  "semantic-nullish-fallback-preserve-explicit-falsy-v1",
+                         "objectiveStatus":  "OBJECTIVE_READY",
+                         "semanticLane":  "fallback-policy-v1",
+                         "discoveryToScheduler":  "PASS",
+                         "schedulerToObjective":  "PASS",
+                         "hostBoundedObjective":  "PASS"
+                     },
+    "artifacts":  {
+                      "discoveryV2":  {
+                                          "file":  "scripts/nexus-semantic-discovery-candidate-source-v2.cjs",
+                                          "sha256":  "47d14e32ac77dbe8f0aee09b2ff3bf9348df69fada3f1af8229155cf69d08bec"
+                                      },
+                      "missionScheduler":  {
+                                               "file":  "scripts/nexus-host-approved-mission-compatibility-scheduler-v1.cjs",
+                                               "sha256":  "e6daf1e1b342f987b3c094cec43d95de40c6c69260a00b2b97ab66b4f76a1fea"
+                                           },
+                      "objectiveBridge":  {
+                                              "file":  "scripts/nexus-host-approved-mission-objective-bridge-v1.cjs",
+                                              "sha256":  "cfb09f264c18ce7416ba76d936a7c40d583491809a3b1b1602ffdc2f0cabdb12"
+                                          },
+                      "objectiveBridgeSelfTest":  {
+                                                      "file":  "scripts/nexus-host-approved-mission-objective-bridge-v1.self-test.cjs",
+                                                      "sha256":  "79219d06829fc26730149001ff95a34d03f5ab3d638429b41f81bb82a76d02b6"
+                                                  },
+                      "protectedObjectiveSource":  {
+                                                       "file":  "tools/nexus-autonomy-v1/owner-controlled-ai-workforce-autonomous-mission-objective-source.candidate.cjs",
+                                                       "sha256":  "5741fb5bd49b8545c9a0c4bd5a8151490f3bd625ed1dcf5b7e77e57890b1921a",
+                                                       "modified":  false,
+                                                       "executionMode":  "BOUNDED_FUNCTION_ONLY"
+                                                   }
+                  },
+    "authorityBoundary":  {
+                              "freeFormMissionInventionAuthorized":  false,
+                              "freeFormObjectiveGenerationAuthorized":  false,
+                              "reasoningExecutionAuthority":  false,
+                              "modelExecutionAuthority":  false,
+                              "queueMutationAuthority":  false,
+                              "workerExecutionAuthority":  false,
+                              "primaryRepoMutationAuthorized":  false,
+                              "patchApplicationAuthority":  false,
+                              "gitAuthority":  false,
+                              "databaseAuthority":  false,
+                              "productionAuthority":  false,
+                              "networkAuthority":  false
+                          },
+    "preservedLocks":  {
+                           "materializer":  "HOLD",
+                           "canonicalDelegation":  "BLOCKED",
+                           "writeScope":  [
+                                              "scripts"
+                                          ]
+                       }
+}

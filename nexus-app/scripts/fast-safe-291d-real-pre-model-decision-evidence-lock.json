@@ -1,0 +1,54 @@
+{
+    "schema":  "NEXUS_FAST_SAFE_291D_REAL_PRE_MODEL_DECISION_EVIDENCE_LOCK_V1",
+    "branch":  "ai-workforce-constitution-v1",
+    "head":  "11b7f41cc035293081137b58b8dd2e1468f9f3a0",
+    "realProof":  {
+                      "discoveryCandidateCount":  128,
+                      "compatibleCandidateCount":  128,
+                      "missionId":  "semantic-nullish-fallback-preserve-explicit-falsy-v1",
+                      "objectiveStatus":  "OBJECTIVE_READY",
+                      "semanticLane":  "fallback-policy-v1",
+                      "selectedFallbackPolicy":  "nullish_only",
+                      "candidate":  {
+                                        "file":  "app/api/ai/route.ts",
+                                        "lineNumber":  30,
+                                        "sha256":  "3a33025a68e07f9b9e419ce47f4c5df770ecff3c69fdb060da004d3afda21b83",
+                                        "oldLine":  "const customerMessage = prompt || \"\";",
+                                        "proposedLine":  "const customerMessage = prompt ?? \"\";",
+                                        "sourceUnchanged":  true
+                                    },
+                      "preModelDecisionStatus":  "DECISION_READY",
+                      "deterministic":  true,
+                      "modelRequired":  false,
+                      "modelExecuted":  false,
+                      "patchApplied":  false
+                  },
+    "artifacts":  {
+                      "discoveryV2Sha256":  "47d14e32ac77dbe8f0aee09b2ff3bf9348df69fada3f1af8229155cf69d08bec",
+                      "missionSchedulerSha256":  "e6daf1e1b342f987b3c094cec43d95de40c6c69260a00b2b97ab66b4f76a1fea",
+                      "objectiveBridgeSha256":  "cfb09f264c18ce7416ba76d936a7c40d583491809a3b1b1602ffdc2f0cabdb12",
+                      "plannerSha256":  "82f2bc96e7da50ce62a9961e3f12440933d3a5466f1e62d7a914084e364d3750",
+                      "plannerSelfTestSha256":  "84af07a9fb6bd867e4563e3f63d35bd55a11b6e157bc6cb083d141a70345310c",
+                      "protectedObjectiveSourceSha256":  "5741fb5bd49b8545c9a0c4bd5a8151490f3bd625ed1dcf5b7e77e57890b1921a"
+                  },
+    "authorityBoundary":  {
+                              "reasoningExecutionAuthority":  false,
+                              "modelExecutionAuthority":  false,
+                              "queueMutationAuthority":  false,
+                              "workerExecutionAuthority":  false,
+                              "sourceMutationAuthority":  false,
+                              "patchApplicationAuthority":  false,
+                              "gitAuthority":  false,
+                              "databaseAuthority":  false,
+                              "productionAuthority":  false,
+                              "networkAuthority":  false
+                          },
+    "preservedLocks":  {
+                           "materializer":  "HOLD",
+                           "canonicalDelegation":  "BLOCKED",
+                           "protectedControlPlaneModified":  false,
+                           "writeScope":  [
+                                              "scripts"
+                                          ]
+                       }
+}

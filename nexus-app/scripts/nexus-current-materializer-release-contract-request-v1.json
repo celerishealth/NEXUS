@@ -1,0 +1,52 @@
+{
+    "schema":  "nexus.autonomy.current-materializer-release-contract-request.v1",
+    "branch":  "ai-workforce-constitution-v1",
+    "baseHead":  "11b7f41cc035293081137b58b8dd2e1468f9f3a0",
+    "missionId":  "semantic-nullish-fallback-preserve-explicit-falsy-v1",
+    "semanticLane":  "fallback-policy-v1",
+    "candidate":  {
+                      "relativePath":  "app/api/ai/route.ts",
+                      "lineNumber":  30,
+                      "beforeSha256":  "3a33025a68e07f9b9e419ce47f4c5df770ecff3c69fdb060da004d3afda21b83",
+                      "oldLine":  "const customerMessage = prompt || \"\";",
+                      "proposedLine":  "const customerMessage = prompt ?? \"\";"
+                  },
+    "evidence":  {
+                     "decisionEvidenceSha256":  "6a8db3105304fe3c0125c397b28b9c25efd91d907995a627963bc265066a2eef",
+                     "heldHandoffEvidenceSha256":  "37a6c3c8b8d19606b3e3395f5df71156c177aa66b9ce6bf4310789cfcc4b47e0",
+                     "terminalHeldBoundarySha256":  "d6a9e85291e799499fb2c94129f93a472104d39c4056cc693e6940332b7ba6f6"
+                 },
+    "currentState":  {
+                         "handoffStatus":  "HELD_DECISION_READY",
+                         "currentReleaseAuthorizationFound":  false,
+                         "oldDay768AuthorizationReusable":  false,
+                         "safeState":  "HOLD"
+                     },
+    "requestedNextBoundary":  {
+                                  "requestType":  "MATERIALIZER_RELEASE_CONTRACT",
+                                  "purpose":  "ALLOW_NON_APPLYING_PATCH_MATERIALIZATION_ONLY_AFTER_EXPLICIT_OWNER_APPROVAL",
+                                  "explicitOwnerApprovalRequired":  true,
+                                  "ownerApprovalRecorded":  false,
+                                  "materializerInvocationAuthorized":  false,
+                                  "patchApplicationAuthorized":  false,
+                                  "primaryWriteAuthorized":  false,
+                                  "patchPromotionAuthorized":  false,
+                                  "modelExecutionAuthorized":  false,
+                                  "queueMutationAuthorized":  false,
+                                  "gitAddAuthorized":  false,
+                                  "gitCommitAuthorized":  false,
+                                  "gitMergeAuthorized":  false,
+                                  "gitPushAuthorized":  false,
+                                  "databaseAuthorized":  false,
+                                  "productionAuthorized":  false,
+                                  "publicLaunchAuthorized":  false,
+                                  "networkAuthorized":  false
+                              },
+    "safety":  {
+                   "protectedControlPlaneMutationAuthorized":  false,
+                   "sourceMutationAuthorized":  false,
+                   "currentSourceMustRemainUnchanged":  true,
+                   "canonicalDelegation":  "BLOCKED",
+                   "materializer":  "HOLD"
+               }
+}

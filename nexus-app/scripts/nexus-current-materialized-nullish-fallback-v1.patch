@@ -1,0 +1,9 @@
+--- a/app/api/ai/route.ts
++++ b/app/api/ai/route.ts
+@@ -28,5 +28,5 @@
+ 
+ function buildLocalFallbackResponse(prompt: string) {
+-const customerMessage = prompt || "";
++const customerMessage = prompt ?? "";
+   const lowerMessage = customerMessage.toLowerCase();
+ 

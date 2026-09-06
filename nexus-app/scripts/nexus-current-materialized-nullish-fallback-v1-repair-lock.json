@@ -1,0 +1,32 @@
+{
+    "schema":  "nexus.autonomy.materialized-patch-format-repair-lock.v1",
+    "reason":  "UNIFIED_DIFF_CONTEXT_PREFIX_REPAIR",
+    "ownerApprovalSha256":  "9a0b391ba3f3cb12646f8c79f2b7dd26ac7b5f28b72cb41ea69b29a5193c5b11",
+    "originalPatch":  {
+                          "sha256":  "decbdfdf0c9cf1f53fa982f9fdd4c2c7c08b74b06b4b30ca79e3db6ff7ff6436",
+                          "validGitPatch":  false,
+                          "semanticChange":  "prompt || \"\" -\u003e prompt ?? \"\""
+                      },
+    "repairedPatch":  {
+                          "file":  "scripts/nexus-current-materialized-nullish-fallback-v1-repaired.patch",
+                          "sha256":  "55c62c779ef7cf9dc9844e111caf99e7cf55dd05f6f416b0b90f7ba07b97aed0",
+                          "semanticChange":  "prompt || \"\" -\u003e prompt ?? \"\"",
+                          "scopeChanged":  false
+                      },
+    "target":  {
+                   "path":  "app/api/ai/route.ts",
+                   "lineNumber":  30,
+                   "beforeSha256":  "3a33025a68e07f9b9e419ce47f4c5df770ecff3c69fdb060da004d3afda21b83"
+               },
+    "authority":  {
+                      "exactOneLineApplicationApproved":  true,
+                      "additionalSourceMutationAuthorized":  false,
+                      "gitAddAuthorized":  false,
+                      "gitCommitAuthorized":  false,
+                      "gitMergeAuthorized":  false,
+                      "gitPushAuthorized":  false,
+                      "databaseAuthorized":  false,
+                      "productionAuthorized":  false,
+                      "networkAuthorized":  false
+                  }
+}

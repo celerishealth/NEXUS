@@ -1,0 +1,32 @@
+{
+    "schema":  "nexus.autonomy.current-materializer-release-owner-approval.v1",
+    "approval":  "APPROVE",
+    "scope":  "NON_APPLYING_MATERIALIZER_RELEASE_CONTRACT_ONLY",
+    "requestSha256":  "a24945d96591c418ded0b5b0b90202c297e4e9346968151c5c0fa08ac93695f6",
+    "branch":  "ai-workforce-constitution-v1",
+    "baseHead":  "11b7f41cc035293081137b58b8dd2e1468f9f3a0",
+    "missionId":  "semantic-nullish-fallback-preserve-explicit-falsy-v1",
+    "candidate":  {
+                      "relativePath":  "app/api/ai/route.ts",
+                      "lineNumber":  30,
+                      "beforeSha256":  "3a33025a68e07f9b9e419ce47f4c5df770ecff3c69fdb060da004d3afda21b83"
+                  },
+    "ownerApproved":  true,
+    "authorized":  {
+                       "nonApplyingMaterializerReleaseContract":  true,
+                       "materializerInvocation":  true,
+                       "patchApplication":  false,
+                       "primaryWrite":  false,
+                       "patchPromotion":  false,
+                       "modelExecution":  false,
+                       "queueMutation":  false,
+                       "gitAdd":  false,
+                       "gitCommit":  false,
+                       "gitMerge":  false,
+                       "gitPush":  false,
+                       "database":  false,
+                       "production":  false,
+                       "publicLaunch":  false,
+                       "network":  false
+                   }
+}

@@ -1,0 +1,51 @@
+{
+    "schema":  "nexus.autonomy.current-materializer-release-contract.v1",
+    "requestSha256":  "a24945d96591c418ded0b5b0b90202c297e4e9346968151c5c0fa08ac93695f6",
+    "branch":  "ai-workforce-constitution-v1",
+    "baseHead":  "11b7f41cc035293081137b58b8dd2e1468f9f3a0",
+    "missionId":  "semantic-nullish-fallback-preserve-explicit-falsy-v1",
+    "semanticLane":  "fallback-policy-v1",
+    "candidate":  {
+                      "relativePath":  "app/api/ai/route.ts",
+                      "lineNumber":  30,
+                      "beforeSha256":  "3a33025a68e07f9b9e419ce47f4c5df770ecff3c69fdb060da004d3afda21b83",
+                      "oldLine":  "const customerMessage = prompt || \"\";",
+                      "proposedLine":  "const customerMessage = prompt ?? \"\";"
+                  },
+    "release":  {
+                    "mode":  "NON_APPLYING_PATCH_ARTIFACT_ONLY",
+                    "ownerApprovalRequired":  true,
+                    "ownerApprovalRecorded":  true,
+                    "materializerInvocationAuthorized":  true,
+                    "patchApplicationAuthorized":  false,
+                    "primaryWriteAuthorized":  false,
+                    "patchPromotionAuthorized":  false,
+                    "canonicalDelegationAuthorized":  false,
+                    "downstreamExecutionAuthorized":  false
+                },
+    "authorityBoundary":  {
+                              "modelExecutionAuthority":  false,
+                              "reasoningExecutionAuthority":  false,
+                              "queueMutationAuthority":  false,
+                              "workerExecutionAuthority":  false,
+                              "sourceMutationAuthority":  false,
+                              "patchApplicationAuthority":  false,
+                              "primaryWriteAuthority":  false,
+                              "patchPromotionAuthorized":  false,
+                              "gitAddAuthority":  false,
+                              "gitCommitAuthority":  false,
+                              "gitMergeAuthority":  false,
+                              "gitPushAuthority":  false,
+                              "databaseAuthority":  false,
+                              "productionAuthority":  false,
+                              "publicLaunchAuthority":  false,
+                              "networkAuthority":  false
+                          },
+    "preservedLocks":  {
+                           "canonicalDelegation":  "BLOCKED",
+                           "primarySourceMutation":  "BLOCKED",
+                           "patchApplication":  "BLOCKED",
+                           "production":  "BLOCKED"
+                       },
+    "ownerApprovalSha256":  "30905ebf25c66ab8ef93908896d27def1f4fb4033c7e6ed2caa3e9fff013d269"
+}

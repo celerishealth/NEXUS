@@ -1,0 +1,65 @@
+{
+    "schema":  "NEXUS_FAST_SAFE_288D_HOST_APPROVED_MISSION_SCHEDULER_EVIDENCE_LOCK_V1",
+    "branch":  "ai-workforce-constitution-v1",
+    "head":  "11b7f41cc035293081137b58b8dd2e1468f9f3a0",
+    "discoveryV2":  {
+                        "file":  "scripts/nexus-semantic-discovery-candidate-source-v2.cjs",
+                        "sha256":  "47d14e32ac77dbe8f0aee09b2ff3bf9348df69fada3f1af8229155cf69d08bec",
+                        "discoveryResultAuthority":  "NONE",
+                        "realMissionDiscoveryCandidateCount":  64
+                    },
+    "scheduler":  {
+                      "file":  "scripts/nexus-host-approved-mission-compatibility-scheduler-v1.cjs",
+                      "sha256":  "e6daf1e1b342f987b3c094cec43d95de40c6c69260a00b2b97ab66b4f76a1fea",
+                      "hostApprovedMissionCatalog":  "LOCKED_V1",
+                      "missionId":  "semantic-nullish-fallback-preserve-explicit-falsy-v1",
+                      "missionCompatibilityRequired":  true,
+                      "freeFormMissionInventionAuthorized":  false,
+                      "scopeWideningAuthorized":  false,
+                      "noCompatibleCandidateResult":  "NO_WORK",
+                      "noWorkIsError":  false
+                  },
+    "schedulerSelfTest":  {
+                              "file":  "scripts/nexus-host-approved-mission-compatibility-scheduler-v1.self-test.cjs",
+                              "sha256":  "44c8d9f56b0073bfa9659ecf5b4ccdbf7e3ad84ffb24850aacc40150b59e4032",
+                              "missionReadyPath":  "PASS",
+                              "noWorkPath":  "PASS",
+                              "failClosedNegativeCases":  "PASS"
+                          },
+    "realRepoProof":  {
+                          "status":  "PASS",
+                          "hostApprovedMissionOnly":  true,
+                          "compatibleMissionSelected":  true,
+                          "freeFormMissionInvented":  false,
+                          "scopeWidened":  false,
+                          "repositoryStatusUnchanged":  true
+                      },
+    "authorityBoundary":  {
+                              "reasoningExecutionAuthority":  false,
+                              "modelExecutionAuthority":  false,
+                              "queueMutationAuthority":  false,
+                              "workerExecutionAuthority":  false,
+                              "appWriteAuthority":  false,
+                              "componentsWriteAuthority":  false,
+                              "libWriteAuthority":  false,
+                              "toolsWriteAuthority":  false,
+                              "patchApplicationAuthority":  false,
+                              "gitMutationAuthority":  false,
+                              "databaseAuthority":  false,
+                              "productionAuthority":  false,
+                              "networkAuthority":  false
+                          },
+    "protectedControlPlane":  {
+                                  "file":  "tools/nexus-autonomy-v1/owner-controlled-readonly-reasoning-trusted-source-runtime-adapter.candidate.cjs",
+                                  "sha256":  "c3ac03901e6c29b983da9c0efb3a013e8bf1f87de3faf37ac03cb5ab6ae54f1c",
+                                  "modified":  false,
+                                  "executed":  false
+                              },
+    "preservedLocks":  {
+                           "materializer":  "HOLD",
+                           "canonicalDelegation":  "BLOCKED",
+                           "writeScope":  [
+                                              "scripts"
+                                          ]
+                       }
+}

@@ -1,0 +1,39 @@
+{
+    "schema":  "nexus.autonomy.non-applying-materialized-patch.v1",
+    "branch":  "ai-workforce-constitution-v1",
+    "baseHead":  "11b7f41cc035293081137b58b8dd2e1468f9f3a0",
+    "missionId":  "semantic-nullish-fallback-preserve-explicit-falsy-v1",
+    "semanticLane":  "fallback-policy-v1",
+    "materialization":  {
+                            "status":  "PATCH_ARTIFACT_MATERIALIZED_NON_APPLYING",
+                            "patchFile":  "scripts/nexus-current-materialized-nullish-fallback-v1.patch",
+                            "patchSha256":  "decbdfdf0c9cf1f53fa982f9fdd4c2c7c08b74b06b4b30ca79e3db6ff7ff6436",
+                            "targetPath":  "app/api/ai/route.ts",
+                            "targetLineNumber":  30,
+                            "beforeSha256":  "3a33025a68e07f9b9e419ce47f4c5df770ecff3c69fdb060da004d3afda21b83",
+                            "oldLine":  "const customerMessage = prompt || \"\";",
+                            "proposedLine":  "const customerMessage = prompt ?? \"\";",
+                            "materializerInvocationAuthorized":  true,
+                            "patchApplied":  false,
+                            "primaryWritePerformed":  false,
+                            "sourceModified":  false
+                        },
+    "authority":  {
+                      "ownerApprovalSha256":  "30905ebf25c66ab8ef93908896d27def1f4fb4033c7e6ed2caa3e9fff013d269",
+                      "releaseContractSha256":  "a2e240650b540fd8c0c3c8035511718dd75d8c60ff3eba6725b5d39aa5f09c34",
+                      "patchApplicationAuthorized":  false,
+                      "primaryWriteAuthorized":  false,
+                      "patchPromotionAuthorized":  false,
+                      "canonicalDelegationAuthorized":  false,
+                      "downstreamExecutionAuthorized":  false,
+                      "modelExecutionAuthorized":  false,
+                      "queueMutationAuthorized":  false,
+                      "gitAddAuthorized":  false,
+                      "gitCommitAuthorized":  false,
+                      "gitMergeAuthorized":  false,
+                      "gitPushAuthorized":  false,
+                      "databaseAuthorized":  false,
+                      "productionAuthorized":  false,
+                      "networkAuthorized":  false
+                  }
+}

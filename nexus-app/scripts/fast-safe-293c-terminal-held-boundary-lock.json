@@ -1,0 +1,65 @@
+{
+    "schema":  "NEXUS_FAST_SAFE_293C_TERMINAL_HELD_BOUNDARY_LOCK_V1",
+    "branch":  "ai-workforce-constitution-v1",
+    "head":  "11b7f41cc035293081137b58b8dd2e1468f9f3a0",
+    "provenCurrentBoundary":  {
+                                  "handoffStatus":  "HELD_DECISION_READY",
+                                  "autonomousTrackBoundary":  "HELD_NON_EXECUTING",
+                                  "externalHandoffConsumerFound":  false,
+                                  "materializerReleaseContractFound":  false,
+                                  "canonicalDelegationReleaseContractFound":  false,
+                                  "patchExecutionConsumerFound":  false,
+                                  "safeNextState":  "HOLD"
+                              },
+    "futureReleaseRequirements":  {
+                                      "explicitSeparateReleaseContractRequired":  true,
+                                      "explicitOwnerApprovalRequired":  true,
+                                      "autonomousReleaseFromHoldAuthorized":  false,
+                                      "implicitAuthorityEscalationAuthorized":  false,
+                                      "freeFormExecutionPathCreationAuthorized":  false,
+                                      "materializerMayOpenWithoutReleaseContract":  false,
+                                      "canonicalDelegationMayOpenWithoutReleaseContract":  false,
+                                      "patchApplicationMayOpenWithoutReleaseContract":  false,
+                                      "modelExecutionMayOpenWithoutReleaseContract":  false,
+                                      "protectedControlPlaneMutationAuthorized":  false
+                                  },
+    "authorityBoundary":  {
+                              "ownerDecisionGenerated":  false,
+                              "ownerAuthorityGenerated":  false,
+                              "activationTokenGenerated":  false,
+                              "executionAuthorizationGenerated":  false,
+                              "executionAuthorityGenerated":  false,
+                              "reasoningExecutionAuthority":  false,
+                              "modelExecutionAuthority":  false,
+                              "queueMutationAuthority":  false,
+                              "workerExecutionAuthority":  false,
+                              "primaryRepoMutationAuthorized":  false,
+                              "sourceMutationAuthority":  false,
+                              "patchApplicationAuthority":  false,
+                              "patchPromotionAuthorized":  false,
+                              "materializerAuthority":  false,
+                              "canonicalDelegationAuthority":  false,
+                              "gitAddAuthority":  false,
+                              "gitCommitAuthority":  false,
+                              "gitMergeAuthority":  false,
+                              "gitPushAuthority":  false,
+                              "databaseAuthority":  false,
+                              "productionAuthority":  false,
+                              "publicLaunchAuthority":  false,
+                              "networkAuthority":  false
+                          },
+    "preservedLocks":  {
+                           "materializer":  "HOLD",
+                           "canonicalDelegation":  "BLOCKED",
+                           "protectedControlPlaneModified":  false,
+                           "databaseTouched":  false,
+                           "productionTouched":  false,
+                           "writeScope":  [
+                                              "scripts"
+                                          ]
+                       },
+    "priorEvidence":  {
+                          "file":  "scripts/fast-safe-292h-real-held-decision-handoff-evidence-lock.json",
+                          "sha256":  "37a6c3c8b8d19606b3e3395f5df71156c177aa66b9ce6bf4310789cfcc4b47e0"
+                      }
+}

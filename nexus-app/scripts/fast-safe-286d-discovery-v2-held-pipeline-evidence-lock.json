@@ -1,0 +1,83 @@
+{
+    "schema":  "NEXUS_FAST_SAFE_286D_DISCOVERY_V2_HELD_PIPELINE_EVIDENCE_LOCK_V1",
+    "branch":  "ai-workforce-constitution-v1",
+    "head":  "11b7f41cc035293081137b58b8dd2e1468f9f3a0",
+    "semanticDiscoveryV2":  {
+                                "file":  "scripts/nexus-semantic-discovery-candidate-source-v2.cjs",
+                                "sha256":  "47d14e32ac77dbe8f0aee09b2ff3bf9348df69fada3f1af8229155cf69d08bec",
+                                "discoveryRoots":  [
+                                                       "app",
+                                                       "components",
+                                                       "lib"
+                                                   ],
+                                "supportedExtensions":  [
+                                                            ".ts",
+                                                            ".tsx",
+                                                            ".js",
+                                                            ".jsx",
+                                                            ".mjs",
+                                                            ".cjs"
+                                                        ],
+                                "discoveryResultAuthority":  "NONE",
+                                "realDiscoveryCandidateCount":  32,
+                                "realReadOnlyDiscoveryWithoutModel":  true
+                            },
+    "semanticDiscoveryV2SelfTest":  {
+                                        "file":  "scripts/nexus-semantic-discovery-candidate-source-v2.self-test.cjs",
+                                        "sha256":  "6396154525a7138e2f118129473329094c117a4c1ca33ffd7abe41cb16872a19",
+                                        "syntheticTestsPassed":  true
+                                    },
+    "heldReasoningBridgeV2":  {
+                                  "file":  "scripts/nexus-semantic-discovery-held-reasoning-bridge-v2.cjs",
+                                  "sha256":  "bed62fe069e7c1582eee910fa4846598cf98a91cf0a8994b1f5b755a48e35d24",
+                                  "pipelineStatus":  "HELD",
+                                  "protectedRuntimeAdapterInvocationAuthorized":  false,
+                                  "manifestPublicationAuthorized":  false,
+                                  "reasoningExecutionAuthority":  false,
+                                  "modelExecutionAuthority":  false,
+                                  "queueMutationAuthority":  false,
+                                  "writeScopeExpanded":  false
+                              },
+    "heldReasoningBridgeV2SelfTest":  {
+                                          "file":  "scripts/nexus-semantic-discovery-held-reasoning-bridge-v2.self-test.cjs",
+                                          "sha256":  "a2cda690ed77aab6c5c02d7f71d405328d5fc4c870ea6627685a2a652d5e3596",
+                                          "syntheticHoldBlockTestsPassed":  true
+                                      },
+    "protectedControlPlane":  {
+                                  "file":  "tools/nexus-autonomy-v1/owner-controlled-readonly-reasoning-trusted-source-runtime-adapter.candidate.cjs",
+                                  "sha256":  "c3ac03901e6c29b983da9c0efb3a013e8bf1f87de3faf37ac03cb5ab6ae54f1c",
+                                  "modified":  false,
+                                  "executedByRealHeldPipelineProof":  false
+                              },
+    "requiredImplementationSequence":  {
+                                           "implementDiscoveryOnlyMultiLanguageCandidateSourceV2":  "PASS",
+                                           "proveV2WithSyntheticTests":  "PASS",
+                                           "proveRealReadOnlyDiscoveryWithoutModel":  "PASS",
+                                           "wireToHeldReasoningPipeline":  "PASS",
+                                           "proveRealDiscoveryToHeldBridge":  "PASS",
+                                           "keepMaterializerHoldActive":  "PASS"
+                                       },
+    "authorityBoundary":  {
+                              "discoveryResultAuthority":  "NONE",
+                              "appWriteAuthority":  false,
+                              "componentsWriteAuthority":  false,
+                              "libWriteAuthority":  false,
+                              "toolsWriteAuthority":  false,
+                              "patchApplicationAuthority":  false,
+                              "gitAddAuthority":  false,
+                              "gitCommitAuthority":  false,
+                              "gitMergeAuthority":  false,
+                              "gitPushAuthority":  false,
+                              "databaseAuthority":  false,
+                              "productionAuthority":  false,
+                              "publicLaunchAuthority":  false,
+                              "networkAuthority":  false
+                          },
+    "preservedLocks":  {
+                           "materializer":  "HOLD",
+                           "canonicalDelegation":  "BLOCKED",
+                           "currentWriteScope":  [
+                                                     "scripts"
+                                                 ]
+                       }
+}
