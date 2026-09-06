@@ -1,0 +1,25 @@
+{
+    "schema":  "nexus.autonomy.fast-batch-315-bounded-worker-start-bridge-evidence.v1",
+    "baseHead":  "df6e7231c3cd7bed2890c0abbc6565d8c87dccc7",
+    "continuousWorkerSha256":  "7698be6f22b5a8a9266661bab1e0326973748ad13203ec9efa31db074afceb2a",
+    "detectedWorkerOptions":  [
+                                  "activationToken",
+                                  "heartbeatMs",
+                                  "intervalMs",
+                                  "leaseTimeoutMs",
+                                  "maxCycles",
+                                  "mode",
+                                  "queueRoot",
+                                  "repoRoot",
+                                  "stopOnTaskStop"
+                              ],
+    "bridgeSha256":  "70f54ff3d9e2e09d79fc548c93b7696792b51f3ea702489a89eb26aee1b5b73d",
+    "selfTestSha256":  "8d387a7e2461071c62e469899989779efc7856b696edf237aa2ce2506c1d5d5d",
+    "boundedCyclesAuthorized":  1,
+    "actualWorkerInvocationPerformed":  false,
+    "queueTouched":  false,
+    "modelExecuted":  false,
+    "databaseTouched":  false,
+    "productionTouched":  false,
+    "protectedRuntimeModified":  false
+}
