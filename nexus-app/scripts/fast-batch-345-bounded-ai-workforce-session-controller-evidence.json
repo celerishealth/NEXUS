@@ -1,0 +1,17 @@
+{
+    "schema":  "nexus.autonomy.fast-batch-345-bounded-ai-workforce-session-controller-evidence.v1",
+    "baseHead":  "9f9b4716240524dec609f71f1574a169f159be8e",
+    "controllerSha256":  "fe9f52e684eb2ddada921091fac0693c71276c9d045c37af91a4dca94c48b8b2",
+    "selfTestSha256":  "90ecd8bf5153784abd9cfd36a205e072365f86772cef730baf7fc079d2a532d7",
+    "maxTasksAuthorized":  3,
+    "cyclesPerTaskAuthorized":  1,
+    "continuousModeAuthorized":  false,
+    "modelExecutionAuthority":  false,
+    "patchApplicationAuthority":  false,
+    "patchPromotionAuthorized":  false,
+    "databaseAuthority":  false,
+    "productionAuthority":  false,
+    "queueTouched":  false,
+    "workerStarted":  false,
+    "actualSessionExecuted":  false
+}
