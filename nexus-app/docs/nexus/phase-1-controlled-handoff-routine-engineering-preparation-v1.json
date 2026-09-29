@@ -1,0 +1,44 @@
+{
+    "schema":  "nexus.phase1.controlled-handoff-routine-engineering-preparation.v1",
+    "gateNumber":  14,
+    "gateId":  "CONTROLLED_HANDOFF_ROUTINE_ENGINEERING_PREPARATION",
+    "state":  "CONTROLLED_HANDOFF_READY",
+    "sourceHead":  "af5b92bf819386aa703a7eaf691a43122412bbf4",
+    "sourceGate12Sha256":  "05f605dc06146cfc75ea569175a27970f606cdb99bf08400a5121fcd54293624",
+    "sourceGate13Sha256":  "e34d33499fc367b8a906bc8520ebf231111f6bcbd7eaf635a048db6429c5ea33",
+    "handedOffFunctions":  [
+                               "ARCHITECTURE_DRAFT_PREPARATION",
+                               "IMPLEMENTATION_PLAN_PREPARATION",
+                               "CODE_CHANGE_DRAFT_PREPARATION",
+                               "TEST_STRATEGY_PREPARATION",
+                               "QUALITY_EVIDENCE_PREPARATION",
+                               "SECURITY_REVIEW_PREPARATION",
+                               "RELIABILITY_AND_RECOVERY_EVIDENCE_PREPARATION",
+                               "SAFE_CHAOS_TEST_PLAN_PREPARATION",
+                               "DATA_MODEL_AND_LINEAGE_REVIEW_PREPARATION",
+                               "ADVERSARIAL_SYSTEM_EVALUATION_PREPARATION",
+                               "OWNER_REVIEW_PACKAGE_PREPARATION"
+                           ],
+    "handoffBoundary":  {
+                            "routinePreparationMayBePerformedByEngineeringWorkforce":  true,
+                            "finalOwnerApprovalRequired":  true,
+                            "repositoryMutationAuthorized":  false,
+                            "gitCommitPushAuthorized":  false,
+                            "databaseAuthority":  false,
+                            "productionAuthority":  false,
+                            "deploymentAuthority":  false,
+                            "secretsAuthority":  false,
+                            "publicLaunchAuthority":  false,
+                            "customerContactAuthority":  false,
+                            "paymentAuthority":  false
+                        },
+    "escalation":  {
+                       "insufficientEvidence":  "STOP_AND_ESCALATE",
+                       "insufficientAuthority":  "STOP_AND_ESCALATE",
+                       "unsafeCondition":  "FAIL_CLOSED_AND_PAUSE",
+                       "conflictingEvidence":  "OWNER_REVIEW_REQUIRED",
+                       "consequentialAction":  "SEPARATE_OWNER_AUTHORITY_REQUIRED"
+                   },
+    "phase1ExitCandidate":  true,
+    "phase2Unlocked":  false
+}

@@ -1,0 +1,31 @@
+{
+    "schema":  "nexus.phase1.gate12.owner-bounded-activation-approval.v1",
+    "gateNumber":  12,
+    "gateId":  "ONE_BY_ONE_BOUNDED_ACTIVATION",
+    "ownerApprovalRecorded":  true,
+    "approvalText":  "APPROVE PHASE1 GATE12 ONE-BY-ONE BOUNDED ACTIVATION FOR 8 ENGINEERING EMPLOYEES ONLY — NO DB, NO PRODUCTION, NO PUBLIC LAUNCH, NO GIT COMMIT/PUSH, NO SECRETS, OWNER CONTROL PRESERVED.",
+    "approvedEmployeeCodes":  [
+                                  "nx-engineering-001",
+                                  "nx-engineering-002",
+                                  "nx-engineering-003",
+                                  "nx-engineering-004",
+                                  "nx-engineering-005",
+                                  "nx-engineering-006",
+                                  "nx-engineering-007",
+                                  "nx-engineering-008"
+                              ],
+    "boundaries":  {
+                       "databaseAuthority":  false,
+                       "productionAuthority":  false,
+                       "publicLaunchAuthority":  false,
+                       "gitCommitAuthority":  false,
+                       "gitPushAuthority":  false,
+                       "secretsAuthority":  false,
+                       "deploymentAuthority":  false,
+                       "customerContactAuthority":  false,
+                       "paymentAuthority":  false
+                   },
+    "ownerFinalAuthorityPreserved":  true,
+    "sourceHead":  "af5b92bf819386aa703a7eaf691a43122412bbf4",
+    "sourceGate11Sha256":  "3cebff66ee3f38bc1e308958ac82897f7d830d05d584f37098ad5d46f1eb8b20"
+}

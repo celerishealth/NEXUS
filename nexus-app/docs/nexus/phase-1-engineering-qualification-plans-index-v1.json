@@ -1,0 +1,101 @@
+{
+    "schema":  "nexus.phase1.engineering-qualification-plans-index.v1",
+    "gateNumber":  5,
+    "gateId":  "QUALIFICATION_PLANS",
+    "state":  "GATE05_EIGHT_QUALIFICATION_PLANS_COMPLETE",
+    "sourceHead":  "af5b92bf819386aa703a7eaf691a43122412bbf4",
+    "sourceGate04IndexSha256":  "97b4fe33b1c9639f88bad90baa077002ec27da9b87efc9fda9c400ddb58c54e4",
+    "expectedPlanCount":  8,
+    "actualPlanCount":  8,
+    "qualificationExecutionAuthorized":  false,
+    "qualificationExecutionPerformed":  false,
+    "syntheticQualificationCompleted":  false,
+    "adversarialQualificationCompleted":  false,
+    "tenantIsolationQualificationCompleted":  false,
+    "ownerControlQualificationCompleted":  false,
+    "independentReviewCompleted":  false,
+    "allEmployeesStillUnqualified":  true,
+    "allEmployeesStillInactive":  true,
+    "activationAuthorized":  false,
+    "runtimeAuthorityGranted":  false,
+    "databaseAuthority":  false,
+    "productionAuthority":  false,
+    "secretsAuthority":  false,
+    "publicLaunchAuthority":  false,
+    "plans":  [
+                  {
+                      "employeeCode":  "nx-engineering-001",
+                      "publicName":  "Ishaan",
+                      "officialRole":  "AI Principal Software Architect",
+                      "scenarioId":  "ARCHITECTURE_BOUNDARY_AND_DESIGN_REVIEW",
+                      "planState":  "QUALIFICATION_PLAN_LOCKED_NOT_EXECUTED",
+                      "sha256":  "914e567a5efd068257cf2a6ebdd50dceff2fecfbc4022c0ee0670a3eac3f1134",
+                      "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-qualification-plan-nx-engineering-001-ishaan-v1.json"
+                  },
+                  {
+                      "employeeCode":  "nx-engineering-002",
+                      "publicName":  "Leela",
+                      "officialRole":  "AI Software Engineering Director",
+                      "scenarioId":  "BOUNDED_IMPLEMENTATION_PLAN_AND_CODE_DRAFT",
+                      "planState":  "QUALIFICATION_PLAN_LOCKED_NOT_EXECUTED",
+                      "sha256":  "f30db4c17ea8bca91f7853d8f18dbceb4db4ece2792da8dfcadc62d40652dc68",
+                      "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-qualification-plan-nx-engineering-002-leela-v1.json"
+                  },
+                  {
+                      "employeeCode":  "nx-engineering-003",
+                      "publicName":  "Vivaan",
+                      "officialRole":  "AI Quality Assurance Director",
+                      "scenarioId":  "REGRESSION_AND_ACCEPTANCE_GATE_DESIGN",
+                      "planState":  "QUALIFICATION_PLAN_LOCKED_NOT_EXECUTED",
+                      "sha256":  "31e1a26690d68eec15d46a77638a783d5ddf91f75e0e3fb4563858e9cb0fd90a",
+                      "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-qualification-plan-nx-engineering-003-vivaan-v1.json"
+                  },
+                  {
+                      "employeeCode":  "nx-engineering-004",
+                      "publicName":  "Anaya",
+                      "officialRole":  "AI Security Engineering Director",
+                      "scenarioId":  "THREAT_MODEL_AND_TENANT_BOUNDARY_REVIEW",
+                      "planState":  "QUALIFICATION_PLAN_LOCKED_NOT_EXECUTED",
+                      "sha256":  "6c9d3bc3e657322f2bb3401242de1326af133469f6b7a31ab60c96f87b791390",
+                      "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-qualification-plan-nx-engineering-004-anaya-v1.json"
+                  },
+                  {
+                      "employeeCode":  "nx-engineering-005",
+                      "publicName":  "Atharv",
+                      "officialRole":  "AI Reliability Engineering Specialist",
+                      "scenarioId":  "RECOVERY_ROLLBACK_AND_CONTINUITY_REVIEW",
+                      "planState":  "QUALIFICATION_PLAN_LOCKED_NOT_EXECUTED",
+                      "sha256":  "af57fd12633115d60ec516decc6eea76579677c64b19e5cdf502c24cb3699340",
+                      "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-qualification-plan-nx-engineering-005-atharv-v1.json"
+                  },
+                  {
+                      "employeeCode":  "nx-engineering-006",
+                      "publicName":  "Mahir",
+                      "officialRole":  "AI Chaos Engineering Specialist",
+                      "scenarioId":  "SAFE_SANDBOX_FAILURE_AND_RESILIENCE_PLAN",
+                      "planState":  "QUALIFICATION_PLAN_LOCKED_NOT_EXECUTED",
+                      "sha256":  "b148a8bb0b46b62737fac649b6027d19ff8355125a338ba9992a9cf958003cf4",
+                      "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-qualification-plan-nx-engineering-006-mahir-v1.json"
+                  },
+                  {
+                      "employeeCode":  "nx-engineering-007",
+                      "publicName":  "Zara",
+                      "officialRole":  "AI Data Engineering \u0026 Analytics Specialist",
+                      "scenarioId":  "TENANT_SAFE_SCHEMA_LINEAGE_AND_RECONCILIATION_PLAN",
+                      "planState":  "QUALIFICATION_PLAN_LOCKED_NOT_EXECUTED",
+                      "sha256":  "98f16fcbb5210a38ec54799d0ebcee06b302e8dd2f46235ccbc451b967701182",
+                      "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-qualification-plan-nx-engineering-007-zara-v1.json"
+                  },
+                  {
+                      "employeeCode":  "nx-engineering-008",
+                      "publicName":  "Advik",
+                      "officialRole":  "AI Systems Evaluation \u0026 Red-Team Specialist",
+                      "scenarioId":  "ADVERSARIAL_SYSTEM_EVALUATION_AND_BYPASS_DISCOVERY",
+                      "planState":  "QUALIFICATION_PLAN_LOCKED_NOT_EXECUTED",
+                      "sha256":  "5a985927e485b23c3cbf86e6d8a5e1c889b0f9bfec3d035d06bd880add8fb99c",
+                      "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-qualification-plan-nx-engineering-008-advik-v1.json"
+                  }
+              ],
+    "nextGate":  "06_SYNTHETIC_QUALIFICATION",
+    "phase2Unlocked":  false
+}

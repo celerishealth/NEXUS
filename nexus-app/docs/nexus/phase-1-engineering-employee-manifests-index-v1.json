@@ -1,0 +1,109 @@
+{
+    "schema":  "nexus.phase1.engineering-employee-manifests-index.v1",
+    "gateNumber":  4,
+    "gateId":  "EMPLOYEE_MANIFESTS",
+    "state":  "GATE04_EIGHT_EMPLOYEE_MANIFESTS_COMPLETE",
+    "sourceHead":  "af5b92bf819386aa703a7eaf691a43122412bbf4",
+    "sourceGate02IndexSha256":  "a30859396daf37f85cee21fca112009fa77aec8e2d70cc35cfc69f6195f6e603",
+    "sourceGate03IndexSha256":  "4ef209f68d087c65cdb5aa1168cb66dda0abb63c3857b355da26f2a82357c89d",
+    "expectedManifestCount":  8,
+    "actualManifestCount":  8,
+    "allEmployeesInactive":  true,
+    "allEmployeesUnqualified":  true,
+    "qualificationExecutionAuthorized":  false,
+    "activationAuthorized":  false,
+    "runtimeAuthorityGranted":  false,
+    "repositoryWriteAuthorized":  false,
+    "gitCommitPushAuthorized":  false,
+    "databaseAuthority":  false,
+    "productionAuthority":  false,
+    "secretsAuthority":  false,
+    "externalNetworkAuthority":  false,
+    "providerExecutionAuthority":  false,
+    "publicLaunchAuthority":  false,
+    "ownerFinalAuthorityPreserved":  true,
+    "manifests":  [
+                      {
+                          "employeeCode":  "nx-engineering-001",
+                          "publicName":  "Ishaan",
+                          "officialRole":  "AI Principal Software Architect",
+                          "employeeId":  "candidate-ishaan-v1",
+                          "manifestState":  "MANIFEST_LOCKED_INACTIVE_UNQUALIFIED",
+                          "lifecycleState":  "MANIFEST_CREATED_AWAITING_QUALIFICATION_PLAN",
+                          "sha256":  "61c0cb25ca9c351ccf67872c198eb133067c83b31ef3018ab532835b5cf3ec96",
+                          "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-manifest-nx-engineering-001-ishaan-v1.json"
+                      },
+                      {
+                          "employeeCode":  "nx-engineering-002",
+                          "publicName":  "Leela",
+                          "officialRole":  "AI Software Engineering Director",
+                          "employeeId":  "candidate-leela-v1",
+                          "manifestState":  "MANIFEST_LOCKED_INACTIVE_UNQUALIFIED",
+                          "lifecycleState":  "MANIFEST_CREATED_AWAITING_QUALIFICATION_PLAN",
+                          "sha256":  "f6ccfd415c90f50ad0ca0e5da74c071ece6d3ec27334d7ad3f2f722430649fd7",
+                          "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-manifest-nx-engineering-002-leela-v1.json"
+                      },
+                      {
+                          "employeeCode":  "nx-engineering-003",
+                          "publicName":  "Vivaan",
+                          "officialRole":  "AI Quality Assurance Director",
+                          "employeeId":  "candidate-vivaan-v1",
+                          "manifestState":  "MANIFEST_LOCKED_INACTIVE_UNQUALIFIED",
+                          "lifecycleState":  "MANIFEST_CREATED_AWAITING_QUALIFICATION_PLAN",
+                          "sha256":  "a4a66621e04e12c4a2b97c64746dde2816ade698b5c9fdf4f7f8d70e57f41014",
+                          "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-manifest-nx-engineering-003-vivaan-v1.json"
+                      },
+                      {
+                          "employeeCode":  "nx-engineering-004",
+                          "publicName":  "Anaya",
+                          "officialRole":  "AI Security Engineering Director",
+                          "employeeId":  "candidate-anaya-v1",
+                          "manifestState":  "MANIFEST_LOCKED_INACTIVE_UNQUALIFIED",
+                          "lifecycleState":  "MANIFEST_CREATED_AWAITING_QUALIFICATION_PLAN",
+                          "sha256":  "8f72d9746999b2b19a817149a989ac1d1c1efadee144243ea941740f0384ff61",
+                          "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-manifest-nx-engineering-004-anaya-v1.json"
+                      },
+                      {
+                          "employeeCode":  "nx-engineering-005",
+                          "publicName":  "Atharv",
+                          "officialRole":  "AI Reliability Engineering Specialist",
+                          "employeeId":  "candidate-atharv-v1",
+                          "manifestState":  "MANIFEST_LOCKED_INACTIVE_UNQUALIFIED",
+                          "lifecycleState":  "MANIFEST_CREATED_AWAITING_QUALIFICATION_PLAN",
+                          "sha256":  "0f65ee545aba7a04bffea212be29162b73bfc1f8d32f0075f92a4f71d3ad8a31",
+                          "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-manifest-nx-engineering-005-atharv-v1.json"
+                      },
+                      {
+                          "employeeCode":  "nx-engineering-006",
+                          "publicName":  "Mahir",
+                          "officialRole":  "AI Chaos Engineering Specialist",
+                          "employeeId":  "candidate-mahir-v1",
+                          "manifestState":  "MANIFEST_LOCKED_INACTIVE_UNQUALIFIED",
+                          "lifecycleState":  "MANIFEST_CREATED_AWAITING_QUALIFICATION_PLAN",
+                          "sha256":  "081d3909b6771e8d1ef6825b80a7e25b58801d678d69d431d5c21a7ee510689e",
+                          "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-manifest-nx-engineering-006-mahir-v1.json"
+                      },
+                      {
+                          "employeeCode":  "nx-engineering-007",
+                          "publicName":  "Zara",
+                          "officialRole":  "AI Data Engineering \u0026 Analytics Specialist",
+                          "employeeId":  "candidate-zara-v1",
+                          "manifestState":  "MANIFEST_LOCKED_INACTIVE_UNQUALIFIED",
+                          "lifecycleState":  "MANIFEST_CREATED_AWAITING_QUALIFICATION_PLAN",
+                          "sha256":  "61f741aeb7e91ca0060ef1ee49c8b2d934ae844a5c9263f6bb3ca9240dd06987",
+                          "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-manifest-nx-engineering-007-zara-v1.json"
+                      },
+                      {
+                          "employeeCode":  "nx-engineering-008",
+                          "publicName":  "Advik",
+                          "officialRole":  "AI Systems Evaluation \u0026 Red-Team Specialist",
+                          "employeeId":  "candidate-advik-v1",
+                          "manifestState":  "MANIFEST_LOCKED_INACTIVE_UNQUALIFIED",
+                          "lifecycleState":  "MANIFEST_CREATED_AWAITING_QUALIFICATION_PLAN",
+                          "sha256":  "b3bd8f0a135a5fe8b45982ac8f211f47c5bfcbaf357bf8ac29dce6208edded52",
+                          "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-manifest-nx-engineering-008-advik-v1.json"
+                      }
+                  ],
+    "nextGate":  "05_QUALIFICATION_PLANS",
+    "phase2Unlocked":  false
+}

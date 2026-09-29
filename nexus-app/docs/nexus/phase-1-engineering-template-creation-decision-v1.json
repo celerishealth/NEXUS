@@ -1,0 +1,78 @@
+{
+    "schema":  "nexus.phase1.engineering-template-creation-decision.v1",
+    "phase":  "PHASE_1_ENGINEERING_SUPER_SPECIALIST_WORKFORCE",
+    "gateNumber":  1,
+    "gateId":  "ENGINEERING_TEMPLATE_CREATION_DECISION",
+    "state":  "DESIGN_DECISION_LOCKED",
+    "purpose":  "Create the qualified engineering department that can prepare architecture, implementation, tests, quality evidence, security evidence, recovery evidence, and release recommendations while preserving owner control.",
+    "decision":  {
+                     "createEightEngineeringEmployeeTemplates":  true,
+                     "templateArchitecture":  "ROLE_SPECIFIC_OWNER_CONTROLLED_BOUNDED_AI_EMPLOYEE_TEMPLATE",
+                     "templatesAreSoftwareDefinitionsOnly":  true,
+                     "templateCreationDoesNotActivateEmployees":  true,
+                     "templateCreationDoesNotGrantExecutionAuthority":  true
+                 },
+    "mandatoryTemplateFields":  [
+                                    "employeeIdentity",
+                                    "rolePurpose",
+                                    "founderOrBusinessOutcome",
+                                    "skillsAndResponsibilities",
+                                    "allowedToolsAndToolModes",
+                                    "prohibitedActions",
+                                    "tenantAndDataAccessBoundaries",
+                                    "escalationRules",
+                                    "evidenceRequirements",
+                                    "qualificationPlan",
+                                    "syntheticQualificationRequirements",
+                                    "adversarialAndPromptInjectionRequirements",
+                                    "tenantIsolationRequirements",
+                                    "ownerControlAndApprovalBypassRequirements",
+                                    "emergencyPauseAndRecoveryRequirements",
+                                    "independentQaSecurityReliabilityChaosRedTeamRequirements",
+                                    "shadowOperationRequirements",
+                                    "limitedInternalPilotRequirements",
+                                    "boundedActivationRequirements",
+                                    "continuousMonitoringRequirements",
+                                    "performanceReviewRequirements",
+                                    "repairRequalificationReplacementRequirements",
+                                    "permanentEvidencePreservationRequirements"
+                                ],
+    "universalEmployeeRules":  {
+                                   "maySelfQualify":  false,
+                                   "maySelfApprove":  false,
+                                   "maySelfActivate":  false,
+                                   "mayGrantOwnTools":  false,
+                                   "mayExpandOwnAuthority":  false,
+                                   "mayHideDefect":  false,
+                                   "mayBypassOwnerDecision":  false,
+                                   "failClosedOnUncertainty":  true,
+                                   "leastPrivilegeRequired":  true,
+                                   "evidenceVerificationRequired":  true,
+                                   "factsAssumptionsSeparated":  true,
+                                   "escalationOnInsufficientAuthorityOrEvidence":  true
+                               },
+    "authorityBoundary":  {
+                              "repositoryAuthority":  false,
+                              "branchAuthority":  false,
+                              "mergeAuthority":  false,
+                              "gitCommitAuthority":  false,
+                              "gitPushAuthority":  false,
+                              "deploymentAuthority":  false,
+                              "productionAuthority":  false,
+                              "databaseAuthority":  false,
+                              "secretsAuthority":  false,
+                              "publicLaunchAuthority":  false
+                          },
+    "roadmapSequence":  {
+                            "currentGate":  "01_ENGINEERING_TEMPLATE_DECISION",
+                            "nextGate":  "02_EIGHT_EMPLOYEE_TEMPLATES",
+                            "phase2Unlocked":  false,
+                            "phase2UnlockCondition":  "PHASE_1_EXIT_GATE_MACHINE_PROVEN"
+                        },
+    "evidencePolicy":  {
+                           "lexicalPresenceAloneDoesNotEqualPass":  true,
+                           "eachSubsequentGateRequiresMachineEvidence":  true,
+                           "completedWorkMustNotBeReopenedWithoutDefectEvidence":  true,
+                           "syntheticOrFakeWorkMustNotBeCreatedForProof":  true
+                       }
+}

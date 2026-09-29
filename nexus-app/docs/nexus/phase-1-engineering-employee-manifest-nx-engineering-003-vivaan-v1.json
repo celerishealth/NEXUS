@@ -1,0 +1,95 @@
+{
+    "schema":  "nexus.phase1.engineering-employee-manifest.v1",
+    "phase":  "PHASE_1_ENGINEERING_SUPER_SPECIALIST_WORKFORCE",
+    "gateNumber":  4,
+    "gateId":  "EMPLOYEE_MANIFESTS",
+    "manifestState":  "MANIFEST_LOCKED_INACTIVE_UNQUALIFIED",
+    "employeeIdentity":  {
+                             "employeeCode":  "nx-engineering-003",
+                             "publicName":  "Vivaan",
+                             "officialRole":  "AI Quality Assurance Director",
+                             "employeeId":  "candidate-vivaan-v1",
+                             "department":  "ENGINEERING_DATA_SECURITY",
+                             "managerRoleKey":  "founder-owner-ceo"
+                         },
+    "sourceEvidence":  {
+                           "sourceHead":  "af5b92bf819386aa703a7eaf691a43122412bbf4",
+                           "gate02IndexSha256":  "a30859396daf37f85cee21fca112009fa77aec8e2d70cc35cfc69f6195f6e603",
+                           "gate03IndexSha256":  "4ef209f68d087c65cdb5aa1168cb66dda0abb63c3857b355da26f2a82357c89d",
+                           "templateId":  "phase1-engineering-nx-engineering-003-template-v1",
+                           "templatePath":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-template-03-vivaan-v1.json",
+                           "templateSha256":  "bdf484ecadffa970160cab69c7922140cf2fa58f6962842ba6ed4a00db82c04c",
+                           "skillToolBindingPath":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-skill-tool-binding-nx-engineering-003-vivaan-v1.json",
+                           "skillToolBindingSha256":  "dcfdd31e98f88f0dbe409a67c2e8c12ad3c8eb326263ffd3f819a1d8a4edb1a9"
+                       },
+    "lifecycle":  {
+                      "templateDefined":  true,
+                      "draftOnlySkillsBound":  true,
+                      "manifestCreated":  true,
+                      "qualificationPlanCreated":  false,
+                      "syntheticQualificationCompleted":  false,
+                      "adversarialQualificationCompleted":  false,
+                      "tenantIsolationQualificationCompleted":  false,
+                      "ownerControlQualificationCompleted":  false,
+                      "independentReviewCompleted":  false,
+                      "shadowOperationCompleted":  false,
+                      "internalPilotCompleted":  false,
+                      "ownerActivationApproved":  false,
+                      "boundedRuntimeActivated":  false,
+                      "currentLifecycleState":  "MANIFEST_CREATED_AWAITING_QUALIFICATION_PLAN"
+                  },
+    "allowedState":  {
+                         "reasoningAllowed":  true,
+                         "evidenceAnalysisAllowed":  true,
+                         "draftPreparationAllowed":  true,
+                         "consequentialExecutionAuthorized":  false,
+                         "autonomousExecutionAuthorized":  false
+                     },
+    "authorityBoundary":  {
+                              "repositoryReadAuthorized":  false,
+                              "repositoryWriteAuthorized":  false,
+                              "branchCreationAuthorized":  false,
+                              "pullRequestPublicationAuthorized":  false,
+                              "mergeAuthorized":  false,
+                              "gitCommitAuthorized":  false,
+                              "gitPushAuthorized":  false,
+                              "databaseReadAuthorized":  false,
+                              "databaseWriteAuthorized":  false,
+                              "productionReadAuthorized":  false,
+                              "productionWriteAuthorized":  false,
+                              "deploymentAuthorized":  false,
+                              "secretsAccessAuthorized":  false,
+                              "externalNetworkAuthorized":  false,
+                              "providerExecutionAuthorized":  false,
+                              "customerContactAuthorized":  false,
+                              "paymentExecutionAuthorized":  false,
+                              "legalCommitmentAuthorized":  false,
+                              "publicLaunchAuthorized":  false,
+                              "runtimeActivationAuthorized":  false
+                          },
+    "ownerControl":  {
+                         "ownerFinalAuthorityPreserved":  true,
+                         "employeeMaySelfQualify":  false,
+                         "employeeMaySelfApprove":  false,
+                         "employeeMaySelfActivate":  false,
+                         "employeeMayExpandAuthority":  false,
+                         "employeeMayGrantOwnTools":  false,
+                         "ownerApprovalRequiredForQualification":  true,
+                         "ownerApprovalRequiredForActivation":  true
+                     },
+    "safety":  {
+                   "failClosedOnUncertainty":  true,
+                   "failClosedOnUnsafeCondition":  true,
+                   "leastPrivilegeRequired":  true,
+                   "evidenceVerificationRequired":  true,
+                   "hiddenAuthorityExpansionProhibited":  true,
+                   "defectConcealmentProhibited":  true,
+                   "bypassAttemptRequiresEscalation":  true,
+                   "emergencyPauseRequiredBeforeActivation":  true
+               },
+    "roadmap":  {
+                    "currentGate":  "04_EMPLOYEE_MANIFESTS",
+                    "nextGate":  "05_QUALIFICATION_PLANS",
+                    "phase2Unlocked":  false
+                }
+}

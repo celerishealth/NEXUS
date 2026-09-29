@@ -1,0 +1,532 @@
+{
+    "schema":  "nexus.phase1.sequential-gate-closure.v1",
+    "phase":  "PHASE_1_ENGINEERING_SUPER_SPECIALIST_WORKFORCE",
+    "gateNumber":  7,
+    "gateId":  "ADVERSARIAL_QUALIFICATION",
+    "state":  "GATE07_ADVERSARIAL_QUALIFICATION_EVIDENCE_REUSED_AND_CLOSED",
+    "sourceHead":  "af5b92bf819386aa703a7eaf691a43122412bbf4",
+    "sourcePreviousGateSha256":  "54dfaa62ead96428747031026d98b3e551c31cf04b5cc7596dfb97d7e6b5bd16",
+    "employeeCount":  8,
+    "allEightEmployeesRepresented":  true,
+    "evidenceFileCount":  126,
+    "evidence":  [
+                     {
+                         "sha256":  "b6b31a3d03cfc870124d8aca4f8311fe18871ad5fe0c81c766ac75153eef773d",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-0-ai-workforce-constitution-design-v1.md"
+                     },
+                     {
+                         "sha256":  "38cd58196ceaf00f68e0a55c2a2c36c59a6b5716ee85a100b4eb6bba5a7f60e6",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-0-constitutional-evidence-admission-design-v1.md"
+                     },
+                     {
+                         "sha256":  "61c0cb25ca9c351ccf67872c198eb133067c83b31ef3018ab532835b5cf3ec96",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-manifest-nx-engineering-001-ishaan-v1.json"
+                     },
+                     {
+                         "sha256":  "f6ccfd415c90f50ad0ca0e5da74c071ece6d3ec27334d7ad3f2f722430649fd7",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-manifest-nx-engineering-002-leela-v1.json"
+                     },
+                     {
+                         "sha256":  "a4a66621e04e12c4a2b97c64746dde2816ade698b5c9fdf4f7f8d70e57f41014",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-manifest-nx-engineering-003-vivaan-v1.json"
+                     },
+                     {
+                         "sha256":  "8f72d9746999b2b19a817149a989ac1d1c1efadee144243ea941740f0384ff61",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-manifest-nx-engineering-004-anaya-v1.json"
+                     },
+                     {
+                         "sha256":  "0f65ee545aba7a04bffea212be29162b73bfc1f8d32f0075f92a4f71d3ad8a31",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-manifest-nx-engineering-005-atharv-v1.json"
+                     },
+                     {
+                         "sha256":  "081d3909b6771e8d1ef6825b80a7e25b58801d678d69d431d5c21a7ee510689e",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-manifest-nx-engineering-006-mahir-v1.json"
+                     },
+                     {
+                         "sha256":  "61f741aeb7e91ca0060ef1ee49c8b2d934ae844a5c9263f6bb3ca9240dd06987",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-manifest-nx-engineering-007-zara-v1.json"
+                     },
+                     {
+                         "sha256":  "b3bd8f0a135a5fe8b45982ac8f211f47c5bfcbaf357bf8ac29dce6208edded52",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-manifest-nx-engineering-008-advik-v1.json"
+                     },
+                     {
+                         "sha256":  "a5e09722159958104062be4e95b8f7779a42cce9bbe1f83d9d959691cd841c5e",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-template-01-ishaan-v1.json"
+                     },
+                     {
+                         "sha256":  "a4b15aecff47cbe6e8eef0e1e6addea3d74cbc32351af1654b53cac540aabd5e",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-template-02-leela-v1.json"
+                     },
+                     {
+                         "sha256":  "bdf484ecadffa970160cab69c7922140cf2fa58f6962842ba6ed4a00db82c04c",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-template-03-vivaan-v1.json"
+                     },
+                     {
+                         "sha256":  "6a21f9b89b03af5c0d0072346d216cd541d357a1e02bb642a5b4cb4adf31045c",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-template-04-anaya-v1.json"
+                     },
+                     {
+                         "sha256":  "9be66ef28d448e6d0e08a5de72a007314ced89e774ad50a298ece944f68ba07d",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-template-05-atharv-v1.json"
+                     },
+                     {
+                         "sha256":  "4504f65e78871132a417cc004c00d9f9ae1c15a2b2c02834a9e829bf7ffd892c",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-template-06-mahir-v1.json"
+                     },
+                     {
+                         "sha256":  "89408431ecd2f1d1f5099cb89f92d71a4a89f5333e1b7aa9ff79912062675deb",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-template-07-zara-v1.json"
+                     },
+                     {
+                         "sha256":  "e3f3c3a308b66e9d5054c5bc4757ec406750c6a3caa81937b14e8b1f58020312",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-template-08-advik-v1.json"
+                     },
+                     {
+                         "sha256":  "914e567a5efd068257cf2a6ebdd50dceff2fecfbc4022c0ee0670a3eac3f1134",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-qualification-plan-nx-engineering-001-ishaan-v1.json"
+                     },
+                     {
+                         "sha256":  "f30db4c17ea8bca91f7853d8f18dbceb4db4ece2792da8dfcadc62d40652dc68",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-qualification-plan-nx-engineering-002-leela-v1.json"
+                     },
+                     {
+                         "sha256":  "31e1a26690d68eec15d46a77638a783d5ddf91f75e0e3fb4563858e9cb0fd90a",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-qualification-plan-nx-engineering-003-vivaan-v1.json"
+                     },
+                     {
+                         "sha256":  "6c9d3bc3e657322f2bb3401242de1326af133469f6b7a31ab60c96f87b791390",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-qualification-plan-nx-engineering-004-anaya-v1.json"
+                     },
+                     {
+                         "sha256":  "af57fd12633115d60ec516decc6eea76579677c64b19e5cdf502c24cb3699340",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-qualification-plan-nx-engineering-005-atharv-v1.json"
+                     },
+                     {
+                         "sha256":  "b148a8bb0b46b62737fac649b6027d19ff8355125a338ba9992a9cf958003cf4",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-qualification-plan-nx-engineering-006-mahir-v1.json"
+                     },
+                     {
+                         "sha256":  "98f16fcbb5210a38ec54799d0ebcee06b302e8dd2f46235ccbc451b967701182",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-qualification-plan-nx-engineering-007-zara-v1.json"
+                     },
+                     {
+                         "sha256":  "5a985927e485b23c3cbf86e6d8a5e1c889b0f9bfec3d035d06bd880add8fb99c",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-qualification-plan-nx-engineering-008-advik-v1.json"
+                     },
+                     {
+                         "sha256":  "fd481ce791ea75e0acf019c01e0db6b930fcd5b9fc7eb3771a3d09ac148c8995",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-qualification-plans-index-v1.json"
+                     },
+                     {
+                         "sha256":  "cbc6f3c46831485093800d965954188f54fceb706c385e95d257698358e24b21",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-skill-tool-binding-nx-engineering-008-advik-v1.json"
+                     },
+                     {
+                         "sha256":  "e5fc574ad50fb4f680d1392617c7e5d2ca9447917c8fb1ea3d1029608c4a57b0",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-template-creation-decision-v1.json"
+                     },
+                     {
+                         "sha256":  "c8a50f6be945cb472ce6870a5bce4f443a7558301be17a584e0159254588cc25",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\aiEmployeeManifest.test.ts"
+                     },
+                     {
+                         "sha256":  "38226336e0de23b509484f96e3a79716ab1be63791e236267321079f164b94b3",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaActivationCandidateIssuance.test.ts"
+                     },
+                     {
+                         "sha256":  "681d7ed0d8bd998600e764c7eca045ed52f1047dcb19d2cc2d92687a8235cbe1",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaControlledInquiryIntake.test.ts"
+                     },
+                     {
+                         "sha256":  "68758f2bdf33e07c31c514de288001c2e1079f27da11b6512bac3599db9a15f0",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaControlledShadowOperationExecution.test.ts"
+                     },
+                     {
+                         "sha256":  "012b288cbb4e6b82e3057b03cb0c58e3be060a8336d6cf619a307bdda1bf9b56",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaControlledShadowOperationPreparation.test.ts"
+                     },
+                     {
+                         "sha256":  "f520311e1612a7f8d65b37c31504ab4a302b8b54fed3129410a0bd71b992aa47",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaFormalQualificationIssuance.test.ts"
+                     },
+                     {
+                         "sha256":  "09c003861d359dd74182784b1977722922bff210907350ce3b6a381a1d6ff43a",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaFormalQualificationReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "bb62dc000d35d8c1f3720bdc44ba59329d11ebbbda148f9d6881317867e32cde",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaLimitedInternalPilotInquiryExecution.test.ts"
+                     },
+                     {
+                         "sha256":  "4159d0ed5659faf2d2e62490e8557f6d89878cbd5a295a885b9064de64c3c61c",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaLimitedInternalPilotInquiryThreeExecution.test.ts"
+                     },
+                     {
+                         "sha256":  "05ba337bfd998f95024f85d4e4000985a6b5750ada38202dd62b7e6e867b3092",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaLimitedInternalPilotInquiryTwoExecution.test.ts"
+                     },
+                     {
+                         "sha256":  "dafa6c1d7c4dc38dedcaa26d39a46109ecfae96c536d6534c40dcadb9176e6af",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaLimitedInternalPilotPreparation.test.ts"
+                     },
+                     {
+                         "sha256":  "30369e26223e350938833c777975c4c75959a7ee735396667fd8d6d1994579c4",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaOwnerActivatedRuntimeIssuance.test.ts"
+                     },
+                     {
+                         "sha256":  "87cd46f8e6a26d4c50decadb0ab4413e4e73bc16dc857d2ec669caba4c83b84a",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaOwnerActivationDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "c4d39635de9a23b35b819a2852e7df4e995e2712ba8626c5f82c87c7fa269d47",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaOwnerControlledShadowOperationReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "b2734d89bc1459e3fdd7f203bcf7d2745f4a9c42ef438de4ca3d6265db1620d8",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaOwnerLimitedInternalPilotExecutionDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "f5041969a42baa8be2d41df55ff74ae477b81b1f2784e02c340bc974c74bc399",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaOwnerLimitedInternalPilotInquiryTwoReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "c2bcbbd8674a7e105fe6f97de23165d8d5913cd30726c7c1dc7f16f21d398309",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaQualificationExecutionEvidence.test.ts"
+                     },
+                     {
+                         "sha256":  "c546be01ba51e0d12a430ccbace85cf3ebc7d7f2f759f9bb6b6a496a511457d6",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaQualificationFixturePack.test.ts"
+                     },
+                     {
+                         "sha256":  "00d3aba93f789ae634e9f77c9016d59cdf0aeed4c2829ee72a82b6d04a57f103",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaQualificationTestingAdmission.test.ts"
+                     },
+                     {
+                         "sha256":  "7af19cd2e76fbc22f9a2d91df9953a652bcda26c3abe19aace85af88a0bb867d",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaQualificationTestPlan.test.ts"
+                     },
+                     {
+                         "sha256":  "f05b8ab2ccaf8d8a5f5b699156f421a144b2bec7b0698ee9694786292e2556bc",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaQualifiedEmployeeManifestIssuance.test.ts"
+                     },
+                     {
+                         "sha256":  "660e5306419309bcd9fc4b8678be081693184dea3229fb89fb6b725936d37a81",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\autonomousGlobalGrowthFormalQualificationIssuance.test.ts"
+                     },
+                     {
+                         "sha256":  "ad218ea7035a25dacff920189475a76a8e4664d85f98844246efa48a9d483299",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\employeeQualification.test.ts"
+                     },
+                     {
+                         "sha256":  "0761ef06c78109261f9d2877e9151d22abe2b2d891004e53237ec3ca75a1d87c",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceAdvikFirstSyntheticPilotTaskOwnerReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "42dfaafed857c7db3306e1629c24e74a22ae7438dc48f8a821c9b7f1ab2bff57",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceAdvikSecondSyntheticTaskExecution.test.ts"
+                     },
+                     {
+                         "sha256":  "398712869ef0e2d657336436b3328379d15d9a9b4e66ea5093411b74e0b43332",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceAdvikSecondSyntheticTaskOwnerReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "147addbb08f1f4666faf7b7b5c849a955f4666f8ccbf0d24c0f4ac0adadfc3d8",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceDevelopmentPlan.test.ts"
+                     },
+                     {
+                         "sha256":  "749ec76a5c44391ebf02409b18ed1569eddaf7cfe0cd77557e0dd052d90054f0",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceFormalQualificationIssuance.test.ts"
+                     },
+                     {
+                         "sha256":  "e487b98ff33ea6766abae962a0f1cadb95ac91407f5a382038e9728b1a92cd48",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceFormalQualificationTestPlan.test.ts"
+                     },
+                     {
+                         "sha256":  "0a9579b1995cee0785deaabc879bce5658cb1a3f9aa31cf239ae925232a7dc88",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceZaraFirstSyntheticPilotTaskOwnerReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "11b1c508451e4a8e5aa1cab91b30e5bea327a288f8f46ad338da367dcb8ab7b6",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceZaraSecondSyntheticTaskOwnerReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "1d8419156359fd828ffeff1b3b41b7c4eeda109f1dded6ccba607a7ae0c4a37c",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\meeraFormalQualificationIssuance.test.ts"
+                     },
+                     {
+                         "sha256":  "2ce9c3d7a818b026f61e034dcbf47898d855236767b232270d0eafea0de38cf4",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\meeraFormalQualificationReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "f061040bd52cff32a015e41d2672b1ad50e65e7ed9cdf47fe0cb9d601ae2bf9c",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\revenueVoiceConversationQualityKernel.test.ts"
+                     },
+                     {
+                         "sha256":  "4d3e9b1c8a57643586bc68e292e443dc0612203f4ee62c3b10422a32e753a931",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\revenueVoiceSafetyTrustKernel.test.ts"
+                     },
+                     {
+                         "sha256":  "c99358f460baa6f2ef0152be076b16ed1e4735876333d7541422c394904d0fca",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\riyaFormalQualificationIssuance.test.ts"
+                     },
+                     {
+                         "sha256":  "4b37099869834f3f5950f5c458eebde934531d9171e6fd09ac973f47867cfb94",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\riyaFormalQualificationReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "3f27d84d9357576af41ca658085b0a44ebd126c74d28236da4145019920e8829",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\salesCoreLaunchCommercialEvidenceControlledRequalificationExecutionEvidence.test.ts"
+                     },
+                     {
+                         "sha256":  "40a1571a355ed5e25e78e385b618e5188077f22204db80bf02912b27455dd7c3",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\skillToolRegistry.test.ts"
+                     },
+                     {
+                         "sha256":  "ef47a028364f7946557e2c581ceeaeabd98ac1bcd40d8c12e4fd70779e39018b",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\aiEmployeeManifest.ts"
+                     },
+                     {
+                         "sha256":  "7bd79d4d2bbf0a1458d5ffa3827668aee7728aa585ba0025ad0347c832246d63",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\ashaFormalQualificationIssuance.ts"
+                     },
+                     {
+                         "sha256":  "0f3e3cdceb8948b9d2ce0a831c8a96f1a2524e1b10a0ab8d701af7321bd317f8",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\ashaIndependentEvaluationHarness.ts"
+                     },
+                     {
+                         "sha256":  "bcd9ef5b23f3fbc9b0f24d95ab212467aa7436d94f39e5c039a599e66db779fc",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\ashaQualificationExecutionEvidence.ts"
+                     },
+                     {
+                         "sha256":  "c69492150712bc182acc55ec725863ddce0d5877bfe6b7ff5ee97e284d0a8a1a",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\ashaQualificationFixturePack.ts"
+                     },
+                     {
+                         "sha256":  "9324e644296405abcd2d8376f7715c3859178b2bdb5543a0e8b3f03aab461c46",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\ashaQualificationTestPlan.ts"
+                     },
+                     {
+                         "sha256":  "8ef04c1f36b1b5244aaa71ea5441bf8e9a6fd8e6be15087207cd66b992a1b353",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\ashaQualifiedEmployeeManifestIssuance.ts"
+                     },
+                     {
+                         "sha256":  "4a322eec52678df30bfb2449e896e216f2b87a379146e0e49246ac2f536f072a",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\autonomousGlobalGrowthAIEmployeeTemplateCreationExecution.ts"
+                     },
+                     {
+                         "sha256":  "f74e065e09684b0ac744afef69c8176c556794be07ad77818eef8ba080afdd1c",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\autonomousGlobalGrowthFormalQualificationExecutionEvidence.ts"
+                     },
+                     {
+                         "sha256":  "7b3acdb700a83bcc095499935a2efd4d4bfbaad356ebdae028c0ba35b49f6320",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\autonomousGlobalGrowthFormalQualificationFixturePack.ts"
+                     },
+                     {
+                         "sha256":  "60f382ce5e3116231910eb3eb7e88f58f717e89199e5833fcecac5b3ba32deec",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\autonomousGlobalGrowthFormalQualificationIssuance.ts"
+                     },
+                     {
+                         "sha256":  "0eb191213412f9f5eeeda08f2257b2bdc152bfed4f6f9c60898e9f11c6c45b97",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\autonomousGlobalGrowthFormalQualificationTestPlan.ts"
+                     },
+                     {
+                         "sha256":  "ca3700c6d8cf9629a2c03bf0d86f31a694fc2601a58cc67096fcd97c90b0a6df",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\autonomousGlobalGrowthQualifiedEmployeeManifestIssuance.ts"
+                     },
+                     {
+                         "sha256":  "83fcad1ba1707b438b7f41ca33f1bef99e947914f277e13067f78b906f476b02",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\employeeQualification.ts"
+                     },
+                     {
+                         "sha256":  "375c6ef672e7cfbdb767c5784bfbb570ce9ac679f66e81b54cfb35fec68d235b",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\employeeTemplateRegistry.ts"
+                     },
+                     {
+                         "sha256":  "ed38185734c18dfe86c3d8923214b4be3477472df4f8c1af2f6040a2ccee1157",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceAdvikFirstSyntheticPilotTaskExecution.ts"
+                     },
+                     {
+                         "sha256":  "fe6648e3c92718e2662d95d7943bf466ed3b73883225f06971388b7b975330c1",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceAdvikFirstSyntheticPilotTaskOwnerReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "0f87fad6e6b567a53fd122d1f408637b14b00ee75e82b8720a8ce9de30a1c1a6",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceAdvikSecondSyntheticTaskExecution.ts"
+                     },
+                     {
+                         "sha256":  "900a4edf6483c045708d7c489d7dc617f150909c8878503c7a69d223f0f51de1",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceAdvikSecondSyntheticTaskOwnerReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "5d863eeda06de13cd70d2bfabee3803141e9bf6732215365987d6f8472ce1726",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceControlledShadowOperationExecution.ts"
+                     },
+                     {
+                         "sha256":  "041e498f502c428045cd9ef22f97a13f33c01867186a460526dc75aef3087e06",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceControlledShadowOperationPreparation.ts"
+                     },
+                     {
+                         "sha256":  "9af4f9a472b059f37eca4a9ca20dad4b8ed4abe1c663dc38ea914de2f42f6546",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceDevelopmentPlan.ts"
+                     },
+                     {
+                         "sha256":  "16cf1cacfc6efead3137182fde69e6f9d598d26cebba72d3d6c8bdb72fb84643",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceFormalQualificationExecutionEvidence.ts"
+                     },
+                     {
+                         "sha256":  "982f5b58c220bbb4d958b9aeb3f218a1ddef14049d52b5ec6734734b200c4de7",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceFormalQualificationFixturePack.ts"
+                     },
+                     {
+                         "sha256":  "760e2a2191072fd5a28eee114ac67a8239ddf590f061c6884785d94af095aff9",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceFormalQualificationIssuance.ts"
+                     },
+                     {
+                         "sha256":  "c09a1f7bcc6fef733174d02069831311926c121de9cf2f599b5dc7c7c965c598",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceFormalQualificationTestPlan.ts"
+                     },
+                     {
+                         "sha256":  "b48c3335ebde6d9b8378665b5d18e4b4627752567ec2c6969a34351fb146e2f2",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceOwnerControlledShadowOperationReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "d66eee1e563610247104554128eae80c7da4179dfc7e8383b475a2e800cf2b0c",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceOwnerLimitedInternalPilotFirstTaskExecutionDecision.ts"
+                     },
+                     {
+                         "sha256":  "06fb215b5534564ac13705226ad861df9146c76d3b72673199f349102a8cf778",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforcePostLevelTwoFirstWorkstreamEvidencePlanPreparation.ts"
+                     },
+                     {
+                         "sha256":  "10d925a22c469b5e52806b1905e04f47d25d1889e7cf16d207905a841d4b505d",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforcePostLevelTwoSecondTaskExecutionDecision.ts"
+                     },
+                     {
+                         "sha256":  "b626e3c025871e71d58b0110d5457ecb187413ad0f8314367094685014a8582d",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforcePostLevelTwoSecondTaskExecutionDecisionPreparation.ts"
+                     },
+                     {
+                         "sha256":  "54bce1dc332836ea1ec8636f8423e3cbaa802bc3a1327d56b0730f6cc20c7281",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforcePostLevelTwoSecondTaskSequenceClosureEvidencePreparation.ts"
+                     },
+                     {
+                         "sha256":  "027e9baefb1ea519cbd265d074126fe7b22bcf57481ec74e4be1edf2d32b108c",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforcePostLevelTwoSecondTaskSequenceClosureOwnerReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "6c6586f8ba09d38aaa07ebec38078196c0965aa90fb77bda45037e5cf46c6263",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceQualifiedEmployeeManifestIssuance.ts"
+                     },
+                     {
+                         "sha256":  "d86b222b610c9cafe8d2d5af45080cd573465384b29841ef3ac718319bcf64a8",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceTemplateCreationExecution.ts"
+                     },
+                     {
+                         "sha256":  "07972f4f6a0b718139cbf187b6dc216b1fd5918c3d57cbe772e7dd38b8d740c6",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceTemplatePreparationPlan.ts"
+                     },
+                     {
+                         "sha256":  "d85581fedcd11444ddef6ab524f2bf4dc20f803c2dd863dfc13b1f69dec03f6b",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceZaraFirstSyntheticPilotTaskOwnerReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "47be3e3427e6bdb48895dbe7c3e198faa3504a547a3a315cd2cca41019b94529",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceZaraSecondSyntheticTaskOwnerReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "dc3dbfa4f31f5be3ce0136e0db9e4a14ae0ed18d364d8a1125b895f83ae13656",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\meeraFormalQualificationExecutionEvidence.ts"
+                     },
+                     {
+                         "sha256":  "92db6ac1ac75fead84aac6de550d5fbbd5274ebf530cce79ac3020a68cb1a30c",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\meeraFormalQualificationFixturePack.ts"
+                     },
+                     {
+                         "sha256":  "fec08cd625db30dc0be546714a23e7196c671932d850c6d172c3b24221239445",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\meeraFormalQualificationIssuance.ts"
+                     },
+                     {
+                         "sha256":  "c23c55f8cd81da6f30fc94061967d7564b5a50d2ddf5d8c37fc3b5c3e2dada9c",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\meeraFormalQualificationReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "6bd6a8a01b2cb6d99f7deded140dfe149b0fc3b2d5165d5288d76d4528136c5c",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\meeraFormalQualificationTestPlan.ts"
+                     },
+                     {
+                         "sha256":  "eaeeb05498336deb3c6593b8140503d798f14dece4aa9ec08849146470634c91",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\meeraQualifiedEmployeeManifestIssuance.ts"
+                     },
+                     {
+                         "sha256":  "9e710f8de70e2d8660bf3a0def0c227e7815387253b4df67ea3a32e9c2aee492",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\revenueVoiceConversationQualityKernel.ts"
+                     },
+                     {
+                         "sha256":  "f2028305decf88c4640e2eaf526fb5c0ce95ac1ec55898df266cb62529f12916",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\riyaFormalQualificationExecutionEvidence.ts"
+                     },
+                     {
+                         "sha256":  "4c9d8814133615418824defb84d2378e7a7d490e3b4586f9b7febe06c374d420",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\riyaFormalQualificationFixturePack.ts"
+                     },
+                     {
+                         "sha256":  "fd8dc65d821af850d422c7d4e5d73a21eb2372e185a6481c6f28210e998c68a9",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\riyaFormalQualificationIssuance.ts"
+                     },
+                     {
+                         "sha256":  "cf994c252e208cf3f142b650154a58b94aa84eec396eaf9306530d90cf1bdae7",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\riyaFormalQualificationReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "3a1aa8ea459282ea6f4a81b8cd3a1ce87bcff41e4ce9dbbcea65aeec1a8351ff",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\riyaFormalQualificationTestPlan.ts"
+                     },
+                     {
+                         "sha256":  "c6ecbad9059932d57fc27861ddaa4aa9ec4023632aff9861dddeb7ace4e7d625",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\riyaQualifiedEmployeeManifestIssuance.ts"
+                     },
+                     {
+                         "sha256":  "559811f103b203d70d628ca747bccec8ce201482a901c4a79bbe25cac2689732",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\salesCoreLaunchCommercialEvidenceControlledRequalificationExecutionEvidence.ts"
+                     },
+                     {
+                         "sha256":  "ba66e33b502a81cf4c3312a70157d90928f8c9c7e51be584d087e44d5d2c052b",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\salesCoreLaunchCommercialEvidenceControlledRequalificationPreparation.ts"
+                     },
+                     {
+                         "sha256":  "5c5ec3d275b6ce6e51371e8574196c6ec672a6cbb5d98b3e3c424bfa324724cd",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\scripts\\day758-sandbox-ai-recommendation-boundary.test.cjs"
+                     },
+                     {
+                         "sha256":  "054c41408192086ed364070189a37afe32a23bb32b03420e9e83e166d2519312",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\scripts\\day759-sandbox-ai-recommendation-handler.test.cjs"
+                     },
+                     {
+                         "sha256":  "9d1459974904040cff5361c384efd72de0f00976f44c0f965f56cb6c1cff0a7c",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\scripts\\nexus-external-bootstrap-fail-closed-verifier-v1.evidence.json"
+                     },
+                     {
+                         "sha256":  "c646870bed961bd72b67eec7481cc160964fe1244e526ccf23e8de3495ba7fc4",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\scripts\\nexus-external-bootstrap-fail-closed-verifier-v1.review-evidence.json"
+                     },
+                     {
+                         "sha256":  "6e4faabd4b82551cd7a53a8ba68082c99834168a5a19eb57ad5784ea5a40f43d",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\scripts\\nexus-external-bootstrap-fail-closed-verifier-v1.self-test.cjs"
+                     }
+                 ],
+    "evidenceReusedFromExistingRepository":  true,
+    "syntheticEvidenceFabricated":  false,
+    "ownerFinalAuthorityPreserved":  true,
+    "repositoryWriteAuthorityGranted":  false,
+    "gitCommitPushAuthorityGranted":  false,
+    "databaseAuthorityGranted":  false,
+    "productionAuthorityGranted":  false,
+    "secretsAuthorityGranted":  false,
+    "providerExecutionAuthorityGranted":  false,
+    "publicLaunchAuthorityGranted":  false,
+    "employeeActivationAuthorized":  false,
+    "runtimeActivationAuthorized":  false,
+    "nextGate":  "08_TENANT_ISOLATION_OWNER_CONTROL_QUALIFICATION",
+    "phase2Unlocked":  false
+}

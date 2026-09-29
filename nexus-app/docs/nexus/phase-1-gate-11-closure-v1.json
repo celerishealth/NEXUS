@@ -1,0 +1,500 @@
+{
+    "schema":  "nexus.phase1.sequential-gate-closure.v1",
+    "phase":  "PHASE_1_ENGINEERING_SUPER_SPECIALIST_WORKFORCE",
+    "gateNumber":  11,
+    "gateId":  "LIMITED_INTERNAL_PILOT",
+    "state":  "GATE11_LIMITED_INTERNAL_PILOT_EVIDENCE_REUSED_AND_CLOSED",
+    "sourceHead":  "af5b92bf819386aa703a7eaf691a43122412bbf4",
+    "sourcePreviousGateSha256":  "9b965b19f4a89f8b9ff827116f59049424edba9b96dc3f6b7fa50504da477348",
+    "employeeCount":  8,
+    "allEightEmployeesRepresented":  true,
+    "evidenceFileCount":  118,
+    "evidence":  [
+                     {
+                         "sha256":  "bb62dc000d35d8c1f3720bdc44ba59329d11ebbbda148f9d6881317867e32cde",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaLimitedInternalPilotInquiryExecution.test.ts"
+                     },
+                     {
+                         "sha256":  "4159d0ed5659faf2d2e62490e8557f6d89878cbd5a295a885b9064de64c3c61c",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaLimitedInternalPilotInquiryThreeExecution.test.ts"
+                     },
+                     {
+                         "sha256":  "29c29c74a06a605eb47d47631a9cafc0db6c109441b1bea8164e4963d480e794",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaLimitedInternalPilotInquiryThreePreparation.test.ts"
+                     },
+                     {
+                         "sha256":  "05ba337bfd998f95024f85d4e4000985a6b5750ada38202dd62b7e6e867b3092",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaLimitedInternalPilotInquiryTwoExecution.test.ts"
+                     },
+                     {
+                         "sha256":  "5e06cca837d4d98beaaad323b47fa5bda1b17ef8139a4443462600c6f0812873",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaLimitedInternalPilotInquiryTwoPreparation.test.ts"
+                     },
+                     {
+                         "sha256":  "dafa6c1d7c4dc38dedcaa26d39a46109ecfae96c536d6534c40dcadb9176e6af",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaLimitedInternalPilotPreparation.test.ts"
+                     },
+                     {
+                         "sha256":  "c4d39635de9a23b35b819a2852e7df4e995e2712ba8626c5f82c87c7fa269d47",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaOwnerControlledShadowOperationReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "b2734d89bc1459e3fdd7f203bcf7d2745f4a9c42ef438de4ca3d6265db1620d8",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaOwnerLimitedInternalPilotExecutionDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "6172ff6ffbacb4aea1b356e91df295b61eb97fba08eadbc0fa05b610c06255c9",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaOwnerLimitedInternalPilotInquiryReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "ce402656798aac35124a54ac7d45488316ca45f66cc3b96e9745e40a10415cfa",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaOwnerLimitedInternalPilotInquiryThreeExecutionDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "129c5f0a4625909cb754672d22bdf7553f74a8f1f10cee7e23d8999ecbbd6398",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaOwnerLimitedInternalPilotInquiryThreeReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "dd72a69d80323754d0f8b9c0c52ce1f2890b7106484454d4c7b3997bbc2278a3",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaOwnerLimitedInternalPilotInquiryTwoExecutionDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "f5041969a42baa8be2d41df55ff74ae477b81b1f2784e02c340bc974c74bc399",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\ashaOwnerLimitedInternalPilotInquiryTwoReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "c717b78f5cb79fca36fff0363ad516cf5caeacaa264987001621f0196496c743",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceAdvikFirstSyntheticPilotTaskExecution.test.ts"
+                     },
+                     {
+                         "sha256":  "0761ef06c78109261f9d2877e9151d22abe2b2d891004e53237ec3ca75a1d87c",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceAdvikFirstSyntheticPilotTaskOwnerReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "b8558fe471cdd8cf2b7558dd3abf4a7416237625b5a81f45fb8fd22b6ba6081a",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceAnayaFirstSyntheticPilotTaskExecution.test.ts"
+                     },
+                     {
+                         "sha256":  "9347d05eb2540360eb9326c1b28c75f0181f92996c38036cebc38c616874e3c6",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceAnayaFirstSyntheticPilotTaskOwnerReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "f063156298838d8c34853b50935fce5f9c59b403a433ab4e14b1f3e85ec04e66",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceAtharvFirstSyntheticPilotTaskExecution.test.ts"
+                     },
+                     {
+                         "sha256":  "3517b96706a8343bd5c51d408f74f0f6395a81ab552e635d6bd90f080b06c95f",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceAtharvFirstSyntheticPilotTaskOwnerReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "435fe2778e59ce0dc4be2173187c80c07009948e8055b4e1a79eaeb43f65eefe",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceIshaanFirstSyntheticPilotTaskExecution.test.ts"
+                     },
+                     {
+                         "sha256":  "3c5989f8b03fb5f44a8a140bc342cf455d7913008e078f34a13172f817e136a5",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceIshaanFirstSyntheticPilotTaskOwnerReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "074c3d4f0eee084892659321d1e5e810945b915abd43514d018baf13eccaeef6",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceLeelaFirstSyntheticPilotTaskExecution.test.ts"
+                     },
+                     {
+                         "sha256":  "60a10db2f13b6279dc7ee076e04c5969e5a09944e741411fce9267a839946faa",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceLeelaFirstSyntheticPilotTaskOwnerReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "7a52a58ffe6e10fe93fcecb01c87e32af23a4d35399cf7708d653a18fdb6044e",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceLimitedInternalPilotPreparation.test.ts"
+                     },
+                     {
+                         "sha256":  "e941ca0e2aad077a6edef7b0a15c26cd750ce11a38eb85617a25f1128c611e30",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceMahirFirstSyntheticPilotTaskExecution.test.ts"
+                     },
+                     {
+                         "sha256":  "4e254fa616f0e048af2e4fbf3249a069e14a1a667b5e69408afbd8ddf2fcb4c7",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceMahirFirstSyntheticPilotTaskOwnerReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "185817d1b41dba60e65b8b99df18ad61b6c0d2935e29034d1664f14713e85065",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceOwnerControlledShadowOperationReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "5040828d4bcb566ba7bbdff58c39858da258304ffda54a7c716de63b43439ade",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceVivaanFirstSyntheticPilotTaskExecution.test.ts"
+                     },
+                     {
+                         "sha256":  "2228e89022ea465b39d53e1766c01cf9fa747b7b2eb73835930451ce86a38862",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceVivaanFirstSyntheticPilotTaskOwnerReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "87f844ac3eaf90ce892581a880bd8e6b011b9d0596fceb5816459fa3fcb15eca",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceZaraFirstSyntheticPilotTaskExecution.test.ts"
+                     },
+                     {
+                         "sha256":  "0a9579b1995cee0785deaabc879bce5658cb1a3f9aa31cf239ae925232a7dc88",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\engineeringAIWorkforceZaraFirstSyntheticPilotTaskOwnerReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "5b1ffa48a618cccf81efb0632cccac8b64f845bb4477db1b823273fd2f0e0b41",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\meeraLimitedInternalPilotPreparation.test.ts"
+                     },
+                     {
+                         "sha256":  "81590ee479312e83d03ff6ca3f77f3bac61c039f453c05438aa569437a9a28d7",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\meeraLimitedInternalPilotQuotationProposalExecution.test.ts"
+                     },
+                     {
+                         "sha256":  "ab2f1dadb316512eae61179a533d563a4a73873fd5e5f3a0c2e0bc895d14ae44",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\meeraLimitedInternalPilotQuotationProposalThreeExecution.test.ts"
+                     },
+                     {
+                         "sha256":  "b8a7c825e568d4220111479a50c334240e8209b9beca948a98b01ea0ba31acf9",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\meeraLimitedInternalPilotQuotationProposalThreePreparation.test.ts"
+                     },
+                     {
+                         "sha256":  "ef8db057e9f977eeb88fb5f3ce43af052e1cc4049aa6d58547842a9d32bee797",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\meeraLimitedInternalPilotQuotationProposalTwoExecution.test.ts"
+                     },
+                     {
+                         "sha256":  "832dc9a735fc0629404e089f773da92c0bb19a512eb9112d3c64aa93f8cb110b",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\meeraLimitedInternalPilotQuotationProposalTwoPreparation.test.ts"
+                     },
+                     {
+                         "sha256":  "bc9456ceb4199cc399d88c0b01930e232862a6bd29e303d127c565d1a716082a",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\meeraOwnerControlledShadowOperationReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "a0c853832165508bbd81eff433e39e35b2fdd7e4706e6af0fc97b6858c3d73ab",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\meeraOwnerLimitedInternalPilotExecutionDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "34e8f9dcaab648ac5dda45f1b52ce8b3c5e16dede38023227ad9f6ce1a3b8f90",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\meeraOwnerLimitedInternalPilotQuotationProposalReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "7980d69ec8476d94b0b1cd531629ae2da042292f59b4b2ba5906ef152264be2b",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\meeraOwnerLimitedInternalPilotQuotationProposalThreeExecutionDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "1070f67e9bd2deb468bb5a58ed42fe379177c080fcf2899eb2e7a46ed72ce172",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\meeraOwnerLimitedInternalPilotQuotationProposalThreeReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "cf1c5feb0567e97460cd2a3aa358264fc001282c962775baf75a600a474a1622",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\meeraOwnerLimitedInternalPilotQuotationProposalTwoExecutionDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "501f8c9cba087eda95c4fb24897e7d49ebb0e9459d0b6dd9731cda1879838c55",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\meeraOwnerLimitedInternalPilotQuotationProposalTwoReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "97288ba5d7ddbd6ac1626f3909986cbf32edbfb292a7fb415fe4c3ebf8d418f4",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\riyaLimitedInternalPilotPreparation.test.ts"
+                     },
+                     {
+                         "sha256":  "7eba6353bb43c720affc608b72c612d76f5e1ae7305a1b3aec5a9acad6b19fd7",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\riyaLimitedInternalPilotRecommendationExecution.test.ts"
+                     },
+                     {
+                         "sha256":  "550b2dbfbe00f2099caeface96e030a8ba361d6ac626e5732c32c3465f29ea8d",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\riyaLimitedInternalPilotRecommendationThreeExecution.test.ts"
+                     },
+                     {
+                         "sha256":  "945a6b43a219048d830915dda022a1c561366289960efef6a7a325f2a3580964",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\riyaLimitedInternalPilotRecommendationThreePreparation.test.ts"
+                     },
+                     {
+                         "sha256":  "ff8bce2f57cb991ff9a4e5f1ccb2aad6b990f5954f6dda28923dca4317b79dd1",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\riyaLimitedInternalPilotRecommendationTwoExecution.test.ts"
+                     },
+                     {
+                         "sha256":  "b2a5e5676179b4891800df887db410a21533aeb587c1423754b561119ec55965",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\riyaLimitedInternalPilotRecommendationTwoPreparation.test.ts"
+                     },
+                     {
+                         "sha256":  "3b78cbe3f4189024e10ce30a23b054da1be542ffd51edd375136462e7b954e29",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\riyaOwnerControlledShadowOperationReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "1dd37dbd3561f22e7a6b00ff0d710a335ab8e712d4c52870b284f91caf42d5cd",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\riyaOwnerLimitedInternalPilotExecutionDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "1a2d0f425af2a53070fb043ce1a65e72ac5aa462427cbc3f49d5320e3f783d98",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\riyaOwnerLimitedInternalPilotRecommendationReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "8b9129be09eda21885bf6e8948a7adf7f1c43e513faa1d60d4ac6b88e3412861",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\riyaOwnerLimitedInternalPilotRecommendationThreeExecutionDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "f452cba70e0f26b291792e234f67a686c2918c40564102b93945d34b8e8f31e9",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\riyaOwnerLimitedInternalPilotRecommendationThreeReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "3fc6173acb72b3e35037bc24af7f6ac0897af720599ee32f984a3a238b5590f8",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\riyaOwnerLimitedInternalPilotRecommendationTwoExecutionDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "e00d7001c332dd55aa48fca77c7ce7dee84fb77d78b286755a4ee42c010d3764",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\riyaOwnerLimitedInternalPilotRecommendationTwoReviewDecision.test.ts"
+                     },
+                     {
+                         "sha256":  "e5949d2c2e6f483babb6f29d025df5e2f3c83121729c4ee25df8429fa3252f51",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\__tests__\\salesCoreLaunchPilotCompletionRecord.test.ts"
+                     },
+                     {
+                         "sha256":  "db36b411353d5e154819d426355b65e4ad6620317c0eca67616bc7889f730477",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\ashaLimitedInternalPilotInquiryExecution.ts"
+                     },
+                     {
+                         "sha256":  "89ac67d9713727d26197c5e5a88f91a3ab1b2aab39feb3af394d430019677b27",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\ashaLimitedInternalPilotInquiryThreeExecution.ts"
+                     },
+                     {
+                         "sha256":  "71195984669c6970383e3c7f6c56d44de4b47a5c21969f755bc2b2ed245ea2ba",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\ashaLimitedInternalPilotInquiryThreePreparation.ts"
+                     },
+                     {
+                         "sha256":  "f69bea94ea84cbfae7fdc9a7140531d967f77fe97684228357a682b80c246572",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\ashaLimitedInternalPilotInquiryTwoExecution.ts"
+                     },
+                     {
+                         "sha256":  "5d2fdfafbf0d3fea2672f386ed8e6a9b243df0d317f15087acf6da57678dd7ab",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\ashaLimitedInternalPilotInquiryTwoPreparation.ts"
+                     },
+                     {
+                         "sha256":  "7345a50b29ba8e888f26e1e0c71db03fd2d933894835814105846d408ae52153",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\ashaLimitedInternalPilotPreparation.ts"
+                     },
+                     {
+                         "sha256":  "30824b4fb72573b0e32cfea207197499634e2ef3fccf635b9166330106444fc0",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\ashaOwnerLimitedInternalPilotExecutionDecision.ts"
+                     },
+                     {
+                         "sha256":  "98c136c818cca7c790039de639b13460adefba40ade4a5b3a8c8700c56dce35b",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\ashaOwnerLimitedInternalPilotInquiryReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "8174e69deebd0ca4b5090ceddfd149f0a83c0374f28fea9e403e28643e767eed",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\ashaOwnerLimitedInternalPilotInquiryThreeExecutionDecision.ts"
+                     },
+                     {
+                         "sha256":  "ac36fe772fee7b066004e353c587e5d58befd4661b3c30bb6545d389e7326f6c",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\ashaOwnerLimitedInternalPilotInquiryThreeReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "0ccac1e2531283bfefe070e006e211a7664640dd73f03bde978a2dc10e602eb2",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\ashaOwnerLimitedInternalPilotInquiryTwoExecutionDecision.ts"
+                     },
+                     {
+                         "sha256":  "3f6411cda6e02ddd8f2da40f41c0045aa19c35682b9d84c8bd566f7eeed34362",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\ashaOwnerLimitedInternalPilotInquiryTwoReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "ed38185734c18dfe86c3d8923214b4be3477472df4f8c1af2f6040a2ccee1157",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceAdvikFirstSyntheticPilotTaskExecution.ts"
+                     },
+                     {
+                         "sha256":  "fe6648e3c92718e2662d95d7943bf466ed3b73883225f06971388b7b975330c1",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceAdvikFirstSyntheticPilotTaskOwnerReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "e89865e2b0f322b29143b496202cfbb9c9576b1b6ec7f1b9dbfed5a3e0f5b72a",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceAnayaFirstSyntheticPilotTaskExecution.ts"
+                     },
+                     {
+                         "sha256":  "4edf4baadf3a3facbf60ba3aab4685b3becaa3ac653875ee8aff9270be7a94c9",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceAnayaFirstSyntheticPilotTaskOwnerReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "80d8af689e257a80a5a8b20df3677d0ca798200dd2b44bfc53939105e1f57a15",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceAtharvFirstSyntheticPilotTaskExecution.ts"
+                     },
+                     {
+                         "sha256":  "f643ced864b753b92a53025f2d596ff9231f023762f7535eecd296294b504ce6",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceAtharvFirstSyntheticPilotTaskOwnerReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "24734dd2b649530ac16a836e64f06c82b03d3fa4a61d146b01077308758c2ed3",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceIshaanFirstSyntheticPilotTaskExecution.ts"
+                     },
+                     {
+                         "sha256":  "6c6fbb19138398788ddfcb992113c0b99cc422ecfbb7d470caf40fa5d23959af",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceIshaanFirstSyntheticPilotTaskOwnerReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "8d0bcce6a80a5a2c0d8968e4f13dd68ec70e3df124fca34a7bbfeabd24e6e048",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceLeelaFirstSyntheticPilotTaskExecution.ts"
+                     },
+                     {
+                         "sha256":  "bc9af1a7bad22df6f2953c5ae97a01dca0e8ed7fe0ba0ad33c319b01b098be01",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceLeelaFirstSyntheticPilotTaskOwnerReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "434b0f3851393d24b43cdd361c758c3022a8627b285a5fc68018a33fe3c3c7de",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceLimitedInternalPilotPreparation.ts"
+                     },
+                     {
+                         "sha256":  "b5eae7ffe00543898b35e74ee1639568cb16fe81baa5d5d4800e05d9e09688d3",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceMahirFirstSyntheticPilotTaskExecution.ts"
+                     },
+                     {
+                         "sha256":  "ff562b3cd3dc31e5c846c8cc50a5a478e1e7abe0ad0501188de8dc08fd4a8c3a",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceMahirFirstSyntheticPilotTaskOwnerReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "b48c3335ebde6d9b8378665b5d18e4b4627752567ec2c6969a34351fb146e2f2",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceOwnerControlledShadowOperationReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "d66eee1e563610247104554128eae80c7da4179dfc7e8383b475a2e800cf2b0c",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceOwnerLimitedInternalPilotFirstTaskExecutionDecision.ts"
+                     },
+                     {
+                         "sha256":  "2db559299aec17357efcba1bf64408fd624ed5bfe0ed132e69a25a1290e31b6f",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceVivaanFirstSyntheticPilotTaskExecution.ts"
+                     },
+                     {
+                         "sha256":  "63580fb0f1f1a1e7072d195c3c355c737ab7f34498684ad0c348fbd38f65a1d9",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceVivaanFirstSyntheticPilotTaskOwnerReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "1a1c8679e72934a1a5195366513945e549d478e6b29ba2985540a37613381658",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceZaraFirstSyntheticPilotTaskExecution.ts"
+                     },
+                     {
+                         "sha256":  "d85581fedcd11444ddef6ab524f2bf4dc20f803c2dd863dfc13b1f69dec03f6b",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\engineeringAIWorkforceZaraFirstSyntheticPilotTaskOwnerReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "1a0790991270f2bf66930f234a6f7012facbe8f5a038aa7df3e1d0f0ca583e65",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\meeraLimitedInternalPilotPreparation.ts"
+                     },
+                     {
+                         "sha256":  "4c0d936b10e772dca97ad5708f9fa70a81445e8cd6faa1d63f805be2dd3fe2c6",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\meeraLimitedInternalPilotQuotationProposalExecution.ts"
+                     },
+                     {
+                         "sha256":  "5267e6187857752f41b1c5decf25f9b67dd88bf03dc05094b3494417c92acf1f",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\meeraLimitedInternalPilotQuotationProposalThreeExecution.ts"
+                     },
+                     {
+                         "sha256":  "4eec60d9af803706c8efe2becee32bec930e31c5cd33385cf88bc3f84aaade90",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\meeraLimitedInternalPilotQuotationProposalThreePreparation.ts"
+                     },
+                     {
+                         "sha256":  "3cd9042c5b751ac9a32439e6da6d78eb03f3ab2712148ab1ba1d439e5fa243f5",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\meeraLimitedInternalPilotQuotationProposalTwoExecution.ts"
+                     },
+                     {
+                         "sha256":  "65717d2b6dc398f78ae0ff0e3722cdca6691063006cbe01577215bf49fd163ff",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\meeraLimitedInternalPilotQuotationProposalTwoPreparation.ts"
+                     },
+                     {
+                         "sha256":  "fa62805cb91d23d003905442befdbefaa01c09a6205bc98769b185cd19020faa",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\meeraOwnerLimitedInternalPilotExecutionDecision.ts"
+                     },
+                     {
+                         "sha256":  "bea62b9f3fde73a0c458cfb6747f426ad2f84ae73e5090878de4734fa85140b4",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\meeraOwnerLimitedInternalPilotQuotationProposalReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "a55069fce5fa536f1896414dae12ce8d58ef93cc4d285a1a7ac39b85963dfa6f",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\meeraOwnerLimitedInternalPilotQuotationProposalThreeExecutionDecision.ts"
+                     },
+                     {
+                         "sha256":  "44424c85cc52224578193b36fe7740e907784b5fad68b628038f9138c29fd4a4",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\meeraOwnerLimitedInternalPilotQuotationProposalThreeReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "7ced87af925efb835f1f430050d89f6c258911d9ad46310a62d136b6662cedac",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\meeraOwnerLimitedInternalPilotQuotationProposalTwoExecutionDecision.ts"
+                     },
+                     {
+                         "sha256":  "14eeaad8a635ba70ae775a1aba6b0514a48d17ded51ef0bcbc4b254d76d3708a",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\meeraOwnerLimitedInternalPilotQuotationProposalTwoReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "d7b4dc96243eb860f5572c6d778878a7e1b89c73cdff0fc732aa3382fa578987",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\riyaLimitedInternalPilotPreparation.ts"
+                     },
+                     {
+                         "sha256":  "9a6f244dc6f5c4fb1199ba0f7b2198b39a365ce9dbb7bb40f4f496f552e61499",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\riyaLimitedInternalPilotRecommendationExecution.ts"
+                     },
+                     {
+                         "sha256":  "6960c0283921f95b461eded43444812723f71912f61c9176fee8b1b8cee47249",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\riyaLimitedInternalPilotRecommendationThreeExecution.ts"
+                     },
+                     {
+                         "sha256":  "72ca314438c5126fafb555c9015097d17c862a0d4ed255c48c286cc1956cbf5e",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\riyaLimitedInternalPilotRecommendationThreePreparation.ts"
+                     },
+                     {
+                         "sha256":  "05ff1888a448bbdf3bc6dc138e7b927d008837ce28ba15f8676d4e9674c7a84c",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\riyaLimitedInternalPilotRecommendationTwoExecution.ts"
+                     },
+                     {
+                         "sha256":  "95704b838eb7d9e9004e7a8da7bb0a1c4f8c34405cda3f4751ca2854cca5687b",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\riyaLimitedInternalPilotRecommendationTwoPreparation.ts"
+                     },
+                     {
+                         "sha256":  "b039d9e6ef9e7b23e8b5795a6440b75b8e63560e4a01bda97593b3612bd266aa",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\riyaOwnerLimitedInternalPilotExecutionDecision.ts"
+                     },
+                     {
+                         "sha256":  "980a68c8adeee7aabd18110097944fc96d4a6282a4bac40e278121bd2d716fb0",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\riyaOwnerLimitedInternalPilotRecommendationReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "b4beab5c58135233494ca42224ff8766bd7652bff269b8a5b181fd591e6b5f0f",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\riyaOwnerLimitedInternalPilotRecommendationThreeExecutionDecision.ts"
+                     },
+                     {
+                         "sha256":  "1e683c354d72c732e61f0e8ea09574abbd09d27e6bdc7d222c79e01a517af837",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\riyaOwnerLimitedInternalPilotRecommendationThreeReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "3ba96c4f33a5e5884d6cfea0fe027f28bd8c62f489d7b10c5df44834c7e4f039",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\riyaOwnerLimitedInternalPilotRecommendationTwoExecutionDecision.ts"
+                     },
+                     {
+                         "sha256":  "0675671283b56e4c03305164b13c35f41ce1adc19002252edab80c111fef4967",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\riyaOwnerLimitedInternalPilotRecommendationTwoReviewDecision.ts"
+                     },
+                     {
+                         "sha256":  "ccdb99b922bb6be45626d24554406206745b8767c49d933faf364680746b0eff",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\lib\\nexus\\workforce\\salesCoreLaunchPilotCompletionRecord.ts"
+                     },
+                     {
+                         "sha256":  "dad6256e763ba2bd0245f8412ef9ebc93da70f5e8841b0c9449d756cbe6f68d2",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\scripts\\day765-internal-pilot-sandbox-worker-endpoint.test.cjs"
+                     },
+                     {
+                         "sha256":  "546d0be98421702f7996c6a77f1c8bf1911e8361bc8970adafe3e4e64aa8235c",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\scripts\\day767-internal-pilot-sandbox-worker-route-composition.test.cjs"
+                     },
+                     {
+                         "sha256":  "cc772fc1635b4d83b866811d8b5f24f2dd40d8a01fb5494351ee1a1097bead60",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\scripts\\day772-postgres-internal-pilot-session-lifecycle.test.cjs"
+                     },
+                     {
+                         "sha256":  "7eb03b97a99789af1253023fd960dde4d2f640d115d86bde1d5b8677a0eeb683",
+                         "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\scripts\\day773-internal-pilot-session-lifecycle-endpoint.test.cjs"
+                     }
+                 ],
+    "evidenceReusedFromExistingRepository":  true,
+    "syntheticEvidenceFabricated":  false,
+    "ownerFinalAuthorityPreserved":  true,
+    "repositoryWriteAuthorityGranted":  false,
+    "gitCommitPushAuthorityGranted":  false,
+    "databaseAuthorityGranted":  false,
+    "productionAuthorityGranted":  false,
+    "secretsAuthorityGranted":  false,
+    "providerExecutionAuthorityGranted":  false,
+    "publicLaunchAuthorityGranted":  false,
+    "employeeActivationAuthorized":  false,
+    "runtimeActivationAuthorized":  false,
+    "nextGate":  "12_ONE_BY_ONE_BOUNDED_ACTIVATION",
+    "phase2Unlocked":  false
+}

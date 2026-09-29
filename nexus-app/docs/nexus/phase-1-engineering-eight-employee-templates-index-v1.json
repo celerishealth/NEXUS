@@ -1,0 +1,91 @@
+{
+    "schema":  "nexus.phase1.engineering-eight-employee-templates-index.v1",
+    "gateNumber":  2,
+    "gateId":  "EIGHT_ENGINEERING_EMPLOYEE_TEMPLATES",
+    "state":  "GATE02_EIGHT_TEMPLATE_DEFINITIONS_COMPLETE",
+    "sourceGate01Sha256":  "e5fc574ad50fb4f680d1392617c7e5d2ca9447917c8fb1ea3d1029608c4a57b0",
+    "sourceHead":  "af5b92bf819386aa703a7eaf691a43122412bbf4",
+    "expectedTemplateCount":  8,
+    "actualTemplateCount":  8,
+    "allTemplatesInactive":  true,
+    "toolsBound":  false,
+    "qualificationAuthorized":  false,
+    "activationAuthorized":  false,
+    "runtimeAuthorityGranted":  false,
+    "phase2Unlocked":  false,
+    "templates":  [
+                      {
+                          "employeeCode":  "nx-engineering-001",
+                          "publicName":  "Ishaan",
+                          "officialRole":  "AI Principal Software Architect",
+                          "templateId":  "phase1-engineering-nx-engineering-001-template-v1",
+                          "sha256":  "a5e09722159958104062be4e95b8f7779a42cce9bbe1f83d9d959691cd841c5e",
+                          "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-template-01-ishaan-v1.json",
+                          "state":  "TEMPLATE_DEFINITION_LOCKED_INACTIVE"
+                      },
+                      {
+                          "employeeCode":  "nx-engineering-002",
+                          "publicName":  "Leela",
+                          "officialRole":  "AI Software Engineering Director",
+                          "templateId":  "phase1-engineering-nx-engineering-002-template-v1",
+                          "sha256":  "a4b15aecff47cbe6e8eef0e1e6addea3d74cbc32351af1654b53cac540aabd5e",
+                          "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-template-02-leela-v1.json",
+                          "state":  "TEMPLATE_DEFINITION_LOCKED_INACTIVE"
+                      },
+                      {
+                          "employeeCode":  "nx-engineering-003",
+                          "publicName":  "Vivaan",
+                          "officialRole":  "AI Quality Assurance Director",
+                          "templateId":  "phase1-engineering-nx-engineering-003-template-v1",
+                          "sha256":  "bdf484ecadffa970160cab69c7922140cf2fa58f6962842ba6ed4a00db82c04c",
+                          "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-template-03-vivaan-v1.json",
+                          "state":  "TEMPLATE_DEFINITION_LOCKED_INACTIVE"
+                      },
+                      {
+                          "employeeCode":  "nx-engineering-004",
+                          "publicName":  "Anaya",
+                          "officialRole":  "AI Security Engineering Director",
+                          "templateId":  "phase1-engineering-nx-engineering-004-template-v1",
+                          "sha256":  "6a21f9b89b03af5c0d0072346d216cd541d357a1e02bb642a5b4cb4adf31045c",
+                          "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-template-04-anaya-v1.json",
+                          "state":  "TEMPLATE_DEFINITION_LOCKED_INACTIVE"
+                      },
+                      {
+                          "employeeCode":  "nx-engineering-005",
+                          "publicName":  "Atharv",
+                          "officialRole":  "AI Reliability Engineering Specialist",
+                          "templateId":  "phase1-engineering-nx-engineering-005-template-v1",
+                          "sha256":  "9be66ef28d448e6d0e08a5de72a007314ced89e774ad50a298ece944f68ba07d",
+                          "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-template-05-atharv-v1.json",
+                          "state":  "TEMPLATE_DEFINITION_LOCKED_INACTIVE"
+                      },
+                      {
+                          "employeeCode":  "nx-engineering-006",
+                          "publicName":  "Mahir",
+                          "officialRole":  "AI Chaos Engineering Specialist",
+                          "templateId":  "phase1-engineering-nx-engineering-006-template-v1",
+                          "sha256":  "4504f65e78871132a417cc004c00d9f9ae1c15a2b2c02834a9e829bf7ffd892c",
+                          "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-template-06-mahir-v1.json",
+                          "state":  "TEMPLATE_DEFINITION_LOCKED_INACTIVE"
+                      },
+                      {
+                          "employeeCode":  "nx-engineering-007",
+                          "publicName":  "Zara",
+                          "officialRole":  "AI Data Engineering \u0026 Analytics Specialist",
+                          "templateId":  "phase1-engineering-nx-engineering-007-template-v1",
+                          "sha256":  "89408431ecd2f1d1f5099cb89f92d71a4a89f5333e1b7aa9ff79912062675deb",
+                          "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-template-07-zara-v1.json",
+                          "state":  "TEMPLATE_DEFINITION_LOCKED_INACTIVE"
+                      },
+                      {
+                          "employeeCode":  "nx-engineering-008",
+                          "publicName":  "Advik",
+                          "officialRole":  "AI Systems Evaluation \u0026 Red-Team Specialist",
+                          "templateId":  "phase1-engineering-nx-engineering-008-template-v1",
+                          "sha256":  "e3f3c3a308b66e9d5054c5bc4757ec406750c6a3caa81937b14e8b1f58020312",
+                          "path":  "C:\\PROJECTS\\NEXUS 1\\nexus-app\\docs\\nexus\\phase-1-engineering-employee-template-08-advik-v1.json",
+                          "state":  "TEMPLATE_DEFINITION_LOCKED_INACTIVE"
+                      }
+                  ],
+    "nextGate":  "03_SKILLS_AND_DRAFT_ONLY_TOOLS_BINDING"
+}

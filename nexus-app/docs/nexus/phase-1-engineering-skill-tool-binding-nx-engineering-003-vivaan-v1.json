@@ -1,0 +1,94 @@
+{
+    "schema":  "nexus.phase1.engineering-skill-draft-only-tool-binding.v1",
+    "phase":  "PHASE_1_ENGINEERING_SUPER_SPECIALIST_WORKFORCE",
+    "gateNumber":  3,
+    "gateId":  "SKILLS_AND_DRAFT_ONLY_TOOLS_BINDING",
+    "bindingState":  "BOUND_DRAFT_ONLY_INACTIVE",
+    "employee":  {
+                     "employeeCode":  "nx-engineering-003",
+                     "publicName":  "Vivaan",
+                     "officialRole":  "AI Quality Assurance Director",
+                     "templateId":  "phase1-engineering-nx-engineering-003-template-v1",
+                     "templateSha256":  "bdf484ecadffa970160cab69c7922140cf2fa58f6962842ba6ed4a00db82c04c"
+                 },
+    "skills":  [
+                   "TEST_STRATEGY_DESIGN",
+                   "REGRESSION_ANALYSIS",
+                   "ACCEPTANCE_GATE_DESIGN",
+                   "DEFECT_EVIDENCE_REVIEW",
+                   "TEST_COVERAGE_REVIEW",
+                   "RELEASE_QUALITY_ASSESSMENT"
+               ],
+    "allowedToolModes":  {
+                             "repositoryMetadataRead":  "ALLOWED_WHEN_SEPARATELY_AUTHORIZED",
+                             "repositoryFileRead":  "ALLOWED_WHEN_SEPARATELY_AUTHORIZED",
+                             "staticAnalysis":  "DRAFT_ONLY",
+                             "architectureDraft":  "DRAFT_ONLY",
+                             "codeChangeProposal":  "DRAFT_ONLY",
+                             "testProposal":  "DRAFT_ONLY",
+                             "securityReview":  "DRAFT_ONLY",
+                             "reliabilityReview":  "DRAFT_ONLY",
+                             "evidencePreparation":  "DRAFT_ONLY",
+                             "ownerDecisionPackagePreparation":  "DRAFT_ONLY"
+                         },
+    "prohibitedToolModes":  {
+                                "repositoryWrite":  true,
+                                "gitAdd":  true,
+                                "gitCommit":  true,
+                                "gitPush":  true,
+                                "branchCreate":  true,
+                                "merge":  true,
+                                "pullRequestPublish":  true,
+                                "databaseRead":  true,
+                                "databaseWrite":  true,
+                                "productionRead":  true,
+                                "productionWrite":  true,
+                                "deployment":  true,
+                                "secretRead":  true,
+                                "secretWrite":  true,
+                                "externalNetworkExecution":  true,
+                                "providerExecution":  true,
+                                "publicLaunch":  true,
+                                "customerContact":  true,
+                                "paymentExecution":  true,
+                                "legalCommitment":  true
+                            },
+    "reasoningAndEvidenceRules":  {
+                                      "maximumRoleAppropriateReasoning":  true,
+                                      "verifyEvidenceBeforeConclusion":  true,
+                                      "guessingProhibited":  true,
+                                      "selfCheckRequired":  true,
+                                      "crossCheckImportantWork":  true,
+                                      "distinguishFactsFromAssumptions":  true,
+                                      "failClosedOnUncertainty":  true,
+                                      "failClosedOnUnsafeCondition":  true,
+                                      "escalateOnInsufficientEvidence":  true,
+                                      "escalateOnInsufficientAuthority":  true
+                                  },
+    "authorityBoundary":  {
+                              "repositoryAuthority":  false,
+                              "branchAuthority":  false,
+                              "mergeAuthority":  false,
+                              "gitCommitAuthority":  false,
+                              "gitPushAuthority":  false,
+                              "databaseAuthority":  false,
+                              "productionAuthority":  false,
+                              "deploymentAuthority":  false,
+                              "secretsAuthority":  false,
+                              "networkAuthority":  false,
+                              "providerExecutionAuthority":  false,
+                              "publicLaunchAuthority":  false,
+                              "runtimeActivationAuthority":  false
+                          },
+    "executionState":  {
+                           "employeeActivated":  false,
+                           "runtimeActivated":  false,
+                           "qualificationAuthorized":  false,
+                           "consequentialExecutionAuthorized":  false
+                       },
+    "roadmap":  {
+                    "currentGate":  "03_SKILLS_AND_DRAFT_ONLY_TOOLS_BINDING",
+                    "nextGate":  "04_EMPLOYEE_MANIFESTS",
+                    "phase2Unlocked":  false
+                }
+}
