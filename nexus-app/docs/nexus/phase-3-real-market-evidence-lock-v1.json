@@ -1,0 +1,150 @@
+{
+    "schemaVersion":  "nexus-phase3-real-market-evidence-lock-v1",
+    "evidenceDate":  "2026-09-29",
+    "marketWedge":  {
+                        "status":  "EVIDENCE_SUPPORTED",
+                        "geography":  "INDIA",
+                        "vertical":  "INDUSTRIAL_SAFETY_AND_FALL_PROTECTION",
+                        "customerClass":  "INDUSTRIAL_SAFETY_DISTRIBUTORS_AND_SUPPLIERS_SERVING_INDUSTRIAL_AND_PUBLIC_SECTOR_BUYERS",
+                        "commercialFocus":  "OWNER_CONTROLLED_OPPORTUNITY_TO_QUOTATION_AND_FOLLOWUP_OPERATING_WORKFLOW"
+                    },
+    "highValueProblem":  {
+                             "status":  "EVIDENCE_SUPPORTED",
+                             "problem":  "Fragmented industrial-safety opportunity discovery, qualification/compliance preparation, quotation prioritization, and follow-up create avoidable owner effort and risk of missed or poorly qualified opportunities.",
+                             "evidenceBasis":  [
+                                                   "Recent Indian PPE and fall-protection procurements require supplier qualification, technical compliance, documentation, delivery commitments, and price competition.",
+                                                   "Observed procurement packages combine multiple safety categories, creating qualification and coordination workload.",
+                                                   "Recent bids demonstrate active buyer demand for full-body harness, fall-arrest systems, safety footwear, life jackets, and related PPE."
+                                               ]
+                         },
+    "pilotCustomerProfile":  {
+                                 "status":  "EVIDENCE_SUPPORTED_PROFILE_NOT_CUSTOMER_COMMITMENT",
+                                 "geography":  "INDIA",
+                                 "organizationType":  "INDUSTRIAL_SAFETY_DISTRIBUTOR_OR_TRADER",
+                                 "typicalProducts":  [
+                                                         "FULL_BODY_HARNESS",
+                                                         "FALL_ARRESTOR",
+                                                         "SAFETY_FOOTWEAR",
+                                                         "LIFE_JACKET",
+                                                         "RELATED_PPE"
+                                                     ],
+                                 "targetBuyerTypes":  [
+                                                          "MANUFACTURING",
+                                                          "SHIPYARD",
+                                                          "OIL_AND_GAS",
+                                                          "MINING",
+                                                          "INFRASTRUCTURE",
+                                                          "PUBLIC_SECTOR"
+                                                      ],
+                                 "minimumPainSignals":  [
+                                                            "MULTIPLE_INQUIRY_OR_TENDER_SOURCES",
+                                                            "MANUAL_QUALIFICATION",
+                                                            "DOCUMENT_COMPLIANCE_LOAD",
+                                                            "QUOTATION_FOLLOWUP_LOAD",
+                                                            "OWNER_APPROVAL_REQUIRED"
+                                                        ]
+                             },
+    "publicEvidence":  [
+                           {
+                               "sourceId":  "GEM_2026_B_7791000",
+                               "buyer":  "COCHIN_SHIPYARD_LIMITED",
+                               "location":  "MUMBAI_MAHARASHTRA",
+                               "observedValueInr":  1134000,
+                               "categories":  [
+                                                  "FULL_BODY_HARNESS",
+                                                  "LIFE_JACKET",
+                                                  "SAFETY_SHOES",
+                                                  "SCAFFOLDING_TAG",
+                                                  "CANVAS_GLOVES",
+                                                  "RIGGER_GLOVES"
+                                              ],
+                               "requirements":  [
+                                                    "PPE_SUPPLY_EXPERIENCE",
+                                                    "GST",
+                                                    "PAN",
+                                                    "FINANCIAL_STANDING",
+                                                    "TECHNICAL_COMPLIANCE",
+                                                    "OEM_OR_SUPPLIER_AUTHORIZATION"
+                                                ],
+                               "paymentTimelineDays":  45,
+                               "deliveryTimelineDays":  30,
+                               "evidenceStatus":  "PUBLIC_SOURCE_VERIFIED_2026_09_29"
+                           },
+                           {
+                               "sourceId":  "GEM_2026_R_693753",
+                               "buyer":  "INDIAN_OIL_CORPORATION_LIMITED",
+                               "observedValueInr":  1276000,
+                               "categories":  [
+                                                  "BODY_HARNESS",
+                                                  "FALL_ARRESTOR",
+                                                  "FIRE_SAFETY_EQUIPMENT"
+                                              ],
+                               "bidderCount":  4,
+                               "evidenceStatus":  "PUBLIC_SOURCE_VERIFIED_2026_09_29"
+                           },
+                           {
+                               "sourceId":  "GEM_2026_B_7764813",
+                               "buyer":  "COAL_INDIA_LIMITED",
+                               "quantity":  52,
+                               "category":  "FULL_BODY_HARNESS_IS_3521_PART_1",
+                               "bidderCount":  5,
+                               "evidenceStatus":  "PUBLIC_SOURCE_VERIFIED_2026_09_29"
+                           },
+                           {
+                               "sourceId":  "GEM_2026_B_8071026",
+                               "buyer":  "INDIAN_COAST_GUARD",
+                               "category":  "SAFETY_HARNESS",
+                               "publishedDate":  "2026-09-23",
+                               "closingDate":  "2026-10-03",
+                               "evidenceStatus":  "LIVE_PUBLIC_PROCUREMENT_SIGNAL_VERIFIED_2026_09_29"
+                           }
+                       ],
+    "evidenceConclusions":  {
+                                "realDemandSignal":  "PASS",
+                                "repeatedBuyerDemand":  "PASS",
+                                "industrialAndPublicSectorRelevance":  "PASS",
+                                "fallProtectionCategoryRelevance":  "PASS",
+                                "supplierQualificationComplexity":  "PASS",
+                                "exactCustomerWillingnessToPay":  "NOT_PROVEN",
+                                "signedPilotCustomerCommitment":  "NOT_PROVEN",
+                                "marketSizeClaim":  "NOT_MADE",
+                                "rankOrMarketLeadershipClaim":  "NOT_MADE"
+                            },
+    "phase3Exit":  {
+                       "capabilityCoverage":  "11_OF_11_PASS",
+                       "realMarketWedgeEvidence":  "PASS",
+                       "highValueProblemEvidence":  "PASS",
+                       "pilotCustomerProfileEvidence":  "PASS",
+                       "requiredCoreIndustryPackWork":  "IDENTIFIED_NOT_EXECUTED",
+                       "founderCommercialFocusApproval":  "APPROVED",
+                       "repositoryClosure":  "PENDING",
+                       "formalExit":  "PENDING",
+                       "phase4Unlocked":  false
+                   },
+    "authorityBoundary":  {
+                              "recommendationOnly":  true,
+                              "founderFinalCommercialAuthority":  true,
+                              "customerContactAuthorized":  false,
+                              "tenderSubmissionAuthorized":  false,
+                              "paymentAuthorized":  false,
+                              "databaseAuthority":  false,
+                              "productionAuthority":  false,
+                              "publicLaunchAuthority":  false
+                          },
+    "founderApproval":  {
+                            "approvalStatus":  "APPROVED",
+                            "approvedFocus":  "INDIA_INDUSTRIAL_SAFETY_AND_FALL_PROTECTION_SUPPLIERS_DISTRIBUTORS",
+                            "targetBuyerClass":  "INDUSTRIAL_AND_PUBLIC_SECTOR_BUYERS",
+                            "workflowFocus":  [
+                                                  "OWNER_CONTROLLED_OPPORTUNITY_DISCOVERY",
+                                                  "QUALIFICATION_AND_COMPLIANCE",
+                                                  "QUOTATION_PRIORITIZATION",
+                                                  "FOLLOWUP_WORKFLOW"
+                                              ],
+                            "customerContactAuthorized":  false,
+                            "tenderSubmissionAuthorized":  false,
+                            "paymentAuthorized":  false,
+                            "databaseAuthority":  false,
+                            "productionAuthority":  false
+                        }
+}
